@@ -10,7 +10,7 @@
     <title>@ViewData["Title"] - Find support for leaving care</title>
     <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/assets/images/favicon.svg"/>
     @Html.GovUkFrontendStyleImports(appendVersion: true)
-    <link rel="stylesheet" href="~/css/dfefrontend-2.0.0.min.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/dfefrontend.css" asp-append-version="true"/>
 </head>
 
 <body class="govuk-template__body">
@@ -27,12 +27,12 @@
 {
     <section class="dfe-page-grey">
         <div class="govuk-width-container">
-            @RenderSection("BeforeGDSContent")
+            @await RenderSectionAsync("BeforeGDSContent")
         </div>
     </section>
 }
 <div class="govuk-width-container @ViewBag.ContainerClasses">
-    @RenderSection("BeforeContent", required: false)
+    @await RenderSectionAsync("BeforeContent", required: false)
     <main class="govuk-main-wrapper @ViewBag.MainClasses" id="main-content" role="main" lang="@ViewBag.MainLang">
         @RenderBody()
     </main>
@@ -41,7 +41,7 @@
 {
     <section class="dfe-page-grey">
         <div class="govuk-width-container">
-            @RenderSection("AfterGDSContent")
+            @await RenderSectionAsync("AfterGDSContent")
         </div>
     </section>
 }

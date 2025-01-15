@@ -1,0 +1,23 @@
+@model CareLeavers.Web.Models.Content.Page
+
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "_Layout";
+}
+
+@section BeforeGDSContent
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">
+                @Model.Title
+            </h1>
+        </div>
+    </div>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <contentful-rich-text document="@Model.Content"></contentful-rich-text>
+    </div>
+</div>

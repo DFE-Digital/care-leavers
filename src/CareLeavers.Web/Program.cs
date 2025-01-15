@@ -1,3 +1,6 @@
+using CareLeavers.Web.ContentfulRenderers;
+using Contentful.AspNetCore;
+using Contentful.Core.Models;
 using GovUk.Frontend.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +8,23 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddGovUkFrontend();
+
+builder.Services.AddContentful(builder.Configuration);
+
+builder.Services.AddTransient<HtmlRenderer>((c) => {
+    var renderer = new HtmlRenderer(new HtmlRendererOptions
+    {
+        ListItemOptions = new ListItemContentRendererOptions
+        {
+            OmitParagraphTagsInsideListItems = true
+        }
+    });
+    
+    // Add custom GDS renderer
+    renderer.AddRenderer(new GDSParagraphRenderer(renderer.Renderers));
+    
+    return renderer;
+});
 
 var app = builder.Build();
 
@@ -28,3 +48,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+public partial class Program
+{
+}
