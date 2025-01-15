@@ -1,0 +1,57 @@
+﻿@using GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.AspNetCore.TagHelpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html class="govuk-template" lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - Find support for leaving care</title>
+    <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/assets/images/favicon.svg"/>
+    @Html.GovUkFrontendStyleImports(appendVersion: true)
+    <link rel="stylesheet" href="~/css/dfefrontend-2.0.0.min.css" asp-append-version="true"/>
+</head>
+
+<body class="govuk-template__body">
+@Html.GovUkFrontendJsEnabledScript()
+<a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
+@{
+    await Html.RenderPartialAsync("_Header");
+}
+
+
+@await RenderSectionAsync("BeforeContent", required: false)
+
+@if (IsSectionDefined("BeforeGDSContent"))
+{
+    <section class="dfe-page-grey">
+        <div class="govuk-width-container">
+            @RenderSection("BeforeGDSContent")
+        </div>
+    </section>
+}
+<div class="govuk-width-container @ViewBag.ContainerClasses">
+    @RenderSection("BeforeContent", required: false)
+    <main class="govuk-main-wrapper @ViewBag.MainClasses" id="main-content" role="main" lang="@ViewBag.MainLang">
+        @RenderBody()
+    </main>
+</div>
+@if (IsSectionDefined("AfterGDSContent"))
+{
+    <section class="dfe-page-grey">
+        <div class="govuk-width-container">
+            @RenderSection("AfterGDSContent")
+        </div>
+    </section>
+}
+
+@{
+    await Html.RenderPartialAsync("_Footer");
+}
+
+@await RenderSectionAsync("Scripts", false)
+@Html.GovUkFrontendScriptImports(null, true)
+</body>
+
+</html>

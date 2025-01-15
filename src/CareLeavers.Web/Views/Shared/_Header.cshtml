@@ -1,0 +1,35 @@
+
+@* <div class="govuk-width-container"> *@
+@*     <govuk-phase-banner> *@
+@*         <govuk-phase-banner-tag>Beta</govuk-phase-banner-tag> *@
+@*         <span class="govuk-phase-banner__text"> *@
+@*             This is a new service. Help us improve it and <a class="govuk-link" href="#">give your feedback by email</a>. *@
+@*         </span> *@
+@*     </govuk-phase-banner> *@
+@* </div> *@
+
+<header class="dfe-header" role="banner">
+    <div class="dfe-width-container dfe-header__container">
+        <div class="dfe-header__logo">
+            <a class="dfe-header__link dfe-header__link--service " href="~/" aria-label="DfE homepage">
+                <img src="~/assets/dfe-logo.png" class="dfe-logo" alt="DfE Homepage">
+                <img src="~/assets/dfe-logo-alt.png" class="dfe-logo-hover" alt="DfE Homepage">
+            </a>
+        </div>
+        <div class="dfe-header__content" id="content-header">
+            <ul class="dfe-header__action-links">
+                @{
+                    if (Context.User.Identity?.IsAuthenticated == true){
+                        <li>
+                            <a asp-controller="Auth" asp-action="SignOut" class="govuk-link govuk-link--inverse">Sign out</a>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="dfe-width-container dfe-header__service-name">
+        <a href="/" class="dfe-header__link--service">Find support for leaving care</a>
+    </div>
+    @* @{ await Html.RenderPartialAsync("Navigation"); } *@
+</header>

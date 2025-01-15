@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "dfe-frontend": "^2.0.1",
+    "gulp": "^5.0.0"
+  }
+}
