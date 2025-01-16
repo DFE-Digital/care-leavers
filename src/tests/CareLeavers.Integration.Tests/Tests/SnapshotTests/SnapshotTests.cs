@@ -1,4 +1,5 @@
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+using AngleSharp.Html;
+using AngleSharp.Html.Parser;
 
 namespace CareLeavers.Integration.Tests.Tests.SnapshotTests;
 
@@ -40,7 +41,15 @@ public class SnapshotTests
         
         WebFixture.SetContentfulJson(await FullJson(content));
         
-        return await client.GetStringAsync("");
+        var response = await client.GetStringAsync("");
+
+        var parser = new HtmlParser();
+        var doc = parser.ParseDocument(response);
+
+        await using var sw = new StringWriter();
+        doc.ToHtml(sw, new PrettyMarkupFormatter());
+        
+        return sw.ToString();
     }
 
     private async Task<string> FullJson(string content)
