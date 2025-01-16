@@ -1,89 +1,108 @@
 {
-  "Title" : "Home",
-  "Slug" : "home",
-  "Content" : {
-    "NodeType" : "document",
-    "Data" : {
-      "Target" : null
+  "title": "Home",
+  "slug": "home",
+  "content": {
+    "nodeType": "document",
+    "data": {
+      "target": null
     },
-    "Content" : [ {
-      "NodeType" : "heading-2",
-      "Data" : {
-        "Target" : null
-      },
-      "Content" : [ {
-        "NodeType" : "text",
-        "Data" : {
-          "Target" : null
+    "content": [
+      {
+        "nodeType": "heading-2",
+        "data": {
+          "target": null
         },
-        "Value" : "Test 1",
-        "Marks" : [ ]
-      } ]
-    }, {
-      "NodeType" : "paragraph",
-      "Data" : {
-        "Target" : null
+        "content": [
+          {
+            "nodeType": "text",
+            "data": {
+              "target": null
+            },
+            "value": "Test 1",
+            "marks": []
+          }
+        ]
       },
-      "Content" : [ {
-        "NodeType" : "text",
-        "Data" : {
-          "Target" : null
+      {
+        "nodeType": "paragraph",
+        "data": {
+          "target": null
         },
-        "Value" : "Test 1",
-        "Marks" : [ ]
-      } ]
-    }, {
-      "NodeType" : "heading-2",
-      "Data" : {
-        "Target" : null
+        "content": [
+          {
+            "nodeType": "text",
+            "data": {
+              "target": null
+            },
+            "value": "Test 1",
+            "marks": []
+          }
+        ]
       },
-      "Content" : [ {
-        "NodeType" : "text",
-        "Data" : {
-          "Target" : null
+      {
+        "nodeType": "heading-2",
+        "data": {
+          "target": null
         },
-        "Value" : "Test 2",
-        "Marks" : [ ]
-      } ]
-    }, {
-      "NodeType" : "paragraph",
-      "Data" : {
-        "Target" : null
+        "content": [
+          {
+            "nodeType": "text",
+            "data": {
+              "target": null
+            },
+            "value": "Test 2",
+            "marks": []
+          }
+        ]
       },
-      "Content" : [ {
-        "NodeType" : "text",
-        "Data" : {
-          "Target" : null
+      {
+        "nodeType": "paragraph",
+        "data": {
+          "target": null
         },
-        "Value" : "Test 2",
-        "Marks" : [ ]
-      } ]
-    }, {
-      "NodeType" : "paragraph",
-      "Data" : {
-        "Target" : null
+        "content": [
+          {
+            "nodeType": "text",
+            "data": {
+              "target": null
+            },
+            "value": "Test 2",
+            "marks": []
+          }
+        ]
       },
-      "Content" : [ {
-        "NodeType" : "text",
-        "Data" : {
-          "Target" : null
+      {
+        "nodeType": "paragraph",
+        "data": {
+          "target": null
         },
-        "Value" : "",
-        "Marks" : [ ]
-      } ]
-    }, {
-      "NodeType" : "paragraph",
-      "Data" : {
-        "Target" : null
+        "content": [
+          {
+            "nodeType": "text",
+            "data": {
+              "target": null
+            },
+            "value": "",
+            "marks": []
+          }
+        ]
       },
-      "Content" : [ {
-        "NodeType" : "text",
-        "Data" : {
-          "Target" : null
+      {
+        "nodeType": "paragraph",
+        "data": {
+          "target": null
         },
-        "Value" : "",
-        "Marks" : [ ]
-      } ]
-    } ]
+        "content": [
+          {
+            "nodeType": "text",
+            "data": {
+              "target": null
+            },
+            "value": "",
+            "marks": []
+          }
+        ]
+      }
+    ]
   }
 }

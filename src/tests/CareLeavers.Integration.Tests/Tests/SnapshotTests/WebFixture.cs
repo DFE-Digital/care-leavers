@@ -1,9 +1,4 @@
 using CareLeavers.Integration.Tests.TestSupport;
-using CareLeavers.Web.Models.Content;
-using Contentful.Core.Models;
-using Contentful.Core.Search;
-using Newtonsoft.Json;
-using NSubstitute;
 
 namespace CareLeavers.Integration.Tests.Tests.SnapshotTests;
 
@@ -26,7 +21,7 @@ public class WebFixture
 
     public static void SetContentfulJson(string content)
     {
-        _webFactory.FakeContentfulHttpClient.Response = content;
+        _webFactory.FakeMessageHandler.Response = content;
     }
     
     public static HttpClient GetClient() => _webFactory.CreateClient();

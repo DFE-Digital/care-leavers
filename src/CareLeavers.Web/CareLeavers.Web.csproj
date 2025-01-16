@@ -17,7 +17,6 @@
     <ItemGroup>
       <PackageReference Include="contentful.aspnetcore" Version="8.3.0" />
       <PackageReference Include="GovUk.Frontend.AspNetCore" Version="2.8.0" />
-      <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.3.0" />
     </ItemGroup>
 
     <ItemGroup>
