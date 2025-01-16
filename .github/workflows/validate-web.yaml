@@ -31,7 +31,7 @@ jobs:
           dir: ./src/web/CareLeavers.Web
 
       - name: Run Gulp Dev
-        working-directory: ./src
+        working-directory: ./src/web/CareLeavers.Web
         run: gulp dev
 
       - name: Setup .NET
@@ -43,11 +43,11 @@ jobs:
             src/**/packages.lock.json
 
       - name: Restore dependencies
-        working-directory: ./src
+        working-directory: ./src/web
         run: dotnet restore --locked-mode
 
       - name: Build Web
-        working-directory: ./src
+        working-directory: ./src/web
         run: dotnet build --no-restore
 
       - name: Run Integration Tests
