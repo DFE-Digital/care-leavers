@@ -1,10 +1,12 @@
 "use strict";
 
-const gulp = require("gulp")
+const gulp = require("gulp"),
+    sass = require("gulp-sass")(require('sass'))
     
 
 
-let paths ={
+let paths = {
+    src: 'AssetSrc/',
     dist: 'wwwroot/'
 }
 
@@ -27,10 +29,20 @@ gulp.task('gov-assets', function() {
         .pipe(gulp.dest(paths.dist + 'assets'));
 });
 
+gulp.task("sass", function () {
+    return gulp.src(paths.src + '/scss/**/*.scss')
+        .pipe(sass({
+            includePaths: 'node_modules'
+        }))
+        .pipe(gulp.dest(paths.dist + '/css'))
+        // .pipe(connect.reload());
+});
+
 gulp.task("dev",
     gulp.series(
         "dfe-js",
         "dfe-css",
-        "dfe-assets"
+        "dfe-assets",
+        "sass"
     )
 );

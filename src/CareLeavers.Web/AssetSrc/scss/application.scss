@@ -1,0 +1,237 @@
+// Override font
+@import url('https://rsms.me/inter/inter.css');
+$govuk-font-family: 'Inter', sans-serif;
+
+// Import govuk
+@import '../../node_modules/govuk-frontend/dist/govuk/all';
+
+// Import dfe
+@import '../../node_modules/dfe-frontend/packages/dfefrontend';
+
+.govuk-width-container { @include govuk-width-container; }
+
+.dfe-page-grey {
+  padding-top: 40px;
+  padding-bottom: 30px;
+  background-color: #EAF5FF;
+}
+
+.full-width-image {
+  max-width: 100%;
+}
+
+.hf-card-container {
+  background-color: #f3f2f1;
+  border-bottom: 3px solid #003a69;
+}
+
+.hf-card a {
+  text-decoration: none;
+}
+
+.hf-card a .hf-card-details p {
+  color: #0b0c0c;
+}
+
+.hf-card a .hf-card-details h2,
+.hf-card a h3 {
+  color: #155388;
+}
+
+.hf-card a:hover .hf-card-container {
+  background-color: #003a69;
+}
+
+.hf-card a:hover .hf-card-container .hf-card-details p,
+.hf-card a:hover .hf-card-container .hf-card-details h2,
+.hf-card a:hover .hf-card-container .hf-card-details h3,
+.hf-card a:hover .hf-card-container .cat-card-details p,
+.hf-card a:hover .hf-card-container .cat-card-details h2,
+.hf-card a:hover .hf-card-container .cat-card-details h3 {
+  color: #ffffff;
+}
+
+.hf-card-details {
+  padding: 30px;
+  min-height: 190px;
+}
+
+@media (max-width: 40.0525em) {
+  .hf-card-details {
+    padding: 25px;
+    min-height: 170px;
+  }
+}
+.cat-card-details {
+  padding: 30px;
+  min-height: 20px;
+}
+
+@media (max-width: 40.0525em) {
+  .cat-card-details {
+    padding: 25px;
+    min-height: 10px;
+  }
+}
+
+.split-panel {
+  width: 100%;
+  display: flex;
+  margin: 0 auto;
+}
+
+.split-panel .govuk-grid-column-one-half.image-column {
+  padding: 0;
+  position: relative;
+}
+
+.split-panel .govuk-grid-column-one-half.text-column {
+  padding: 50px;
+}
+
+.split-panel .image-container {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  min-height: 300px;
+}
+
+.split-panel .govuk-grid-column-one-half {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+
+.x-govuk-related-navigation {
+  @include govuk-text-colour;
+  border-top: 2px solid $govuk-brand-colour;
+}
+
+.x-govuk-related-navigation__main-heading {
+  @include govuk-font(19, $weight: bold);
+  margin-bottom: govuk-spacing(2);
+  margin-top: govuk-spacing(3);
+}
+
+.x-govuk-related-navigation__sub-heading {
+  @include govuk-font(16);
+  margin: 0;
+  padding-top: govuk-spacing(3);
+}
+
+.x-govuk-related-navigation__sub-heading--footer {
+  @include govuk-font(19, $weight: bold);
+  border-top: 0;
+  margin-bottom: govuk-spacing(2);
+  margin-top: govuk-spacing(3);
+  padding-top: 0;
+}
+
+.x-govuk-related-navigation__main-heading + .x-govuk-related-navigation__sub-heading {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.x-govuk-related-navigation__nav-section {
+  border-top: 1px solid govuk-colour("mid-grey");
+  margin-bottom: govuk-spacing(6);
+
+  &:first-child {
+    border-top: none;
+  }
+}
+
+.x-govuk-related-navigation__link-list {
+  list-style: none;
+  margin: 0;
+  margin-bottom: 1.25em;
+  padding: 0;
+}
+
+.x-govuk-related-navigation__link {
+  @include govuk-font($size: 16, $weight: regular, $line-height: 1.45);
+  list-style-type: none;
+  margin-top: govuk-spacing(3);
+
+  @include govuk-media-query($from: tablet) {
+    line-height: 1.28;
+  }
+}
+
+.x-govuk-related-navigation__section-link {
+  font-weight: bold;
+}
+
+.x-govuk-related-navigation__section-link--other {
+  font-weight: normal;
+}
+
+
+.dfe-box {
+  margin-bottom: 15px;
+  margin-right: 15px;
+  padding: 15px;
+}
+
+.box-dfe {
+  border: 1px solid #b1b4b6;
+}
+
+section.dfe {
+  margin-bottom: 15px;
+  margin-top: 60px;
+}
+
+.box-gov {
+  border: 1px solid #b1b4b6;
+}
+
+.box-ext {
+  background-color: #EAF5FF;
+}
+
+.box-guide {
+  background-color: #EAF5FF;
+}
+
+.box-content {
+  width: 75%;
+  display: block;
+}
+
+.box-dfe .box-content {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .box-content {
+    width: 100%;
+  }
+}
+.box-content span {
+  color: #505a5f;
+}
+
+.box-icon {
+  width: 15%;
+  display: block;
+  right: 0;
+  top: 0;
+  float: right;
+}
+
+.box-icon img {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .box-icon {
+    display: none;
+  }
+}
+
+.app-emergency-callout {
+  border-left-color: #d4351c;
+}

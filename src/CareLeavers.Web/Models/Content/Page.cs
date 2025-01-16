@@ -2,7 +2,7 @@ using Contentful.Core.Models;
 
 namespace CareLeavers.Web.Models.Content;
 
-public class Page : IContent
+public class Page : ContentfulContent
 {
     public string Title { get; set; }
     

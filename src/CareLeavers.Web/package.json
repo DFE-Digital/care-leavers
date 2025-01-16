@@ -2,5 +2,9 @@
   "dependencies": {
     "dfe-frontend": "^2.0.1",
     "gulp": "^5.0.0"
+  },
+  "devDependencies": {
+    "gulp-sass": "^6.0.0",
+    "sass": "^1.83.4"
   }
 }
