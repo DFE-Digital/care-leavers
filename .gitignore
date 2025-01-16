@@ -351,4 +351,4 @@ MigrationBackup/
 
 .idea/
 
-src/CareLeavers.Web/wwwroot
+src/web/CareLeavers.Web/wwwroot

@@ -1,10 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CareLeavers.Web", "CareLeavers.Web\CareLeavers.Web.csproj", "{08D11B54-FD14-4496-B8E1-B77D7C9BF44F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CareLeavers.Web", "web\CareLeavers.Web\CareLeavers.Web.csproj", "{08D11B54-FD14-4496-B8E1-B77D7C9BF44F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{44B75E10-4732-4A3D-9EB6-41EC5CBF114F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CareLeavers.Integration.Tests", "tests\CareLeavers.Integration.Tests\CareLeavers.Integration.Tests.csproj", "{E2693F79-63D7-4F3D-9C0B-F5E31D94EB99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CareLeavers.Integration.Tests", "web\tests\CareLeavers.Integration.Tests\CareLeavers.Integration.Tests.csproj", "{E2693F79-63D7-4F3D-9C0B-F5E31D94EB99}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{3AEA36B3-C8A6-475D-B849-0D334C5F9A43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,5 +25,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E2693F79-63D7-4F3D-9C0B-F5E31D94EB99} = {44B75E10-4732-4A3D-9EB6-41EC5CBF114F}
+		{44B75E10-4732-4A3D-9EB6-41EC5CBF114F} = {3AEA36B3-C8A6-475D-B849-0D334C5F9A43}
+		{08D11B54-FD14-4496-B8E1-B77D7C9BF44F} = {3AEA36B3-C8A6-475D-B849-0D334C5F9A43}
 	EndGlobalSection
 EndGlobal

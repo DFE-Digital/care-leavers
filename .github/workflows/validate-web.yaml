@@ -1,0 +1,39 @@
+name: Validate - Web
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'src/web/**'
+      - '.github/workflows/validate-web.yaml'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'src/web/**'
+      - '.github/workflows/validate-web.yaml'
+
+jobs:
+  build-backend:
+    name: 'Build Web'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+          cache: true
+          cache-dependency-path: |
+            src/**/packages.lock.json
+
+      - name: Restore dependencies
+        working-directory: ./src
+        run: dotnet restore --locked-mode
+
+      - name: Build API
+        working-directory: ./src
+        run: dotnet build --no-restore
+
+      - name: Run Integration Tests
+        run: dotnet test src/web/tests/**/CareLeavers.Integration.Tests.csproj --no-build --verbosity normal

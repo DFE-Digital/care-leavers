@@ -2,7 +2,7 @@
   <configuration default="false" name="Gulp" type="js.build_tools.gulp">
     <node-interpreter>$USER_HOME$/.nvm/versions/node/v20.13.1/bin/node</node-interpreter>
     <node-options />
-    <gulpfile>$PROJECT_DIR$/CareLeavers.Web/Gulpfile.js</gulpfile>
+    <gulpfile>$PROJECT_DIR$/web/CareLeavers.Web/Gulpfile.js</gulpfile>
     <tasks>
       <task>dev</task>
     </tasks>
