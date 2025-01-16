@@ -43,11 +43,11 @@ jobs:
             src/**/packages.lock.json
 
       - name: Restore dependencies
-        working-directory: ./src/web
+        working-directory: ./src
         run: dotnet restore --locked-mode
 
-      - name: Build Web
-        working-directory: ./src/web
+      - name: Build Solution
+        working-directory: ./src
         run: dotnet build --no-restore
 
       - name: Run Integration Tests
