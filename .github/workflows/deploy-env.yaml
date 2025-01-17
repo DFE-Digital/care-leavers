@@ -1,0 +1,160 @@
+on:
+  push:
+    branches: [ "feat/terraform" ]
+
+
+jobs:
+  package:
+    name: 'Package Web in Docker'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lowercase the repo name and username
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+
+      - name: Build Back End API Docker Image
+        run: |
+          docker build . -t ghcr.io/${{ env.REPO }}:${{ github.sha }} -f web/CareLeavers.Web/Dockerfile
+
+      - uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push Back End API Docker Image
+        run: docker push ghcr.io/${{ env.REPO }}:${{ github.sha }}
+
+#  terraform_dependencies:
+#    name: 'Provision Terraform Dependencies'
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: read
+#      id-token: write
+#    environment:
+#      name: 'Test'
+#    steps:
+#      - name: 'Az CLI login'
+#        uses: azure/login@v2
+#        with:
+#          creds: |
+#            {
+#                "clientId": "${{ secrets.AZURE_CLIENT_ID }}",
+#                "clientSecret": "${{ secrets.AZURE_CLIENT_SECRET }}",
+#                "tenantId": "${{ secrets.AZURE_TENANT_ID }}",
+#                "subscriptionId": "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+#            }
+#
+#      - name: Create TF State dependencies
+#        uses: azure/cli@v2
+#        with:
+#          azcliversion: latest
+#          inlineScript: |
+#            az group create --name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-tfstate --location westeurope --output none --tags "Environment=${{ vars.CIP_ENVIRONMENT }}" "Product=Design Operations" "Service=Newly onboarded" "Service offering=Design operations"
+#
+#            az storage account create --name s186${{ vars.ENVIRONMENT_PREFIX }}cltfstate --resource-group s186${{ vars.ENVIRONMENT_PREFIX }}-cl-tfstate --location westeurope --sku Standard_LRS
+#
+#            az storage container create --name tfstate --account-name s186${{ vars.ENVIRONMENT_PREFIX }}cltfstate
+
+
+  deploy_infrastructure:
+    name: 'Provision Infrastructure'
+    runs-on: ubuntu-latest
+#    needs: [terraform_dependencies]
+    permissions:
+      contents: read
+      id-token: write
+    environment:
+      name: 'Test'
+    env:
+      ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+      ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+      ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+      ARM_CLIENT_SECRET: "${{ secrets.AZURE_CLIENT_SECRET }}"
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+          terraform_version: 1.10.4
+
+      - name: 'Terraform Init'
+        id: terraform_init
+        working-directory: ./src/infrastructure/terraform
+        run: terraform init -backend-config="resource_group_name=s186${{ vars.ENVIRONMENT_PREFIX }}-cl-tfstate" -backend-config="storage_account_name=s186${{ vars.ENVIRONMENT_PREFIX }}cltfstate" -backend-config="container_name=tfstate" -backend-config="key=terraform.tfstate"
+
+      - name: 'Terraform Plan'
+        id: terraform_plan
+        working-directory: ./src/infrastructure/terraform
+        run: terraform plan -out plan.plan
+        env:
+          TF_VAR_github_principal: ${{ secrets.AZURE_PRINCIPAL_ID }}
+          TF_VAR_environment_prefix: ${{ vars.ENVIRONMENT_PREFIX }}
+          TF_VAR_cip_environment: ${{ vars.CIP_ENVIRONMENT }}
+          TF_VAR_contentful_delivery_api_key: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
+          TF_VAR_contentful_preview_api_key: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
+          TF_VAR_contentful_space_id: ${{ secrets.CONTENTFUL_SPACE_ID }}
+
+      - name: 'Terraform Apply'
+        id: terraform_apply
+        working-directory: ./src/infrastructure/terraform
+        run: terraform apply plan.plan
+
+  deploy-backend:
+    name: Deploy Web
+    permissions:
+      contents: none
+      id-token: write
+    runs-on: ubuntu-latest
+    needs: [ package, deploy_infrastructure ]
+    environment:
+      name: 'Test'
+
+    steps:
+      - name: Lowercase the repo name and username
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          creds: |
+            {
+                "clientId": "${{ secrets.AZURE_CLIENT_ID }}",
+                "clientSecret": "${{ secrets.AZURE_CLIENT_SECRET }}",
+                "tenantId": "${{ secrets.AZURE_TENANT_ID }}",
+                "subscriptionId": "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+            }
+
+      - name: 'Get publishing profile'
+        run: |
+          publishingProfile=$(az webapp deployment list-publishing-profiles --name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-app-service --slot staging --resource-group s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-rg --xml)
+          echo "PUBLISHING_PROFILE=$publishingProfile" >>${GITHUB_ENV}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ vars.DEV_AZURE_WEBAPP_NAME }}
+          slot-name: 'staging'
+          publish-profile: ${{ env.PUBLISHING_PROFILE }}
+          images: 'ghcr.io/${{ env.REPO }}:${{ github.sha }}'
+
+      - name: Wait for Staging to warm up
+        id: wait-for-staging
+        uses: jtalk/url-health-check-action@v4
+        with:
+          url: https://s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-fd.azurefd.net/staging-health
+          retry-delay: 3s
+          max-attempts: 5
+
+      - name: Swap slot to production
+        run: az webapp deployment slot swap --name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-app-service --resource-group s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-rg --slot staging --target-slot production

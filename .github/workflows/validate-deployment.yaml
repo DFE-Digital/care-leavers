@@ -1,0 +1,24 @@
+name: Validate - Run E2E Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment_prefix:
+        description: 'Environment Prefix'
+        required: true
+        default: 'd01'
+        options:
+          - 'd01'
+jobs:
+  accessibility_scan:
+    name: 'Run Pa11y Accessibility Scan'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run accessibility scans
+        working-directory: ./src/e2e/pa11y
+        run: yarn pa11y-ci --sitemap https://s186${{ github.event.inputs.environment }}-cl-web-fd.azurefd.net/sitemap.xml

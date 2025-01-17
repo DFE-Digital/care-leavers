@@ -4,5 +4,10 @@ public class CachingOptions
 {
     public static string Name => "Caching";
     
-    public bool Enabled { get; set; }
+    public const string Memory = "Memory";
+    public const string Redis = "Redis";
+    
+    public string Type { get; set; }
+    
+    public string? ConnectionString { get; set; }
 }
