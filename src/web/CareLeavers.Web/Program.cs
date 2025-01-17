@@ -22,6 +22,7 @@ builder.Services.AddTransient<HtmlRenderer>((c) => {
     
     // Add custom GDS renderer
     renderer.AddRenderer(new GDSParagraphRenderer(renderer.Renderers));
+    renderer.AddRenderer(new GDSHeaderRenderer(renderer.Renderers));
     
     return renderer;
 });
