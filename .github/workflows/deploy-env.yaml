@@ -1,0 +1,31 @@
+on:
+  push:
+    branches: [ "feat/azure_setup" ]
+
+
+jobs:
+  deploy_infrastructure:
+    name: 'Provision Infrastructure'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    environment:
+      name: 'Test'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Azure CLI script
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show
