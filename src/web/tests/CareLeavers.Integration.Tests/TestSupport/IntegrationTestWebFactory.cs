@@ -1,6 +1,8 @@
+using CareLeavers.Web.Caching;
 using Contentful.Core;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CareLeavers.Integration.Tests.TestSupport;
@@ -27,6 +29,8 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
             
             services.AddScoped<IContentfulClient>(x =>
                 new ContentfulClient(httpClient, "test", "test", "test"));
+            
+            services.AddSingleton<IDistributedCache, CacheDisabledDistributedCache>();
         });
     }
 

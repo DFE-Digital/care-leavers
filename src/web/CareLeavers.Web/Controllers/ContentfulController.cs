@@ -1,14 +1,19 @@
+using CareLeavers.Web.Caching;
 using CareLeavers.Web.Models.Content;
 using Contentful.Core;
 using Contentful.Core.Configuration;
 using Contentful.Core.Search;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace CareLeavers.Web.Controllers;
 
-public class ContentfulController(IContentfulClient contentfulClient, IWebHostEnvironment environment) : Controller
+public class ContentfulController(
+    IContentfulClient contentfulClient,
+    IWebHostEnvironment environment,
+    IDistributedCache distributedCache) : Controller
 {
     private static readonly JsonSerializerSettings ContentfulSerializerSettings = new()
     {
@@ -37,14 +42,17 @@ public class ContentfulController(IContentfulClient contentfulClient, IWebHostEn
     [Route("/{**slug}")]
     public async Task<IActionResult> Content(string slug, [FromQuery] bool isJson = false)
     {
-        var pages = new QueryBuilder<Page>()
-            .ContentTypeIs("page")
-            .FieldEquals(c => c.Slug, slug)
-            .Limit(1);
+        var page = await distributedCache.GetOrSetAsync($"content:{slug}", async () =>
+        {
+            var pages = new QueryBuilder<Page>()
+                .ContentTypeIs("page")
+                .FieldEquals(c => c.Slug, slug)
+                .Limit(1);
 
-        var pageEntries = await contentfulClient.GetEntries(pages);
-        
-        var page = pageEntries.FirstOrDefault();
+            var pageEntries = await contentfulClient.GetEntries(pages);
+
+            return pageEntries.FirstOrDefault();
+        });
         
         if (environment.IsDevelopment() && isJson)
         {
