@@ -7,5 +7,5 @@ public class SnapshotTestCase : TestCaseData
         
     }
     
-    public string FileName => Arguments[0] as string;
+    public string FileName => Arguments[0] as string ?? string.Empty;
 }

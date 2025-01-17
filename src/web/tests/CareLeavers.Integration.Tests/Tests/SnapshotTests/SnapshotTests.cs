@@ -11,7 +11,7 @@ public class SnapshotTests
     [
         new("SimpleParagraph")
         {
-            TestName = "SimpleParagraph"
+            TestName = "Assert Simple Paragraphs"
         }
     ];
     

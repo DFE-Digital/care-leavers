@@ -10,8 +10,6 @@ namespace CareLeavers.Web.Controllers;
 
 public class ContentfulController(IContentfulClient contentfulClient, IWebHostEnvironment environment) : Controller
 {
-    private IContentfulClient _contentfulClient = contentfulClient;
-    
     private static readonly JsonSerializerSettings ContentfulSerializerSettings = new()
     {
         ContractResolver = new CamelCasePropertyNamesContractResolver
@@ -44,7 +42,7 @@ public class ContentfulController(IContentfulClient contentfulClient, IWebHostEn
             .FieldEquals(c => c.Slug, slug)
             .Limit(1);
 
-        var pageEntries = await _contentfulClient.GetEntries(pages);
+        var pageEntries = await contentfulClient.GetEntries(pages);
         
         var page = pageEntries.FirstOrDefault();
         

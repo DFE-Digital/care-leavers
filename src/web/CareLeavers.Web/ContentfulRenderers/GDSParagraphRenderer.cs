@@ -14,7 +14,7 @@ public class GDSParagraphRenderer(ContentRendererCollection rendererCollection) 
         var tb = new TagBuilder("p");
         tb.AddCssClass("govuk-body");
 
-        foreach (var subContent in paragraph.Content)
+        foreach (var subContent in paragraph?.Content ?? [])
         {
             var renderer = rendererCollection.GetRendererForContent(subContent);
             tb.InnerHtml.AppendHtml(await renderer.RenderAsync(subContent));
