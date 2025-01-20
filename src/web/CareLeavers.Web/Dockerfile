@@ -7,10 +7,10 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["CareLeavers.Web/CareLeavers.Web.csproj", "CareLeavers.Web/"]
+COPY ["web/CareLeavers.Web/CareLeavers.Web.csproj", "CareLeavers.Web/"]
 RUN dotnet restore "CareLeavers.Web/CareLeavers.Web.csproj"
 COPY . .
-WORKDIR "/src/CareLeavers.Web"
+WORKDIR "/src/web/CareLeavers.Web"
 RUN dotnet build "CareLeavers.Web.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
