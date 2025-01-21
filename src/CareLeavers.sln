@@ -10,8 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{3AEA36B3-C8A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "e2e", "e2e", "{5B9503C4-4DCA-448D-96E1-3408B91E71B1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "contentful-migration", "contentful-migration", "{252A4715-6CBA-44E1-A98D-26FB07BA9448}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{9E5853BE-22B8-406E-B305-CED3484E201F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{8DC45152-DAB5-4175-B769-4810089C40F7}"
@@ -20,6 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{BE87DC
 	ProjectSection(SolutionItems) = preProject
 		infrastructure\docker\docker-compose.yml = infrastructure\docker\docker-compose.yml
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "contentful", "contentful", "{CFFDF5B4-39F8-4E33-9AAA-E3D410A310EA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "migration", "migration", "{5086EB3D-847A-467C-9E10-23E9999D397E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,5 +44,6 @@ Global
 		{08D11B54-FD14-4496-B8E1-B77D7C9BF44F} = {3AEA36B3-C8A6-475D-B849-0D334C5F9A43}
 		{8DC45152-DAB5-4175-B769-4810089C40F7} = {9E5853BE-22B8-406E-B305-CED3484E201F}
 		{BE87DC58-9B7F-4581-8ADB-44EB89DC6FDE} = {9E5853BE-22B8-406E-B305-CED3484E201F}
+		{5086EB3D-847A-467C-9E10-23E9999D397E} = {CFFDF5B4-39F8-4E33-9AAA-E3D410A310EA}
 	EndGlobalSection
 EndGlobal
