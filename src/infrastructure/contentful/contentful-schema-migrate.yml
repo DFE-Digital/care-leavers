@@ -36,7 +36,7 @@ jobs:
           node-version: 20
 
       - name: Install npm packages used by util scripts
-        working-directory: ./Contentful-Schema
+        working-directory: ./contentful
         run: npm ci
 
       - name: Get target environment current migration version
