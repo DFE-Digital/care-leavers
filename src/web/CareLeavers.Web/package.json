@@ -1,5 +1,9 @@
 {
   "dependencies": {
+    "@actions/core": "^1.11.1",
+    "chalk": "^5.4.1",
+    "contentful-cli": "^3.7.3",
+    "contentful-management": "^11.43.0",
     "dfe-frontend": "^2.0.1"
   },
   "devDependencies": {

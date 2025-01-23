@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dependencies": {
-    "net8.0": {
+    "net9.0": {
       "contentful.aspnetcore": {
         "type": "Direct",
         "requested": "[8.3.0, )",
