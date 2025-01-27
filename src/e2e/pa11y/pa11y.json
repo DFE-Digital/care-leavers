@@ -1,0 +1,13 @@
+{
+  "defaults": {
+    "timeout": 10000,
+    "viewport": {
+      "width": 320,
+      "height": 480
+    },
+    "chromeLaunchConfig": {
+      "ignoreHTTPSErrors": true,
+      "args": ["--no-sandbox"]
+    }
+  }
+}
