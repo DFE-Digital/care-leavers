@@ -8,8 +8,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
       - name: Install dependencies
+        working-directory: ./src/e2e/CareLeavers.E2ETests
         run: yarn install
       - name: Run Playwright Tests
         working-directory: ./src/e2e/CareLeavers.E2ETests
