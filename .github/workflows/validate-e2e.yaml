@@ -10,6 +10,7 @@ jobs:
         with:
           node-version: '16'
       - name: Install dependencies
-        run: npm install
+        run: yarn install
       - name: Run Playwright Tests
+        working-directory: ./src/e2e/CareLeavers.E2ETests
         run: npx playwright test
