@@ -1,4 +1,4 @@
-name: Validate - Run E2E Tests
+name: Validate - Deployment
 
 on:
   workflow_dispatch:

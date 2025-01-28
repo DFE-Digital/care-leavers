@@ -1,3 +1,5 @@
+name: Deploy - Environment
+
 on:
   workflow_dispatch:
 
@@ -18,7 +20,7 @@ jobs:
       - name: Lowercase the repo name and username
         run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
 
-      - name: Build Back End API Docker Image
+      - name: Build Web Docker Image
         run: |
           docker build . -t ghcr.io/${{ env.REPO }}:${{ github.sha }} -f web/CareLeavers.Web/Dockerfile
 
@@ -28,7 +30,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push Back End API Docker Image
+      - name: Push Web Docker Image
         run: docker push ghcr.io/${{ env.REPO }}:${{ github.sha }}
 
   terraform_dependencies:
