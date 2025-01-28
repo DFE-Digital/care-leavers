@@ -66,7 +66,7 @@ public class ContentfulController(
     }
 
     [Route("sitemap.xml")]
-    public async Task<IActionResult> Sitemap()
+    public async Task<IActionResult> Sitemap([FromServices] IConfiguration configuration)
     {
         var page = await distributedCache.GetOrSetAsync($"content:sitemap", async () =>
         {
@@ -77,13 +77,12 @@ public class ContentfulController(
             var pageEntries = await contentfulClient.GetEntries(pages);
 
             XNamespace ns    = "http://www.sitemaps.org/schemas/sitemap/0.9";
-            XNamespace xsiNs = "http://www.w3.org/2001/XMLSchema-instance";
 
             var xmlDoc = new XDocument(
                 new XDeclaration("1.0", "UTF-8", null),
                 new XElement(ns + "urlset",
                     pageEntries.Select(x => new XElement(ns + "url",
-                        new XElement(ns + "loc", $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/{x.Slug}")
+                        new XElement(ns + "loc", $"{configuration["BaseUrl"]}/{x.Slug}")
                     ))
                 ));
 
@@ -92,12 +91,6 @@ public class ContentfulController(
             
             return sw.ToString();
         });
-        
-        /*
-         new XAttribute(XNamespace.Xmlns + "xsi", xsiNs),
-           new XAttribute(xsiNs + "schemaLocation",
-               "http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"),
-         */
 
         return Content(page ?? "<urlset/>", "application/xml");
     }
