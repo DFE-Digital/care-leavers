@@ -15,6 +15,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Setup Java 55
+        uses: actions/setup-java@v4
+        with:
+          distribution: "microsoft"
+          java-version: 55
+
       - name: Analyze with SonarQube
 
         # You can pin the exact commit or the version.
