@@ -6,7 +6,7 @@ module.exports = function (migration) {
             "A text box with a light blue shaded background and an 'i' information icon in the top left corner. It is used to draw attention to a particular piece of text."
         )
         .displayField("title");
-
+    
     infoBox
         .createField("title")
         .name("Title")
