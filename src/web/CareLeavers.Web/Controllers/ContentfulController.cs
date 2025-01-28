@@ -13,6 +13,7 @@ using Formatting = Newtonsoft.Json.Formatting;
 
 namespace CareLeavers.Web.Controllers;
 
+[Route("/")]
 public class ContentfulController(
     IContentfulClient contentfulClient,
     IWebHostEnvironment environment,
@@ -45,6 +46,11 @@ public class ContentfulController(
     [Route("/{**slug}")]
     public async Task<IActionResult> Content(string slug, [FromQuery] bool isJson = false)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+        
         var page = await distributedCache.GetOrSetAsync($"content:{slug}", async () =>
         {
             var pages = new QueryBuilder<Page>()
@@ -68,6 +74,11 @@ public class ContentfulController(
     [Route("sitemap.xml")]
     public async Task<IActionResult> Sitemap([FromServices] IConfiguration configuration)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+        
         var page = await distributedCache.GetOrSetAsync($"content:sitemap", async () =>
         {
             var pages = new QueryBuilder<Page>()
