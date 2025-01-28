@@ -115,7 +115,7 @@ try
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
 
-    app.Run();
+    await app.RunAsync();
 }
 catch (Exception ex)
 {
@@ -123,8 +123,9 @@ catch (Exception ex)
 }
 finally
 {
-    Log.CloseAndFlush();
+    await Log.CloseAndFlushAsync();
 }
 public partial class Program
 {
+    protected Program() { }
 }

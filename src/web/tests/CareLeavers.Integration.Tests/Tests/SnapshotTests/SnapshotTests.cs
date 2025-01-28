@@ -21,6 +21,8 @@ public class SnapshotTests
         var resp = await DoTest(fileName);
         
         await File.WriteAllTextAsync($"{BasePath}/Output/{fileName}.html", resp);
+
+        Assert.Pass();
     }
 
     [TestCaseSource(nameof(TestCases))]
@@ -52,7 +54,7 @@ public class SnapshotTests
         return sw.ToString();
     }
 
-    private async Task<string> FullJson(string content)
+    private static async Task<string> FullJson(string content)
     {
         var wrapper = await File.ReadAllTextAsync(Path.Combine(BasePath, "RequestWrapper.json"));
      
