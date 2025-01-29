@@ -25,7 +25,7 @@ jobs:
         uses: borales/actions-yarn@v5
         with:
           cmd: install
-          dir: ./src/web/CareLeavers.Web
+          dir: ./src/e2e/pa11y
 
       - name: Run accessibility scans
         working-directory: ./src/e2e/pa11y
