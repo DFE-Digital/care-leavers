@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Xml.Linq;
 using CareLeavers.Web.Caching;
@@ -15,9 +16,8 @@ namespace CareLeavers.Web.Controllers;
 
 [Route("/")]
 public class ContentfulController(
-    IContentfulClient contentfulClient,
-    IWebHostEnvironment environment,
-    IDistributedCache distributedCache) : Controller
+    IDistributedCache distributedCache, 
+    IContentfulClient contentfulClient) : Controller
 {
     private static readonly JsonSerializerSettings ContentfulSerializerSettings = new()
     {
@@ -43,42 +43,30 @@ public class ContentfulController(
         return Redirect($"/{HomepageSlug}");
     }
     
-    [Route("/{**slug}")]
-    public async Task<IActionResult> Content(string slug, [FromQuery] bool isJson = false)
+    [Route("/json/{**slug}")]
+    [ExcludeFromCodeCoverage(Justification = "Development only")]
+    public async Task<IActionResult> ContentJson(string slug, [FromServices] IWebHostEnvironment environment)
     {
-        if (!ModelState.IsValid)
+        if (!environment.IsDevelopment())
         {
-            return BadRequest();
+            return NotFound();
         }
-        
-        var page = await distributedCache.GetOrSetAsync($"content:{slug}", async () =>
-        {
-            var pages = new QueryBuilder<Page>()
-                .ContentTypeIs("page")
-                .FieldEquals(c => c.Slug, slug)
-                .Limit(1);
 
-            var pageEntries = await contentfulClient.GetEntries(pages);
-
-            return pageEntries.FirstOrDefault();
-        });
+        var page = await GetContentfulPage(slug);
         
-        if (environment.IsDevelopment() && isJson)
-        {
-            return Content(JsonConvert.SerializeObject(page, ContentfulSerializerSettings), "application/json");
-        }
-        
+        return Content(JsonConvert.SerializeObject(page, ContentfulSerializerSettings), "application/json");
+    }
+    
+    [Route("/{**slug}")]
+    public async Task<IActionResult> Content(string slug)
+    {
+        var page = await GetContentfulPage(slug);
         return View("Page", page);
     }
 
     [Route("sitemap.xml")]
     public async Task<IActionResult> Sitemap([FromServices] IConfiguration configuration)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
-        
         var page = await distributedCache.GetOrSetAsync($"content:sitemap", async () =>
         {
             var pages = new QueryBuilder<Page>()
@@ -86,7 +74,7 @@ public class ContentfulController(
                 .SelectFields(x => new {x.Slug});
 
             var pageEntries = await contentfulClient.GetEntries(pages);
-
+            
             XNamespace ns    = "http://www.sitemaps.org/schemas/sitemap/0.9";
 
             var xmlDoc = new XDocument(
@@ -104,6 +92,21 @@ public class ContentfulController(
         });
 
         return Content(page ?? "<urlset/>", "application/xml");
+    }
+
+    private Task<Page?> GetContentfulPage(string slug)
+    {
+        return distributedCache.GetOrSetAsync($"content:{slug}", async () =>
+        {
+            var pages = new QueryBuilder<Page>()
+                .ContentTypeIs("page")
+                .FieldEquals(c => c.Slug, slug)
+                .Limit(1);
+
+            var pageEntries = await contentfulClient.GetEntries(pages);
+
+            return pageEntries.FirstOrDefault();
+        });
     }
 }
 

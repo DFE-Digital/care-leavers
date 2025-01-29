@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.ApplicationInsights.Extensibility;
 using Serilog;
 using Serilog.Events;
 
 namespace CareLeavers.Web;
 
+[ExcludeFromCodeCoverage(Justification = "Configuration only")]
 public static class LoggingConfigurationExtensions
 {
     public static LoggerConfiguration ConfigureLogging(

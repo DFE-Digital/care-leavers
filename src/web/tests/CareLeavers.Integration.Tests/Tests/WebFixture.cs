@@ -1,6 +1,6 @@
 using CareLeavers.Integration.Tests.TestSupport;
 
-namespace CareLeavers.Integration.Tests.Tests.SnapshotTests;
+namespace CareLeavers.Integration.Tests.Tests;
 
 [SetUpFixture]
 public class WebFixture

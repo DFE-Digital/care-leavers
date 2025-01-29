@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using CareLeavers.Web;
 using CareLeavers.Web.Caching;
@@ -125,6 +126,8 @@ finally
 {
     await Log.CloseAndFlushAsync();
 }
+
+[ExcludeFromCodeCoverage]
 public partial class Program
 {
     protected Program() { }

@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace CareLeavers.Web.Configuration;
 
+[ExcludeFromCodeCoverage(Justification = "Configuration only")]
 public class CachingOptions
 {
     public static string Name => "Caching";
