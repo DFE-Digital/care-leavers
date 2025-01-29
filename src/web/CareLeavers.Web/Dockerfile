@@ -9,7 +9,7 @@ WORKDIR /src
 COPY "web/CareLeavers.Web/package.json" "web/CareLeavers.Web/yarn.lock" "web/CareLeavers.Web/Gulpfile.js" ./
 COPY "web/CareLeavers.Web/AssetSrc/" "AssetSrc/"
 RUN yarn install --ignore-scripts
-RUN npm install -g gulp --ignore-scripts
+RUN npm install --ignore-scripts -g gulp
 RUN gulp dev
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build

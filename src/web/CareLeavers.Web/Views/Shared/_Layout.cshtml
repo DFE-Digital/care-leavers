@@ -1,10 +1,23 @@
 ﻿@using GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.AspNetCore.TagHelpers
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+
+@inject IWebHostEnvironment WebHostEnvironment
+
 <!DOCTYPE html>
 <html class="govuk-template" lang="en">
 
 <head>
+    @if (WebHostEnvironment.IsProduction())
+    {
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-M2CBTMTD');</script>
+        <!-- End Google Tag Manager -->
+    }
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Find support for leaving care</title>
@@ -15,6 +28,14 @@
 </head>
 
 <body class="govuk-template__body">
+@if (WebHostEnvironment.IsProduction())
+{
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M2CBTMTD "
+                height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+}
 @Html.GovUkFrontendJsEnabledScript()
 <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 @{
