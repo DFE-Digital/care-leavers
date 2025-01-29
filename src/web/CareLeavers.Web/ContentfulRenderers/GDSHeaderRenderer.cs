@@ -6,7 +6,7 @@ namespace CareLeavers.Web.ContentfulRenderers;
 
 public class GDSHeaderRenderer(ContentRendererCollection rendererCollection) : IContentRenderer
 {
-    private Dictionary<Type, (int size, string tag)> _heading = new()
+    private readonly Dictionary<Type, (int size, string tag)> _heading = new()
     {
         { typeof(Heading1), (1, "xl") },
         { typeof(Heading2), (2, "l") },
