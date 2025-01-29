@@ -47,6 +47,11 @@ public class ContentfulController(
     [ExcludeFromCodeCoverage(Justification = "Development only")]
     public async Task<IActionResult> ContentJson(string slug, [FromServices] IWebHostEnvironment environment)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+        
         if (!environment.IsDevelopment())
         {
             return NotFound();
@@ -58,7 +63,7 @@ public class ContentfulController(
     }
     
     [Route("/{**slug}")]
-    public async Task<IActionResult> Content(string slug)
+    public async Task<IActionResult> Contentful(string slug)
     {
         var page = await GetContentfulPage(slug);
         return View("Page", page);
@@ -67,6 +72,11 @@ public class ContentfulController(
     [Route("sitemap.xml")]
     public async Task<IActionResult> Sitemap([FromServices] IConfiguration configuration)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+        
         var page = await distributedCache.GetOrSetAsync($"content:sitemap", async () =>
         {
             var pages = new QueryBuilder<Page>()
