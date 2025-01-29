@@ -29,4 +29,4 @@ jobs:
 
       - name: Run accessibility scans
         working-directory: ./src/e2e/pa11y
-        run: yarn pa11y-ci --sitemap https://s186${{ github.event.inputs.environment }}-cl-web-fd.azurefd.net/sitemap.xml
+        run: yarn pa11y-ci --sitemap https://s186${{ github.event.inputs.environment_prefix }}-cl-web-fd.azurefd.net/sitemap.xml
