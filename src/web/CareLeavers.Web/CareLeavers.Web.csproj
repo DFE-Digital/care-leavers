@@ -19,6 +19,7 @@
       <PackageReference Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.2.0" />
       <PackageReference Include="contentful.aspnetcore" Version="8.3.0" />
       <PackageReference Include="GovUk.Frontend.AspNetCore" Version="2.8.0" />
+      <PackageReference Include="Joonasw.AspNetCore.SecurityHeaders" Version="5.0.0" />
       <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.12" />
       <PackageReference Include="Serilog" Version="4.2.0" />
       <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />

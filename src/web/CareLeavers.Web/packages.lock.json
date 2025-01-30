@@ -42,6 +42,16 @@
           "Microsoft.Extensions.FileProviders.Embedded": "8.0.11"
         }
       },
+      "Joonasw.AspNetCore.SecurityHeaders": {
+        "type": "Direct",
+        "requested": "[5.0.0, )",
+        "resolved": "5.0.0",
+        "contentHash": "e2qDJIM5mISS/4+Chz9zPtD8VitI2dSPBdtL28KDFtBx0Icl0mD+fv9FbspASFTX/fZj7Vx3p67iUFyX7SSePw==",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "7.0.0",
+          "Microsoft.Extensions.Options": "7.0.1"
+        }
+      },
       "Microsoft.Extensions.Caching.StackExchangeRedis": {
         "type": "Direct",
         "requested": "[8.0.12, )",

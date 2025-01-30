@@ -1,4 +1,4 @@
-name: SonarQube analysis
+name: Validate - SonarQube
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  pull-requests: read # allows SonarQube to decorate PRs with analysis results
+  pull-requests: read
 
 jobs:
   Analysis:

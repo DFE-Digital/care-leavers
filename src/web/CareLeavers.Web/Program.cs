@@ -9,6 +9,7 @@ using Contentful.AspNetCore;
 using Contentful.Core;
 using Contentful.Core.Models;
 using GovUk.Frontend.AspNetCore;
+using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.Extensions.Caching.Distributed;
 using OpenTelemetry.Trace;
 using Serilog;
@@ -23,6 +24,13 @@ try
     
     builder.Services.AddControllersWithViews();
     builder.Services.AddGovUkFrontend();
+    builder.Services.AddCsp(nonceByteAmount: 32);
+    builder.Services.AddHsts(options =>
+    {
+        options.MaxAge = TimeSpan.FromDays(365);
+        options.IncludeSubDomains = true;
+        options.Preload = true;
+    });
 
     builder.Services.AddSerilog((_, lc) => lc
         .ConfigureLogging(builder.Configuration["ApplicationInsights:ConnectionString"]));
@@ -93,7 +101,6 @@ try
     Constants.Serializer = contentfulClient.Serializer;
     Constants.SerializerSettings = contentfulClient.SerializerSettings;
 
-// Configure the HTTP request pipeline.
     if (!app.Environment.IsDevelopment())
     {
         app.UseExceptionHandler("/Home/Error");
@@ -115,6 +122,45 @@ try
     app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
+
+    // add headers
+    app.Use(async (context, next) =>
+    {
+        context.Response.Headers.Append("X-Frame-Options", "DENY");
+        context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+        context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+        await next();
+    });
+
+    app.UseCsp(x =>
+    {
+        x.ByDefaultAllow.FromSelf();
+
+        var config = app.Configuration.GetSection("Csp").Get<CspConfiguration>() ?? new CspConfiguration();
+
+        x.AllowScripts
+            .FromSelf()
+            .AddNonce();
+
+        config.AllowScriptUrls.ForEach(f => x.AllowScripts.From(f));
+
+        x.AllowStyles
+            .FromSelf()
+            .AddNonce();
+
+        config.AllowStyleUrls.ForEach(f => x.AllowStyles.From(f));
+
+        x.AllowFonts
+            .FromSelf();
+
+        config.AllowFontUrls.ForEach(f => x.AllowFonts.From(f));
+
+        x.AllowFraming.FromSelf();
+
+        x.AllowFormActions.ToSelf();
+
+        config.AllowFrameUrls.ForEach(f => x.AllowFrames.From(f));
+    });
 
     await app.RunAsync();
 }
