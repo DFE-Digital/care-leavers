@@ -5,7 +5,7 @@ locals {
     "ContentfulOptions__SpaceId"            = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-space-id.versionless_id})"
     "BaseUrl"                               = "https://${local.frontdoor_url}"
     "ApplicationInsights__ConnectionString" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.application-insights-connection-string.versionless_id})"
-    "Caching__Type"                         = "Redis"
+    "Caching__Type"                         = "None"
     "Caching__ConnectionString"             = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-cache-connection-string.versionless_id})"
     # "Translation__AzureApiKey"              = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.translation-access-key.versionless_id})"
   }

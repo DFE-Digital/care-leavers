@@ -16,7 +16,14 @@ public class GDSAssetRenderer(ContentRendererCollection rendererCollection) : IC
         if (nodeType != "asset-hyperlink" && asset.File?.ContentType != null &&
             asset.File.ContentType.ToLower().Contains("image"))
         {
-            sb.Append($"<img class=\"full-width-image\" src=\"{asset.File.Url}\" alt=\"{asset.Description}\" />");
+            sb.Append($"<img class=\"full-width-image\" src=\"{asset.File.Url}\" ");
+
+            if (!string.IsNullOrEmpty(asset.Description))
+            {
+                sb.Append($"alt=\"{asset.Description}\" ");
+            }
+            
+            sb.Append("/>");
         }
         else
         {
