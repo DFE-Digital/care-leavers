@@ -12,4 +12,6 @@ public class CspConfiguration
     public List<string> AllowFontUrls { get; init; } = [];
 
     public List<string> AllowFrameUrls { get; init; } = [];
+    
+    public List<string> AllowImageUrls { get; init; } = [];
 }

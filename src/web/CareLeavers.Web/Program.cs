@@ -3,6 +3,7 @@ using Azure.Monitor.OpenTelemetry.AspNetCore;
 using CareLeavers.Web;
 using CareLeavers.Web.Caching;
 using CareLeavers.Web.Configuration;
+using CareLeavers.Web.Contentful;
 using CareLeavers.Web.ContentfulRenderers;
 using CareLeavers.Web.Telemetry;
 using Contentful.AspNetCore;
@@ -11,6 +12,8 @@ using Contentful.Core.Models;
 using GovUk.Frontend.AspNetCore;
 using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using OpenTelemetry.Trace;
 using Serilog;
 
@@ -67,6 +70,7 @@ try
         // Add custom GDS renderer
         renderer.AddRenderer(new GDSParagraphRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSHeaderRenderer(renderer.Renderers));
+        renderer.AddRenderer(new GDSAssetRenderer(renderer.Renderers));
 
         return renderer;
     });
@@ -97,7 +101,14 @@ try
     var app = builder.Build();
 
     var contentfulClient = app.Services.GetRequiredService<IContentfulClient>();
-
+    contentfulClient.SerializerSettings.Converters.RemoveAt(0);
+    contentfulClient.SerializerSettings.Converters.Insert(0, new GDSAssetJsonConverter());
+    contentfulClient.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+    contentfulClient.SerializerSettings.ContractResolver = new DefaultContractResolver
+    {
+        NamingStrategy = new CamelCaseNamingStrategy()
+    };
+    
     Constants.Serializer = contentfulClient.Serializer;
     Constants.SerializerSettings = contentfulClient.SerializerSettings;
 
@@ -160,6 +171,10 @@ try
         x.AllowFormActions.ToSelf();
 
         config.AllowFrameUrls.ForEach(f => x.AllowFrames.From(f));
+
+        x.AllowImages.FromSelf();
+        
+        config.AllowImageUrls.ForEach(f => x.AllowImages.From(f));
     });
 
     await app.RunAsync();

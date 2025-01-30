@@ -10,6 +10,10 @@ public class SnapshotTests
         new("SimpleParagraph")
         {
             TestName = "Assert Simple Paragraphs"
+        },
+        new ("SimpleAsset")
+        {
+            TestName = "Assert Simple Asset"
         }
     ];
     
