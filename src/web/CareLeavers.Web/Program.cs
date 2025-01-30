@@ -9,6 +9,7 @@ using Contentful.AspNetCore;
 using Contentful.Core;
 using Contentful.Core.Models;
 using GovUk.Frontend.AspNetCore;
+using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.Extensions.Caching.Distributed;
 using OpenTelemetry.Trace;
 using Serilog;
@@ -23,6 +24,13 @@ try
     
     builder.Services.AddControllersWithViews();
     builder.Services.AddGovUkFrontend();
+    builder.Services.AddCsp(nonceByteAmount: 32);
+    builder.Services.AddHsts(options =>
+    {
+        options.MaxAge = TimeSpan.FromDays(365);
+        options.IncludeSubDomains = true;
+        options.Preload = true;
+    });
 
     builder.Services.AddSerilog((_, lc) => lc
         .ConfigureLogging(builder.Configuration["ApplicationInsights:ConnectionString"]));
@@ -115,6 +123,39 @@ try
     app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
+
+    // add headers
+    app.Use(async (context, next) =>
+    {
+        context.Response.Headers.Append("X-Frame-Options", "DENY");
+        context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+        context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+        await next();
+    });
+
+    app.UseHsts();
+    
+    app.UseCsp(x =>
+    {
+        x.ByDefaultAllow.FromSelf();
+
+        x.AllowScripts
+            .FromSelf()
+            .From("https://www.googletagmanager.com")
+            .AddNonce();
+
+        x.AllowStyles
+            .From("https://rsms.me")
+            .FromSelf()
+            .AddNonce();
+
+        x.AllowFonts
+            .FromSelf()
+            .From("https://rsms.me");
+        
+        x.AllowFrames
+            .From("https://www.googletagmanager.com");
+    });
 
     await app.RunAsync();
 }

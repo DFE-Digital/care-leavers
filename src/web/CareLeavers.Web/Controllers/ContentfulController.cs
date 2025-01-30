@@ -66,6 +66,12 @@ public class ContentfulController(
     public async Task<IActionResult> Contentful(string slug)
     {
         var page = await GetContentfulPage(slug);
+
+        if (page == null)
+        {
+            return NotFound();
+        }
+        
         return View("Page", page);
     }
 

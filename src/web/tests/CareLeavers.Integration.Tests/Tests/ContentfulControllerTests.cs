@@ -1,8 +1,9 @@
+using System.Net;
 using System.Xml;
 
 namespace CareLeavers.Integration.Tests.Tests;
 
-public class SitemapTests
+public class ContentfulControllerTests
 {
     [Test]
     public async Task SitemapIsGenerated()
@@ -37,5 +38,23 @@ public class SitemapTests
             Assert.That(urls[0]?.InnerText, Is.EqualTo("/home"));
             Assert.That(urls[1]?.InnerText, Is.EqualTo("/about"));
         });
+    }
+
+    [Test]
+    public async Task NoContentInContentfulReturnsNotFound()
+    {
+        // Arrange
+        var client = WebFixture.GetClient();
+        var wrapper = await File.ReadAllTextAsync(Path.Combine(WebFixture.WrapperBasePath, "RequestWrapper.json"));
+
+        wrapper = wrapper.Replace("**REPLACE**", string.Empty);
+        
+        WebFixture.SetContentfulJson(wrapper);
+        
+        // Act
+        var response = await client.GetAsync("/home");
+        
+        // Assert
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
     }
 }

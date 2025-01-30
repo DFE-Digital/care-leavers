@@ -1,4 +1,4 @@
-name: Validate - Deployment
+name: Validate - Zap Scan
 
 on:
   push:
@@ -13,7 +13,7 @@ on:
           - 'd01'
 jobs:
   accessibility_scan:
-    name: 'Run Pa11y Accessibility Scan'
+    name: 'Run Zap Scan'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

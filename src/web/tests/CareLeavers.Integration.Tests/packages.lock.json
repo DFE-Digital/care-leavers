@@ -144,6 +144,15 @@
           "Microsoft.Extensions.FileProviders.Embedded": "8.0.11"
         }
       },
+      "Joonasw.AspNetCore.SecurityHeaders": {
+        "type": "Transitive",
+        "resolved": "5.0.0",
+        "contentHash": "e2qDJIM5mISS/4+Chz9zPtD8VitI2dSPBdtL28KDFtBx0Icl0mD+fv9FbspASFTX/fZj7Vx3p67iUFyX7SSePw==",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "7.0.0",
+          "Microsoft.Extensions.Options": "7.0.1"
+        }
+      },
       "Microsoft.ApplicationInsights": {
         "type": "Transitive",
         "resolved": "2.20.0",
@@ -2173,6 +2182,7 @@
         "dependencies": {
           "Azure.Monitor.OpenTelemetry.AspNetCore": "[1.2.0, )",
           "GovUk.Frontend.AspNetCore": "[2.8.0, )",
+          "Joonasw.AspNetCore.SecurityHeaders": "[5.0.0, )",
           "Microsoft.Extensions.Caching.StackExchangeRedis": "[8.0.12, )",
           "Serilog": "[4.2.0, )",
           "Serilog.AspNetCore": "[8.0.3, )",

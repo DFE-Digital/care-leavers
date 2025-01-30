@@ -1,5 +1,6 @@
 using CareLeavers.Web.Caching;
 using Contentful.Core;
+using Joonasw.AspNetCore.SecurityHeaders.Csp;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Caching.Distributed;
@@ -18,12 +19,11 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
 
         builder.ConfigureServices(services =>
         {
-            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IContentfulClient));
+            var descriptorsToRemove = services.Where(d =>
+                d.ServiceType == typeof(IContentfulClient) || d.ServiceType == typeof(ICspNonceService))
+                .ToList();
 
-            if (descriptor != null)
-            {
-                services.Remove(descriptor);
-            }
+            descriptorsToRemove.ForEach(x => services.Remove(x));
 
             var httpClient = new HttpClient(FakeMessageHandler);
             
@@ -31,6 +31,8 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
                 new ContentfulClient(httpClient, "test", "test", "test"));
             
             services.AddSingleton<IDistributedCache, CacheDisabledDistributedCache>();
+
+            services.AddSingleton<ICspNonceService, MockCspNonceService>();
         });
     }
 
