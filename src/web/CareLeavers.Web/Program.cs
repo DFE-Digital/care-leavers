@@ -101,7 +101,6 @@ try
     Constants.Serializer = contentfulClient.Serializer;
     Constants.SerializerSettings = contentfulClient.SerializerSettings;
 
-// Configure the HTTP request pipeline.
     if (!app.Environment.IsDevelopment())
     {
         app.UseExceptionHandler("/Home/Error");
@@ -132,8 +131,6 @@ try
         context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
         await next();
     });
-
-    app.UseHsts();
     
     app.UseCsp(x =>
     {
@@ -152,6 +149,10 @@ try
         x.AllowFonts
             .FromSelf()
             .From("https://rsms.me");
+
+        x.AllowFraming.FromSelf();
+
+        x.AllowFormActions.ToSelf();
         
         x.AllowFrames
             .From("https://www.googletagmanager.com");
