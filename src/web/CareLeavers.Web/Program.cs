@@ -131,31 +131,35 @@ try
         context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
         await next();
     });
-    
+
     app.UseCsp(x =>
     {
         x.ByDefaultAllow.FromSelf();
 
+        var config = app.Configuration.GetSection("Csp").Get<CspConfiguration>() ?? new CspConfiguration();
+
         x.AllowScripts
             .FromSelf()
-            .From("https://www.googletagmanager.com")
             .AddNonce();
+
+        config.AllowScriptUrls.ForEach(f => x.AllowScripts.From(f));
 
         x.AllowStyles
-            .From("https://rsms.me")
             .FromSelf()
             .AddNonce();
 
+        config.AllowStyleUrls.ForEach(f => x.AllowStyles.From(f));
+
         x.AllowFonts
-            .FromSelf()
-            .From("https://rsms.me");
+            .FromSelf();
+
+        config.AllowFontUrls.ForEach(f => x.AllowFonts.From(f));
 
         x.AllowFraming.FromSelf();
 
         x.AllowFormActions.ToSelf();
-        
-        x.AllowFrames
-            .From("https://www.googletagmanager.com");
+
+        config.AllowFrameUrls.ForEach(f => x.AllowFrames.From(f));
     });
 
     await app.RunAsync();
