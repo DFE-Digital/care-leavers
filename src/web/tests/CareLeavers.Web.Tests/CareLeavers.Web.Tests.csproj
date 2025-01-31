@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\web\CareLeavers.Web\CareLeavers.Web.csproj" />
+      <ProjectReference Include="..\..\CareLeavers.Web\CareLeavers.Web.csproj" />
     </ItemGroup>
 
 </Project>

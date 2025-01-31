@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "contentful", "contentful", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "migration", "migration", "{5086EB3D-847A-467C-9E10-23E9999D397E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CareLeavers.Web.Tests", "CareLeavers.Web.Tests\CareLeavers.Web.Tests.csproj", "{8379A62E-D8D0-4931-9D73-4EE31C34E2CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CareLeavers.Web.Tests", "web\tests\CareLeavers.Web.Tests\CareLeavers.Web.Tests.csproj", "{8379A62E-D8D0-4931-9D73-4EE31C34E2CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
