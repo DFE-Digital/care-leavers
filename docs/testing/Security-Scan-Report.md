@@ -31,10 +31,10 @@ ZAP by [Checkmarx](https://checkmarx.com/).
 | Modern Web Application | Informational | 2 |
 | Non-Storable Content | Informational | 2 |
 | Re-examine Cache-control Directives | Informational | 3 |
-| Sec-Fetch-Dest Header is Missing | Informational | 3 |
-| Sec-Fetch-Mode Header is Missing | Informational | 3 |
-| Sec-Fetch-Site Header is Missing | Informational | 3 |
-| Sec-Fetch-User Header is Missing | Informational | 3 |
+| Sec-Fetch-Dest Header is Missing | Informational | 2 |
+| Sec-Fetch-Mode Header is Missing | Informational | 2 |
+| Sec-Fetch-Site Header is Missing | Informational | 2 |
+| Sec-Fetch-User Header is Missing | Informational | 2 |
 | Storable and Cacheable Content | Informational | 8 |
 | User Agent Fuzzer | Informational | 48 |
 
@@ -688,20 +688,20 @@ Base64 encoded data was disclosed by the application/web server. Note: in the in
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `aE6i1jik7mLFFnpCxl3K/NZPXvrSY5G1uV4p3uHKj/0=`
-  * Other Info: `hN��8��b�zB�]���O^��c���^)��ʏ�`
+  * Evidence: `qDDydsoGuBvJbLRzaFAB84vrVHOOnbbdlXsDsj1dKB8=`
+  * Other Info: `�0�v���l�shP��Ts���ݕ{�=](`
 * URL: https://s186d01-cl-web-fd.azurefd.net/home
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `0RgRkAaV2Afh3w2oMQLK92m3IgU/eu3`
-  * Other Info: `�������1��i�"?z�`
+  * Evidence: `1zk5-99q-gHitumTgjIgN7iX7dHY_sxfmG9CzkpR58o`
+  * Other Info: `�99��j��铂2 7�������_�oB�JQ��`
 * URL: https://s186d01-cl-web-fd.azurefd.net/image-test
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `FzT6JPp/hKvgjo92rj4xPhebBNG8RcOl17s2x6CqAIY=`
-  * Other Info: `4�$������v�>1>�ѼEå׻6Ǡ� �`
+  * Evidence: `260OgoIWVjY95UMjv/ntEJ7rIhmji/t`
+  * Other Info: `ۭ��V6=�C#�����"���`
 
 Instances: 3
 
@@ -743,7 +743,7 @@ The response appears to contain suspicious comments which may help an attacker. 
   * Parameter: ``
   * Attack: ``
   * Evidence: `from`
-  * Other Info: `The following pattern was used: \bFROM\b and was detected in the element starting with: "<script nonce="0RgRkAaV2Afh3w2oMQLK92m3IgU/eu3&#x2B;radgRjPiumA=" type="module">
+  * Other Info: `The following pattern was used: \bFROM\b and was detected in the element starting with: "<script nonce="q2NzIYKcoTZVY&#x2B;nse18/ViyWoK2GUam3j9Rh6YbHUrs=" type="module">
 import { initAll } from '/govuk/all.min.js'
 ini", see evidence field for the suspicious comment/snippet.`
 * URL: https://s186d01-cl-web-fd.azurefd.net/home
@@ -751,7 +751,7 @@ ini", see evidence field for the suspicious comment/snippet.`
   * Parameter: ``
   * Attack: ``
   * Evidence: `from`
-  * Other Info: `The following pattern was used: \bFROM\b and was detected in the element starting with: "<script nonce="aE6i1jik7mLFFnpCxl3K/NZPXvrSY5G1uV4p3uHKj/0=" type="module">
+  * Other Info: `The following pattern was used: \bFROM\b and was detected in the element starting with: "<script nonce="qDDydsoGuBvJbLRzaFAB84vrVHOOnbbdlXsDsj1dKB8=" type="module">
 import { initAll } from '/govuk/all.min.js'
 initAll(", see evidence field for the suspicious comment/snippet.`
 * URL: https://s186d01-cl-web-fd.azurefd.net/image-test
@@ -759,9 +759,9 @@ initAll(", see evidence field for the suspicious comment/snippet.`
   * Parameter: ``
   * Attack: ``
   * Evidence: `from`
-  * Other Info: `The following pattern was used: \bFROM\b and was detected in the element starting with: "<script nonce="FzT6JPp/hKvgjo92rj4xPhebBNG8RcOl17s2x6CqAIY=" type="module">
+  * Other Info: `The following pattern was used: \bFROM\b and was detected in the element starting with: "<script nonce="260OgoIWVjY95UMjv/ntEJ7rIhmji/t&#x2B;sNOQMck2wTc=" type="module">
 import { initAll } from '/govuk/all.min.js'
-initAll(", see evidence field for the suspicious comment/snippet.`
+ini", see evidence field for the suspicious comment/snippet.`
 
 Instances: 4
 
@@ -931,12 +931,6 @@ For secure content, ensure the cache-control HTTP header is set with "no-cache, 
 
 Specifies how and where the data would be used. For instance, if the value is audio, then the requested resource must be audio data and not any other type of resource.
 
-* URL: https://s186d01-cl-web-fd.azurefd.net
-  * Method: `GET`
-  * Parameter: `Sec-Fetch-Dest`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
 * URL: https://s186d01-cl-web-fd.azurefd.net/
   * Method: `GET`
   * Parameter: `Sec-Fetch-Dest`
@@ -950,7 +944,7 @@ Specifies how and where the data would be used. For instance, if the value is au
   * Evidence: ``
   * Other Info: ``
 
-Instances: 3
+Instances: 2
 
 ### Solution
 
@@ -979,12 +973,6 @@ Ensure that Sec-Fetch-Dest header is included in request headers.
 
 Allows to differentiate between requests for navigating between HTML pages and requests for loading resources like images, audio etc.
 
-* URL: https://s186d01-cl-web-fd.azurefd.net
-  * Method: `GET`
-  * Parameter: `Sec-Fetch-Mode`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
 * URL: https://s186d01-cl-web-fd.azurefd.net/
   * Method: `GET`
   * Parameter: `Sec-Fetch-Mode`
@@ -998,7 +986,7 @@ Allows to differentiate between requests for navigating between HTML pages and r
   * Evidence: ``
   * Other Info: ``
 
-Instances: 3
+Instances: 2
 
 ### Solution
 
@@ -1027,12 +1015,6 @@ Ensure that Sec-Fetch-Mode header is included in request headers.
 
 Specifies the relationship between request initiator's origin and target's origin.
 
-* URL: https://s186d01-cl-web-fd.azurefd.net
-  * Method: `GET`
-  * Parameter: `Sec-Fetch-Site`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
 * URL: https://s186d01-cl-web-fd.azurefd.net/
   * Method: `GET`
   * Parameter: `Sec-Fetch-Site`
@@ -1046,7 +1028,7 @@ Specifies the relationship between request initiator's origin and target's origi
   * Evidence: ``
   * Other Info: ``
 
-Instances: 3
+Instances: 2
 
 ### Solution
 
@@ -1075,12 +1057,6 @@ Ensure that Sec-Fetch-Site header is included in request headers.
 
 Specifies if a navigation request was initiated by a user.
 
-* URL: https://s186d01-cl-web-fd.azurefd.net
-  * Method: `GET`
-  * Parameter: `Sec-Fetch-User`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
 * URL: https://s186d01-cl-web-fd.azurefd.net/
   * Method: `GET`
   * Parameter: `Sec-Fetch-User`
@@ -1094,7 +1070,7 @@ Specifies if a navigation request was initiated by a user.
   * Evidence: ``
   * Other Info: ``
 
-Instances: 3
+Instances: 2
 
 ### Solution
 
