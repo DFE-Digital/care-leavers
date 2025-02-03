@@ -17,10 +17,10 @@ jobs:
       - name: Install dependencies
         working-directory: ./src/e2e/CareLeavers.E2ETests
         run: yarn install
-        
+
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: yarn playwright install --with-deps
 
       - name: Run Playwright Tests
         working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: npx playwright test
+        run: yarn playwright test
