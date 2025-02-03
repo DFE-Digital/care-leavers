@@ -15,14 +15,7 @@ on:
 jobs:
   setup:
     runs-on: ubuntu-latest
-    environment: ${{inputs.target_environment}}
-
-    env:
-      MANAGEMENT_TOKEN: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
-      DELIVERY_KEY: ${{ secrets.TF_VAR_CPD_DELIVERY_KEY }}
-      ENVIRONMENT: ${{ inputs.target_environment == 'prod' && 'master' || inputs.target_environment }}
-      SPACE_CAPACITY: ${{ vars.CONTENTFUL_SPACE_CAPACITY }}
-      SPACE_ID: ${{ secrets.TF_VAR_CPD_SPACE_ID }}
+    environment: ${{ inputs.target_environment }}
 
     outputs:
       staging-environment: ${{ steps.staging-env.outputs.staging-environment }}
@@ -35,7 +28,28 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install npm packages used by util scripts
+      - name: Install jq (JSON processor)
+        run: sudo apt-get install -y jq
+
+      - name: Read settings.json and export environment variables
+        run: |
+          SETTINGS_PATH="$(pwd)/settings.json"
+          echo "SETTINGS_PATH=$SETTINGS_PATH" >> $GITHUB_ENV
+
+          SPACE_ID=$(jq -r '.ContentfulOptions.SpaceId' $SETTINGS_PATH)
+          MANAGEMENT_TOKEN=$(jq -r '.ContentfulOptions.ManagementToken' $SETTINGS_PATH)
+          ENV_ID="${{ inputs.target_environment }}" # Use environment selected in GitHub Actions input
+
+          echo "SPACE_ID=$SPACE_ID" >> $GITHUB_ENV
+          echo "MANAGEMENT_TOKEN=$MANAGEMENT_TOKEN" >> $GITHUB_ENV
+          echo "ENV_ID=$ENV_ID" >> $GITHUB_ENV
+
+          if [[ -z "$SPACE_ID" || -z "$MANAGEMENT_TOKEN" ]]; then
+            echo "Error: Required values missing in settings.json"
+            exit 1
+          fi
+
+      - name: Install npm packages
         working-directory: ./contentful
         run: npm ci
 
@@ -44,65 +58,22 @@ jobs:
         working-directory: ./Contentful-Schema/utils
         run: node get-environment-version.js
 
-      - name: Verify contentful space has available environment capacity
-        working-directory: ./Contentful-Schema/utils
-        run: node verify-space-capacity.js
-
       - name: Determine timestamp for new staging environment
         run: echo "TIMESTAMP=$(date +%Y-%m-%d-%H-%M-%S)" >> $GITHUB_ENV
 
       - name: Set var for name of new environment
         id: staging-env
-        run: echo "staging-environment=$(echo ${{ inputs.target_environment == 'prod' && 'master' || inputs.target_environment }}-${{ env.TIMESTAMP }})" >> $GITHUB_OUTPUT
+        run: echo "staging-environment=$(echo ${{ inputs.target_environment }}-${{ env.TIMESTAMP }})" >> $GITHUB_OUTPUT
 
-      - name: Extract migration files from archive
-        working-directory: ./Contentful-Schema/migrations
-        run: rm *.cjs && rm manifest.txt && tar -zxf migrations.tar.gz && rm migrations.tar.gz
-
-      - name: Verify migration files against manifest
-        working-directory: ./Contentful-Schema/utils
-        run: node verify-migrations-against-manifest.js
-
-      - name: Determine required migrations for environment
-        id: required-migrations
-        working-directory: ./Contentful-Schema/utils
-        run: node get-required-migrations.js --currentVersion ${{ steps.current-migration-version.outputs.migration-version }}
- 
-  clone:
-    if: ${{ join(needs.setup.outputs.required-migrations, '') != '[]' }}
-    needs: [setup]
-    runs-on: ubuntu-latest
-
-    env:
-      MANAGEMENT_TOKEN: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
-      SPACE_ID: ${{ secrets.TF_VAR_CPD_SPACE_ID }}
-
-    steps:
-      - name: Install Contentful CLI
-        run: npm install -g contentful-cli
-
-      - name: Login to Contentful with management token
-        run: contentful login --management-token "${{ env.MANAGEMENT_TOKEN }}"
-
-      - name: Set target space
-        run: contentful space use --space-id ${{ env.SPACE_ID }} --environment-id ${{ inputs.target_environment == 'prod' && 'master' || inputs.target_environment }}
-
-      - name: Clone target environment ${{ inputs.target_environment == 'prod' && 'master' || inputs.target_environment }} to staging environment ${{ needs.setup.outputs.staging-environment }}
-        run: contentful space environment create --name ${{ needs.setup.outputs.staging-environment }} --environment-id ${{ needs.setup.outputs.staging-environment }} --source ${{ inputs.target_environment == 'prod' && 'master' || inputs.target_environment }}
-  
   migrate:
     if: ${{ join(needs.setup.outputs.required-migrations, '') != '[]' }}
-    needs: [setup,clone]
+    needs: [setup]
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 1
       matrix:
-        value: ${{fromJSON(needs.setup.outputs.required-migrations)}}
+        value: ${{ fromJSON(needs.setup.outputs.required-migrations) }}
 
-    env:
-      MANAGEMENT_TOKEN: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
-      SPACE_ID: ${{ secrets.TF_VAR_CPD_SPACE_ID }}
-    
     steps:
       - uses: actions/checkout@v4
 
@@ -110,49 +81,31 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install npm packages used by migration script
+      - name: Read settings.json and export environment variables
+        run: |
+          SETTINGS_PATH="$(pwd)/settings.json"
+          echo "SETTINGS_PATH=$SETTINGS_PATH" >> $GITHUB_ENV
+
+          SPACE_ID=$(jq -r '.ContentfulOptions.SpaceId' $SETTINGS_PATH)
+          MANAGEMENT_TOKEN=$(jq -r '.ContentfulOptions.ManagementToken' $SETTINGS_PATH)
+          ENV_ID="${{ inputs.target_environment }}" # Use environment selected in GitHub Actions input
+
+          echo "SPACE_ID=$SPACE_ID" >> $GITHUB_ENV
+          echo "MANAGEMENT_TOKEN=$MANAGEMENT_TOKEN" >> $GITHUB_ENV
+          echo "ENV_ID=$ENV_ID" >> $GITHUB_ENV
+
+          if [[ -z "$SPACE_ID" || -z "$MANAGEMENT_TOKEN" ]]; then
+            echo "Error: Required values missing in settings.json"
+            exit 1
+          fi
+
+      - name: Install npm packages
         working-directory: ./Contentful-Schema
         run: npm ci
 
       - name: Install Contentful CLI
         run: npm install -g contentful-cli
 
-      - name: Extract migration files from archive
-        working-directory: ./Contentful-Schema/migrations
-        run: rm *.cjs && rm manifest.txt && tar -zxf migrations.tar.gz && rm migrations.tar.gz
-
       - name: Run migration script ${{ matrix.value }}
         working-directory: ./Contentful-Schema/migrations
-        run: contentful space migration --space-id "${{ env.SPACE_ID }}" --environment-id ${{ needs.setup.outputs.staging-environment }} --management-token "${{ env.MANAGEMENT_TOKEN }}" ${{ matrix.value }} --yes
-
-      - name: Update environment's migration version
-        working-directory: ./Contentful-Schema/utils
-        env:
-          STAGING_ENVIRONMENT: ${{ needs.setup.outputs.staging-environment }}
-          MIGRATION_FILENAME: ${{ matrix.value }}
-        run: node set-environment-version.js
-
-  repoint-alias:
-    if: ${{ join(needs.setup.outputs.required-migrations, '') != '[]' }}
-    needs: [setup,migrate]
-    runs-on: ubuntu-latest
-    env:
-      STAGING_ENVIRONMENT: ${{ needs.setup.outputs.staging-environment }}
-      MANAGEMENT_TOKEN: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
-      ENVIRONMENT: ${{ inputs.target_environment == 'prod' && 'master' || inputs.target_environment }}
-      SPACE_ID: ${{ secrets.TF_VAR_CPD_SPACE_ID }}
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install npm packages used by migration script
-        working-directory: ./Contentful-Schema
-        run: npm ci
-
-      - name: Run script to point alias ${{ inputs.target_environment == 'prod' && 'master' || inputs.target_environment }} at new environment ${{ env.STAGING_ENVIRONMENT }}
-        working-directory: ./Contentful-Schema/utils
-        run: node point-alias-at-environment.js
+        run: contentful space migration --space-id "${{ env.SPACE_ID }}" --environment-id "${{ env.ENV_ID }}" --management-token "${{ env.MANAGEMENT_TOKEN }}" ${{ matrix.value }} --yes

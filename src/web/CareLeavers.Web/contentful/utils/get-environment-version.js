@@ -3,9 +3,9 @@ import chalk from 'chalk';
 import core from '@actions/core';
 
 const red = chalk.bold.red;
-const spaceId = process.env.SPACE_ID;
+const spaceId = process.env.SpaceId;
 const contentfulAlias = process.env.ENVIRONMENT;
-const deliveryKey = process.env.DELIVERY_KEY;
+const deliveryKey = process.env.DeliveryApiKey;
 
 try {
     if (!deliveryKey) throw new Error("Environment variable DELIVERY_KEY not set");

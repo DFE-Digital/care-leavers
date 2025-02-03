@@ -7,6 +7,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CareLeavers.Integration.Tests", "web\tests\CareLeavers.Integration.Tests\CareLeavers.Integration.Tests.csproj", "{E2693F79-63D7-4F3D-9C0B-F5E31D94EB99}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{3AEA36B3-C8A6-475D-B849-0D334C5F9A43}"
+	ProjectSection(SolutionItems) = preProject
+		.env = .env
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "e2e", "e2e", "{5B9503C4-4DCA-448D-96E1-3408B91E71B1}"
 EndProject
