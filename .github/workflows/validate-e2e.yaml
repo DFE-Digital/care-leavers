@@ -21,7 +21,7 @@ jobs:
           ContentfulOptions__DeliveryApiKey: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
           ContentfulOptions__PreviewApiKey: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
           ContentfulOptions__SpaceId: ${{ secrets.CONTENTFUL_SPACE_ID }}
-        run: docker compose -f infrastructure/docker/docker-compose.yml up -d -e ContentfulOptions__DeliveryApiKey=${{ secrets.CONTENTFUL_DELIVERY_API_KEY }} -e ContentfulOptions__PreviewApiKey=${{ secrets.CONTENTFUL_PREVIEW_API_KEY }} -e ContentfulOptions__SpaceId=${{ secrets.CONTENTFUL_SPACE_ID }}
+        run: docker compose -f infrastructure/docker/docker-compose.yml up -d
 
       - name: Install dependencies
         working-directory: ./src/e2e/CareLeavers.E2ETests
