@@ -14,11 +14,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
+
       - name: Install dependencies
         working-directory: ./src/e2e/CareLeavers.E2ETests
         run: yarn install
 
       - name: Install Playwright Browsers
+        working-directory: ./src/e2e/CareLeavers.E2ETests
         run: yarn playwright install --with-deps
 
       - name: Run Playwright Tests
