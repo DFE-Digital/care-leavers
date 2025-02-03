@@ -18,9 +18,9 @@ jobs:
       - name: Run Docker Compose
         working-directory: ./src
         env:
-          ContentfulOptions__DeliveryApiKey: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
-          ContentfulOptions__PreviewApiKey: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
-          ContentfulOptions__SpaceId: ${{ secrets.CONTENTFUL_SPACE_ID }}
+          CONTENTFUL_DELIVERY_API_KEY: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
+          CONTENTFUL_PREVIEW_API_KEY: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
+          CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
         run: docker compose -f infrastructure/docker/docker-compose.yml up -d
 
       - name: Install dependencies
@@ -29,7 +29,7 @@ jobs:
 
       - name: Install Playwright Browsers
         working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: yarn playwright install --with-deps
+        run: yarn playwright install --with-deps chromium
 
       - name: Run Playwright Tests
         working-directory: ./src/e2e/CareLeavers.E2ETests

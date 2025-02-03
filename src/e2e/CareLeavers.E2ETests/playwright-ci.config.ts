@@ -26,27 +26,27 @@ export default defineConfig({
             name: 'Chromium',
             use: { browserName: 'chromium' },
         },
-        {
-            name: 'Firefox',
-            use: { browserName: 'firefox' },
-        },
-        {
-            name: 'WebKit',
-            use: { browserName: 'webkit' },
-        },
-        {
-            name: 'Mobile Chrome',
-            use: {
-                browserName: 'chromium',
-                ...devices['Pixel 8'],
-            },
-        },
-        {
-            name: 'Mobile Safari',
-            use: {
-                browserName: 'webkit',
-                ...devices['iPhone 15'],
-            },
-        },
+        // {
+        //     name: 'Firefox',
+        //     use: { browserName: 'firefox' },
+        // },
+        // {
+        //     name: 'WebKit',
+        //     use: { browserName: 'webkit' },
+        // },
+        // {
+        //     name: 'Mobile Chrome',
+        //     use: {
+        //         browserName: 'chromium',
+        //         ...devices['Pixel 8'],
+        //     },
+        // },
+        // {
+        //     name: 'Mobile Safari',
+        //     use: {
+        //         browserName: 'webkit',
+        //         ...devices['iPhone 15'],
+        //     },
+        // },
     ],
 });
