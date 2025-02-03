@@ -9,8 +9,8 @@ export class HomePage {
     constructor(page: Page) {
         this.page = page;
         this.mainHeading = page.locator('h1');
-        this.whoIsThisFor = page.locator('#main-content h3').first();
-        this.firstParagraph = page.locator('#main-content p.govuk-body').first();
+        this.whoIsThisFor = page.locator('h3').first();
+        this.firstParagraph = page.locator('p.govuk-body').first();
         //this.firstParagraph = page.locator('p:has-text("Starting life as an adult can be challenging")');
         this.footer = page.locator('footer');
     }

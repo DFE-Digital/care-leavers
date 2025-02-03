@@ -2,7 +2,7 @@ name: Playwright Tests
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "tests/mocked_service" ]
   pull_request:
     branches: [ "main" ]
 
@@ -14,6 +14,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
+
+      - name: Run Docker Compose
+        working-directory: ./src
+        run: docker compose -f infrastructure/docker/docker-compose.yml up -d -e ContentfulOptions__DeliveryApiKey=${{ secrets.CONTENTFUL_DELIVERY_API_KEY }} -e ContentfulOptions__PreviewApiKey=${{ secrets.CONTENTFUL_PREVIEW_API_KEY }} -e ContentfulOptions__SpaceId=${{ secrets.CONTENTFUL_SPACE_ID }}
 
       - name: Install dependencies
         working-directory: ./src/e2e/CareLeavers.E2ETests
