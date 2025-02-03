@@ -9,6 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    name: Run Playwright Tests
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -29,7 +30,7 @@ jobs:
 
       - name: Install Playwright Browsers
         working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: yarn playwright install --with-deps chromium
+        run: yarn playwright install
 
       - name: Run Playwright Tests
         working-directory: ./src/e2e/CareLeavers.E2ETests
