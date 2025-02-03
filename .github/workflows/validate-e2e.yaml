@@ -30,7 +30,7 @@ jobs:
 
       - name: Install Playwright Browsers
         working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: yarn playwright install
+        run: yarn playwright install --with-deps
 
       - name: Run Playwright Tests
         working-directory: ./src/e2e/CareLeavers.E2ETests
