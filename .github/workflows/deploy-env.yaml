@@ -65,10 +65,10 @@ jobs:
             az storage container create --name tfstate --account-name s186${{ vars.ENVIRONMENT_PREFIX }}cltfstate
 
 
-  deploy_infrastructure:
-    name: 'Provision Infrastructure'
+  deploy_environment:
+    name: 'Deploy Environment'
     runs-on: ubuntu-latest
-    needs: [terraform_dependencies]
+    needs: [terraform_dependencies, package]
     permissions:
       contents: read
       id-token: write
@@ -109,17 +109,6 @@ jobs:
         working-directory: ./src/infrastructure/terraform
         run: terraform apply plan.plan
 
-  deploy-backend:
-    name: Deploy Web
-    permissions:
-      contents: none
-      id-token: write
-    runs-on: ubuntu-latest
-    needs: [ package, deploy_infrastructure ]
-    environment:
-      name: 'Test'
-
-    steps:
       - name: Lowercase the repo name and username
         run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
 
@@ -147,14 +136,6 @@ jobs:
           slot-name: 'staging'
           publish-profile: ${{ env.PUBLISHING_PROFILE }}
           images: 'ghcr.io/${{ env.REPO }}:${{ github.sha }}'
-
-      - name: Wait for Staging to warm up
-        id: wait-for-staging
-        uses: jtalk/url-health-check-action@v4
-        with:
-          url: https://s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-fd.azurefd.net/staging-health
-          retry-delay: 3s
-          max-attempts: 5
 
       - name: Swap slot to production
         run: az webapp deployment slot swap --name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-app-service --resource-group s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-rg --slot staging --target-slot production

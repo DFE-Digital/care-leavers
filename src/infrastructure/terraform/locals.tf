@@ -7,6 +7,4 @@ locals {
   }
   service_prefix = "s186${var.environment_prefix}-cl"
   location       = "westeurope"
-  frontdoor_name = "${local.service_prefix}-web-fd"
-  frontdoor_url  = "${local.frontdoor_name}.azurefd.net"
 }

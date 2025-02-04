@@ -3,7 +3,7 @@ locals {
     "ContentfulOptions__DeliveryApiKey"     = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-delivery-api-key.versionless_id})"
     "ContentfulOptions__PreviewApiKey"      = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-preview-api-key.versionless_id})"
     "ContentfulOptions__SpaceId"            = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-space-id.versionless_id})"
-    "BaseUrl"                               = "https://${local.frontdoor_url}"
+    "BaseUrl"                               = "https://${azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.host_name}"
     "ApplicationInsights__ConnectionString" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.application-insights-connection-string.versionless_id})"
     "Caching__Type"                         = "None"
     "Caching__ConnectionString"             = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-cache-connection-string.versionless_id})"
