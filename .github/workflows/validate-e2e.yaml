@@ -9,11 +9,20 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    name: Run Playwright Tests
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
+
+      - name: Run Docker Compose
+        working-directory: ./src
+        env:
+          CONTENTFUL_DELIVERY_API_KEY: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
+          CONTENTFUL_PREVIEW_API_KEY: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
+          CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
+        run: docker compose -f infrastructure/docker/docker-compose.yml up -d
 
       - name: Install dependencies
         working-directory: ./src/e2e/CareLeavers.E2ETests
@@ -25,4 +34,4 @@ jobs:
 
       - name: Run Playwright Tests
         working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: yarn playwright test
+        run: yarn playwright test -c playwright-ci.config.ts
