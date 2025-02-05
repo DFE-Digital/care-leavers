@@ -1,4 +1,5 @@
-﻿@using GovUk.Frontend.AspNetCore
+﻿@using CareLeavers.Web.Configuration
+@using GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.AspNetCore.TagHelpers
 @using Joonasw.AspNetCore.SecurityHeaders.Csp
 @using Joonasw.AspNetCore.SecurityHeaders.TagHelpers
@@ -6,6 +7,11 @@
 
 @inject IWebHostEnvironment WebHostEnvironment
 @inject ICspNonceService CspNonceService
+@inject IContentfulConfiguration ContentfulConfiguration
+
+@{
+    var config = await ContentfulConfiguration.GetConfiguration();
+}
 
 <!DOCTYPE html>
 <html class="govuk-template" lang="en">
@@ -23,7 +29,7 @@
     }
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - Find support for leaving care</title>
+    <title>@ViewData["Title"] - @config.ServiceName</title>
     <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/assets/images/favicon.svg"/>
     @Html.GovUkFrontendStyleImports(appendVersion: true)
     <link rel="stylesheet" href="~/css/dfefrontend.css" asp-append-version="true"/>
@@ -42,7 +48,7 @@
 @Html.GovUkFrontendJsEnabledScript(CspNonceService.GetNonce())
 <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 @{
-    await Html.RenderPartialAsync("_Header");
+    await Html.RenderPartialAsync("_Header", config);
 }
 
 
@@ -72,7 +78,7 @@
 }
 
 @{
-    await Html.RenderPartialAsync("_Footer");
+    await Html.RenderPartialAsync("_Footer", config);
 }
 
 @await RenderSectionAsync("Scripts", false)

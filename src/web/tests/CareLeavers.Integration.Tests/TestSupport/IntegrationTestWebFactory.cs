@@ -1,4 +1,5 @@
 using CareLeavers.Web.Caching;
+using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using Contentful.Core;
 using Joonasw.AspNetCore.SecurityHeaders.Csp;
@@ -25,7 +26,8 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
             var descriptorsToRemove = services.Where(d =>
                     d.ServiceType == typeof(IContentfulClient) ||
                     d.ServiceType == typeof(ICspNonceService) ||
-                    d.ServiceType == typeof(IDistributedCache))
+                    d.ServiceType == typeof(IDistributedCache) ||
+                    d.ServiceType == typeof(IContentfulConfiguration))
                 .ToList();
 
             descriptorsToRemove.ForEach(x => services.Remove(x));
@@ -46,6 +48,8 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
             services.AddSingleton<IDistributedCache, CacheDisabledDistributedCache>();
 
             services.AddSingleton<ICspNonceService, MockCspNonceService>();
+
+            services.AddSingleton<IContentfulConfiguration, MockContentfulConfiguration>();
         });
     }
 

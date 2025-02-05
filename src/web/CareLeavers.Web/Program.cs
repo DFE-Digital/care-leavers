@@ -98,6 +98,8 @@ try
         builder.Services.AddSingleton<IDistributedCache, CacheDisabledDistributedCache>();
     }
 
+    builder.Services.AddScoped<IContentfulConfiguration, ContentfulConfiguration>();
+
     var app = builder.Build();
 
     var contentfulClient = app.Services.GetRequiredService<IContentfulClient>();

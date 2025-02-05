@@ -115,7 +115,7 @@ public class ContentfulController(
         return distributedCache.GetOrSetAsync($"content:{slug}", async () =>
         {
             var pages = new QueryBuilder<Page>()
-                .ContentTypeIs("page")
+                .ContentTypeIs(Page.ContentType)
                 .FieldEquals(c => c.Slug, slug)
                 .Limit(1);
 

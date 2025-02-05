@@ -4,6 +4,8 @@ namespace CareLeavers.Web.Models.Content;
 
 public class Page : ContentfulContent
 {
+    public static string ContentType { get; } = "page";
+    
     public string? Title { get; set; }
     
     public string? Slug { get; set; }
