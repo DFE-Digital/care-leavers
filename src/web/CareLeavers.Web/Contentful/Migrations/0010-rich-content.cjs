@@ -49,7 +49,25 @@ module.exports = function (migration) {
         .type("RichText")
         .localized(false)
         .required(false)
-        .validations([])
+        .validations([
+            {
+                nodes: {
+                    "heading-2": {},
+                    "heading-3": {},
+                    "unordered-list": {},
+                    "list-item": {},
+                    "hr": {},
+                    "hyperlink": {},
+                    "entry-hyperlink": {},
+                    "embedded-entry-block": {},
+                    "embedded-entry-inline": {},
+                    "embedded-asset-block": {},
+                },
+                marks: {
+                    type: ["bold", "italic"],
+                },
+            },
+        ])
         .disabled(false)
         .omitted(false);
 
