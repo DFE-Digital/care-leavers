@@ -1,0 +1,89 @@
+@using CareLeavers.Web.Models.Content
+@using CareLeavers.Web.Models.Enums
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model CareLeavers.Web.Models.Content.Grid
+
+@{
+    switch (Model.GridType)
+    {
+        case GridType.Cards:
+            <section class="dfe-section govuk-!-margin-top-5">
+                @if (Model.ShowTitle)
+                {
+                    <h2 class="govuk-heading-l" id="@TagBuilder.CreateSanitizedId(Model.Title, "-")">@Model.Title</h2>
+                }
+                @if (Model.Content != null && Model.Content.Any())
+                {
+                    <div class="dfe-grid-container dfe-grid-container--wider govuk-!-margin-top-5">
+                        @foreach (var content in Model.Content)
+                        {
+                            var card = (Card)content;
+                            <partial model="@card" name="Grid/Card"/>
+                        }
+                    </div>
+                }
+            </section>
+            break;
+
+        case GridType.AlternatingImageAndText:
+            <section class="dfe-section alternating-image-text">
+                @if (Model.ShowTitle)
+                {
+                    <h2 class="govuk-heading-l" id="@TagBuilder.CreateSanitizedId(Model.Title, "-")">@Model.Title</h2>
+                }
+
+
+                @if (Model.Content != null && Model.Content.Any())
+                {
+                    var position = -1;
+                    foreach (var content in Model.Content)
+                    {
+                        position++;
+                        var card = (Card)content;
+                        card.Position = position;
+                        <partial model="@card" name="Grid/AlternatingImageAndText"/>
+                    }
+                }
+            </section>
+            break;
+
+        @* case GridType.Banner: *@
+        @*     @if (Model.Content != null && Model.Content.Any()) *@
+        @*     { *@
+        @*         <section class="dfe-section banner"> *@
+        @*             <partial model="@Model.Content.FirstOrDefault() as Card" name="Grid/Banner"/> *@
+        @*         </section> *@
+        @*     } *@
+        @* *@
+        @*     break; *@
+        @* case GridType.SmallBanner: *@
+        @*     @if (Model.Content != null && Model.Content.Any()) *@
+        @*     { *@
+        @*         <section class="dfe-section banner"> *@
+        @*             <partial model="@(Card)Model.Content.FirstOrDefault()" name="Grid/SmallBanner"/> *@
+        @*         </section> *@
+        @*     } *@
+        @* *@
+        @*     break; *@
+        @* *@
+        @* case GridType.ExternalLinks: *@
+        @*     <section class="dfe-section govuk-!-margin-top-5"> *@
+        @* *@
+        @*         @if (Model.ShowTitle) *@
+        @*         { *@
+        @*             <h2 class="govuk-heading-l" id="@TagBuilder.CreateSanitizedId(Model.Title, "-")">@Model.Title</h2> *@
+        @*         } *@
+        @*         @if (Model.Content != null) *@
+        @*         { *@
+        @*             @foreach (var content in Model.Content) *@
+        @*             { *@
+        @*                 var externalAgency = (ExternalAgency)content; *@
+        @*                 <partial model="@externalAgency" name="Grid/ExternalAgency"/> *@
+        @*             } *@
+        @*         } *@
+        @*     </section> *@
+        @* *@
+        @*     break; *@
+
+    }
+}

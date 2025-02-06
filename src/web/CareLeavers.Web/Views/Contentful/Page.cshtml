@@ -1,8 +1,16 @@
+@using CareLeavers.Web.Models.Enums
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model CareLeavers.Web.Models.Content.Page
 
 @{
     ViewBag.Title = Model.Title;
     Layout = "_Layout";
+
+    var pageWidth = Model.Width switch
+    {
+        PageWidth.TwoThirds => "govuk-grid-column-two-thirds",
+        _ => "govuk-grid-column-full"
+    };
 }
 
 @section BeforeGDSContent
@@ -12,12 +20,33 @@
             <h1 class="govuk-heading-xl">
                 @Model.Title
             </h1>
+            
+            @if (Model.Header != null)
+            {
+                <gds-contentful-rich-text document="@Model.Header"></gds-contentful-rich-text>
+            }
         </div>
     </div>
 }
 
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-        <gds-contentful-rich-text document="@Model.Content"></gds-contentful-rich-text>
+    <div class="@pageWidth">
+        @if (Model.Type.HasValue)
+        {
+            <span class="govuk-caption-m">@Model.Type</span>
+        }
+        @* ShowCOntentBlock *@
+        <gds-contentful-rich-text document="@Model.MainContent"></gds-contentful-rich-text>
+        @if (Model.ShowLastUpdated)
+        {
+            <hr/>
+            <partial name="_LastUpdated" model="@Model.Sys"/>
+        }
     </div>
+    @if (Model.SecondaryContent != null && Model.Width != PageWidth.FullWidth)
+    {
+        <div class="govuk-grid-column-one-third">
+            <gds-contentful-rich-text document="@Model.SecondaryContent"></gds-contentful-rich-text>
+        </div>
+    }
 </div>

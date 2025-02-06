@@ -57,7 +57,7 @@ try
 
     builder.Services.AddHealthChecks();
 
-    builder.Services.AddTransient<HtmlRenderer>((c) =>
+    builder.Services.AddTransient<HtmlRenderer>(serviceProvider =>
     {
         var renderer = new HtmlRenderer(new HtmlRendererOptions
         {
@@ -71,6 +71,7 @@ try
         renderer.AddRenderer(new GDSParagraphRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSHeaderRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSAssetRenderer(renderer.Renderers));
+        renderer.AddRenderer(new GDSGridRenderer(serviceProvider));
 
         return renderer;
     });
