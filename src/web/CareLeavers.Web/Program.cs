@@ -178,6 +178,11 @@ try
         x.AllowImages.FromSelf();
         
         config.AllowImageUrls.ForEach(f => x.AllowImages.From(f));
+
+        x.AllowConnections
+            .ToSelf();
+        
+        config.AllowConnectUrls.ForEach(f => x.AllowConnections.To(f));
     });
 
     await app.RunAsync();
