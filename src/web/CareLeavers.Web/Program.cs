@@ -72,6 +72,7 @@ try
         renderer.AddRenderer(new GDSHeaderRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSAssetRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSGridRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSHorizontalRulerContentRenderer());
 
         return renderer;
     });

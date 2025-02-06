@@ -2,6 +2,16 @@ name: Deploy - Environment
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: 'Environment to deploy to'
+        required: true
+        default: 'Test'
+        options:
+          - 'Test'
+          - 'Staging'
+          - 'Production'
 
 jobs:
   package:
@@ -41,7 +51,7 @@ jobs:
       contents: read
       id-token: write
     environment:
-      name: 'Test'
+      name: ${{ github.event.inputs.environment }}
     env:
       ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
       ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
@@ -93,6 +103,9 @@ jobs:
           TF_VAR_contentful_delivery_api_key: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
           TF_VAR_contentful_preview_api_key: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
           TF_VAR_contentful_space_id: ${{ secrets.CONTENTFUL_SPACE_ID }}
+          TF_VAR_contentful_environment: ${{ vars.CONTENTFUL_ENVIRONMENT }}
+          TF_VAR_contentful_preview: ${{ vars.CONTENTFUL_PREVIEW }}
+          TF_VAR_caching_type: ${{ vars.CACHING_TYPE }}
 
       - name: 'Terraform Apply'
         id: terraform_apply

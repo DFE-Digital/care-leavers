@@ -1,0 +1,8 @@
+@model CareLeavers.Web.Models.Content.RichContentBlock
+
+<div class="govuk-grid-row">
+    @foreach (var content in Model.Entries)
+    {
+        <partial name="RichContent/Content" model="@content"/>
+    }
+</div>
