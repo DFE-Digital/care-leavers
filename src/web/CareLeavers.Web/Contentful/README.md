@@ -14,6 +14,16 @@ cd contentful/migrations
 tar -zxf migrations.tar.gz
 ```
 
+add
+DELIVERY_API_KEY , PREVIEW_API_KEY , SPACE_ID , MANAGEMENT_TOKEN
+to a .env file in the migrations folder
+run 
+```
+node migrate.js <0004-grid.cjs>
+```
+
+
+
 run the new migrations with
 ```
 contentful space migration --space-id <your-space-id> --environment-id <your-environment-id> --management-token <your-management-token> 0001-info-box.cjs
