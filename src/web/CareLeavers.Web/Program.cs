@@ -149,6 +149,7 @@ try
     
     app.UseCsp(x =>
     {
+       
         x.ByDefaultAllow.FromSelf();
 
         var config = app.Configuration.GetSection("Csp").Get<CspConfiguration>() ?? new CspConfiguration();
@@ -170,8 +171,8 @@ try
             .From("data:");
 
         config.AllowFontUrls.ForEach(f => x.AllowFonts.From(f));
-
-        x.AllowFraming.FromSelf();
+        
+        x.AllowFraming.FromNowhere(); // Block framing on other sites, equivalent to X-Frame-Options: DENY
 
         x.AllowFormActions.ToSelf();
 
