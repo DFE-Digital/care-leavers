@@ -21,11 +21,11 @@ jobs:
     environment: ${{inputs.target_environment}}
 
     env:
-      MANAGEMENT_TOKEN: ${{ secrets.ManagementToken }}
-      DELIVERY_KEY: ${{ secrets.DeliveryApiKey  }}
+      MANAGEMENT_TOKEN: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
+      DELIVERY_KEY: ${{ secrets.DELIVERY_KEY  }}
       ENVIRONMENT: ${{ inputs.target_environment == 'development' || inputs.target_environment }}
       SPACE_CAPACITY: ${{ vars.CONTENTFUL_SPACE_CAPACITY }}
-      SPACE_ID: ${{ secrets.SpaceId  }}
+      SPACE_ID: ${{ secrets.SPACE_ID   }}
 
     outputs:
       staging-environment: ${{ steps.staging-env.outputs.staging-environment }}
@@ -77,18 +77,18 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      MANAGEMENT_TOKEN: ${{ secrets.ManagementToken  }}
-      SPACE_ID: ${{ secrets.SpaceId }}
+      MANAGEMENT_TOKEN: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN  }}
+      SPACE_ID: ${{ secrets.SPACE_ID  }}
 
     steps:
       - name: Install Contentful CLI
         run: npm install -g contentful-cli
 
       - name: Login to Contentful with management token
-        run: contentful login --management-token "${{ env.ManagementToken }}"
+        run: contentful login --management-token "${{ env.CONTENTFUL_MANAGEMENT_TOKEN }}"
 
       - name: Set target space
-        run: contentful space use --space-id ${{ env.SpaceId }} --environment-id ${{ inputs.target_environment == 'prod' && 'master' || inputs.target_environment }}
+        run: contentful space use --space-id ${{ env.SPACE_ID  }} --environment-id ${{ inputs.target_environment == 'prod' && 'master' || inputs.target_environment }}
 
       - name: Clone target environment ${{ inputs.target_environment == 'development' || inputs.target_environment }} to staging environment ${{ needs.setup.outputs.staging-environment }}
         run: contentful space environment create --name ${{ needs.setup.outputs.staging-environment }} --environment-id ${{ needs.setup.outputs.staging-environment }} --source ${{ inputs.target_environment == 'prod' && 'master' || inputs.target_environment }}
@@ -103,8 +103,8 @@ jobs:
         value: ${{fromJSON(needs.setup.outputs.required-migrations)}}
 
     env:
-      MANAGEMENT_TOKEN: ${{ secrets.ManagementToken }}
-      SPACE_ID: ${{ secrets.SpaceId }}
+      MANAGEMENT_TOKEN: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
+      SPACE_ID: ${{ secrets.SPACE_ID  }}
     
     steps:
       - uses: actions/checkout@v4
@@ -126,7 +126,7 @@ jobs:
 
       - name: Run migration script ${{ matrix.value }}
         working-directory: ./Contentful/Migrations
-        run: contentful space migration --space-id "${{ env.SpaceId }}" --environment-id ${{ needs.setup.outputs.staging-environment }} --management-token "${{ env.MANAGEMENT_TOKEN }}" ${{ matrix.value }} --yes
+        run: contentful space migration --space-id "${{ env.SPACE_ID }}" --environment-id ${{ needs.setup.outputs.staging-environment }} --management-token "${{ env.MANAGEMENT_TOKEN }}" ${{ matrix.value }} --yes
 
       - name: Update environment's migration version
         working-directory: ./Contentful/Utils
@@ -143,7 +143,7 @@ jobs:
       STAGING_ENVIRONMENT: ${{ needs.setup.outputs.staging-environment }}
       MANAGEMENT_TOKEN: ${{ secrets.ManagementToken }}
       ENVIRONMENT: ${{ inputs.target_environment == 'development' || inputs.target_environment }}
-      SPACE_ID: ${{ secrets.SpaceId }}
+      SPACE_ID: ${{ secrets.SPACE_ID }}
 
     steps:
       - uses: actions/checkout@v4
