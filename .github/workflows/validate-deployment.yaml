@@ -25,8 +25,8 @@ jobs:
         uses: borales/actions-yarn@v5
         with:
           cmd: install
-          dir: ./src/web/CareLeavers.Web
+          dir: ./src/e2e/pa11y
 
       - name: Run accessibility scans
         working-directory: ./src/e2e/pa11y
-        run: yarn pa11y-ci --sitemap https://s186${{ github.event.inputs.environment }}-cl-web-fd.azurefd.net/sitemap.xml
+        run: yarn pa11y-ci --config pa11y.json --sitemap https://s186${{ github.event.inputs.environment_prefix }}-cl-web-fd.azurefd.net/sitemap.xml

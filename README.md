@@ -1,18 +1,11 @@
-# care-leavers
+# Care Leavers
 
-Care Leavers Support Website - BETA
+The service aims to bring together and simplify relevant information for young people leaving care, and their intermediaries, to make them aware of, and help them understand the services and support available to them so they can navigate independent life to meet their diverse needs.
 
-## Project setup
+## Running the project
 
-You will need:
-- .NET IDE (Visual Studio, Rider, etc)
-- Docker
-- Node v20 installed
+The site is made up of various components, each with their own README files detailing setup.
 
-1. Clone the repository
-2. Open the solution in your IDE
-3. Run "yarn install" under "CareLeavers.Web". You can install Yarn with ```npm install -g yarn```
-4. Ensure gulp is installed globally ```npm install -g gulp```
-5. Run the "dev" gulp task to build the front end assets (Either from Rider or ```gulp dev``` in the command line).
-6. Add contentful keys to your .NET user secrets
-7. Run the web project
+- Website: [README](./web/README.md)
+- End-to-end tests: [README](./e2e/CareLeavers.E2ETests/README.md)
+- Terraform: [README](./infrastructure/terraform/README.md)

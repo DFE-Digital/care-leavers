@@ -1,7 +1,8 @@
+@model CareLeavers.Web.Models.Content.ContentfulConfigurationEntity
 
 <div class="govuk-width-container">
     <govuk-phase-banner>
-        <govuk-phase-banner-tag>Beta</govuk-phase-banner-tag>
+        <govuk-phase-banner-tag>@Model.Phase.ToString()</govuk-phase-banner-tag>
         <span class="govuk-phase-banner__text">
             This is a new service. Help us improve it and <a class="govuk-link" href="#">give your feedback by email</a>.
         </span>
@@ -29,7 +30,7 @@
         </div>
     </div>
     <div class="dfe-width-container dfe-header__service-name">
-        <a href="/" class="dfe-header__link--service">Find support for leaving care</a>
+        <a href="/" class="dfe-header__link--service">@Model.ServiceName</a>
     </div>
-    @* @{ await Html.RenderPartialAsync("Navigation"); } *@
+    @{ await Html.RenderPartialAsync("Navigation"); }
 </header>

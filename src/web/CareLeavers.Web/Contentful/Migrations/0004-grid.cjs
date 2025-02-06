@@ -23,7 +23,7 @@ module.exports = function (migration) {
         .required(false)
         .validations([
             {
-                in: ["Alternating Image and Text", "External Links", "Small Banner"],
+                in: ["Cards", "Alternating Image and Text", "External Links", "Small Banner", "Banner"],
             },
         ])
         .disabled(false)

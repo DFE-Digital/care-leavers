@@ -10,6 +10,7 @@ trace.zip
 # Environment files
 .env
 .env.local
+.DS_Store 
 
 # Build output
 dist/

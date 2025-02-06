@@ -1,0 +1,286 @@
+{
+  "title": "Image Test",
+  "slug": "image-test",
+  "mainContent": {
+    "nodeType": "document",
+    "data": {
+      "target": null
+    },
+    "content": [
+      {
+        "nodeType": "embedded-asset-block",
+        "content": [],
+        "data": {
+          "target": {
+            "sys": {
+              "revision": 2,
+              "deletedAt": null,
+              "locale": "en-US",
+              "contentType": null,
+              "publishedCounter": null,
+              "publishedVersion": 6,
+              "publishedBy": null,
+              "publishedAt": null,
+              "publishCounter": null,
+              "firstPublishedAt": null,
+              "archivedAt": null,
+              "archivedVersion": null,
+              "archivedBy": null,
+              "organization": null,
+              "usagePeriod": null,
+              "status": null,
+              "id": "71UfwHVCjz9O7RxA0e3jrJ",
+              "linkType": null,
+              "type": "Asset",
+              "environment": {
+                "sys": {
+                  "revision": null,
+                  "deletedAt": null,
+                  "locale": null,
+                  "contentType": null,
+                  "publishedCounter": null,
+                  "publishedVersion": null,
+                  "publishedBy": null,
+                  "publishedAt": null,
+                  "publishCounter": null,
+                  "firstPublishedAt": null,
+                  "archivedAt": null,
+                  "archivedVersion": null,
+                  "archivedBy": null,
+                  "organization": null,
+                  "usagePeriod": null,
+                  "status": null,
+                  "id": "master",
+                  "linkType": "Environment",
+                  "type": "Link",
+                  "environment": null,
+                  "space": null,
+                  "createdAt": null,
+                  "createdBy": null,
+                  "updatedAt": null,
+                  "updatedBy": null,
+                  "version": null
+                }
+              },
+              "space": {
+                "sys": {
+                  "revision": null,
+                  "deletedAt": null,
+                  "locale": null,
+                  "contentType": null,
+                  "publishedCounter": null,
+                  "publishedVersion": null,
+                  "publishedBy": null,
+                  "publishedAt": null,
+                  "publishCounter": null,
+                  "firstPublishedAt": null,
+                  "archivedAt": null,
+                  "archivedVersion": null,
+                  "archivedBy": null,
+                  "organization": null,
+                  "usagePeriod": null,
+                  "status": null,
+                  "id": "3y72rykjd1o5",
+                  "linkType": "Space",
+                  "type": "Link",
+                  "environment": null,
+                  "space": null,
+                  "createdAt": null,
+                  "createdBy": null,
+                  "updatedAt": null,
+                  "updatedBy": null,
+                  "version": null
+                },
+                "name": null,
+                "locales": null
+              },
+              "createdAt": "2025-01-30T09:20:56.948Z",
+              "createdBy": null,
+              "updatedAt": "2025-01-30T09:24:23.993Z",
+              "updatedBy": null,
+              "version": null
+            },
+            "description": "Test alt description",
+            "title": "Test",
+            "file": {
+              "fileName": "Test.png",
+              "contentType": "image/png",
+              "url": "//images.ctfassets.net/3y72rykjd1o5/71UfwHVCjz9O7RxA0e3jrJ/10a9c71dd9d5aa3ef795b1a571aa33d4/Test.png",
+              "upload": null,
+              "uploadFrom": null,
+              "details": {
+                "size": 628941,
+                "image": {
+                  "height": 501,
+                  "width": 671
+                }
+              }
+            },
+            "titleLocalized": {
+              "en-US": "."
+            },
+            "descriptionLocalized": {
+              "en-US": ""
+            },
+            "filesLocalized": {
+              "en-US": {
+                "fileName": "Screenshot 2024-11-21 at 10.33.58.png",
+                "contentType": "image/png",
+                "url": "//images.ctfassets.net/3y72rykjd1o5/71UfwHVCjz9O7RxA0e3jrJ/10a9c71dd9d5aa3ef795b1a571aa33d4/Screenshot_2024-11-21_at_10.33.58.png",
+                "upload": null,
+                "uploadFrom": null,
+                "details": {
+                  "size": 628941,
+                  "image": {
+                    "height": 501,
+                    "width": 671
+                  }
+                }
+              }
+            },
+            "metadata": null
+          }
+        }
+      },
+      {
+        "nodeType": "paragraph",
+        "data": {
+          "target": null
+        },
+        "content": [
+          {
+            "nodeType": "text",
+            "data": {
+              "target": null
+            },
+            "value": "",
+            "marks": []
+          }
+        ]
+      }
+    ]
+  },
+  "sys": {
+    "revision": 1,
+    "deletedAt": null,
+    "locale": "en-US",
+    "contentType": {
+      "sys": {
+        "revision": null,
+        "deletedAt": null,
+        "locale": null,
+        "contentType": null,
+        "publishedCounter": null,
+        "publishedVersion": null,
+        "publishedBy": null,
+        "publishedAt": null,
+        "publishCounter": null,
+        "firstPublishedAt": null,
+        "archivedAt": null,
+        "archivedVersion": null,
+        "archivedBy": null,
+        "organization": null,
+        "usagePeriod": null,
+        "status": null,
+        "id": "page",
+        "linkType": "ContentType",
+        "type": "Link",
+        "environment": null,
+        "space": null,
+        "createdAt": null,
+        "createdBy": null,
+        "updatedAt": null,
+        "updatedBy": null,
+        "version": null
+      },
+      "name": null,
+      "description": null,
+      "displayField": null,
+      "fields": null
+    },
+    "publishedCounter": null,
+    "publishedVersion": 3,
+    "publishedBy": null,
+    "publishedAt": null,
+    "publishCounter": null,
+    "firstPublishedAt": null,
+    "archivedAt": null,
+    "archivedVersion": null,
+    "archivedBy": null,
+    "organization": null,
+    "usagePeriod": null,
+    "status": null,
+    "id": "4AUaV5FIlvUGjEWUoDG5UT",
+    "linkType": null,
+    "type": "Entry",
+    "environment": {
+      "sys": {
+        "revision": null,
+        "deletedAt": null,
+        "locale": null,
+        "contentType": null,
+        "publishedCounter": null,
+        "publishedVersion": null,
+        "publishedBy": null,
+        "publishedAt": null,
+        "publishCounter": null,
+        "firstPublishedAt": null,
+        "archivedAt": null,
+        "archivedVersion": null,
+        "archivedBy": null,
+        "organization": null,
+        "usagePeriod": null,
+        "status": null,
+        "id": "master",
+        "linkType": "Environment",
+        "type": "Link",
+        "environment": null,
+        "space": null,
+        "createdAt": null,
+        "createdBy": null,
+        "updatedAt": null,
+        "updatedBy": null,
+        "version": null
+      }
+    },
+    "space": {
+      "sys": {
+        "revision": null,
+        "deletedAt": null,
+        "locale": null,
+        "contentType": null,
+        "publishedCounter": null,
+        "publishedVersion": null,
+        "publishedBy": null,
+        "publishedAt": null,
+        "publishCounter": null,
+        "firstPublishedAt": null,
+        "archivedAt": null,
+        "archivedVersion": null,
+        "archivedBy": null,
+        "organization": null,
+        "usagePeriod": null,
+        "status": null,
+        "id": "3y72rykjd1o5",
+        "linkType": "Space",
+        "type": "Link",
+        "environment": null,
+        "space": null,
+        "createdAt": null,
+        "createdBy": null,
+        "updatedAt": null,
+        "updatedBy": null,
+        "version": null
+      },
+      "name": null,
+      "locales": null
+    },
+    "createdAt": "2025-01-30T10:12:13.217Z",
+    "createdBy": null,
+    "updatedAt": "2025-01-30T10:12:13.217Z",
+    "updatedBy": null,
+    "version": null
+  },
+  "metadata": null,
+  "fetched": "2025-01-30T10:12:30.662727+00:00"
+}

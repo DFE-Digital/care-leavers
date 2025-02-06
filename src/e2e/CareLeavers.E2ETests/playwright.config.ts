@@ -1,11 +1,12 @@
 import { defineConfig, devices } from '@playwright/test';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
-// Load environment variables from .env file if available
+// Load environment variables from .env file
 dotenv.config();
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: './src/tests',
+  testMatch: '**/*.spec.ts',
   timeout: 30 * 1000, // 30 seconds
   expect: {
     timeout: 5000, // 5 seconds
@@ -18,7 +19,7 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    baseURL: 'https://localhost:', // Replace port with web app's base URL once we have
+    baseURL: 'https://localhost:7050/',
   },
   projects: [
     {

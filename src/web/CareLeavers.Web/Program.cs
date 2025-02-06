@@ -1,14 +1,19 @@
+using System.Diagnostics.CodeAnalysis;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using CareLeavers.Web;
 using CareLeavers.Web.Caching;
 using CareLeavers.Web.Configuration;
+using CareLeavers.Web.Contentful;
 using CareLeavers.Web.ContentfulRenderers;
 using CareLeavers.Web.Telemetry;
 using Contentful.AspNetCore;
 using Contentful.Core;
 using Contentful.Core.Models;
 using GovUk.Frontend.AspNetCore;
+using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using OpenTelemetry.Trace;
 using Serilog;
 
@@ -22,6 +27,13 @@ try
     
     builder.Services.AddControllersWithViews();
     builder.Services.AddGovUkFrontend();
+    builder.Services.AddCsp(nonceByteAmount: 32);
+    builder.Services.AddHsts(options =>
+    {
+        options.MaxAge = TimeSpan.FromDays(365);
+        options.IncludeSubDomains = true;
+        options.Preload = true;
+    });
 
     builder.Services.AddSerilog((_, lc) => lc
         .ConfigureLogging(builder.Configuration["ApplicationInsights:ConnectionString"]));
@@ -45,7 +57,7 @@ try
 
     builder.Services.AddHealthChecks();
 
-    builder.Services.AddTransient<HtmlRenderer>((c) =>
+    builder.Services.AddTransient<HtmlRenderer>(serviceProvider =>
     {
         var renderer = new HtmlRenderer(new HtmlRendererOptions
         {
@@ -58,6 +70,8 @@ try
         // Add custom GDS renderer
         renderer.AddRenderer(new GDSParagraphRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSHeaderRenderer(renderer.Renderers));
+        renderer.AddRenderer(new GDSAssetRenderer(renderer.Renderers));
+        renderer.AddRenderer(new GDSGridRenderer(serviceProvider));
 
         return renderer;
     });
@@ -85,14 +99,22 @@ try
         builder.Services.AddSingleton<IDistributedCache, CacheDisabledDistributedCache>();
     }
 
+    builder.Services.AddScoped<IContentfulConfiguration, ContentfulConfiguration>();
+
     var app = builder.Build();
 
     var contentfulClient = app.Services.GetRequiredService<IContentfulClient>();
-
+    contentfulClient.SerializerSettings.Converters.RemoveAt(0);
+    contentfulClient.SerializerSettings.Converters.Insert(0, new GDSAssetJsonConverter());
+    contentfulClient.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+    contentfulClient.SerializerSettings.ContractResolver = new DefaultContractResolver
+    {
+        NamingStrategy = new CamelCaseNamingStrategy()
+    };
+    
     Constants.Serializer = contentfulClient.Serializer;
     Constants.SerializerSettings = contentfulClient.SerializerSettings;
 
-// Configure the HTTP request pipeline.
     if (!app.Environment.IsDevelopment())
     {
         app.UseExceptionHandler("/Home/Error");
@@ -115,7 +137,50 @@ try
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
 
-    app.Run();
+    // add headers
+    app.Use(async (context, next) =>
+    {
+        context.Response.Headers.Append("X-Frame-Options", "DENY");
+        context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+        context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+        await next();
+    });
+
+    app.UseCsp(x =>
+    {
+        x.ByDefaultAllow.FromSelf();
+
+        var config = app.Configuration.GetSection("Csp").Get<CspConfiguration>() ?? new CspConfiguration();
+
+        x.AllowScripts
+            .FromSelf()
+            .AddNonce();
+
+        config.AllowScriptUrls.ForEach(f => x.AllowScripts.From(f));
+
+        x.AllowStyles
+            .FromSelf()
+            .AddNonce();
+
+        config.AllowStyleUrls.ForEach(f => x.AllowStyles.From(f));
+
+        x.AllowFonts
+            .FromSelf();
+
+        config.AllowFontUrls.ForEach(f => x.AllowFonts.From(f));
+
+        x.AllowFraming.FromSelf();
+
+        x.AllowFormActions.ToSelf();
+
+        config.AllowFrameUrls.ForEach(f => x.AllowFrames.From(f));
+
+        x.AllowImages.FromSelf();
+        
+        config.AllowImageUrls.ForEach(f => x.AllowImages.From(f));
+    });
+
+    await app.RunAsync();
 }
 catch (Exception ex)
 {
@@ -123,8 +188,11 @@ catch (Exception ex)
 }
 finally
 {
-    Log.CloseAndFlush();
+    await Log.CloseAndFlushAsync();
 }
+
+[ExcludeFromCodeCoverage]
 public partial class Program
 {
+    protected Program() { }
 }

@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace CareLeavers.Web.Caching;
 
+[ExcludeFromCodeCoverage(Justification = "Serves as a no-op implementation")]
 public class CacheDisabledDistributedCache : IDistributedCache
 {
     public byte[]? Get(string key)

@@ -19,6 +19,8 @@ public class WebFixture
         _webFactory.Dispose();
     }
 
+    public const string WrapperBasePath = "../../../Tests";
+    
     public static void SetContentfulJson(string content)
     {
         _webFactory.FakeMessageHandler.Response = content;

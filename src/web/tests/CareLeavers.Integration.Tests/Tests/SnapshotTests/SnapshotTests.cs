@@ -5,13 +5,15 @@ namespace CareLeavers.Integration.Tests.Tests.SnapshotTests;
 
 public class SnapshotTests
 {
-    public const string BasePath = "../../../Tests/SnapshotTests";
-    
     public static List<SnapshotTestCase> TestCases { get; set; } =
     [
         new("SimpleParagraph")
         {
             TestName = "Assert Simple Paragraphs"
+        },
+        new ("SimpleAsset")
+        {
+            TestName = "Assert Simple Asset"
         }
     ];
     
@@ -20,13 +22,15 @@ public class SnapshotTests
     {
         var resp = await DoTest(fileName);
         
-        await File.WriteAllTextAsync($"{BasePath}/Output/{fileName}.html", resp);
+        await File.WriteAllTextAsync($"{WebFixture.WrapperBasePath}/SnapshotTests/Output/{fileName}.html", resp);
+
+        Assert.Pass();
     }
 
     [TestCaseSource(nameof(TestCases))]
     public async Task AssertSnapshots(string fileName)
     {
-       var existing = await File.ReadAllTextAsync($"{BasePath}/Output/{fileName}.html");
+       var existing = await File.ReadAllTextAsync($"{WebFixture.WrapperBasePath}/SnapshotTests/Output/{fileName}.html");
        
        var resp = await DoTest(fileName);
        
@@ -35,7 +39,7 @@ public class SnapshotTests
 
     private async Task<string> DoTest(string fileName)
     {
-        var content = await File.ReadAllTextAsync(Path.Combine(BasePath, "Input", $"{fileName}.json"));
+        var content = await File.ReadAllTextAsync(Path.Combine(WebFixture.WrapperBasePath, "SnapshotTests", "Input", $"{fileName}.json"));
         
         var client = WebFixture.GetClient();
         
@@ -52,9 +56,9 @@ public class SnapshotTests
         return sw.ToString();
     }
 
-    private async Task<string> FullJson(string content)
+    private static async Task<string> FullJson(string content)
     {
-        var wrapper = await File.ReadAllTextAsync(Path.Combine(BasePath, "RequestWrapper.json"));
+        var wrapper = await File.ReadAllTextAsync(Path.Combine(WebFixture.WrapperBasePath, "RequestWrapper.json"));
      
         return wrapper.Replace("**REPLACE**", content);
     }
