@@ -53,7 +53,7 @@ module.exports = function (migration) {
             linkType: "Entry",
             validations: [
                 {
-                    linkContentType: ["contentBlock"],
+                    linkContentType: ["card", "externalAgency", "callToAction"],
                 },
             ],
         })
