@@ -1,0 +1,37 @@
+@using CareLeavers.Web.Models.Enums
+@model CareLeavers.Web.Models.Content.RichContent
+@{
+    string color = "";
+    switch (Model.Background)
+    {
+        case BackgroundColour.Blue:
+        case BackgroundColour.Green:
+        case BackgroundColour.Grey:
+            color = "dfe box-ext";
+            break;
+    }
+
+    var width = Model.Width switch
+    {
+        ContentWidth.OneThird => "govuk-grid-column-one-third",
+        ContentWidth.TwoThirds => "govuk-grid-column-two-thirds",
+        _ => "govuk-grid-column-full"
+    };
+
+    @if (color != "")
+    {
+        <section class="dfe-section @color">
+            <gds-contentful-rich-text document="@Model.Content"/>
+        </section>
+    }
+    else
+    {
+        <section class="dfe-section">
+
+            <div class="@width">
+                <gds-contentful-rich-text document="@Model.Content"/>
+            </div>
+
+        </section>
+    }
+}
