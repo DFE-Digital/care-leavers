@@ -145,7 +145,8 @@ try
         context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
         await next();
     });
-
+    
+    
     app.UseCsp(x =>
     {
         x.ByDefaultAllow.FromSelf();
@@ -165,7 +166,8 @@ try
         config.AllowStyleUrls.ForEach(f => x.AllowStyles.From(f));
 
         x.AllowFonts
-            .FromSelf();
+            .FromSelf()
+            .From("data:");
 
         config.AllowFontUrls.ForEach(f => x.AllowFonts.From(f));
 
@@ -175,7 +177,9 @@ try
 
         config.AllowFrameUrls.ForEach(f => x.AllowFrames.From(f));
 
-        x.AllowImages.FromSelf();
+        x.AllowImages
+            .FromSelf()
+            .From("data:");
         
         config.AllowImageUrls.ForEach(f => x.AllowImages.From(f));
 
@@ -183,6 +187,7 @@ try
             .ToSelf();
         
         config.AllowConnectUrls.ForEach(f => x.AllowConnections.To(f));
+        
     });
 
     await app.RunAsync();
