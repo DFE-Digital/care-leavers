@@ -7,7 +7,6 @@ module.exports = function (migration) {
         )
         .displayField("title");
 
-    // Title field
     card
         .createField("title")
         .name("Title")
@@ -22,7 +21,6 @@ module.exports = function (migration) {
         .disabled(false)
         .omitted(false);
 
-    // Text field
     card
         .createField("text")
         .name("Text")
@@ -33,7 +31,6 @@ module.exports = function (migration) {
         .disabled(false)
         .omitted(false);
 
-    // Image field
     card
         .createField("image")
         .name("Image")
@@ -49,7 +46,6 @@ module.exports = function (migration) {
         .disabled(false)
         .omitted(false);
 
-    // Link field
     card
         .createField("link")
         .name("Link")
@@ -58,14 +54,13 @@ module.exports = function (migration) {
         .required(false)
         .validations([
             {
-                linkContentType: ["page"], // Replace "page" with the Contentful content type ID of your `Page` model
+                linkContentType: ["page"],
             },
         ])
         .linkType("Entry")
         .disabled(false)
         .omitted(false);
 
-    // Types field
     card
         .createField("types")
         .name("Types")
@@ -80,7 +75,6 @@ module.exports = function (migration) {
         .disabled(false)
         .omitted(false);
 
-    // Position field
     card
         .createField("position")
         .name("Position")
@@ -94,9 +88,8 @@ module.exports = function (migration) {
         .disabled(false)
         .omitted(false);
 
-    // Change field controls
     card.changeFieldControl("title", "builtin", "singleLine", {});
-    card.changeFieldControl("text", "builtin", "multiLine", {});
+    card.changeFieldControl("text", "builtin", "multipleLine", {});
     card.changeFieldControl("image", "builtin", "assetLinkEditor", {});
     card.changeFieldControl("link", "builtin", "entryLinkEditor", {});
     card.changeFieldControl("types", "builtin", "tagEditor", {});

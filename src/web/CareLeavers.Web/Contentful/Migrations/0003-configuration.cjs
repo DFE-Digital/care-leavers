@@ -57,7 +57,7 @@ module.exports = function (migration) {
             linkType: "Entry",
             validations: [
                 {
-                    linkContentType: ["navigationElement"], // Assuming "navigationElement" is the content type ID for NavigationElement
+                    linkContentType: ["navigationElement"],
                 },
             ],
         })
