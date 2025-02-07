@@ -11,11 +11,7 @@ module.exports = function (migration) {
         .type("Symbol")
         .localized(false)
         .required(true)
-        .validations([
-            {
-                unique: true,
-            },
-        ])
+        .validations([])
         .disabled(false)
         .omitted(false);
     
@@ -24,10 +20,10 @@ module.exports = function (migration) {
         .name("Size")
         .type("Symbol")
         .localized(false)
-        .required(false)
+        .required(true)
         .validations([
             {
-                in: ["Small", "Medium", "Large"],
+                in: ["Small", "Large"],
             },
         ])
         .defaultValue({ "en-US": "Small" })
@@ -39,8 +35,21 @@ module.exports = function (migration) {
         .name("Content")
         .type("RichText")
         .localized(false)
-        .required(false)
-        .validations([])
+        .required(true)
+        .validations([
+            {
+                enabledMarks: [
+                    "bold",
+                    "italic"
+                ]
+            },
+            {
+                enabledNodeTypes: [
+                    "ordered-list",
+                    "unordered-list"
+                ]
+            }
+        ])
         .disabled(false)
         .omitted(false);
     
@@ -49,9 +58,10 @@ module.exports = function (migration) {
         .name("Call To Action Text")
         .type("Symbol")
         .localized(false)
-        .required(false)
+        .required(true)
         .validations([])
         .disabled(false)
+        .defaultValue({"en-US": "Start now"})
         .omitted(false);
     
     callToAction
@@ -75,7 +85,14 @@ module.exports = function (migration) {
         .type("Symbol")
         .localized(false)
         .required(false)
-        .validations([])
+        .validations([
+            {
+                regexp:{
+                    pattern: "^(ftp|http|https):\\/\\/(\\w+:{0,1}\\w*@)?(\\S+)(:[0-9]+)?(\\/|\\/([\\w#!:.?+=&%@!\\-/]))?$",
+                    flags: null
+                }
+            }
+        ])
         .disabled(false)
         .omitted(false);
     

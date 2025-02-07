@@ -19,7 +19,7 @@ DELIVERY_API_KEY , PREVIEW_API_KEY , SPACE_ID , MANAGEMENT_TOKEN
 to a .env file in the migrations folder
 run 
 ```
-node migrate.js <0004-grid.cjs>
+node --env-file=.env migrate.js <0004-grid.cjs>
 ```
 
 
