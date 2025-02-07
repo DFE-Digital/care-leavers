@@ -3,7 +3,31 @@ module.exports = function (migration) {
         .createContentType("page")
         .name("Page")
         .description("A content type representing a webpage with SEO, layout, and content fields.")
-        .displayField("seoTitle");
+        .displayField("title");
+
+    page
+        .createField("title")
+        .name("Title")
+        .type("Symbol")
+        .localized(false)
+        .required(true)
+        .validations([])
+        .disabled(false)
+        .omitted(false);
+
+    page
+        .createField("slug")
+        .name("Slug")
+        .type("Symbol")
+        .localized(false)
+        .required(true)
+        .validations([
+            {
+                unique: true,
+            }
+        ])
+        .disabled(false)
+        .omitted(false);
 
     page
         .createField("parent")
@@ -21,32 +45,19 @@ module.exports = function (migration) {
         .omitted(false);
 
     page
-        .createField("title")
-        .name("Title")
-        .type("Symbol")
-        .localized(false)
-        .required(false)
-        .validations([])
-        .disabled(false)
-        .omitted(false);
-
-    page
-        .createField("slug")
-        .name("Slug")
-        .type("Symbol")
-        .localized(false)
-        .required(false)
-        .validations([])
-        .disabled(false)
-        .omitted(false);
-
-    page
         .createField("seoTitle")
         .name("SEO Title")
         .type("Symbol")
         .localized(false)
         .required(false)
-        .validations([])
+        .validations([
+            {
+                size: {
+                    "min": null,
+                    "max": 60
+                }
+            }
+        ])
         .disabled(false)
         .omitted(false);
 
@@ -56,7 +67,14 @@ module.exports = function (migration) {
         .type("Text")
         .localized(false)
         .required(false)
-        .validations([])
+        .validations([
+            {
+                size: {
+                    "min": null,
+                    "max": 160
+                }
+            }
+        ])
         .disabled(false)
         .omitted(false);
 
@@ -83,7 +101,7 @@ module.exports = function (migration) {
         .required(true)
         .validations([
             {
-                in: ["Full", "TwoThirds"],
+                in: ["Full Width", "Two Thirds"],
             },
         ])
         .defaultValue({ "en-US": "TwoThirds" })
@@ -182,10 +200,10 @@ module.exports = function (migration) {
                     "embedded-entry-block": [
                         {
                             "linkContentType": [
+                                "definitionBlock",
                                 "callToAction",
                                 "grid",
-                                "richContentBlock",
-                                "definitionBlock"
+                                "richContentBlock"
                             ],
                             "message": null
                         }
@@ -217,7 +235,7 @@ module.exports = function (migration) {
         .name("Main Content")
         .type("RichText")
         .localized(false)
-        .required(false)
+        .required(true)
         .validations([
             {
                 enabledMarks: [
@@ -246,10 +264,10 @@ module.exports = function (migration) {
                     "embedded-entry-block": [
                         {
                             "linkContentType": [
+                                "definitionBlock",
                                 "callToAction",
                                 "grid",
-                                "richContentBlock",
-                                "definitionBlock"
+                                "richContentBlock"
                             ],
                             "message": null
                         }
@@ -310,10 +328,10 @@ module.exports = function (migration) {
                     "embedded-entry-block": [
                         {
                             "linkContentType": [
+                                "definitionBlock",
                                 "callToAction",
                                 "grid",
-                                "richContentBlock",
-                                "definitionBlock"
+                                "richContentBlock"
                             ],
                             "message": null
                         }

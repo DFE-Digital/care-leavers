@@ -10,7 +10,7 @@ module.exports = function (migration) {
         .name("Title")
         .type("Symbol")
         .localized(false)
-        .required(false)
+        .required(true)
         .validations([])
         .disabled(false)
         .omitted(false);
@@ -36,7 +36,7 @@ module.exports = function (migration) {
         .type("Boolean")
         .localized(false)
         .required(true)
-        .defaultValue({ "en-US": false })
+        .defaultValue({ "en-US": true })
         .disabled(false)
         .omitted(false);
 

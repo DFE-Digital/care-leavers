@@ -23,7 +23,7 @@ module.exports = function (migration) {
         .required(false)
         .validations([
             {
-                in: ["Light", "Dark", "None"], 
+                in: ["Blue", "Grey", "Green"],
             },
         ])
         .disabled(false)
@@ -37,7 +37,7 @@ module.exports = function (migration) {
         .required(false)
         .validations([
             {
-                in: ["Full", "Medium", "Narrow"],
+                in: ["One Third", "Two Thirds", "Full Width"],
             },
         ])
         .disabled(false)
@@ -77,9 +77,7 @@ module.exports = function (migration) {
                         {
                             "linkContentType": [
                                 "callToAction",
-                                "grid",
-                                "richContentBlock",
-                                "definitionBlock"
+                                "grid"
                             ],
                             "message": null
                         }
