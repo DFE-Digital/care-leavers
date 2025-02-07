@@ -1,5 +1,6 @@
 using System.Net;
 using System.Xml;
+using CareLeavers.Integration.Tests.TestSupport;
 
 namespace CareLeavers.Integration.Tests.Tests;
 
@@ -18,7 +19,7 @@ public class ContentfulControllerTests
     ""slug"" : ""about""
   }");
         
-        WebFixture.SetContentfulJson(wrapper);
+        MockContentService.ResponseJson = wrapper;
         
         // Act
         var response = await client.GetAsync("/sitemap.xml");
@@ -32,11 +33,12 @@ public class ContentfulControllerTests
         
         var urls = xml.GetElementsByTagName("loc");
         
-        Assert.That(urls.Count, Is.EqualTo(2));
+        Assert.That(urls.Count, Is.EqualTo(3));
         Assert.Multiple(() =>
         {
             Assert.That(urls[0]?.InnerText, Is.EqualTo("/home"));
-            Assert.That(urls[1]?.InnerText, Is.EqualTo("/about"));
+            Assert.That(urls[1]?.InnerText, Is.EqualTo("/all-support"));
+            Assert.That(urls[2]?.InnerText, Is.EqualTo("/guides"));
         });
     }
 
@@ -45,11 +47,8 @@ public class ContentfulControllerTests
     {
         // Arrange
         var client = WebFixture.GetClient();
-        var wrapper = await File.ReadAllTextAsync(Path.Combine(WebFixture.WrapperBasePath, "RequestWrapper.json"));
-
-        wrapper = wrapper.Replace("**REPLACE**", string.Empty);
         
-        WebFixture.SetContentfulJson(wrapper);
+        MockContentService.ResponseJson = null;
         
         // Act
         var response = await client.GetAsync("/home");

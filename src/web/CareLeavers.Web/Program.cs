@@ -34,7 +34,7 @@ try
         options.IncludeSubDomains = true;
         options.Preload = true;
     });
-
+    
     builder.Services.AddSerilog((_, lc) => lc
         .ConfigureLogging(builder.Configuration["ApplicationInsights:ConnectionString"]));
 
@@ -54,6 +54,15 @@ try
     builder.Services.AddHttpContextAccessor();
     
     builder.Services.AddContentful(builder.Configuration);
+
+    if (builder.Environment.IsEnvironment("EndToEnd"))
+    {
+        builder.Services.AddScoped<IContentService, ContentfulContentService>();
+    }
+    else
+    {
+        builder.Services.AddScoped<IContentService, ContentfulContentService>();
+    }
 
     builder.Services.AddHealthChecks();
 

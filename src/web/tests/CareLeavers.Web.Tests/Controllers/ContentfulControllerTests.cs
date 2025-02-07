@@ -1,6 +1,5 @@
-using CareLeavers.Web.Caching;
+using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Controllers;
-using Contentful.Core;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 
@@ -11,9 +10,9 @@ public class ContentfulControllerTests
     [Test]
     public async Task HomePageRedirectsToHomeSlug()
     {
-        var contentfulClient = Substitute.For<IContentfulClient>();
+        var contentService = Substitute.For<IContentService>();
         
-        var controller = new ContentfulController(new CacheDisabledDistributedCache(), contentfulClient);
+        var controller = new ContentfulController(contentService);
         
         var result = await controller.Homepage(new MockContentfulConfiguration());
         

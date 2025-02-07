@@ -1,5 +1,6 @@
 using AngleSharp.Html;
 using AngleSharp.Html.Parser;
+using CareLeavers.Integration.Tests.TestSupport;
 
 namespace CareLeavers.Integration.Tests.Tests.SnapshotTests;
 
@@ -43,7 +44,7 @@ public class SnapshotTests
         
         var client = WebFixture.GetClient();
         
-        WebFixture.SetContentfulJson(await FullJson(content));
+        MockContentService.ResponseJson = content;
         
         var response = await client.GetStringAsync("");
 
@@ -54,12 +55,5 @@ public class SnapshotTests
         doc.ToHtml(sw, new PrettyMarkupFormatter());
         
         return sw.ToString();
-    }
-
-    private static async Task<string> FullJson(string content)
-    {
-        var wrapper = await File.ReadAllTextAsync(Path.Combine(WebFixture.WrapperBasePath, "RequestWrapper.json"));
-     
-        return wrapper.Replace("**REPLACE**", content);
     }
 }
