@@ -10,7 +10,7 @@ module.exports = function (migration) {
         .name("Title")
         .type("Symbol")
         .localized(false)
-        .required(false)
+        .required(true)
         .validations([])
         .disabled(false)
         .omitted(false);

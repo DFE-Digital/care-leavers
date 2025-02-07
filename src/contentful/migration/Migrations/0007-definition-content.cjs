@@ -1,8 +1,8 @@
 module.exports = function (migration) {
     const definitionContent = migration
-        .createContentType("definition")
+        .createContentType("definitionContent")
         .name("Definition Content")
-        .description("A content type for storing definitions with a title, content, and linked page.")
+        .description("Stores a definition of a certain term.")
         .displayField("title");
 
     definitionContent
@@ -10,7 +10,7 @@ module.exports = function (migration) {
         .name("Title")
         .type("Symbol")
         .localized(false)
-        .required(false)
+        .required(true)
         .validations([])
         .disabled(false)
         .omitted(false);
@@ -23,22 +23,20 @@ module.exports = function (migration) {
         .required(false)
         .validations([
             {
-                nodes: {
-                    "heading-2": {},
-                    "heading-3": {},
-                    "unordered-list": {},
-                    "list-item": {},
-                    "hr": {},
-                    "hyperlink": {},
-                    "entry-hyperlink": {},
-                    "embedded-entry-block": {},
-                    "embedded-entry-inline": {},
-                    "embedded-asset-block": {},
-                },
-                marks: {
-                    type: ["bold", "italic"],
-                },
+                enabledMarks: [
+                    "bold",
+                    "italic"
+                ]
             },
+            {
+                enabledNodeTypes: [
+                    "ordered-list",
+                    "unordered-list",
+                    "asset-hyperlink",
+                    "entry-hyperlink",
+                    "hyperlink"
+                ]
+            }
         ])
         .disabled(false)
         .omitted(false);
