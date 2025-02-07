@@ -89,7 +89,7 @@ module.exports = function (migration) {
         .omitted(false);
 
     card.changeFieldControl("title", "builtin", "singleLine", {});
-    card.changeFieldControl("text", "builtin", "multipleLine", {});
+    card.changeFieldControl("text", "builtin", "markdown", {});
     card.changeFieldControl("image", "builtin", "assetLinkEditor", {});
     card.changeFieldControl("link", "builtin", "entryLinkEditor", {});
     card.changeFieldControl("types", "builtin", "tagEditor", {});
