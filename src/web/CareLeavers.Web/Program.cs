@@ -5,6 +5,7 @@ using CareLeavers.Web.Caching;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.ContentfulRenderers;
+using CareLeavers.Web.Mocks;
 using CareLeavers.Web.Telemetry;
 using Contentful.AspNetCore;
 using Contentful.Core;
@@ -24,6 +25,9 @@ Log.Logger = new LoggerConfiguration()
 try
 {
     var builder = WebApplication.CreateBuilder(args);
+    
+    Log.Logger.Information("Starting application");
+    Log.Logger.Information("Environment: {Environment}", builder.Environment.EnvironmentName);
     
     builder.Services.AddControllersWithViews();
     builder.Services.AddGovUkFrontend();
@@ -53,15 +57,27 @@ try
 
     builder.Services.AddHttpContextAccessor();
     
-    builder.Services.AddContentful(builder.Configuration);
-
-    if (builder.Environment.IsEnvironment("EndToEnd"))
+    builder.Services.AddScoped<IContentService, ContentfulContentService>();
+    if (!builder.Environment.IsEnvironment("EndToEnd"))
     {
-        builder.Services.AddScoped<IContentService, ContentfulContentService>();
+        builder.Services.AddContentful(builder.Configuration);
+        builder.Services.AddScoped<IContentfulConfiguration, ContentfulConfiguration>();
     }
     else
     {
-        builder.Services.AddScoped<IContentService, ContentfulContentService>();
+        var httpClient = new HttpClient(new FakeMessageHandler());
+        var mockedContentfulClient = new ContentfulClient(httpClient, "test", "test", "test");
+        mockedContentfulClient.ContentTypeResolver = new ContentfulEntityResolver();
+        mockedContentfulClient.SerializerSettings.Converters.RemoveAt(0);
+        mockedContentfulClient.SerializerSettings.Converters.Insert(0, new GDSAssetJsonConverter());
+        mockedContentfulClient.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        mockedContentfulClient.SerializerSettings.ContractResolver = new DefaultContractResolver
+        {
+            NamingStrategy = new CamelCaseNamingStrategy()
+        };
+        
+        builder.Services.AddSingleton<IContentfulClient>(x => mockedContentfulClient);
+        builder.Services.AddScoped<IContentfulConfiguration, MockedContentfulConfiguration>();
     }
 
     builder.Services.AddHealthChecks();
@@ -91,7 +107,6 @@ try
         builder.Configuration.GetSection(CachingOptions.Name)
     );
     
-
     builder.Services.AddOptions<CachingOptions>().BindConfiguration("Caching");
     var cachingOptions = builder.Configuration.GetSection("Caching").Get<CachingOptions>();
 
@@ -110,20 +125,19 @@ try
     {
         builder.Services.AddSingleton<IDistributedCache, CacheDisabledDistributedCache>();
     }
-
-    builder.Services.AddScoped<IContentfulConfiguration, ContentfulConfiguration>();
-
+    
     var app = builder.Build();
 
     var contentfulClient = app.Services.GetRequiredService<IContentfulClient>();
     contentfulClient.SerializerSettings.Converters.RemoveAt(0);
     contentfulClient.SerializerSettings.Converters.Insert(0, new GDSAssetJsonConverter());
     contentfulClient.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+    contentfulClient.SerializerSettings.Formatting = Formatting.Indented;
     contentfulClient.SerializerSettings.ContractResolver = new DefaultContractResolver
     {
         NamingStrategy = new CamelCaseNamingStrategy()
     };
-    
+
     Constants.Serializer = contentfulClient.Serializer;
     Constants.SerializerSettings = contentfulClient.SerializerSettings;
 

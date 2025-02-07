@@ -31,7 +31,7 @@ export class HomePage {
         await expect(this.firstParagraph).toContainText("Starting life as an adult can be challenging");
 
         // Check "Who is this for?" section
-        await expect(this.whoIsThisFor).toHaveText("Who is this for?");
+        await expect(this.whoIsThisFor).toHaveText("Who is this support for?");
 
         // Validate web footer text
         await expect(this.footer).toContainText("Open Government Licence v3.0");

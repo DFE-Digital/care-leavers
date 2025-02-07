@@ -12,24 +12,8 @@ using Formatting = Newtonsoft.Json.Formatting;
 namespace CareLeavers.Web.Controllers;
 
 [Route("/")]
-public class ContentfulController( IContentService contentService) : Controller
+public class ContentfulController(IContentService contentService) : Controller
 {
-    private static readonly JsonSerializerSettings ContentfulSerializerSettings = new()
-    {
-        ContractResolver = new CamelCasePropertyNamesContractResolver
-        {
-            NamingStrategy = new CamelCaseNamingStrategy
-            {
-                OverrideSpecifiedNames = false
-            }
-        },
-        Formatting = Formatting.Indented,
-        Converters = new List<JsonConverter>
-        {
-            new ExtensionJsonConverter(),
-        }
-    };
-
     [Route("/")]
     public async Task<IActionResult> Homepage([FromServices] IContentfulConfiguration contentfulConfiguration)
     {
@@ -53,7 +37,7 @@ public class ContentfulController( IContentService contentService) : Controller
 
         var page = await contentService.GetPage(slug);
 
-        return Content(JsonConvert.SerializeObject(page, ContentfulSerializerSettings), "application/json");
+        return Content(JsonConvert.SerializeObject(page, Constants.SerializerSettings), "application/json");
     }
 
     [Route("/{**slug}")]
