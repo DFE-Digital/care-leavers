@@ -8,26 +8,39 @@
 @inject IWebHostEnvironment WebHostEnvironment
 @inject ICspNonceService CspNonceService
 @inject IContentfulConfiguration ContentfulConfiguration
+@inject IConfiguration Configuration
 
 @{
     var config = await ContentfulConfiguration.GetConfiguration();
+    var analyticsOptions = new AnalyticsOptions();
+    Configuration.GetSection(AnalyticsOptions.Name).Bind(analyticsOptions);
 }
 
 <!DOCTYPE html>
 <html class="govuk-template" lang="en">
 
 <head>
-    @if (WebHostEnvironment.IsProduction())
+    @if (WebHostEnvironment.IsProduction() || 1 == 1)
     {
         <!-- Google Tag Manager -->
-        <script asp-add-nonce="true">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+i+dl;var n=d.querySelector('[nonce]');
-                n&&j.setAttribute('nonce',n.nonce||n.getAttribute('nonce'));f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-M2CBTMTD');</script>
-        @* TODO: Pull GTM-** from config *@
+        <script asp-add-nonce="true">
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+                var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
+                j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+                j.setAttribute('nonce','@CspNonceService.GetNonce()');
+                f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','@analyticsOptions.GTM');</script>
         <!-- End Google Tag Manager -->
+        <!-- Clarity -->
+        <script type="text/javascript" asp-add-nonce="true">
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; 
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "@analyticsOptions.Clarity");
+        </script>
+        <!-- End Clarity -->
     }
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -37,7 +50,7 @@
     <link rel="stylesheet" href="~/css/dfefrontend.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/css/application.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/css/metadata.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/cta.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/cta.css" asp-append-version="true" />
 </head>
 
 <body class="govuk-template__body">

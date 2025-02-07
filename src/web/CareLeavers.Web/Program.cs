@@ -80,6 +80,7 @@ try
     builder.Services.Configure<CachingOptions>(
         builder.Configuration.GetSection(CachingOptions.Name)
     );
+    
 
     builder.Services.AddOptions<CachingOptions>().BindConfiguration("Caching");
     var cachingOptions = builder.Configuration.GetSection("Caching").Get<CachingOptions>();
@@ -151,7 +152,7 @@ try
     app.UseCsp(x =>
     {
        
-        x.ByDefaultAllow.FromSelf();
+        x.ByDefaultAllow.FromNowhere();
 
         var config = app.Configuration.GetSection("Csp").Get<CspConfiguration>() ?? new CspConfiguration();
 
@@ -189,7 +190,7 @@ try
             .ToSelf();
         
         config.AllowConnectUrls.ForEach(f => x.AllowConnections.To(f));
-        
+
     });
 
     await app.RunAsync();
