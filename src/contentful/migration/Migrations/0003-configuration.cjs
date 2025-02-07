@@ -79,7 +79,6 @@ module.exports = function (migration) {
             },
             {
                 enabledNodeTypes: [
-                    "heading-2",
                     "heading-3",
                     "heading-4",
                     "ordered-list",
@@ -91,7 +90,7 @@ module.exports = function (migration) {
                     "embedded-entry-inline",
                     "hr"
                 ],
-                message: "Only heading 2, heading 3, heading 4, ordered list, unordered list, block entry, asset, link to entry, link to Url, inline entry, and horizontal rule nodes are allowed"
+                message: "Only heading 3, heading 4, ordered list, unordered list, block entry, asset, link to entry, link to Url, inline entry, and horizontal rule nodes are allowed"
             },
             {
                 nodes: {
