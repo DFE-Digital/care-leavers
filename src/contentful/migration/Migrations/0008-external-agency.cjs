@@ -11,7 +11,11 @@ module.exports = function (migration) {
         .type("Symbol")
         .localized(false)
         .required(true)
-        .validations([])
+        .validations([
+            {
+                unique: true,
+            }
+        ])
         .disabled(false)
         .omitted(false);
 
@@ -21,7 +25,14 @@ module.exports = function (migration) {
         .type("Symbol")
         .localized(false)
         .required(false)
-        .validations([])
+        .validations([
+            {
+                regexp:{
+                    pattern: "^(ftp|http|https):\\/\\/(\\w+:{0,1}\\w*@)?(\\S+)(:[0-9]+)?(\\/|\\/([\\w#!:.?+=&%@!\\-/]))?$",
+                    flags: null
+                }
+            }
+        ])
         .disabled(false)
         .omitted(false);
 
@@ -88,7 +99,7 @@ module.exports = function (migration) {
     externalAgency.changeFieldControl("name", "builtin", "singleLine", {});
     externalAgency.changeFieldControl("url", "builtin", "urlEditor", {});
     externalAgency.changeFieldControl("logo", "builtin", "assetLinkEditor", {});
-    externalAgency.changeFieldControl("description", "builtin", "multipleLine", {});
+    externalAgency.changeFieldControl("description", "builtin", "markdown", {});
     externalAgency.changeFieldControl("call", "builtin", "singleLine", {});
     externalAgency.changeFieldControl("openingTimes", "builtin", "singleLine", {});
     externalAgency.changeFieldControl("free", "builtin", "boolean", {});
