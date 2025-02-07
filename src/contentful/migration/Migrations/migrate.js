@@ -1,26 +1,27 @@
 const fs = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
-require('dotenv').config();
+//require('dotenv').config();
 const process = require("process");
+require('dotenv').config();
 // Path to your settings.json file
-const settingsPath = path.resolve("../../appsettings.json");
+// const settingsPath = path.resolve("../../appsettings.json");
 
 // Load settings.json
-let settings;
-try {
-    settings = JSON.parse(fs.readFileSync(settingsPath, "utf-8"));
-} catch (error) {
-    console.error("Error reading settings.json:", error.message);
-    process.exit(1);
-}
+// let settings;
+// try {
+//     settings = JSON.parse(fs.readFileSync(settingsPath, "utf-8"));
+// } catch (error) {
+//     console.error("Error reading settings.json:", error.message);
+//     process.exit(1);
+// }
 
 // Extract Contentful options from settings.json
-const contentfulOptions = settings.ContentfulOptions || {};
+// const contentfulOptions = settings.ContentfulOptions || {};
 
 // Get Contentful secrets
 const SPACE_ID = process.env.SPACE_ID;
-const ENV_ID = process.env.EnvironmentId || "production";
+const ENV_ID = process.env.ENVIRONMENT_ID || "production";
 const MANAGEMENT_TOKEN = process.env.MANAGEMENT_TOKEN
 
 // Get migration file from command-line arguments

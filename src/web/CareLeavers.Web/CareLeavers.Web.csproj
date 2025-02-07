@@ -39,8 +39,4 @@
       <_ContentIncludedByDefault Remove="wwwroot\js\dfefrontend.min.js" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Contentful\Models\" />
-    </ItemGroup>
-
 </Project>
