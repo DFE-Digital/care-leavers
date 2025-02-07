@@ -9,13 +9,13 @@ namespace CareLeavers.Web.Tests.Controllers;
 public class ContentfulControllerTests
 {
     [Test]
-    public void HomePageRedirectsToHomeSlug()
+    public async Task HomePageRedirectsToHomeSlug()
     {
         var contentfulClient = Substitute.For<IContentfulClient>();
         
         var controller = new ContentfulController(new CacheDisabledDistributedCache(), contentfulClient);
         
-        var result = controller.Homepage();
+        var result = await controller.Homepage(new MockContentfulConfiguration());
         
         Assert.That(result, Is.InstanceOf<RedirectResult>());
     }

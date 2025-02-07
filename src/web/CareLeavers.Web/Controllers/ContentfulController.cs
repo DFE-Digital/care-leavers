@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Xml.Linq;
 using CareLeavers.Web.Caching;
+using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Models.Content;
 using Contentful.Core;
@@ -45,12 +46,11 @@ public class ContentfulController : Controller
         }
     };
     
-    public const string HomepageSlug = "home";
-    
     [Route("/")]
-    public IActionResult Homepage()
+    public async Task<IActionResult> Homepage([FromServices] IContentfulConfiguration contentfulConfiguration)
     {
-        return Redirect($"/{HomepageSlug}");
+        var config = await contentfulConfiguration.GetConfiguration();
+        return Redirect($"/{config.HomePage?.Slug}");
     }
     
     [Route("/json/{**slug}")]
