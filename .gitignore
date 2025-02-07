@@ -356,8 +356,6 @@ src/web/CareLeavers.Web/wwwroot
 # Node.js dependencies
 .ntvs_analysis.dat
 node_modules/
-package-lock.json
-yarn.lock
 
 # Logs
 logs/
