@@ -72,6 +72,7 @@ try
         renderer.AddRenderer(new GDSHeaderRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSAssetRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSGridRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSHorizontalRulerContentRenderer());
 
         return renderer;
     });
@@ -145,9 +146,11 @@ try
         context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
         await next();
     });
-
+    
+    
     app.UseCsp(x =>
     {
+       
         x.ByDefaultAllow.FromSelf();
 
         var config = app.Configuration.GetSection("Csp").Get<CspConfiguration>() ?? new CspConfiguration();
@@ -165,19 +168,28 @@ try
         config.AllowStyleUrls.ForEach(f => x.AllowStyles.From(f));
 
         x.AllowFonts
-            .FromSelf();
+            .FromSelf()
+            .From("data:");
 
         config.AllowFontUrls.ForEach(f => x.AllowFonts.From(f));
-
-        x.AllowFraming.FromSelf();
+        
+        x.AllowFraming.FromNowhere(); // Block framing on other sites, equivalent to X-Frame-Options: DENY
 
         x.AllowFormActions.ToSelf();
 
         config.AllowFrameUrls.ForEach(f => x.AllowFrames.From(f));
 
-        x.AllowImages.FromSelf();
+        x.AllowImages
+            .FromSelf()
+            .From("data:");
         
         config.AllowImageUrls.ForEach(f => x.AllowImages.From(f));
+
+        x.AllowConnections
+            .ToSelf();
+        
+        config.AllowConnectUrls.ForEach(f => x.AllowConnections.To(f));
+        
     });
 
     await app.RunAsync();

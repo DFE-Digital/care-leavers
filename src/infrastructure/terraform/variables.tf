@@ -31,3 +31,19 @@ variable "contentful_space_id" {
   type        = string
   sensitive   = true
 }
+
+variable "contentful_environment" {
+  description = "Contentful Environment"
+  type        = string
+}
+
+variable "contentful_preview" {
+  description = "Contentful Preview"
+  type        = bool
+}
+
+variable "caching_type" {
+  description = "Caching type"
+  type        = string
+}
+

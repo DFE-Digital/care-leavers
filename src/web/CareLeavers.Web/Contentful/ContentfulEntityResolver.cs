@@ -5,11 +5,13 @@ namespace CareLeavers.Web.Contentful;
 
 public class ContentfulEntityResolver : IContentTypeResolver
 {
-    private Dictionary<string, Type> _types = new()
+    private readonly Dictionary<string, Type> _types = new()
     {
         { Page.ContentType, typeof(Page) },
         { Grid.ContentType, typeof(Grid) },
-        { Card.ContentType, typeof(Card) }
+        { Card.ContentType, typeof(Card) },
+        { RichContent.ContentType, typeof(RichContent) },
+        { RichContentBlock.ContentType, typeof(RichContentBlock) }
     };
     
     public Type? Resolve(string contentTypeId)

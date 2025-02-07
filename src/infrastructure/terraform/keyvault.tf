@@ -9,8 +9,8 @@ resource "azurerm_key_vault" "key-vault" {
   access_policy {
     object_id          = var.github_principal
     tenant_id          = data.azurerm_client_config.client.tenant_id
-    secret_permissions = ["Get", "List", "Set", "Delete", "Purge"]
-    key_permissions    = ["Get", "List", "Create", "Purge", "Delete"]
+    secret_permissions = ["Get", "List", "Set", "Delete", "Purge", "Recover"]
+    key_permissions    = ["Get", "List", "Create", "Purge", "Delete", "Recover"]
   }
 
   # Web app accessing config secrets
