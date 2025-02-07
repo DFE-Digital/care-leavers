@@ -11,7 +11,14 @@ module.exports = function (migration) {
         .type("Symbol")
         .localized(false)
         .required(true)
-        .validations([])
+        .validations([
+            {
+                size: {
+                    "min": null,
+                    "max": 25
+                }
+            }
+        ])
         .disabled(false)
         .omitted(false);
 
