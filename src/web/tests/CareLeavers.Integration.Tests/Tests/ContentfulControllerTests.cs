@@ -1,5 +1,6 @@
 using System.Net;
 using System.Xml;
+using CareLeavers.Integration.Tests.TestSupport;
 
 namespace CareLeavers.Integration.Tests.Tests;
 
@@ -46,9 +47,8 @@ public class ContentfulControllerTests
         // Arrange
         var client = WebFixture.GetClient();
         var wrapper = await File.ReadAllTextAsync(Path.Combine(WebFixture.WrapperBasePath, "RequestWrapper.json"));
-
         wrapper = wrapper.Replace("**REPLACE**", string.Empty);
-        
+
         WebFixture.SetContentfulJson(wrapper);
         
         // Act

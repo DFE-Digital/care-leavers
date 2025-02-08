@@ -31,9 +31,8 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
                 .ToList();
 
             descriptorsToRemove.ForEach(x => services.Remove(x));
-
+            
             var httpClient = new HttpClient(FakeMessageHandler);
-
             var contentfulClient = new ContentfulClient(httpClient, "test", "test", "test");
             contentfulClient.SerializerSettings.Converters.RemoveAt(0);
             contentfulClient.SerializerSettings.Converters.Insert(0, new GDSAssetJsonConverter());
@@ -42,7 +41,7 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
             {
                 NamingStrategy = new CamelCaseNamingStrategy()
             };
-            
+
             services.AddSingleton<IContentfulClient>(x => contentfulClient);
             
             services.AddSingleton<IDistributedCache, CacheDisabledDistributedCache>();

@@ -9,12 +9,16 @@ public class SnapshotTests
     [
         new("SimpleParagraph")
         {
-            TestName = "Assert Simple Paragraphs"
+            TestName = "Simple Paragraphs tagged with govuk classes"
         },
         new ("SimpleAsset")
         {
-            TestName = "Assert Simple Asset"
-        }
+            TestName = "Image asset rendered correctly"
+        },
+        new ("HomePageWithSupport")
+        {
+            TestName = "Home page from prototype with support section"
+        },
     ];
     
     [TestCaseSource(nameof(TestCases)), Explicit]
@@ -55,7 +59,7 @@ public class SnapshotTests
         
         return sw.ToString();
     }
-
+    
     private static async Task<string> FullJson(string content)
     {
         var wrapper = await File.ReadAllTextAsync(Path.Combine(WebFixture.WrapperBasePath, "RequestWrapper.json"));
