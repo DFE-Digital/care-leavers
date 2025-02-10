@@ -1,22 +1,25 @@
 # Contentful Migration
-cd into CareLeavers.Web
+## Install the CLI
+Install the Contentful CLI using
+
+`yarn global add contentful-cli`
+
+## Login to Contentful
 login to contentful with either
 
 `contentful login --management-token $MANAGEMENT_TOKEN`
 or
 `contentful login`
 
-to run a migration
-
-To run the migrations, extract the migration files
+## Running Migrations
+To run the migrations, navigate to the migrations folder
 ```
-cd contentful/migrations
-tar -zxf migrations.tar.gz
+cd contentful/migration
 ```
 
-add
-DELIVERY_API_KEY , PREVIEW_API_KEY , SPACE_ID , MANAGEMENT_TOKEN
-to a .env file in the migrations folder
+Add `DELIVERY_API_KEY` , `PREVIEW_API_KEY` , `SPACE_ID` , and `MANAGEMENT_TOKEN`
+to a `.env` file in the migration folder
+
 run 
 ```
 node --env-file=.env migrate.js <0004-grid.cjs>
