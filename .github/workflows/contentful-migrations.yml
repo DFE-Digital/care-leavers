@@ -16,7 +16,7 @@ on:
 jobs:
   contentful:
     runs-on: ubuntu-latest
-
+    name: Run Contentful Migrations
     steps:
       - name: Set Node.js 20.x
         uses: actions/setup-node@v4
@@ -28,6 +28,14 @@ jobs:
 
       - name: Login to Contentful with management token
         run: contentful login --management-token "${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}"
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+          cache: true
+          cache-dependency-path: |
+            src/contentful/CareLeavers.ContentfulMigrations/packages.lock.json
 
       - name: Deploy Contentful migrations
         working-directory: ./src/contentful/CareLeavers.ContentfulMigrations
