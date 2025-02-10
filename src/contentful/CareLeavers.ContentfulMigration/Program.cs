@@ -102,9 +102,9 @@ if (!existingMigrationTrackers.Any())
     
     await managementClient.PublishEntry(resp.SystemProperties.Id, resp.SystemProperties.Version ?? 1);
     
+    await Task.Delay(2000);
+    
     existingMigrationTrackers = (await contentClient.GetEntries(query)).ToList();
-
-    await Task.Delay(1000);
 }
 
 var migrationTracker = existingMigrationTrackers.First();
