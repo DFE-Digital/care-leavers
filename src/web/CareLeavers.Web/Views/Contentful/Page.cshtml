@@ -42,11 +42,19 @@
             <hr/>
             <partial name="_LastUpdated" model="@Model.Sys"/>
         }
+        @if (Model.ShowShareThis && Model.Width == PageWidth.FullWidth)
+        {
+            <div class="sharethis-inline-share-buttons"></div>
+        }
     </div>
     @if (Model.SecondaryContent != null && Model.Width != PageWidth.FullWidth)
     {
         <div class="govuk-grid-column-one-third">
             <gds-contentful-rich-text document="@Model.SecondaryContent"></gds-contentful-rich-text>
+            @if (Model.ShowShareThis)
+            {
+                <div class="sharethis-inline-share-buttons"></div>
+            }
         </div>
     }
 </div>
