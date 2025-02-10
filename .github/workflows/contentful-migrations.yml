@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Run Contentful Migrations
     steps:
+      - uses: actions/checkout@v4
+
       - name: Set Node.js 20.x
         uses: actions/setup-node@v4
         with:
@@ -33,7 +35,7 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
-          
+
       - name: Deploy Contentful migrations
         working-directory: ./src/contentful/CareLeavers.ContentfulMigrations
         env:
