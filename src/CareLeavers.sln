@@ -28,7 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "migration", "migration", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CareLeavers.Web.Tests", "web\tests\CareLeavers.Web.Tests\CareLeavers.Web.Tests.csproj", "{8379A62E-D8D0-4931-9D73-4EE31C34E2CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CareLeavers.ContenfulMigration", "contentful\CareLeavers.ContenfulMigration\CareLeavers.ContenfulMigration.csproj", "{492AFF5D-CFA8-4E05-BAD2-ADF0F1470910}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CareLeavers.ContentfulMigration", "contentful\CareLeavers.ContentfulMigration\CareLeavers.ContentfulMigration.csproj", "{492AFF5D-CFA8-4E05-BAD2-ADF0F1470910}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
