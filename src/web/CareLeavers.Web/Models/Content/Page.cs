@@ -27,6 +27,8 @@ public class Page : ContentfulContent
     
     public bool ShowLastUpdated { get; set; }
     
+    public bool ShowShareThis { get; set; }
+    
     public Document? Header { get; set; }
     
     public Document? Footer { get; set; }
