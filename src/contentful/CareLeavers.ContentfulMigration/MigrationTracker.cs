@@ -1,6 +1,6 @@
 using Contentful.Core.Models;
 
-namespace CareLeavers.ContenfulMigration;
+namespace CareLeavers.ContentfulMigration;
 
 public class MigrationTracker : IContent
 {
