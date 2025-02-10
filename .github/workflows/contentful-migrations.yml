@@ -35,9 +35,12 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+          cache: true
+          cache-dependency-path: |
+              src/contentful/CareLeavers.ContentfulMigrations/packages.lock.json
 
       - name: Deploy Contentful migrations
-        working-directory: ./src/contentful/CareLeavers.ContentfulMigrations
+        working-directory: src/contentful/CareLeavers.ContentfulMigrations
         env:
           ContentfulOptions__DeliveryApiKey: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
           ContentfulOptions__SpaceId: ${{ secrets.CONTENTFUL_SPACE_ID }}
