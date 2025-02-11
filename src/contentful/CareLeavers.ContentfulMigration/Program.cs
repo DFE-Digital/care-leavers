@@ -48,6 +48,7 @@ catch (ContentfulException)
             Id = "migrationTracker",
         },
         Name = "Migration Tracker",
+        Description = "Tracks applied contentful migrations",
         DisplayField = "migrations",
         Fields =
         [
@@ -55,11 +56,7 @@ catch (ContentfulException)
             {
                 Id = "migrations",
                 Name = "Migrations",
-                Type = "Array",
-                Items = new Schema
-                {
-                    Type = "Symbol"
-                }
+                Type = "Object"
             }
         ]
     });
@@ -92,7 +89,7 @@ if (!existingMigrationTrackers.Any())
         SystemProperties = new SystemProperties(),
         Fields = new
         {
-            migrations = new List<string>()
+            migrations = new List<Migration>()
         }
     };
     
@@ -120,20 +117,28 @@ var anyMigrationsHaveApplied = false;
 
 foreach (var migrationFile in migrationFiles)
 {
-    if (migrationTracker.Migrations.Contains(migrationFile))
+    var existingMigration = migrationTracker.Migrations.SingleOrDefault(x => x.Name == migrationFile);
+    
+    if (existingMigration != null)
     {
         Console.WriteLine($"Migration {migrationFile} already applied.");
         continue;
     }
     
     Console.WriteLine($"Applying migration {migrationFile}.");
+
+    var success = await RunContentfulCommand(
+        $"space migration --space-id \"{contentfulOptions.SpaceId}\" " +
+        $"--environment-id \"{contentfulOptions.Environment}\" " +
+        $"--management-token \"{contentfulOptions.ManagementApiKey}\" " +
+        $"\"Migrations/{migrationFile}.cjs\" --yes");
     
-    await RunContentfulCommand($"space migration --space-id \"{contentfulOptions.SpaceId}\" " +
-                               $"--environment-id \"{contentfulOptions.Environment}\" " +
-                               $"--management-token \"{contentfulOptions.ManagementApiKey}\" " +
-                               $"\"Migrations/{migrationFile}.cjs\" --yes");
-    
-    migrationTracker.Migrations.Add(migrationFile);
+    migrationTracker.Migrations.Add(new Migration
+    {
+        Name = migrationFile ?? string.Empty,
+        AppliedAtUtc = DateTime.UtcNow,
+        Success = success
+    });
     
     anyMigrationsHaveApplied = true;
 }
@@ -164,7 +169,7 @@ if (anyMigrationsHaveApplied)
         (updatedEntryResp.SystemProperties.Version ?? 1));
 }
 
-Task RunContentfulCommand(string args)
+async Task<bool> RunContentfulCommand(string args)
 {
     var process = new Process
     {
@@ -184,7 +189,9 @@ Task RunContentfulCommand(string args)
         Console.WriteLine(process.StandardOutput.ReadLine());
     }
 
-    return process.WaitForExitAsync();
+    await process.WaitForExitAsync();
+    
+    return process.ExitCode == 0;
 }
 
 return 0;
