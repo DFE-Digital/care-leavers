@@ -2,11 +2,18 @@
 @{
     string? link = Model?.Link?.Slug ?? string.Empty;
 }
+<style asp-add-nonce="true">
+    #image-container {
+        background-image: url('@Model?.Image?.File?.Url')   
+    }
+    
+</style>
+
 <div class="banner-content">
     <div class="govuk-grid-row split-panel">
         <div class="govuk-grid-column-one-half image-column">
             <a href="@link">
-                <contentful-image asset="Model.Image" class="full-width-image" title="@Model.Title"/>
+                <div class="image-container" ></div>
             </a>
         </div>
         <div class="govuk-grid-column-one-half text-column">
