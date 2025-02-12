@@ -37,24 +37,26 @@
         }
         @* ShowCOntentBlock *@
         <gds-contentful-rich-text document="@Model.MainContent"></gds-contentful-rich-text>
+        @if (Model.Width == PageWidth.FullWidth)
+        {
+            <partial name="ShareThis" model="Model.ShowShareThis"/>
+        }
+        
         @if (Model.ShowLastUpdated)
         {
             <hr/>
             <partial name="_LastUpdated" model="@Model.Sys"/>
         }
-        @if (Model.ShowShareThis && Model.Width == PageWidth.FullWidth)
-        {
-            <div class="sharethis-inline-share-buttons"></div>
-        }
+        
     </div>
-    @if (Model.SecondaryContent != null && Model.Width != PageWidth.FullWidth)
+    @if (Model.Width == PageWidth.TwoThirds)
     {
         <div class="govuk-grid-column-one-third">
-            <gds-contentful-rich-text document="@Model.SecondaryContent"></gds-contentful-rich-text>
-            @if (Model.ShowShareThis)
+            @if (Model.SecondaryContent != null)
             {
-                <div class="sharethis-inline-share-buttons"></div>
+                <gds-contentful-rich-text document="@Model.SecondaryContent"></gds-contentful-rich-text>
             }
+            <partial name="ShareThis" model="Model.ShowShareThis"/>
         </div>
     }
 </div>
