@@ -12,8 +12,8 @@
 
 @{
     var config = await ContentfulConfiguration.GetConfiguration();
-    var analyticsOptions = new AnalyticsOptions();
-    Configuration.GetSection(AnalyticsOptions.Name).Bind(analyticsOptions);
+    var analyticsOptions = new ScriptOptions();
+    Configuration.GetSection(ScriptOptions.Name).Bind(analyticsOptions);
 }
 
 <!DOCTYPE html>
@@ -42,6 +42,9 @@
         </script>
         <!-- End Clarity -->
     }
+    <!-- Begin ShareThis -->
+    <script type="text/javascript" asp-add-nonce src="https://platform-api.sharethis.com/js/sharethis.js#property=@analyticsOptions.ShareThis&product=inline-share-buttons&source=platform" async="async"></script>
+    <!-- End ShareThis -->
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - @config.ServiceName</title>

@@ -188,7 +188,7 @@ try
 
         x.AllowStyles
             .FromSelf()
-            .AddNonce();
+            .AllowUnsafeInline();
 
         config.AllowStyleUrls.ForEach(f => x.AllowStyles.From(f));
 
