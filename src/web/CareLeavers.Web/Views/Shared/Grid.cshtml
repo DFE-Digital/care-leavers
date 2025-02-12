@@ -47,25 +47,25 @@
             </section>
             break;
 
-        @* case GridType.Banner: *@
-        @*     @if (Model.Content != null && Model.Content.Any()) *@
-        @*     { *@
-        @*         <section class="dfe-section banner"> *@
-        @*             <partial model="@Model.Content.FirstOrDefault() as Card" name="Grid/Banner"/> *@
-        @*         </section> *@
-        @*     } *@
-        @* *@
-        @*     break; *@
-        @* case GridType.SmallBanner: *@
-        @*     @if (Model.Content != null && Model.Content.Any()) *@
-        @*     { *@
-        @*         <section class="dfe-section banner"> *@
-        @*             <partial model="@(Card)Model.Content.FirstOrDefault()" name="Grid/SmallBanner"/> *@
-        @*         </section> *@
-        @*     } *@
-        @* *@
-        @*     break; *@
-        @* *@
+        case GridType.Banner:
+            @if (Model.Content != null && Model.Content.Any())
+            {
+                <section class="dfe-section banner">
+                    <partial model="@Model.Content.FirstOrDefault() as Card" name="Grid/Banner"/>
+                </section>
+            }
+        
+            break;
+        case GridType.SmallBanner:
+            @if (Model.Content != null && Model.Content.Any())
+            {
+                <section class="dfe-section banner">
+                    <partial model="@(Card)Model.Content.FirstOrDefault()" name="Grid/SmallBanner"/>
+                </section>
+            }
+        
+            break;
+        
         @* case GridType.ExternalLinks: *@
         @*     <section class="dfe-section govuk-!-margin-top-5"> *@
         @* *@
