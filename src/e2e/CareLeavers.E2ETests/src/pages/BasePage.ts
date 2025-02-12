@@ -1,13 +1,14 @@
 import { Page, expect } from '@playwright/test';
 
 export class BasePage {
-    protected page: Page;
+    protected readonly page: Page;
 
     constructor(page: Page) {
         this.page = page;
     }
 
     async navigateTo(url: string) {
+        console.log(`Navigating to ${url}`);
         await this.page.goto(url, { waitUntil: 'networkidle' });
     }
 
@@ -16,6 +17,6 @@ export class BasePage {
     }
 
     async waitForPageLoad() {
-        await this.page.waitForLoadState('domcontentloaded');
+        await this.page.waitForLoadState('load');
     }
 }

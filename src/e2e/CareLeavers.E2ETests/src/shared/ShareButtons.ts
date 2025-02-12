@@ -9,8 +9,7 @@ export class ShareButtons {
 
     constructor(page: Page) {
         this.page = page;
-
-        // Define locators for share buttons
+        
         this.facebook = page.locator('[data-network="facebook"]');
         this.twitter = page.locator('[data-network="twitter"]');
         this.email = page.locator('[data-network="email"]');

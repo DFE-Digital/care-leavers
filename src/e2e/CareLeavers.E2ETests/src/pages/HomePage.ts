@@ -96,7 +96,7 @@ export class HomePage extends BasePage {
         await this.supportForCareLeaversNav.click();
         await this.page.waitForURL(/\/all-support/);
 
-        /*
+        /* update locators
         await this.yourRightsNav.click();
         await this.page.waitForURL(/\/your-rights/);
 
