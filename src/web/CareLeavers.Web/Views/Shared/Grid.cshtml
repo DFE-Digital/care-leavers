@@ -66,24 +66,24 @@
         
             break;
         
-        @* case GridType.ExternalLinks: *@
-        @*     <section class="dfe-section govuk-!-margin-top-5"> *@
-        @* *@
-        @*         @if (Model.ShowTitle) *@
-        @*         { *@
-        @*             <h2 class="govuk-heading-l" id="@TagBuilder.CreateSanitizedId(Model.Title, "-")">@Model.Title</h2> *@
-        @*         } *@
-        @*         @if (Model.Content != null) *@
-        @*         { *@
-        @*             @foreach (var content in Model.Content) *@
-        @*             { *@
-        @*                 var externalAgency = (ExternalAgency)content; *@
-        @*                 <partial model="@externalAgency" name="Grid/ExternalAgency"/> *@
-        @*             } *@
-        @*         } *@
-        @*     </section> *@
-        @* *@
-        @*     break; *@
+        case GridType.ExternalLinks:
+            <section class="dfe-section govuk-!-margin-top-5">
+        
+                @if (Model.ShowTitle)
+                {
+                    <h2 class="govuk-heading-l" id="@TagBuilder.CreateSanitizedId(Model.Title, "-")">@Model.Title</h2>
+                }
+                @if (Model.Content != null)
+                {
+                    @foreach (var content in Model.Content)
+                    {
+                        var externalAgency = (ExternalAgency)content;
+                        <partial model="@externalAgency" name="Grid/ExternalAgency"/>
+                    }
+                }
+            </section>
+        
+            break;
 
     }
 }

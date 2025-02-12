@@ -1,0 +1,18 @@
+@model CareLeavers.Web.Models.Content.ExternalAgency
+
+<div class="dfe-box box-ext">
+    <div class="box-icon">
+        @if (Model.Logo != null)
+        {
+            <gds-contentful-image asset="Model.Logo"/>   
+        }
+    </div>
+    <div class="box-content">
+        <h3 class="govuk-heading-s"><a href="@Model.Url" target="_blank">@Model.Name</a> <span class="govuk-body-s">(Opens in a new tab)</span></h3>
+        <p class="govuk-body-s">@Model.Description</p>
+        <p class="govuk-body-s"><strong>Call:</strong> @Model.Call</p>
+        <p class="govuk-body-s"><strong>Opening times:</strong> @Model.OpeningTimes</p>
+        <p class="govuk-body-s"><strong>Free:</strong> @(Model.Free ? "Yes" : "No")</p>
+        <p class="govuk-body-s"><strong>Accessibility:</strong> @Model.Accessibility</p>
+    </div>
+</div>

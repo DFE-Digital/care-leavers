@@ -19,6 +19,11 @@ public class SnapshotTests
         {
             TestName = "Home page from prototype with support section"
         },
+        new("BannerTestPage")
+        {
+            TestName = "Banner Test Page"
+        }
+
     ];
     
     [TestCaseSource(nameof(TestCases)), Explicit]
