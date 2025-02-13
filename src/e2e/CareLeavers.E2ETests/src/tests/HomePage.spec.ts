@@ -24,4 +24,13 @@ test.describe('Home Page Tests', () => {
     test('should assert page elements are correct', async () => {
         await homePage.assertPageElements();
     });
+
+    test('should verify navigation for all support cards', async () => {
+        const supportCards = [
+            { title: "Money and benefits", url: "/support-money-and-benefits" },
+            { title: "Housing and accommodation", url: "/support-housing-and-accommodation" }
+            //add more cards
+        ];
+        await homePage.verifySupportCardsNavigation(supportCards);
+    });
 });

@@ -20,6 +20,7 @@ export class HomePage extends BasePage {
     private yourRightsNav: Locator;
     private leavingCareGuidesNav: Locator;
     private helplinesNav: Locator;
+    private supportCards: Locator;
 
     constructor(page: Page) {
         super(page);
@@ -47,6 +48,9 @@ export class HomePage extends BasePage {
         this.yourRightsNav = page.locator('[role="link"][aria-label="Your rights"]');
         this.leavingCareGuidesNav = page.locator('[role="link"][aria-label="Leaving care guides"]');
         this.helplinesNav = page.locator('[role="link"][aria-label="Helplines"]');
+        // Generic locator for all cards on the home page
+        this.supportCards = page.locator('.hf-card-container');
+
     }
     
     async openHomePage() {
@@ -106,5 +110,19 @@ export class HomePage extends BasePage {
         await this.helplinesNav.click();
         await this.page.waitForURL(/\/helplines/);
         */
+    }
+    
+    async clickSupportCard(cardTitle: string, expectedUrl: string) {
+        // Find the card with the matching title and Click
+        const card = this.supportCards.filter({ hasText: cardTitle });
+        await card.click();
+        await this.page.waitForURL(expectedUrl); // Ensure navigation to the correct URL
+    }
+
+    async verifySupportCardsNavigation(cards: { title: string; url: string }[]) {
+        for (const card of cards) {
+            await this.clickSupportCard(card.title, card.url);
+            await this.page.goBack(); // Navigate back to the home page
+        }
     }
 }
