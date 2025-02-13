@@ -75,7 +75,7 @@
       ]
     }
   },
-  "footer": null,
+  "showFooter": true,
   "mainContent": {
     "$type": "Contentful.Core.Models.Document, Contentful.Core",
     "nodeType": "document",

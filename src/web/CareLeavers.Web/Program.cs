@@ -99,6 +99,7 @@ try
         renderer.AddRenderer(new GDSGridRenderer(serviceProvider));
         renderer.AddRenderer(new GDSHorizontalRulerContentRenderer());
         renderer.AddRenderer(new GDSRichContentRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSEntityLinkContentRenderer(renderer.Renderers));
 
         return renderer;
     });
