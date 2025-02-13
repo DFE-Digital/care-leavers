@@ -1,6 +1,9 @@
+@using CareLeavers.Web.Configuration
 @using CareLeavers.Web.Models.Enums
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model CareLeavers.Web.Models.Content.Page
+
+@inject IContentfulConfiguration ContentfulConfiguration
 
 @{
     ViewBag.Title = Model.Title;
@@ -60,3 +63,18 @@
         </div>
     }
 </div>
+
+@{
+    var config = await ContentfulConfiguration.GetConfiguration();
+}
+@if (Model.ShowFooter && config.Footer != null)
+{
+    @section AfterGDSContent
+    {
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <gds-contentful-rich-text document="@config.Footer"/>
+            </div>
+        </div>
+    }
+}

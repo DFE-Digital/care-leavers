@@ -29,9 +29,9 @@ public class Page : ContentfulContent
     
     public bool ShowShareThis { get; set; }
     
-    public Document? Header { get; set; }
+    public bool ShowFooter { get; set; }
     
-    public Document? Footer { get; set; }
+    public Document? Header { get; set; }
     
     public Document? MainContent { get; set; }
     
