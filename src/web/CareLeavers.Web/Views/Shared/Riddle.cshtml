@@ -1,0 +1,12 @@
+@model CareLeavers.Web.Models.Content.Riddle
+
+<div class="riddle2-wrapper"
+     data-rid-id="@Model.RiddleId"
+     data-auto-scroll="true"
+     data-is-fixed-height-enabled="false"
+     data-bg="#fff"
+     data-fg="#00205b"
+     data-embed-url="https://www.riddle.com/embed/a/@Model.RiddleId?lazyImages=false&staticHeight=false">
+    <script src="https://www.riddle.com/embed/build-embedjs/embedV2.js" asp-add-nonce="true"></script>
+    <iframe title="@Model.Title" allow="autoplay" referrerpolicy="strict-origin"></iframe>
+</div>

@@ -100,6 +100,8 @@ try
         renderer.AddRenderer(new GDSHorizontalRulerContentRenderer());
         renderer.AddRenderer(new GDSRichContentRenderer(serviceProvider));
         renderer.AddRenderer(new GDSEntityLinkContentRenderer(renderer.Renderers));
+        renderer.AddRenderer(new GDSStatusCheckerRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSRiddleRenderer(serviceProvider));
 
         return renderer;
     });

@@ -1,0 +1,41 @@
+@model CareLeavers.Web.Models.Content.StatusChecker
+<form method="post" action="/statuschecker/index">
+    <input type="hidden" name="CheckerId" id="CheckerId" value="@Model.Sys?.Id"/>
+    <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h2 class="govuk-fieldset__heading">
+                    @Model.InitialQuestion
+                </h2>
+            </legend>
+            @if (Model.Answers != null)
+            {
+                <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                    @foreach (var answer in Model.Answers)
+                    {
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" id="Answers" name="Answers" type="checkbox" value="@answer.Sys.Id">
+                            <label class="govuk-label govuk-checkboxes__label" for="waste">
+                                @answer.Answer
+                            </label>
+                        </div>
+                    }
+                </div>
+            }
+        </fieldset>
+        <fieldset class="govuk-fieldset govuk-!-padding-top-5">
+            <div class="govuk-button-group">
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+            </div>
+        </fieldset>
+    </div>
+
+    
+</form>
+
+
+    
+   
+
