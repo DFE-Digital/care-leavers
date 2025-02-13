@@ -26,7 +26,7 @@ export class HomePage extends BasePage {
         super(page);
         
         //Website title
-        this.supportForCareLeaversLink = page.locator('a.dfe-header__link--service', { hasText: 'E2E Tests Support for Care Leavers' });
+        this.supportForCareLeaversLink = page.locator('a.dfe-header__link--service', { hasText: 'Support for care leavers' });
 
         this.mainHeading = page.locator('h1');
         this.whoIsThisFor = page.locator('h3').first();
@@ -61,7 +61,7 @@ export class HomePage extends BasePage {
     async assertPageElements() {
         await this.validateURLContains('/home');
         
-        await expect(this.supportForCareLeaversLink).toHaveText('Support for care leavers');
+        await expect(this.supportForCareLeaversLink).toHaveText('E2E Tests Support for Care Leavers');
         await expect(this.mainHeading).toHaveText("Get support if you've been in care");
         await expect(this.firstParagraph).toContainText("Starting life as an adult can be challenging");
         await expect(this.whoIsThisFor).toHaveText("Who is this support for?");
