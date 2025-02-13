@@ -1,30 +1,15 @@
 // Import govuk
-@import "../../node_modules/govuk-frontend/dist/govuk/base";
-@import "../../node_modules/govuk-frontend/dist/govuk/core/index";
-@import "../../node_modules/govuk-frontend/dist/govuk/objects/index";
-@import "../../node_modules/govuk-frontend/dist/govuk/components/back-link/index";
-@import "../../node_modules/govuk-frontend/dist/govuk/components/breadcrumbs/index";
-@import "../../node_modules/govuk-frontend/dist/govuk/components/checkboxes/index";
-@import "../../node_modules/govuk-frontend/dist/govuk/components/cookie-banner/index";
-@import "../../node_modules/govuk-frontend/dist/govuk/components/details/index";
-@import "../../node_modules/govuk-frontend/dist/govuk/components/footer/index";
-@import "../../node_modules/govuk-frontend/dist/govuk/components/header/index";
-@import "../../node_modules/govuk-frontend/dist/govuk/components/phase-banner/index";
-@import "../../node_modules/govuk-frontend/dist/govuk/components/radios/index";
-@import "../../node_modules/govuk-frontend/dist/govuk/components/service-navigation/index";
-@import "../../node_modules/govuk-frontend/dist/govuk/components/skip-link/index";
+@import "../../node_modules/govuk-frontend/dist/govuk/index";
 
 // Import dfe
 @import '../../node_modules/dfe-frontend/packages/dfefrontend';
 
+
 // Override font
 @import url('https://rsms.me/inter/inter.css');
-$govuk-font-family: 'Inter', sans-serif;
-
-// body { background-color: green !important; }ß
-
+$govuk-font-family: 'Inter', sans-serif; // Override govuk font
 * {
-  font-family: 'Inter', sans-serif !important;
+  font-family: $govuk-font-family; // Override all fonts to match
 }
 
 .dfe-page-grey {
@@ -349,4 +334,9 @@ html
 
 a.dfe-header__link--service {
   font-weight: 800;
+}
+
+.riddle2-wrapper {
+  max-width:100%; width:100%;
+  margin: -35px auto 0;
 }
