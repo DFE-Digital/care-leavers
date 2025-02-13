@@ -1,6 +1,7 @@
 using CareLeavers.Web.Caching;
 using CareLeavers.Web.Models.Content;
 using Contentful.Core;
+using Contentful.Core.Models;
 using Contentful.Core.Search;
 using Microsoft.Extensions.Caching.Distributed;
 
@@ -33,6 +34,19 @@ public class ContentfulContentService : IContentService
             var pageEntries = await _contentfulClient.GetEntries(pages);
 
             return pageEntries.FirstOrDefault();
+        });
+    }
+    
+    public Task<StatusChecker?> GetStatusChecker(string id)
+    {
+        return _distributedCache.GetOrSetAsync($"statuschecker:{id}", async () =>
+        {
+            var query = new QueryBuilder<StatusChecker>()
+                .ContentTypeIs(StatusChecker.ContentType)
+                .Include(5)
+                .Limit(1);
+            
+            return await _contentfulClient.GetEntry(id, query);
         });
     }
 
