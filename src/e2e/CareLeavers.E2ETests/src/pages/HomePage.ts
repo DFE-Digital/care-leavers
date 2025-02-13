@@ -26,7 +26,7 @@ export class HomePage extends BasePage {
         super(page);
         
         //Website title
-        this.supportForCareLeaversLink = page.locator('a.dfe-header__link--service', { hasText: 'Support for care leavers' });
+        this.supportForCareLeaversLink = page.locator('a.dfe-header__link--service', { hasText: 'E2E Tests Support for Care Leavers' });
 
         this.mainHeading = page.locator('h1');
         this.whoIsThisFor = page.locator('h3').first();
