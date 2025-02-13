@@ -1,4 +1,4 @@
-name: Contentful Migrations
+name: Deploy - Contentful Migrations
 
 on:
   workflow_dispatch:
