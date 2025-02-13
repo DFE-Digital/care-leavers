@@ -5,7 +5,7 @@ module.exports = function (migration) {
         .description("A container to render a Riddle quiz/test")
         .displayField("title");
 
-    riddle.createField("Title")
+    riddle.createField("title")
         .name("Title")
         .type("Symbol")
         .localized(false)
