@@ -21,9 +21,11 @@
 @import url('https://rsms.me/inter/inter.css');
 $govuk-font-family: 'Inter', sans-serif;
 
-// body { background-color: green !important; }
+// body { background-color: green !important; }ß
 
-
+* {
+  font-family: 'Inter', sans-serif !important;
+}
 
 .dfe-page-grey {
   padding-top: 40px;
