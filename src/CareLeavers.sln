@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CareLeavers.Web.Tests", "we
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CareLeavers.ContentfulMigration", "contentful\CareLeavers.ContentfulMigration\CareLeavers.ContentfulMigration.csproj", "{492AFF5D-CFA8-4E05-BAD2-ADF0F1470910}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CareLeavers.TranslationConsole", "web\CareLeavers.TranslationConsole\CareLeavers.TranslationConsole.csproj", "{6C4A1D7C-197E-4133-B761-934693DD49EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{492AFF5D-CFA8-4E05-BAD2-ADF0F1470910}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{492AFF5D-CFA8-4E05-BAD2-ADF0F1470910}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{492AFF5D-CFA8-4E05-BAD2-ADF0F1470910}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C4A1D7C-197E-4133-B761-934693DD49EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C4A1D7C-197E-4133-B761-934693DD49EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C4A1D7C-197E-4133-B761-934693DD49EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C4A1D7C-197E-4133-B761-934693DD49EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E2693F79-63D7-4F3D-9C0B-F5E31D94EB99} = {44B75E10-4732-4A3D-9EB6-41EC5CBF114F}
@@ -59,5 +65,6 @@ Global
 		{BE87DC58-9B7F-4581-8ADB-44EB89DC6FDE} = {9E5853BE-22B8-406E-B305-CED3484E201F}
 		{8379A62E-D8D0-4931-9D73-4EE31C34E2CC} = {44B75E10-4732-4A3D-9EB6-41EC5CBF114F}
 		{492AFF5D-CFA8-4E05-BAD2-ADF0F1470910} = {CFFDF5B4-39F8-4E33-9AAA-E3D410A310EA}
+		{6C4A1D7C-197E-4133-B761-934693DD49EC} = {3AEA36B3-C8A6-475D-B849-0D334C5F9A43}
 	EndGlobalSection
 EndGlobal
