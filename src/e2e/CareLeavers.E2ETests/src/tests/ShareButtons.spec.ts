@@ -8,7 +8,7 @@ const pagesToTest = [
     '/page3',*/
 ];
 
-test.describe('Share Buttons', () => {
+test.describe('Share Buttons Functionality Tests', () => {
     let shareButtons: ShareButtons;
 
     test.beforeEach(async ({ page }) => {
@@ -17,7 +17,7 @@ test.describe('Share Buttons', () => {
 
     // Loop through pagesToTest
     for (const pageUrl of pagesToTest) {
-        test(`should work correctly on ${pageUrl}`, async ({ context }) => {
+        test(`Share buttons should display and function correctly on the ${pageUrl}`, async ({ context }) => {
             await shareButtons.navigateTo(pageUrl);  
 
             // Check visibility of buttons
@@ -29,7 +29,8 @@ test.describe('Share Buttons', () => {
 
             // Check Twitter share dialog URL
             const twitterUrl = await shareButtons.clickTwitterButton(context);
-            expect(twitterUrl).toContain('twitter.com/intent/tweet');
+            expect(twitterUrl).toContain('x.com/intent');
+            
 
             // Check Email client popup URL
             const emailUrl = await shareButtons.clickEmailButton();
