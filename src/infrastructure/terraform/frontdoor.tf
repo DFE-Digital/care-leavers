@@ -32,6 +32,7 @@ resource "azurerm_cdn_frontdoor_origin" "frontdoor-web-origin" {
   priority                       = 1
   weight                         = 1
   name                           = "${local.service_prefix}-web-fd-origin"
+  enabled                        = true
 }
 
 resource "azurerm_cdn_frontdoor_endpoint" "frontdoor-web-endpoint" {
