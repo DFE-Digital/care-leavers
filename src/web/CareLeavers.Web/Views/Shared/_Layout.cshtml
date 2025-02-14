@@ -20,7 +20,7 @@
 <html class="govuk-template" lang="en">
 
 <head>
-    @if (!WebHostEnvironment.IsDevelopment() && !string.IsNullOrEmpty(scriptConfig.GTM))
+    @if (WebHostEnvironment.IsEnvironment("Test") && !string.IsNullOrEmpty(scriptConfig.GTM))
     {
         <!-- Google Tag Manager -->
         <script asp-add-nonce="true">
@@ -33,7 +33,7 @@
             })(window,document,'script','dataLayer','@scriptConfig.GTM');</script>
         <!-- End Google Tag Manager -->
     }
-    @if (!WebHostEnvironment.IsDevelopment() && !string.IsNullOrEmpty(scriptConfig.Clarity))
+    @if (!string.IsNullOrEmpty(scriptConfig.Clarity))
     {
         <!-- Clarity -->
         <script type="text/javascript" asp-add-nonce="true">

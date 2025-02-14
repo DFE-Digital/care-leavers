@@ -47,6 +47,11 @@ variable "caching_type" {
   type        = string
 }
 
+variable "scripts_clarity" {
+  description = "Clarity code"
+  type        = string
+}
+
 variable "aspnetcore_environment" {
   description = "ASP.NET Core environment"
   type        = string

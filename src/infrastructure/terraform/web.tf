@@ -10,6 +10,7 @@ locals {
     "ApplicationInsights__ConnectionString" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.application-insights-connection-string.versionless_id})"
     "Caching__Type"                         = "None"
     "Caching__ConnectionString"             = lower(var.caching_type) == "redis" ? "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-cache-connection-string[0].versionless_id})" : ""
+    "Scripts__Clarity"                      = var.scripts_clarity,
     # "Translation__AzureApiKey"              = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.translation-access-key.versionless_id})"
   }
 }
