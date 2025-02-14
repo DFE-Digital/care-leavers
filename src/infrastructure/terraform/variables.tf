@@ -37,8 +37,8 @@ variable "contentful_environment" {
   type        = string
 }
 
-variable "contentful_preview" {
-  description = "Contentful Preview"
+variable "contentful_use_preview_api" {
+  description = "Use Contentful Preview API?"
   type        = bool
 }
 
