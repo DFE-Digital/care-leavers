@@ -48,6 +48,6 @@ variable "caching_type" {
 }
 
 variable "aspnetcore_environment" {
-    description = "ASP.NET Core environment"
-    type        = string
+  description = "ASP.NET Core environment"
+  type        = string
 }
