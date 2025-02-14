@@ -8,12 +8,6 @@ variable "environment_prefix" {
   type        = string
 }
 
-variable "github_principal" {
-  description = "Github principal"
-  type        = string
-  sensitive   = true
-}
-
 variable "contentful_delivery_api_key" {
   description = "Contentful Delivery API Key"
   type        = string
