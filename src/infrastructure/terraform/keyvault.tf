@@ -62,4 +62,6 @@ resource "azurerm_key_vault_secret" "application-insights-connection-string" {
   key_vault_id = azurerm_key_vault.key-vault.id
   name         = "application-insights-connection-string"
   value        = azurerm_application_insights.application-insights.connection_string
+
+  depends_on = [azurerm_key_vault_access_policy.github-kv-access]
 }
