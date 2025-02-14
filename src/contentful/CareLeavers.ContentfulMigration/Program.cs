@@ -117,9 +117,7 @@ var anyMigrationsHaveApplied = false;
 
 foreach (var migrationFile in migrationFiles)
 {
-    var existingMigration = migrationTracker.Migrations.SingleOrDefault(x => x.Name == migrationFile);
-    
-    if (existingMigration != null)
+    if (migrationTracker.Migrations.Any(x => x.Name == migrationFile && x.Success))
     {
         Console.WriteLine($"Migration {migrationFile} already applied.");
         continue;
