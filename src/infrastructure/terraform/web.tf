@@ -34,7 +34,6 @@ resource "azurerm_service_plan" "web-app-service-plan" {
 resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
   app_service_id                  = azurerm_linux_web_app.web-app-service.id
   name                            = "staging"
-  key_vault_reference_identity_id = azurerm_user_assigned_identity.web-app-staging-identity.id
 
   site_config {
     always_on = true
@@ -51,10 +50,7 @@ resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
   }
 
   identity {
-    type = "UserAssigned"
-    identity_ids = [
-      azurerm_user_assigned_identity.web-app-staging-identity.id
-    ]
+    type = "SystemAssigned"
   }
 
   app_settings = local.web_app_settings
@@ -67,7 +63,6 @@ resource "azurerm_linux_web_app" "web-app-service" {
   location                        = local.location
   name                            = "${local.service_prefix}-web-app-service"
   resource_group_name             = azurerm_resource_group.web-rg.name
-  key_vault_reference_identity_id = azurerm_user_assigned_identity.web-app-identity.id
   https_only                      = true
 
   site_config {
@@ -85,43 +80,10 @@ resource "azurerm_linux_web_app" "web-app-service" {
   }
 
   identity {
-    type = "UserAssigned"
-    identity_ids = [
-      azurerm_user_assigned_identity.web-app-identity.id
-    ]
+    type = "SystemAssigned"
   }
 
   app_settings = local.web_app_settings
 
   tags = local.common_tags
-}
-
-resource "azurerm_key_vault_secret" "contentful-delivery-api-key" {
-  key_vault_id = azurerm_key_vault.key-vault.id
-  name         = "contentful-delivery-api-key"
-  value        = var.contentful_delivery_api_key
-}
-
-resource "azurerm_key_vault_secret" "contentful-preview-api-key" {
-  key_vault_id = azurerm_key_vault.key-vault.id
-  name         = "contentful-preview-api-key"
-  value        = var.contentful_preview_api_key
-}
-
-resource "azurerm_key_vault_secret" "contentful-space-id" {
-  key_vault_id = azurerm_key_vault.key-vault.id
-  name         = "contentful-space-id"
-  value        = var.contentful_space_id
-}
-
-resource "azurerm_user_assigned_identity" "web-app-identity" {
-  location            = local.location
-  name                = "${local.service_prefix}-web-app-identity"
-  resource_group_name = azurerm_resource_group.web-rg.name
-}
-
-resource "azurerm_user_assigned_identity" "web-app-staging-identity" {
-  location            = local.location
-  name                = "${local.service_prefix}-web-app-staging-identity"
-  resource_group_name = azurerm_resource_group.web-rg.name
 }
