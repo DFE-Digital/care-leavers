@@ -54,7 +54,8 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
             {
                 Clarity = "test-clarity",
                 GTM = "GTM-TEST",
-                ShareThis = "abcdefghijk"
+                ShareThis = "abcdefghijk",
+                AddCssVersion = false
             }));
 
             services.AddSingleton<IContentfulConfiguration, MockContentfulConfiguration>();
