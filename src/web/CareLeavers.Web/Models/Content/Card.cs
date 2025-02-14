@@ -14,7 +14,7 @@ public class Card : ContentfulContent
     
     public Page? Link { get; set; }
 
-    public List<string> Types { get; set; } = [];
+    public List<string> Types { get; set; } = new();
 
     public int Position { get; set; } = 0;
 }

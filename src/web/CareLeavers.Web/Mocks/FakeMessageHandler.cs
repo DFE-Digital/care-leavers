@@ -7,8 +7,9 @@ public class FakeMessageHandler : HttpClientHandler
 {
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        var contentType = HttpUtility.ParseQueryString(request.RequestUri.Query).Get("content_type");
-        var slug = HttpUtility.ParseQueryString(request.RequestUri.Query).Get("fields.slug");
+        var queryVars = HttpUtility.ParseQueryString(request.RequestUri?.Query ?? string.Empty);
+        var contentType = queryVars.Get("content_type");
+        var slug = queryVars.Get("fields.slug");
         
         var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Mocks", "Json", $"{slug}.json");
         

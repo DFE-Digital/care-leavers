@@ -4,23 +4,23 @@
 @using Joonasw.AspNetCore.SecurityHeaders.Csp
 @using Joonasw.AspNetCore.SecurityHeaders.TagHelpers
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Options
 
 @inject IWebHostEnvironment WebHostEnvironment
 @inject ICspNonceService CspNonceService
 @inject IContentfulConfiguration ContentfulConfiguration
-@inject IConfiguration Configuration
+@inject IOptions<ScriptOptions> ScriptOptions
 
 @{
     var config = await ContentfulConfiguration.GetConfiguration();
-    var analyticsOptions = new ScriptOptions();
-    Configuration.GetSection(ScriptOptions.Name).Bind(analyticsOptions);
+    var scriptConfig = ScriptOptions.Value;
 }
 
 <!DOCTYPE html>
 <html class="govuk-template" lang="en">
 
 <head>
-    @if (WebHostEnvironment.IsProduction())
+    @if (!WebHostEnvironment.IsDevelopment() && !string.IsNullOrEmpty(scriptConfig.GTM))
     {
         <!-- Google Tag Manager -->
         <script asp-add-nonce="true">
@@ -30,38 +30,41 @@
                 j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
                 j.setAttribute('nonce','@CspNonceService.GetNonce()');
                 f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','@analyticsOptions.GTM');</script>
+            })(window,document,'script','dataLayer','@scriptConfig.GTM');</script>
         <!-- End Google Tag Manager -->
+    }
+    @if (!WebHostEnvironment.IsDevelopment() && !string.IsNullOrEmpty(scriptConfig.Clarity))
+    {
         <!-- Clarity -->
         <script type="text/javascript" asp-add-nonce="true">
             (function(c,l,a,r,i,t,y){
                 c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; 
                 t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
                 y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "@analyticsOptions.Clarity");
+            })(window, document, "clarity", "script", "@scriptConfig.Clarity");
         </script>
         <!-- End Clarity -->
     }
     <!-- Begin ShareThis -->
-    <script type="text/javascript" asp-add-nonce="true" src="https://platform-api.sharethis.com/js/sharethis.js#property=@analyticsOptions.ShareThis&product=inline-share-buttons&source=platform" async="async"></script>
+    <script type="text/javascript" asp-add-nonce="true" src="https://platform-api.sharethis.com/js/sharethis.js#property=@scriptConfig.ShareThis&product=inline-share-buttons&source=platform" async="async"></script>
     <!-- End ShareThis -->
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - @config.ServiceName</title>
     <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/assets/images/favicon.svg"/>
     @Html.GovUkFrontendStyleImports(appendVersion: true)
-    <link rel="stylesheet" href="~/css/dfefrontend.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/application.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/metadata.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/cta.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/dfefrontend.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="stylesheet" href="~/css/application.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="stylesheet" href="~/css/metadata.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="stylesheet" href="~/css/cta.css" asp-append-version="@scriptConfig.AddCssVersion" />
 </head>
 
 <body class="govuk-template__body">
-@if (WebHostEnvironment.IsProduction())
+@if (!WebHostEnvironment.IsDevelopment() && !string.IsNullOrEmpty(scriptConfig.GTM))
 {
     <!-- Google Tag Manager (noscript) -->
     <noscript>
-        <iframe title="GTM" src="https://www.googletagmanager.com/ns.html?id=GTM-M2CBTMTD "
+        <iframe title="GTM" src="https://www.googletagmanager.com/ns.html?id=@scriptConfig.GTM"
                 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 }

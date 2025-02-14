@@ -106,6 +106,7 @@ jobs:
           TF_VAR_contentful_environment: ${{ vars.CONTENTFUL_ENVIRONMENT }}
           TF_VAR_contentful_preview: ${{ vars.CONTENTFUL_PREVIEW }}
           TF_VAR_caching_type: ${{ vars.CACHING_TYPE }}
+          TF_VAR_aspnetcore_environment: ${{ github.event.inputs.environment }}
 
       - name: 'Terraform Apply'
         id: terraform_apply

@@ -11,7 +11,10 @@
                 </a>
             </div>
             <div class="govuk-grid-column-one-half text-column">
-                <span class="govuk-caption-l">@Model.Types.FirstOrDefault()</span>
+                @if (Model!.Types!.Any())
+                {
+                    <span class="govuk-caption-l">@Model.Types.FirstOrDefault()</span>
+                }
                 <h3 class="govuk-heading-l"><a href="@link">@Model.Title</a></h3>
                 <p class="govuk-body">@Model.Text</p>
                 <p class="govuk-!-margin-bottom-0">
