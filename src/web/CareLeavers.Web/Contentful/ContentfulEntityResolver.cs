@@ -10,6 +10,7 @@ public class ContentfulEntityResolver : IContentTypeResolver
         { Page.ContentType, typeof(Page) },
         { Grid.ContentType, typeof(Grid) },
         { Card.ContentType, typeof(Card) },
+        { RichContentBlock.ContentType, typeof(RichContentBlock) },
         { RichContent.ContentType, typeof(RichContent) },
         { AnswerEntity.ContentType, typeof(AnswerEntity) },
         { Riddle.ContentType, typeof(Riddle) },
