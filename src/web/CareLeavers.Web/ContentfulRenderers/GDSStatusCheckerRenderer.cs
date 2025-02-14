@@ -18,13 +18,14 @@ public class GDSStatusCheckerRenderer (IServiceProvider serviceProvider) : GDSRa
     /// <returns>Returns true if the content is a paragraph, otherwise false.</returns>
     public override bool SupportsContent(IContent content)
     {
-        if (content is EntryStructure)
+        if (content is EntryStructure structure)
         {
-            var structure = content as EntryStructure;
             if (structure.NodeType == "embedded-entry-block")
             {
                 if (structure.Data.Target is StatusChecker)
+                {
                     return true;
+                }
             }
         }
 

@@ -1,12 +1,9 @@
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Models.Content;
-using Microsoft.Extensions.Caching.Distributed;
 
 namespace CareLeavers.Web.Configuration;
 
-public class ContentfulConfiguration(
-    IDistributedCache distributedCache, 
-    IContentService contentService) : IContentfulConfiguration
+public class ContentfulConfiguration(IContentService contentService) : IContentfulConfiguration
 {
     private readonly SemaphoreSlim _semaphore = new(1, 1);
     private ContentfulConfigurationEntity? _content;

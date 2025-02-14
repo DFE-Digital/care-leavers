@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -27,6 +28,7 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
                     d.ServiceType == typeof(IContentfulClient) ||
                     d.ServiceType == typeof(ICspNonceService) ||
                     d.ServiceType == typeof(IDistributedCache) ||
+                    d.ServiceType == typeof(IOptions<ScriptOptions>) ||
                     d.ServiceType == typeof(IContentfulConfiguration))
                 .ToList();
 
@@ -47,6 +49,13 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
             services.AddSingleton<IDistributedCache, CacheDisabledDistributedCache>();
 
             services.AddSingleton<ICspNonceService, MockCspNonceService>();
+
+            services.AddScoped<IOptions<ScriptOptions>>(x => Options.Create(new ScriptOptions
+            {
+                Clarity = "test-clarity",
+                GTM = "GTM-TEST",
+                ShareThis = "abcdefghijk"
+            }));
 
             services.AddSingleton<IContentfulConfiguration, MockContentfulConfiguration>();
         });

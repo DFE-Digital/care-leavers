@@ -4,7 +4,7 @@ namespace CareLeavers.Web.Models.Content;
 
 public class ContentfulContent : IContent
 {
-    public SystemProperties? Sys { get; set; }
+    public SystemProperties Sys { get; set; } = new();
     
     public ContentfulMetadata? Metadata { get; set; }
     
