@@ -97,7 +97,6 @@ jobs:
         working-directory: ./src/infrastructure/terraform
         run: terraform plan -out plan.plan
         env:
-          TF_VAR_github_principal: ${{ secrets.AZURE_PRINCIPAL_ID }}
           TF_VAR_environment_prefix: ${{ vars.ENVIRONMENT_PREFIX }}
           TF_VAR_cip_environment: ${{ vars.CIP_ENVIRONMENT }}
           TF_VAR_contentful_delivery_api_key: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
