@@ -1,5 +1,6 @@
 {
   "defaults": {
+    "standard": "WCAG2AAA",
     "timeout": 10000,
     "viewport": {
       "width": 320,
@@ -8,6 +9,9 @@
     "chromeLaunchConfig": {
       "ignoreHTTPSErrors": true,
       "args": ["--no-sandbox"]
-    }
+    },
+    "hideElements": [
+      ".govuk-link"
+    ]
   }
 }

@@ -70,7 +70,7 @@ public class ContentfulContentService : IContentService
         return await _distributedCache.GetOrSetAsync("content:sitemap", async () =>
         {
             var pages = new QueryBuilder<Page>()
-                .ContentTypeIs("page")
+                .ContentTypeIs(Page.ContentType)
                 .SelectFields(x => new { x.Slug });
 
             var pageEntries = await _contentfulClient.GetEntries(pages);
