@@ -23,7 +23,7 @@ public class ContentfulController(IContentService contentService) : Controller
 
     [Route("/json/{**slug}")]
     [ExcludeFromCodeCoverage(Justification = "Development only")]
-    public async Task<IActionResult> ContentJson(string slug, [FromServices] IWebHostEnvironment environment)
+    public async Task<IActionResult> GetContentAsJson(string slug, [FromServices] IWebHostEnvironment environment)
     {
         if (!ModelState.IsValid)
         {
@@ -41,7 +41,7 @@ public class ContentfulController(IContentService contentService) : Controller
     }
 
     [Route("/{**slug}")]
-    public async Task<IActionResult> Contentful(string slug)
+    public async Task<IActionResult> GetContent(string slug)
     {
         var page = await contentService.GetPage(slug);
 
@@ -52,35 +52,4 @@ public class ContentfulController(IContentService contentService) : Controller
 
         return View("Page", page);
     }
-
-    [Route("sitemap.xml")]
-    public async Task<IActionResult> Sitemap([FromServices] IConfiguration configuration)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
-
-        var slugs = await contentService.GetSiteSlugs();
-        
-        XNamespace ns = "http://www.sitemaps.org/schemas/sitemap/0.9";
-
-        var xmlDoc = new XDocument(
-            new XDeclaration("1.0", "UTF-8", null),
-            new XElement(ns + "urlset",
-                slugs.Select(slug => new XElement(ns + "url",
-                    new XElement(ns + "loc", $"{configuration["BaseUrl"]}/{slug}")
-                ))
-            ));
-
-        var sw = new Utf8StringWriter();
-        xmlDoc.Save(sw);
-        
-        return Content(sw.ToString(), "application/xml");
-    }
-}
-
-public class Utf8StringWriter : StringWriter
-{
-    public override Encoding Encoding => Encoding.UTF8;
 }

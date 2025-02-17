@@ -26,18 +26,10 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
     
+    #region Additional Logging and Application Insights
+    
     Log.Logger.Information("Starting application");
     Log.Logger.Information("Environment: {Environment}", builder.Environment.EnvironmentName);
-    
-    builder.Services.AddControllersWithViews();
-    builder.Services.AddGovUkFrontend();
-    builder.Services.AddCsp(nonceByteAmount: 32);
-    builder.Services.AddHsts(options =>
-    {
-        options.MaxAge = TimeSpan.FromDays(365);
-        options.IncludeSubDomains = true;
-        options.Preload = true;
-    });
     
     builder.Services.AddSerilog((_, lc) => lc
         .ConfigureLogging(builder.Configuration["ApplicationInsights:ConnectionString"]));
@@ -55,7 +47,33 @@ try
             .UseAzureMonitor(x => x.ConnectionString = appInsightsConnectionString);
     }
 
-    builder.Services.AddHttpContextAccessor();
+    #endregion
+    
+    #region Controllers
+    
+    builder.Services.AddControllersWithViews();
+    
+    #endregion
+    
+    #region GOV.UK front end
+    
+    builder.Services.AddGovUkFrontend();
+    
+    #endregion
+    
+    #region Setup security and headers
+    
+    builder.Services.AddCsp(nonceByteAmount: 32);
+    builder.Services.AddHsts(options =>
+    {
+        options.MaxAge = TimeSpan.FromDays(365);
+        options.IncludeSubDomains = true;
+        options.Preload = true;
+    });
+    
+    #endregion
+    
+    #region Contentful
     
     builder.Services.AddScoped<IContentService, ContentfulContentService>();
     if (!builder.Environment.IsEnvironment("EndToEnd"))
@@ -79,11 +97,10 @@ try
         builder.Services.AddSingleton<IContentfulClient>(x => mockedContentfulClient);
         builder.Services.AddScoped<IContentfulConfiguration, MockedContentfulConfiguration>();
     }
-
-    builder.Services.AddHealthChecks();
-
+    
     builder.Services.AddTransient<HtmlRenderer>(serviceProvider =>
     {
+        // Turn off paragraph tags inside Contentful paragraph list items
         var renderer = new HtmlRenderer(new HtmlRendererOptions
         {
             ListItemOptions = new ListItemContentRendererOptions
@@ -92,7 +109,7 @@ try
             }
         });
 
-        // Add custom GDS renderer
+        // Add custom renderers
         renderer.AddRenderer(new GDSParagraphRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSHeaderRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSAssetRenderer(renderer.Renderers));
@@ -105,10 +122,18 @@ try
 
         return renderer;
     });
+    
+    #endregion
+    
+    #region Configuration
 
     builder.Services.AddOptions<ScriptOptions>().BindConfiguration(ScriptOptions.Name);
-    
     builder.Services.AddOptions<CachingOptions>().BindConfiguration(CachingOptions.Name);
+    
+    #endregion
+    
+    #region Distributed Caching
+    
     var cachingOptions = builder.Configuration.GetSection(CachingOptions.Name).Get<CachingOptions>();
 
     if (cachingOptions?.Type == "Memory")
@@ -127,7 +152,18 @@ try
         builder.Services.AddSingleton<IDistributedCache, CacheDisabledDistributedCache>();
     }
     
+    #endregion
+    
+    #region HTTP Context and Healthchecks
+    
+    builder.Services.AddHttpContextAccessor();
+    builder.Services.AddHealthChecks();
+    
+    #endregion
+    
     var app = builder.Build();
+    
+    #region Contentful Setup
 
     var contentfulClient = app.Services.GetRequiredService<IContentfulClient>();
     contentfulClient.SerializerSettings.Converters.RemoveAt(0);
@@ -142,28 +178,39 @@ try
     Constants.Serializer = contentfulClient.Serializer;
     Constants.SerializerSettings = contentfulClient.SerializerSettings;
 
+    #endregion
+    
+    #region Setup error pages and HSTS
+    
     if (!app.Environment.IsDevelopment())
     {
+        // TODO: Setup views for exceptions
         app.UseExceptionHandler("/Home/Error");
+        
+        // TODO: Setup view for 404 not found
+        
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
     }
+    
+    #endregion
 
+    #region Default setup, logging, HTTPS, static files, routing etc
+    
     app.UseSerilogRequestLogging();
-
     app.UseHttpsRedirection();
     app.UseStaticFiles();
-
     app.UseRouting();
-
     app.UseAuthorization();
-    
     app.MapHealthChecks("/health");
-
     app.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
+        pattern: "{controller=Contentful}/{action=Homepage}");
 
+    #endregion
+    
+    #region Security and Cross-Site-Scripting protection
+    
     // add headers
     app.Use(async (context, next) =>
     {
@@ -172,7 +219,6 @@ try
         context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
         await next();
     });
-    
     
     app.UseCsp(x =>
     {
@@ -217,6 +263,8 @@ try
         config.AllowConnectUrls.ForEach(f => x.AllowConnections.To(f));
 
     });
+    
+    #endregion
 
     await app.RunAsync();
 }

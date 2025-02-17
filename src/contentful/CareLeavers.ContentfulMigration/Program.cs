@@ -89,6 +89,7 @@ if (!existingMigrationTrackers.Any())
         SystemProperties = new SystemProperties(),
         Fields = new
         {
+            name = "Migration Tracker - DO NOT DELETE", 
             migrations = new List<Migration>()
         }
     };
@@ -154,6 +155,7 @@ if (anyMigrationsHaveApplied)
         },
         Fields = new
         {
+            name = "Migration Tracker - DO NOT DELETE",
             migrations = new Dictionary<string, dynamic>
             {
                 ["en-US"] = migrationTracker.Migrations
