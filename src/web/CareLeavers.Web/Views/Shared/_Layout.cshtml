@@ -60,7 +60,7 @@
 </head>
 
 <body class="govuk-template__body">
-@if (!WebHostEnvironment.IsDevelopment() && !string.IsNullOrEmpty(scriptConfig.GTM))
+@if (WebHostEnvironment.IsEnvironment("Test") && !string.IsNullOrEmpty(scriptConfig.GTM))
 {
     <!-- Google Tag Manager (noscript) -->
     <noscript>
