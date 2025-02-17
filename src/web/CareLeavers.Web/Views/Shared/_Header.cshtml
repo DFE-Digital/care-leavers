@@ -1,5 +1,14 @@
 @model CareLeavers.Web.Models.Content.ContentfulConfigurationEntity
 
+@inject IWebHostEnvironment WebHostEnvironment
+
+@if (!WebHostEnvironment.IsProduction())
+{
+    <div class="environment-banner">
+        <div class="govuk-body-s"><strong>ATTENTION!</strong> This is the <strong>@WebHostEnvironment.EnvironmentName</strong> version of @Model.ServiceName web site.</div>
+    </div>
+}
+
 <div class="govuk-width-container">
     <govuk-phase-banner>
         <govuk-phase-banner-tag>@Model.Phase.ToString()</govuk-phase-banner-tag>
