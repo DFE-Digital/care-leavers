@@ -58,6 +58,7 @@ module.exports = function (migration) {
             },
             {
                 enabledNodeTypes: [
+                    "heading-2",
                     "heading-3",
                     "heading-4",
                     "ordered-list",
