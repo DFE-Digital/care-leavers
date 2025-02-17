@@ -11,16 +11,19 @@ using Formatting = Newtonsoft.Json.Formatting;
 
 namespace CareLeavers.Web.Controllers;
 
+[Route("/")]
 public class ContentfulController(IContentService contentService) : Controller
 {
+    [Route("/")]
     public async Task<IActionResult> Homepage([FromServices] IContentfulConfiguration contentfulConfiguration)
     {
         var config = await contentfulConfiguration.GetConfiguration();
         return Redirect($"/{config.HomePage?.Slug}");
     }
 
+    [Route("/json/{**slug}")]
     [ExcludeFromCodeCoverage(Justification = "Development only")]
-    public async Task<IActionResult> ContentJson(string slug, [FromServices] IWebHostEnvironment environment)
+    public async Task<IActionResult> GetContentAsJson(string slug, [FromServices] IWebHostEnvironment environment)
     {
         if (!ModelState.IsValid)
         {
@@ -37,7 +40,8 @@ public class ContentfulController(IContentService contentService) : Controller
         return Content(JsonConvert.SerializeObject(page, Constants.SerializerSettings), "application/json");
     }
 
-    public async Task<IActionResult> Content(string slug)
+    [Route("/{**slug}")]
+    public async Task<IActionResult> GetContent(string slug)
     {
         var page = await contentService.GetPage(slug);
 

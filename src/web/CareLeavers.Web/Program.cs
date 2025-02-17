@@ -203,41 +203,10 @@ try
     app.UseRouting();
     app.UseAuthorization();
     app.MapHealthChecks("/health");
+    app.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Contentful}/{action=Homepage}");
 
-    #endregion
-    
-    #region Route Mapping
-    
-    // Sitemap
-    app.MapControllerRoute(
-        "Sitemap",
-        "sitemap.xml",
-        new { controller = "Sitemap", action = "SiteMap" }
-    );
-    
-    // JSON
-    app.MapControllerRoute(
-        "JSON",
-        "/json/{**slug}",
-        new { controller = "Contentful", action = "ContentJson" }
-    );
-    
-    // Homepage
-    app.MapControllerRoute(
-        name: "Homepage",
-        pattern: "/",        
-        new { controller = "Contentful", action = "Homepage" }
-
-    );
-    
-    // Content
-    app.MapControllerRoute(
-        "default",
-        "/{**slug}",
-        new { controller = "Contentful", action = "Content" }
-    );
-   
-    
     #endregion
     
     #region Security and Cross-Site-Scripting protection

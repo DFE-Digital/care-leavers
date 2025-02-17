@@ -13,6 +13,8 @@ namespace CareLeavers.Web.Controllers;
 
 public class SitemapController(IContentService contentService) : Controller
 {
+    [Route("/sitemap")]
+    [Route("/sitemap.xml")]
     public async Task<IActionResult> Sitemap([FromServices] IConfiguration configuration)
     {
         if (!ModelState.IsValid)
