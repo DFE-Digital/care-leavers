@@ -27,16 +27,4 @@
       <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
     </ItemGroup>
 
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="wwwroot\assets\dfe-logo-alt.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\assets\dfe-logo.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\application.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\dfefrontend-2.0.0.min.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\dfefrontend.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\metadata.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\js\dfefrontend-2.0.0.min.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\js\dfefrontend.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\js\dfefrontend.min.js" />
-    </ItemGroup>
-
 </Project>

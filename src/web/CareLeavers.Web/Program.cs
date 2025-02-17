@@ -99,16 +99,17 @@ try
         renderer.AddRenderer(new GDSGridRenderer(serviceProvider));
         renderer.AddRenderer(new GDSHorizontalRulerContentRenderer());
         renderer.AddRenderer(new GDSRichContentRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSEntityLinkContentRenderer(renderer.Renderers));
+        renderer.AddRenderer(new GDSStatusCheckerRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSRiddleRenderer(serviceProvider));
 
         return renderer;
     });
 
-    builder.Services.Configure<CachingOptions>(
-        builder.Configuration.GetSection(CachingOptions.Name)
-    );
+    builder.Services.AddOptions<ScriptOptions>().BindConfiguration(ScriptOptions.Name);
     
-    builder.Services.AddOptions<CachingOptions>().BindConfiguration("Caching");
-    var cachingOptions = builder.Configuration.GetSection("Caching").Get<CachingOptions>();
+    builder.Services.AddOptions<CachingOptions>().BindConfiguration(CachingOptions.Name);
+    var cachingOptions = builder.Configuration.GetSection(CachingOptions.Name).Get<CachingOptions>();
 
     if (cachingOptions?.Type == "Memory")
     {

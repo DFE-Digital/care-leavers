@@ -1,5 +1,6 @@
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Models.Content;
+using Contentful.Core.Models;
 
 namespace CareLeavers.Integration.Tests.TestSupport;
 
@@ -14,7 +15,24 @@ public class MockContentfulConfiguration : IContentfulConfiguration
             {
                 Slug = "home"
             },
-            ServiceName = "Care leavers"
+            ServiceName = "Care leavers",
+            Footer = new Document
+            {
+                Content =
+                [
+                    new Paragraph()
+                    {
+                        Content =
+                        [
+                            new Text()
+                            {
+                                Value = "Care leavers"
+                            }
+                        ]
+                    }
+                ]
+
+            }
         });
     }
 }

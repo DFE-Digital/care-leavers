@@ -8,12 +8,6 @@ variable "environment_prefix" {
   type        = string
 }
 
-variable "github_principal" {
-  description = "Github principal"
-  type        = string
-  sensitive   = true
-}
-
 variable "contentful_delivery_api_key" {
   description = "Contentful Delivery API Key"
   type        = string
@@ -37,8 +31,8 @@ variable "contentful_environment" {
   type        = string
 }
 
-variable "contentful_preview" {
-  description = "Contentful Preview"
+variable "contentful_use_preview_api" {
+  description = "Use Contentful Preview API?"
   type        = bool
 }
 
@@ -47,3 +41,12 @@ variable "caching_type" {
   type        = string
 }
 
+variable "scripts_clarity" {
+  description = "Clarity code"
+  type        = string
+}
+
+variable "aspnetcore_environment" {
+  description = "ASP.NET Core environment"
+  type        = string
+}

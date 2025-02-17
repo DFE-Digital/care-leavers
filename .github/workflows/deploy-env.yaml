@@ -97,15 +97,16 @@ jobs:
         working-directory: ./src/infrastructure/terraform
         run: terraform plan -out plan.plan
         env:
-          TF_VAR_github_principal: ${{ secrets.AZURE_PRINCIPAL_ID }}
           TF_VAR_environment_prefix: ${{ vars.ENVIRONMENT_PREFIX }}
           TF_VAR_cip_environment: ${{ vars.CIP_ENVIRONMENT }}
           TF_VAR_contentful_delivery_api_key: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
           TF_VAR_contentful_preview_api_key: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
           TF_VAR_contentful_space_id: ${{ secrets.CONTENTFUL_SPACE_ID }}
           TF_VAR_contentful_environment: ${{ vars.CONTENTFUL_ENVIRONMENT }}
-          TF_VAR_contentful_preview: ${{ vars.CONTENTFUL_PREVIEW }}
+          TF_VAR_contentful_use_preview_api: ${{ vars.CONTENTFUL_PREVIEW }}
           TF_VAR_caching_type: ${{ vars.CACHING_TYPE }}
+          TF_VAR_scripts_clarity: ${{ vars.SCRIPTS_CLARITY }}
+          TF_VAR_aspnetcore_environment: ${{ github.event.inputs.environment }}
 
       - name: 'Terraform Apply'
         id: terraform_apply
