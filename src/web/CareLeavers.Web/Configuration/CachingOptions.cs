@@ -13,4 +13,6 @@ public class CachingOptions
     public string Type { get; set; } = string.Empty;
     
     public string? ConnectionString { get; init; }
+
+    public TimeSpan Duration { get; set; } = TimeSpan.FromDays(30);
 }

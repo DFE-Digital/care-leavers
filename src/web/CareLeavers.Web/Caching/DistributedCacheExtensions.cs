@@ -1,14 +1,15 @@
 using System.Text;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
+using Serilog;
+using StackExchange.Redis;
 
 namespace CareLeavers.Web.Caching;
 
 public static class DistributedCacheExtensions
 {
-    private static DistributedCacheEntryOptions DefaultCacheOptions { get; set; } =
+    public static DistributedCacheEntryOptions DefaultCacheOptions { get; set; } =
         new DistributedCacheEntryOptions()
-            .SetSlidingExpiration(TimeSpan.FromMinutes(30))
             .SetAbsoluteExpiration(TimeSpan.FromHours(1));
     
     public static Task SetAsync<T>(this IDistributedCache cache, string key, T value)
@@ -46,22 +47,40 @@ public static class DistributedCacheExtensions
         Func<Task<T>> task, 
         DistributedCacheEntryOptions? options = null)
     {
-        if (options == null)
+        try
         {
-            options = DefaultCacheOptions;
-        }
-        
-        if (cache.TryGetValue(key, out T? value) && value is not null)
-        {
+            if (options == null)
+            {
+                options = DefaultCacheOptions;
+            }
+
+            if (cache.TryGetValue(key, out T? value) && value is not null)
+            {
+                return value;
+            }
+
+            value = await task();
+
+            if (value is not null)
+            {
+                await cache.SetAsync<T>(key, value, options);
+            }
+            
             return value;
         }
-        
-        value = await task();
-        
-        if (value is not null)
+        catch (Exception ex)
         {
-            await cache.SetAsync<T>(key, value, options);
+            // If our error isn't a redis one, throw it
+            if (ex is not (RedisConnectionException or RedisCommandException)) throw;
+            
+            // Otherwise, let's log that we can't connect and run the task direct
+            Log.Logger.Error(ex, "Redis Error");
+
+            // Go and fetch directly from source
+            return await task();;
+
         }
-        return value;
+
+        
     }
 }
