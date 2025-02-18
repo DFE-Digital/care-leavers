@@ -47,43 +47,43 @@
             </section>
             break;
 
-        @* case GridType.Banner: *@
-        @*     @if (Model.Content != null && Model.Content.Any()) *@
-        @*     { *@
-        @*         <section class="dfe-section banner"> *@
-        @*             <partial model="@Model.Content.FirstOrDefault() as Card" name="Grid/Banner"/> *@
-        @*         </section> *@
-        @*     } *@
-        @* *@
-        @*     break; *@
-        @* case GridType.SmallBanner: *@
-        @*     @if (Model.Content != null && Model.Content.Any()) *@
-        @*     { *@
-        @*         <section class="dfe-section banner"> *@
-        @*             <partial model="@(Card)Model.Content.FirstOrDefault()" name="Grid/SmallBanner"/> *@
-        @*         </section> *@
-        @*     } *@
-        @* *@
-        @*     break; *@
-        @* *@
-        @* case GridType.ExternalLinks: *@
-        @*     <section class="dfe-section govuk-!-margin-top-5"> *@
-        @* *@
-        @*         @if (Model.ShowTitle) *@
-        @*         { *@
-        @*             <h2 class="govuk-heading-l" id="@TagBuilder.CreateSanitizedId(Model.Title, "-")">@Model.Title</h2> *@
-        @*         } *@
-        @*         @if (Model.Content != null) *@
-        @*         { *@
-        @*             @foreach (var content in Model.Content) *@
-        @*             { *@
-        @*                 var externalAgency = (ExternalAgency)content; *@
-        @*                 <partial model="@externalAgency" name="Grid/ExternalAgency"/> *@
-        @*             } *@
-        @*         } *@
-        @*     </section> *@
-        @* *@
-        @*     break; *@
+        case GridType.Banner:
+            @if (Model.Content != null && Model.Content.Any())
+            {
+                <section class="dfe-section banner">
+                    <partial model="@Model.Content.First() as Card" name="Grid/Banner"/>
+                </section>
+            }
+        
+            break;
+        case GridType.SmallBanner:
+            @if (Model.Content != null && Model.Content.Any())
+            {
+                <section class="govuk-!-margin-top-5 govuk-!-margin-bottom-5">
+                    <partial model="@(Card)Model.Content.First()" name="Grid/SmallBanner"/>
+                </section>
+            }
+        
+            break;
+        
+        case GridType.ExternalLinks:
+            <section class="dfe-section govuk-!-margin-top-5">
+        
+                @if (Model.ShowTitle)
+                {
+                    <h2 class="govuk-heading-l" id="@TagBuilder.CreateSanitizedId(Model.Title, "-")">@Model.Title</h2>
+                }
+                @if (Model.Content != null)
+                {
+                    @foreach (var content in Model.Content)
+                    {
+                        var externalAgency = (ExternalAgency)content;
+                        <partial model="@externalAgency" name="Grid/ExternalAgency"/>
+                    }
+                }
+            </section>
+        
+            break;
 
     }
 }

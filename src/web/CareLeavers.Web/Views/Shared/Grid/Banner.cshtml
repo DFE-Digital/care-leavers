@@ -1,0 +1,23 @@
+@model CareLeavers.Web.Models.Content.Card
+@{
+    string? link = Model?.Link?.Slug ?? string.Empty;
+}
+
+
+<div class="banner-content">
+    <div class="govuk-grid-row split-panel">
+        <div class="govuk-grid-column-one-half image-column">
+            <a href="@link">
+                <div class="image-container" style="background-image: url('@Model?.Image?.File?.Url');">
+                </div>
+
+            </a>
+        </div>
+        <div class="govuk-grid-column-one-half text-column">
+            <h3 class="govuk-heading-l"><a href="@link">@Model?.Title</a></h3>
+            <p class="govuk-body">@Model?.Text</p>
+            <p class="govuk-!-margin-bottom-0">
+            </p>
+        </div>
+    </div>
+</div>
