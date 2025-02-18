@@ -4,6 +4,13 @@
     var currentLink = ViewContext.RouteData.Values["slug"]?.ToString();
 }
 
+<button type="button" class="dfe-header__menu-button" id="mobile-menu-toggle" aria-controls="header-navigation" aria-expanded="false">
+    <span>Menu</span>
+    <svg class="dfe-icon dfe-icon__menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" width="34" height="34">
+        <path d="M3 6h18M3 12h18m-18 6h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+</button>
+
 <nav class="dfe-header__navigation" id="header-navigation" role="navigation" aria-label="Primary navigation" aria-labelledby="label-navigation">
     <div class="dfe-width-container">
         <p class="dfe-header__navigation-title">
@@ -36,3 +43,22 @@
         </ul>
     </div>
 </nav>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("GOV.UK JavaScript Loaded - Navigation");
+
+        const menuToggle = document.getElementById("mobile-menu-toggle");
+        const menu = document.getElementById("header-navigation");
+        const closeButton = document.getElementById("close-menu");
+
+        function toggleMenu() {
+            const isExpanded = menuToggle.getAttribute("aria-expanded") === "true";
+            menuToggle.setAttribute("aria-expanded", !isExpanded);
+            menu.classList.toggle("dfe-header__navigation--open", !isExpanded);
+        }
+
+        menuToggle.addEventListener("click", toggleMenu);
+        closeButton.addEventListener("click", toggleMenu);
+    });
+</script>
