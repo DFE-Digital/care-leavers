@@ -74,7 +74,6 @@ public static class DistributedCacheExtensions
             if (ex is not (RedisConnectionException or RedisCommandException)) throw;
             
             // Otherwise, let's log that we can't connect and run the task direct
-            // TODO: Log to App Insights?
             Log.Logger.Error(ex, "Redis Error");
 
             // Go and fetch directly from source
