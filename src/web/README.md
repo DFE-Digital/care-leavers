@@ -11,4 +11,5 @@ You will need:
 4. Ensure gulp is installed globally ```npm install -g gulp```
 5. Run the "dev" gulp task to build the front end assets (Either from Rider or ```gulp dev``` in the command line).
 6. Add contentful keys to your .NET user secrets
-7. Run the web project
+7. If using Redis as a distributed cache, ensure you have set the connection string (including short timeout values), eg: `redis-host:6379,ConnectTimeout=250,AsyncTimeout=250,SyncTimeout=250`
+8. Run the web project
