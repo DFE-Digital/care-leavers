@@ -19,9 +19,9 @@ public class SnapshotTests
         {
             TestName = "Home page from prototype with support section"
         },
-        new("BannerTestPage")
+        new("ComponentTest")
         {
-            TestName = "Banner Test Page"
+            TestName = "Component test page with banner, small banner, and external agency"
         }
 
     ];

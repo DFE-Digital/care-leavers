@@ -59,7 +59,7 @@
         case GridType.SmallBanner:
             @if (Model.Content != null && Model.Content.Any())
             {
-                <section class="dfe-section banner">
+                <section class="govuk-!-margin-top-5 govuk-!-margin-bottom-5">
                     <partial model="@(Card)Model.Content.FirstOrDefault()" name="Grid/SmallBanner"/>
                 </section>
             }
