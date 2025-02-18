@@ -51,7 +51,7 @@
             @if (Model.Content != null && Model.Content.Any())
             {
                 <section class="dfe-section banner">
-                    <partial model="@Model.Content.FirstOrDefault() as Card" name="Grid/Banner"/>
+                    <partial model="@Model.Content.First() as Card" name="Grid/Banner"/>
                 </section>
             }
         
@@ -60,7 +60,7 @@
             @if (Model.Content != null && Model.Content.Any())
             {
                 <section class="govuk-!-margin-top-5 govuk-!-margin-bottom-5">
-                    <partial model="@(Card)Model.Content.FirstOrDefault()" name="Grid/SmallBanner"/>
+                    <partial model="@(Card)Model.Content.First()" name="Grid/SmallBanner"/>
                 </section>
             }
         
