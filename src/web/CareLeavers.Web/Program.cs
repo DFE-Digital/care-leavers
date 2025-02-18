@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OpenTelemetry.Trace;
 using Serilog;
+using DistributedCacheExtensions = CareLeavers.Web.Caching.DistributedCacheExtensions;
 
 Log.Logger = new LoggerConfiguration()
     .ConfigureLogging(Environment.GetEnvironmentVariable("ApplicationInsights__ConnectionString"))
@@ -151,6 +152,9 @@ try
     {
         builder.Services.AddSingleton<IDistributedCache, CacheDisabledDistributedCache>();
     }
+
+    DistributedCacheExtensions.DefaultCacheOptions.SetAbsoluteExpiration(
+        cachingOptions?.Duration ?? TimeSpan.FromDays(30));
     
     #endregion
     
