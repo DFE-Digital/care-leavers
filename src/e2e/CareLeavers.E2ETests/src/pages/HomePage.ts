@@ -1,5 +1,6 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
+import exp from "node:constants";
 
 export class HomePage extends BasePage {
     private supportForCareLeaversLink: Locator;
@@ -11,9 +12,9 @@ export class HomePage extends BasePage {
     private supportHeading: Locator;
     private whoIsThisForSection: Locator;
     private findSupportSection: Locator;
-    private whatSupportCanYouGetSection: Locator;
     private helpfulGuidesSection: Locator;
     private ifYouNeedHelpSection: Locator;
+    private helplineLink: Locator;  
     private footerLinks: Locator;
     private homeNavLink: Locator;
     private supportForCareLeaversNav: Locator;
@@ -29,25 +30,27 @@ export class HomePage extends BasePage {
         this.supportForCareLeaversLink = page.locator('a.dfe-header__link--service', { hasText: 'Support for care leavers' });
 
         this.mainHeading = page.locator('h1');
-        this.whoIsThisFor = page.locator('h3').first();
+        this.whoIsThisFor = this.page.locator('h2#Who-is-this-support-for-');
+
         this.firstParagraph = page.locator('p.govuk-body').first();
         this.footer = page.locator('footer');
         
         this.supportHeading = page.locator('h1.govuk-heading-xl');
         this.whoIsThisForSection = page.locator('#Who-is-this-support-for-');
         this.findSupportSection = page.locator('#Find-the-right-support');
-        //update locators 
-        this.whatSupportCanYouGetSection = page.locator('#what-support-can-you-get');
-        this.helpfulGuidesSection = page.locator('#helpful-guides');
-        this.ifYouNeedHelpSection = page.locator('#if-you-need-help');
-        this.footerLinks = page.locator('footer a');
+        this.ifYouNeedHelpSection = page.locator('#If-you-need-help-now');
+        this.helplinesNav = page.locator('[role="link"][aria-label="Helplines"]');
+        this.helplineLink = page.locator('p.govuk-body a.govuk-hyperlink');
 
+
+        //update locators 
+        this.helpfulGuidesSection = page.locator('#helpful-guides');
+        this.footerLinks = page.locator('footer a');
         this.homeNavLink = page.locator('a.dfe-header__navigation-link', { hasText: "Home" });
         this.supportForCareLeaversNav = page.locator('a.dfe-header__navigation-link', { hasText: "All support" });
         //update locators 
         this.yourRightsNav = page.locator('[role="link"][aria-label="Your rights"]');
         this.leavingCareGuidesNav = page.locator('[role="link"][aria-label="Leaving care guides"]');
-        this.helplinesNav = page.locator('[role="link"][aria-label="Helplines"]');
         // Generic locator for all cards on the home page
         this.supportCards = page.locator('.hf-card-container');
 
@@ -61,11 +64,13 @@ export class HomePage extends BasePage {
     async assertPageElements() {
         await this.validateURLContains('/home');
         
-        await expect(this.supportForCareLeaversLink).toHaveText('E2E Tests Support for Care Leavers');
+        await expect(this.supportForCareLeaversLink).toHaveText(/Support for Care Leavers/i);
         await expect(this.mainHeading).toHaveText("Get support if you've been in care");
         await expect(this.firstParagraph).toContainText("Starting life as an adult can be challenging");
         await expect(this.whoIsThisFor).toHaveText("Who is this support for?");
         await expect(this.footer).toContainText("Open Government Licence v3.0");
+        await expect(this.helplineLink).toHaveAttribute('href', 'helplines');
+
     }
 
     async verifySectionsVisibility() {
@@ -73,11 +78,14 @@ export class HomePage extends BasePage {
         await expect(this.supportHeading).toBeVisible();
         await expect(this.whoIsThisForSection).toBeVisible();
         await expect(this.findSupportSection).toBeVisible();
+        await expect(this.ifYouNeedHelpSection).toBeVisible();
+        await expect(this.helplineLink).toBeVisible();
+        
         /*
-            await expect(this.whatSupportCanYouGetSection).toBeVisible();
-            await expect(this.helpfulGuidesSection).toBeVisible();
-            await expect(this.ifYouNeedHelpSection).toBeVisible();
-         */
+        await expect(this.whatSupportCanYouGetSection).toBeVisible();
+       await expect(this.helpfulGuidesSection).toBeVisible();
+       
+    */
     }
 
     async verifyFooterLinks() {
