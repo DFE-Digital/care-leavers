@@ -1,0 +1,21 @@
+.dfe-header__menu-toggle {
+  display: none;
+
+  @media (max-width: 47.9375em) {
+    display: block;
+    margin-bottom: 1em;
+    right: 48px;
+  }
+}
+.dfe-header__navigation {
+  display: none;
+
+  &.js-show {
+    display: block;
+  }
+
+  @media (min-width: 48em) {
+    display: block;
+    background-color: #003a69;
+  }
+}
