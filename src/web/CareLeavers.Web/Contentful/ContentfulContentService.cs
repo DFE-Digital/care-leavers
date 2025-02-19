@@ -52,7 +52,7 @@ public class ContentfulContentService : IContentService
 
     public Task<ContentfulConfigurationEntity?> GetConfiguration()
     {
-        return _distributedCache.GetOrSetAsync("contentful:configuration", async () =>
+        return _distributedCache.GetOrSetAsync("content:configuration", async () =>
         {
             var config = new QueryBuilder<ContentfulConfigurationEntity>()
                 .ContentTypeIs(ContentfulConfigurationEntity.ContentType)
