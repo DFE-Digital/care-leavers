@@ -4,10 +4,8 @@
     var currentLink = ViewContext.RouteData.Values["slug"]?.ToString();
 }
 
-<div class="govuk-service-navigation" data-module="govuk-service-navigation">
-    <button type="button"
-            class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle"
-            aria-controls="header-navigation">
+<div class="dfe-header__menu">
+    <button type="button" class="dfe-header__menu-toggle" id="menu-toggle" aria-controls="header-navigation" aria-expanded="false">
         Menu
     </button>
 </div>
@@ -44,3 +42,22 @@
         </ul>
     </div>
 </nav>
+
+<script asp-add-nonce="true">
+    document.addEventListener('DOMContentLoaded', function () {
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('close-menu');
+        const navigation = document.getElementById('header-navigation');
+
+        menuToggle.addEventListener('click', function () {
+            const isOpen = navigation.classList.toggle('js-show');
+            menuToggle.setAttribute('aria-expanded', isOpen.toString());
+        });
+
+        menuClose.addEventListener('click', function () {
+            navigation.classList.remove('js-show');
+            menuToggle.setAttribute('aria-expanded', 'false');
+        });
+    });
+</script>
+
