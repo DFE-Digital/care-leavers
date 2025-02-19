@@ -4,6 +4,7 @@ using CareLeavers.Web;
 using CareLeavers.Web.Caching;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
+using CareLeavers.Web.Contentful.Webhooks;
 using CareLeavers.Web.ContentfulRenderers;
 using CareLeavers.Web.Mocks;
 using CareLeavers.Web.Models.Content;
@@ -189,47 +190,11 @@ try
     {
         consumers.AddConsumer<Entry<ContentfulContent>>("*", "*", "*",  async entry =>
         {
-            var client = app.Services.GetRequiredService<IContentfulClient>();
-            client.ContentTypeResolver = new ContentfulEntityResolver();
-            
-            var idsScanned = new HashSet<string>();
-    
-            async Task<List<Page>> FindLinkedPages(string id, List<Page> linkedPages)
-            {
-                var entries = await client.GetEntries(new QueryBuilder<ContentfulContent>()
-                    .LinksToEntry(id));
+            var webhookConsumer = new PublishContentfulWebhook(
+                app.Services.GetRequiredService<IContentfulClient>(),
+                app.Services.GetRequiredService<IDistributedCache>());
 
-                foreach (var linkedEntry in entries)
-                {
-                    if (!idsScanned.Add(linkedEntry.Sys.Id))
-                    {
-                        continue;
-                    }
-            
-                    if (linkedEntry is Page pageEntry)
-                    {
-                        linkedPages.Add(pageEntry);
-                    }
-                    else
-                    {
-                        await FindLinkedPages(linkedEntry.Sys.Id, linkedPages);
-                    }
-                }
-        
-                return linkedPages.ToList();
-            }
-    
-            if (entry.SystemProperties.ContentType.SystemProperties.Id == Page.ContentType)
-            {
-                var pageEntry = await client.GetEntry<Page>(entry.SystemProperties.Id);
-                Log.Logger.Information("The following slugs will be purged: {Slugs}", pageEntry.Slug);
-            
-                return new { Result = "OK" };
-            }
-            
-            var pageEntries = await FindLinkedPages(entry.SystemProperties.Id, []);
-            
-            Log.Logger.Information("The following slugs will be purged: {Slugs}", pageEntries.Select(x => x.Slug));
+            await webhookConsumer.Consume(entry);
             
             return new { Result = "OK" };
         });
