@@ -4,12 +4,16 @@ using CareLeavers.Web;
 using CareLeavers.Web.Caching;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
+using CareLeavers.Web.Contentful.Webhooks;
 using CareLeavers.Web.ContentfulRenderers;
 using CareLeavers.Web.Mocks;
+using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Telemetry;
 using Contentful.AspNetCore;
+using Contentful.AspNetCore.MiddleWare;
 using Contentful.Core;
 using Contentful.Core.Models;
+using Contentful.Core.Search;
 using GovUk.Frontend.AspNetCore;
 using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.Extensions.Caching.Distributed;
@@ -181,6 +185,20 @@ try
 
     Constants.Serializer = contentfulClient.Serializer;
     Constants.SerializerSettings = contentfulClient.SerializerSettings;
+
+    app.UseContentfulWebhooks(consumers =>
+    {
+        consumers.AddConsumer<Entry<ContentfulContent>>("*", "*", "*",  async entry =>
+        {
+            var webhookConsumer = new PublishContentfulWebhook(
+                app.Services.GetRequiredService<IContentfulClient>(),
+                app.Services.GetRequiredService<IDistributedCache>());
+
+            await webhookConsumer.Consume(entry);
+            
+            return new { Result = "OK" };
+        });
+    });
 
     #endregion
     
