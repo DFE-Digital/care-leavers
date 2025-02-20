@@ -43,11 +43,7 @@ jobs:
       - name: Run Playwright Tests
         working-directory: ./src/e2e/CareLeavers.E2ETests
         run: yarn playwright test -c playwright-ci.config.ts
-        continue-on-error: true 
 
-      - name: List test results directory
-        run: ls -R ./src/e2e/CareLeavers.E2ETests/
-      
       - name: Upload Playwright Test Report
         if: always() 
         uses: actions/upload-artifact@v4
