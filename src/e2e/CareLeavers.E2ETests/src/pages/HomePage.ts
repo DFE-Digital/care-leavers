@@ -26,7 +26,8 @@ export class HomePage extends BasePage {
         super(page);
         
         //Website title
-        this.supportForCareLeaversLink = page.locator('a.dfe-header__link--service');
+        this.supportForCareLeaversLink = page.locator('a.dfe-header__link--service').nth(1);
+
 
         this.mainHeading = page.locator('h1');
         this.firstParagraph = page.locator('p.govuk-body').first();
