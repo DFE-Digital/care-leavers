@@ -46,3 +46,5 @@ gulp.task("dev",
         "sass"
     )
 );
+
+gulp.task('default', gulp.series('dev'));
