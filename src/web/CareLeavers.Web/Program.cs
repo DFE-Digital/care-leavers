@@ -81,12 +81,7 @@ try
     #region Contentful
     
     builder.Services.AddScoped<IContentService, ContentfulContentService>();
-    if (!builder.Environment.IsEnvironment("EndToEnd"))
-    {
-        builder.Services.AddContentful(builder.Configuration);
-        builder.Services.AddScoped<IContentfulConfiguration, ContentfulConfiguration>();
-    }
-    else
+    if (builder.Configuration.GetValue<bool>("UseMockedContentful"))
     {
         var httpClient = new HttpClient(new FakeMessageHandler());
         var mockedContentfulClient = new ContentfulClient(httpClient, "test", "test", "test");
@@ -101,6 +96,11 @@ try
         
         builder.Services.AddSingleton<IContentfulClient>(x => mockedContentfulClient);
         builder.Services.AddScoped<IContentfulConfiguration, MockedContentfulConfiguration>();
+    }
+    else
+    {
+        builder.Services.AddContentful(builder.Configuration);
+        builder.Services.AddScoped<IContentfulConfiguration, ContentfulConfiguration>();
     }
     
     builder.Services.AddTransient<HtmlRenderer>(serviceProvider =>

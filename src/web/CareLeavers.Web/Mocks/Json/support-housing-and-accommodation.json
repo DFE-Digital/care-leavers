@@ -8,10 +8,12 @@
     "seoImage": null,
     "width": 0,
     "type": null,
-    "title": "All support",
+    "title": "All Support",
     "slug": "all-support",
     "showContentsBlock": true,
     "showLastUpdated": true,
+    "showShareThis": false,
+    "showFooter": true,
     "header": {
       "$type": "Contentful.Core.Models.Document, Contentful.Core",
       "nodeType": "document",
@@ -51,7 +53,6 @@
         ]
       }
     },
-    "footer": null,
     "mainContent": {
       "$type": "Contentful.Core.Models.Document, Contentful.Core",
       "nodeType": "document",
@@ -271,8 +272,9 @@
                         "slug": "support-money-and-benefits",
                         "showContentsBlock": true,
                         "showLastUpdated": true,
+                        "showShareThis": false,
+                        "showFooter": true,
                         "header": null,
-                        "footer": null,
                         "mainContent": {
                           "$type": "Contentful.Core.Models.Document, Contentful.Core",
                           "nodeType": "document",
@@ -283,6 +285,155 @@
                           "content": {
                             "$type": "System.Collections.Generic.List`1[[Contentful.Core.Models.IContent, Contentful.Core]], System.Private.CoreLib",
                             "$values": [
+                              {
+                                "$type": "Contentful.Core.Models.EntryStructure, Contentful.Core",
+                                "nodeType": "embedded-entry-block",
+                                "content": {
+                                  "$type": "System.Collections.Generic.List`1[[Contentful.Core.Models.IContent, Contentful.Core]], System.Private.CoreLib",
+                                  "$values": []
+                                },
+                                "data": {
+                                  "$type": "Contentful.Core.Models.EntryStructureData, Contentful.Core",
+                                  "target": {
+                                    "$type": "CareLeavers.Web.Models.Content.RichContentBlock, CareLeavers.Web",
+                                    "title": "Money and benefits block",
+                                    "entries": {
+                                      "$type": "System.Collections.Generic.List`1[[CareLeavers.Web.Models.Content.RichContent, CareLeavers.Web]], System.Private.CoreLib",
+                                      "$values": []
+                                    },
+                                    "sys": {
+                                      "$type": "Contentful.Core.Models.SystemProperties, Contentful.Core",
+                                      "revision": 1,
+                                      "deletedAt": null,
+                                      "locale": "en-US",
+                                      "contentType": {
+                                        "$type": "Contentful.Core.Models.ContentType, Contentful.Core",
+                                        "sys": {
+                                          "$type": "Contentful.Core.Models.SystemProperties, Contentful.Core",
+                                          "revision": null,
+                                          "deletedAt": null,
+                                          "locale": null,
+                                          "contentType": null,
+                                          "publishedCounter": null,
+                                          "publishedVersion": null,
+                                          "publishedBy": null,
+                                          "publishedAt": null,
+                                          "publishCounter": null,
+                                          "firstPublishedAt": null,
+                                          "archivedAt": null,
+                                          "archivedVersion": null,
+                                          "archivedBy": null,
+                                          "organization": null,
+                                          "usagePeriod": null,
+                                          "status": null,
+                                          "id": "richContentBlock",
+                                          "linkType": "ContentType",
+                                          "type": "Link",
+                                          "environment": null,
+                                          "space": null,
+                                          "createdAt": null,
+                                          "createdBy": null,
+                                          "updatedAt": null,
+                                          "updatedBy": null,
+                                          "version": null
+                                        },
+                                        "name": null,
+                                        "description": null,
+                                        "displayField": null,
+                                        "fields": null
+                                      },
+                                      "publishedCounter": null,
+                                      "publishedVersion": 3,
+                                      "publishedBy": null,
+                                      "publishedAt": null,
+                                      "publishCounter": null,
+                                      "firstPublishedAt": null,
+                                      "archivedAt": null,
+                                      "archivedVersion": null,
+                                      "archivedBy": null,
+                                      "organization": null,
+                                      "usagePeriod": null,
+                                      "status": null,
+                                      "id": "4yNjNq7QNxLgMlrXzTQgSQ",
+                                      "linkType": null,
+                                      "type": "Entry",
+                                      "environment": {
+                                        "$type": "Contentful.Core.Models.Management.ContentfulEnvironment, Contentful.Core",
+                                        "sys": {
+                                          "$type": "Contentful.Core.Models.SystemProperties, Contentful.Core",
+                                          "revision": null,
+                                          "deletedAt": null,
+                                          "locale": null,
+                                          "contentType": null,
+                                          "publishedCounter": null,
+                                          "publishedVersion": null,
+                                          "publishedBy": null,
+                                          "publishedAt": null,
+                                          "publishCounter": null,
+                                          "firstPublishedAt": null,
+                                          "archivedAt": null,
+                                          "archivedVersion": null,
+                                          "archivedBy": null,
+                                          "organization": null,
+                                          "usagePeriod": null,
+                                          "status": null,
+                                          "id": "development",
+                                          "linkType": "Environment",
+                                          "type": "Link",
+                                          "environment": null,
+                                          "space": null,
+                                          "createdAt": null,
+                                          "createdBy": null,
+                                          "updatedAt": null,
+                                          "updatedBy": null,
+                                          "version": null
+                                        }
+                                      },
+                                      "space": {
+                                        "$type": "Contentful.Core.Models.Space, Contentful.Core",
+                                        "sys": {
+                                          "$type": "Contentful.Core.Models.SystemProperties, Contentful.Core",
+                                          "revision": null,
+                                          "deletedAt": null,
+                                          "locale": null,
+                                          "contentType": null,
+                                          "publishedCounter": null,
+                                          "publishedVersion": null,
+                                          "publishedBy": null,
+                                          "publishedAt": null,
+                                          "publishCounter": null,
+                                          "firstPublishedAt": null,
+                                          "archivedAt": null,
+                                          "archivedVersion": null,
+                                          "archivedBy": null,
+                                          "organization": null,
+                                          "usagePeriod": null,
+                                          "status": null,
+                                          "id": "3y72rykjd1o5",
+                                          "linkType": "Space",
+                                          "type": "Link",
+                                          "environment": null,
+                                          "space": null,
+                                          "createdAt": null,
+                                          "createdBy": null,
+                                          "updatedAt": null,
+                                          "updatedBy": null,
+                                          "version": null
+                                        },
+                                        "name": null,
+                                        "locales": null
+                                      },
+                                      "createdAt": "2025-02-11T12:31:07.408Z",
+                                      "createdBy": null,
+                                      "updatedAt": "2025-02-11T12:31:07.408Z",
+                                      "updatedBy": null,
+                                      "version": null
+                                    },
+                                    "metadata": null,
+                                    "fetched": "2025-02-19T09:35:58.653092+00:00"
+                                  }
+                                }
+                              },
                               {
                                 "$type": "Contentful.Core.Models.Paragraph, Contentful.Core",
                                 "nodeType": "paragraph",
@@ -300,7 +451,7 @@
                                         "$type": "Contentful.Core.Models.GenericStructureData, Contentful.Core",
                                         "target": null
                                       },
-                                      "value": "TODO",
+                                      "value": "",
                                       "marks": {
                                         "$type": "System.Collections.Generic.List`1[[Contentful.Core.Models.Mark, Contentful.Core]], System.Private.CoreLib",
                                         "$values": []
@@ -315,7 +466,7 @@
                         "secondaryContent": null,
                         "sys": {
                           "$type": "Contentful.Core.Models.SystemProperties, Contentful.Core",
-                          "revision": 1,
+                          "revision": 9,
                           "deletedAt": null,
                           "locale": "en-US",
                           "contentType": {
@@ -355,7 +506,7 @@
                             "fields": null
                           },
                           "publishedCounter": null,
-                          "publishedVersion": 5,
+                          "publishedVersion": 23,
                           "publishedBy": null,
                           "publishedAt": null,
                           "publishCounter": null,
@@ -437,12 +588,12 @@
                           },
                           "createdAt": "2025-02-07T13:54:45.886Z",
                           "createdBy": null,
-                          "updatedAt": "2025-02-07T13:54:45.886Z",
+                          "updatedAt": "2025-02-11T12:32:59.04Z",
                           "updatedBy": null,
                           "version": null
                         },
                         "metadata": null,
-                        "fetched": "2025-02-07T17:54:04.064185+00:00"
+                        "fetched": "2025-02-19T09:35:58.653054+00:00"
                       },
                       "types": {
                         "$type": "System.Collections.Generic.List`1[[System.String, System.Private.CoreLib]], System.Private.CoreLib",
@@ -578,7 +729,7 @@
                         "version": null
                       },
                       "metadata": null,
-                      "fetched": "2025-02-07T17:54:04.063981+00:00"
+                      "fetched": "2025-02-19T09:35:58.652987+00:00"
                     },
                     {
                       "$type": "CareLeavers.Web.Models.Content.Card, CareLeavers.Web",
@@ -741,7 +892,7 @@
                       "position": 0,
                       "sys": {
                         "$type": "Contentful.Core.Models.SystemProperties, Contentful.Core",
-                        "revision": 1,
+                        "revision": 2,
                         "deletedAt": null,
                         "locale": "en-US",
                         "contentType": {
@@ -781,7 +932,7 @@
                           "fields": null
                         },
                         "publishedCounter": null,
-                        "publishedVersion": 4,
+                        "publishedVersion": 5,
                         "publishedBy": null,
                         "publishedAt": null,
                         "publishCounter": null,
@@ -863,19 +1014,19 @@
                         },
                         "createdAt": "2025-02-07T14:05:01.251Z",
                         "createdBy": null,
-                        "updatedAt": "2025-02-07T14:05:01.251Z",
+                        "updatedAt": "2025-02-18T11:22:24.913Z",
                         "updatedBy": null,
                         "version": null
                       },
                       "metadata": null,
-                      "fetched": "2025-02-07T17:54:04.064423+00:00"
+                      "fetched": "2025-02-19T09:35:58.653162+00:00"
                     }
                   ]
                 },
                 "cssClass": "govuk-grid-column-full",
                 "sys": {
                   "$type": "Contentful.Core.Models.SystemProperties, Contentful.Core",
-                  "revision": 1,
+                  "revision": 3,
                   "deletedAt": null,
                   "locale": "en-US",
                   "contentType": {
@@ -915,7 +1066,7 @@
                     "fields": null
                   },
                   "publishedCounter": null,
-                  "publishedVersion": 5,
+                  "publishedVersion": 9,
                   "publishedBy": null,
                   "publishedAt": null,
                   "publishCounter": null,
@@ -997,12 +1148,12 @@
                   },
                   "createdAt": "2025-02-07T14:08:14.062Z",
                   "createdBy": null,
-                  "updatedAt": "2025-02-07T14:08:14.062Z",
+                  "updatedAt": "2025-02-11T12:28:05.209Z",
                   "updatedBy": null,
                   "version": null
                 },
                 "metadata": null,
-                "fetched": "2025-02-07T17:54:04.063794+00:00"
+                "fetched": "2025-02-19T09:35:58.652895+00:00"
               }
             }
           },
@@ -1038,7 +1189,7 @@
     "secondaryContent": null,
     "sys": {
       "$type": "Contentful.Core.Models.SystemProperties, Contentful.Core",
-      "revision": 2,
+      "revision": 9,
       "deletedAt": null,
       "locale": "en-US",
       "contentType": {
@@ -1078,7 +1229,7 @@
         "fields": null
       },
       "publishedCounter": null,
-      "publishedVersion": 10,
+      "publishedVersion": 24,
       "publishedBy": null,
       "publishedAt": null,
       "publishCounter": null,
@@ -1160,12 +1311,12 @@
       },
       "createdAt": "2025-02-07T14:03:45.36Z",
       "createdBy": null,
-      "updatedAt": "2025-02-07T14:08:29.047Z",
+      "updatedAt": "2025-02-11T13:41:20.414Z",
       "updatedBy": null,
       "version": null
     },
     "metadata": null,
-    "fetched": "2025-02-07T17:54:04.062859+00:00"
+    "fetched": "2025-02-19T09:35:58.652564+00:00"
   },
   "seoTitle": null,
   "seoDescription": null,
@@ -1176,6 +1327,8 @@
   "slug": "support-housing-and-accommodation",
   "showContentsBlock": true,
   "showLastUpdated": true,
+  "showShareThis": true,
+  "showFooter": true,
   "header": {
     "$type": "Contentful.Core.Models.Document, Contentful.Core",
     "nodeType": "document",
@@ -1215,7 +1368,6 @@
       ]
     }
   },
-  "footer": null,
   "mainContent": {
     "$type": "Contentful.Core.Models.Document, Contentful.Core",
     "nodeType": "document",
@@ -1336,7 +1488,7 @@
   "secondaryContent": null,
   "sys": {
     "$type": "Contentful.Core.Models.SystemProperties, Contentful.Core",
-    "revision": 1,
+    "revision": 9,
     "deletedAt": null,
     "locale": "en-US",
     "contentType": {
@@ -1376,7 +1528,7 @@
       "fields": null
     },
     "publishedCounter": null,
-    "publishedVersion": 8,
+    "publishedVersion": 17,
     "publishedBy": null,
     "publishedAt": null,
     "publishCounter": null,
@@ -1458,10 +1610,10 @@
     },
     "createdAt": "2025-02-07T14:04:52.123Z",
     "createdBy": null,
-    "updatedAt": "2025-02-07T14:04:52.123Z",
+    "updatedAt": "2025-02-18T18:00:52.557Z",
     "updatedBy": null,
     "version": null
   },
   "metadata": null,
-  "fetched": "2025-02-07T17:54:04.062665+00:00"
+  "fetched": "2025-02-19T09:35:58.652502+00:00"
 }
