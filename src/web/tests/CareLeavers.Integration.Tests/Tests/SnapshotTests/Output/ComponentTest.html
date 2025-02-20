@@ -19,12 +19,13 @@
 		<!-- End ShareThis -->
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>banner test - Care leavers</title>
+		<title>Component Test - Care leavers</title>
 		<link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/assets/images/favicon.svg">
 		<link href="/govuk/all.min.css?v=1zk5-99q-gHitumTgjIgN7iX7dHY_sxfmG9CzkpR58o" rel="stylesheet">
 		<link rel="stylesheet" href="/css/dfefrontend.css">
 		<link rel="stylesheet" href="/css/application.css">
 		<link rel="stylesheet" href="/css/metadata.css">
+		<link rel="stylesheet" href="/css/navigation.css">
 		<link rel="stylesheet" href="/css/cta.css">
 	</head>
 	<body class="govuk-template__body">
@@ -52,6 +53,11 @@
 		</div>
 		<header class="dfe-header" role="banner">
 			<div class="dfe-width-container dfe-header__container">
+				<div class="dfe-header__menu">
+					<button type="button" class="dfe-header__menu-toggle" id="menu-toggle" aria-controls="header-navigation" aria-expanded="false">
+						Menu
+					</button>
+				</div>
 				<div class="dfe-header__logo">
 					<a class="dfe-header__link dfe-header__link--service " href="/" aria-label="DfE homepage">
 						<img src="/assets/dfe-logo.png" class="dfe-logo" alt="DfE Homepage">
@@ -81,13 +87,31 @@
 					</ul>
 				</div>
 			</nav>
+			<script nonce="mock-nonce">
+    document.addEventListener('DOMContentLoaded', function () {
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('close-menu');
+        const navigation = document.getElementById('header-navigation');
+
+        menuToggle.addEventListener('click', function () {
+            const isOpen = navigation.classList.toggle('js-show');
+            menuToggle.setAttribute('aria-expanded', isOpen.toString());
+        });
+
+        menuClose.addEventListener('click', function () {
+            navigation.classList.remove('js-show');
+            menuToggle.setAttribute('aria-expanded', 'false');
+        });
+    });
+
+			</script>
 		</header>
 		<section b-k59dbireqp="" class="dfe-page-grey">
 			<div b-k59dbireqp="" class="govuk-width-container">
 				<div class="govuk-grid-row">
 					<div class="govuk-grid-column-two-thirds">
 						<h1 class="govuk-heading-xl">
-							banner test
+							Component Test
 						</h1>
 					</div>
 				</div>
@@ -98,8 +122,25 @@
 				<div class="govuk-grid-row">
 					<div class="govuk-grid-column-full">
 						<span class="govuk-caption-m">Guide</span>
-						<p class="govuk-body">grid goes here
-						</p>
+						<section class="govuk-!-margin-top-5 govuk-!-margin-bottom-5">
+							<div class="banner-content">
+								<div class="govuk-grid-row split-panel">
+									<div class="govuk-grid-column-one-half image-column">
+										<a href="">
+											<div class="image-container" style="background-image: url('//images.ctfassets.net/3y72rykjd1o5/6c33i9PP15g9PbRZJ6A57W/76348abdf0d7eba126c8fa656e79a34f/care-leavers-05_720.jpg');"></div>
+										</a>
+									</div>
+									<div class="govuk-grid-column-one-half text-column">
+										<h3 class="govuk-heading-m">
+											<a href="">Card test</a>
+										</h3>
+										<p class="govuk-body">Using a bigger image</p>
+										<p class="govuk-!-margin-bottom-0">
+										</p>
+									</div>
+								</div>
+							</div>
+						</section>
 						<section class="dfe-section banner">
 							<div class="banner-content">
 								<div class="govuk-grid-row split-panel">
@@ -120,25 +161,6 @@
 								</div>
 							</div>
 						</section>
-						<section class="govuk-!-margin-top-5 govuk-!-margin-bottom-5">
-							<div class="banner-content">
-								<div class="govuk-grid-row split-panel">
-									<div class="govuk-grid-column-one-half image-column">
-										<a href="">
-											<div class="image-container" style="background-image: url('//images.ctfassets.net/3y72rykjd1o5/6c33i9PP15g9PbRZJ6A57W/76348abdf0d7eba126c8fa656e79a34f/care-leavers-05_720.jpg');"></div>
-										</a>
-									</div>
-									<div class="govuk-grid-column-one-half text-column">
-										<h3 class="govuk-heading-m">
-											<a href="">Card test</a>
-										</h3>
-										<p class="govuk-body">Using a bigger image</p>
-										<p class="govuk-!-margin-bottom-0">
-										</p>
-									</div>
-								</div>
-							</div>
-						</section>
 						<section class="dfe-section govuk-!-margin-top-5">
 							<h2 class="govuk-heading-l" id="External-Agency">External Agency</h2>
 							<div class="dfe-box box-ext">
@@ -146,22 +168,22 @@
 								</div>
 								<div class="box-content">
 									<h3 class="govuk-heading-s">
-										<a target="_blank">Samaritans</a>
+										<a target="_blank">External Agency Test</a>
 										<span class="govuk-body-s">(Opens in a new tab)</span>
 									</h3>
-									<p class="govuk-body-s">For someone to talk to if you’re struggling</p>
+									<p class="govuk-body-s">Test test</p>
 									<p class="govuk-body-s">
 										<strong>Call:</strong>
-										116 123</p>
+										03434907843</p>
 									<p class="govuk-body-s">
 										<strong>Opening times:</strong>
-										24 hours a day</p>
+										10-11</p>
 									<p class="govuk-body-s">
 										<strong>Free:</strong>
 										Yes</p>
 									<p class="govuk-body-s">
 										<strong>Accessibility:</strong>
-										Other language options</p>
+										Subtitles</p>
 								</div>
 							</div>
 						</section>
@@ -182,14 +204,14 @@
 												<a class="govuk-link" href="https://www.gov.uk/government/organisations/department-for-education">Department for Education</a>
 											</dd>
 											<dt class="gem-c-metadata__term">Published</dt>
-											<dd class="gem-c-metadata__definition">12 February 2025</dd>
+											<dd class="gem-c-metadata__definition">18 February 2025</dd>
 											<dt class="gem-c-metadata__term">Last updated</dt>
 											<dd class="gem-c-metadata__definition">
-												12 February 2025
+												18 February 2025
 											</dd>
 											<dt class="gem-c-metadata__term">Paged Fetched</dt>
 											<dd class="gem-c-metadata__definition">
-												12 February 2025 15:51:59
+												20 February 2025 15:01:30
 											</dd>
 										</dl>
 									</div>
@@ -200,6 +222,15 @@
 				</div>
 			</main>
 		</div>
+		<section b-k59dbireqp="" class="dfe-page-grey">
+			<div b-k59dbireqp="" class="govuk-width-container">
+				<div class="govuk-grid-row">
+					<div class="govuk-grid-column-two-thirds">
+						<p class="govuk-body">Care leavers</p>
+					</div>
+				</div>
+			</div>
+		</section>
 		<footer class="govuk-footer " role="contentinfo">
 			<div class="govuk-width-container ">
 				<div class="govuk-footer__meta">
