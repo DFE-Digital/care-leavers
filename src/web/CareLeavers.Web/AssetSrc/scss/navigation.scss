@@ -12,7 +12,7 @@
     background-color: #ffffff;
     border: 1px solid #ffffff;
     color: #003a69;
-    right: 35px;
+    right: 0;
     margin-bottom: 20px;
   }
   .dfe-header__menu--only .dfe-header__menu-toggle {
@@ -40,11 +40,14 @@
   .dfe-header .dfe-header__navigation-item--current {
     color: #0b0c0c;
   }
-   .dfe-header__navigation-item .dfe-header__navigation-item--current a {
+  .dfe-header__navigation-item.dfe-header__navigation-item--current a {
     color: #003a69;
   }
   .dfe-header__navigation-link:visited {
     color: #003a69;
+  }
+  .dfe-header__service-name {
+    margin-right: 0;
   }
 }
 
