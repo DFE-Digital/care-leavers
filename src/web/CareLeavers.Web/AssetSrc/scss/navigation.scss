@@ -35,7 +35,7 @@
     padding: 15px;
   }
   .dfe-header .dfe-header__service-name {
-    margin-left: 0;
+    margin-left: 16px;
   }
   .dfe-header .dfe-header__navigation-item--current {
     color: #0b0c0c;
@@ -47,6 +47,9 @@
     color: #003a69;
   }
   .dfe-header__service-name {
+    margin-right: 0;
+  }
+  .dfe-width-container{
     margin-right: 0;
   }
 }
