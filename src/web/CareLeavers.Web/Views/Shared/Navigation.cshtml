@@ -4,6 +4,8 @@
     var currentLink = ViewContext.RouteData.Values["slug"]?.ToString();
 }
 
+
+
 <nav class="dfe-header__navigation" id="header-navigation" role="navigation" aria-label="Primary navigation" aria-labelledby="label-navigation">
     <div class="dfe-width-container">
         <p class="dfe-header__navigation-title">
@@ -36,3 +38,21 @@
         </ul>
     </div>
 </nav>
+
+<script asp-add-nonce="true">
+    document.addEventListener('DOMContentLoaded', function () {
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('close-menu');
+        const navigation = document.getElementById('header-navigation');
+
+        menuToggle.addEventListener('click', function () {
+            const isOpen = navigation.classList.toggle('js-show');
+            menuToggle.setAttribute('aria-expanded', isOpen.toString());
+        });
+
+        menuClose.addEventListener('click', function () {
+            navigation.classList.remove('js-show');
+            menuToggle.setAttribute('aria-expanded', 'false');
+        });
+    });
+</script>
