@@ -1,12 +1,20 @@
+@using CareLeavers.Web.Configuration
+@using Microsoft.Extensions.Options
 @model CareLeavers.Web.Models.Content.ContentfulConfigurationEntity
 
 @inject IWebHostEnvironment WebHostEnvironment
+@inject IOptions<ScriptOptions> ScriptOptions
 
 @if (!WebHostEnvironment.IsProduction())
 {
     <div class="environment-banner">
         <div class="govuk-body-s"><strong>ATTENTION!</strong> This is the <strong>@WebHostEnvironment.EnvironmentName</strong> version of @Model.ServiceName website.</div>
     </div>
+}
+
+@if (ScriptOptions.Value.ShowCookieBanner)
+{
+    <partial name="_CookieConsentPartial"/>
 }
 
 <div class="govuk-width-container">

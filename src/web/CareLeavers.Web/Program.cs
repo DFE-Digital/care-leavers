@@ -13,9 +13,9 @@ using Contentful.AspNetCore;
 using Contentful.AspNetCore.MiddleWare;
 using Contentful.Core;
 using Contentful.Core.Models;
-using Contentful.Core.Search;
 using GovUk.Frontend.AspNetCore;
 using Joonasw.AspNetCore.SecurityHeaders;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -75,7 +75,25 @@ try
         options.IncludeSubDomains = true;
         options.Preload = true;
     });
+
+    builder.Services.Configure<CookiePolicyOptions>(options =>
+    {
+        options.CheckConsentNeeded = _ => true;
+        options.MinimumSameSitePolicy = SameSiteMode.Strict;
+    });
     
+    builder.Services.Configure<ForwardedHeadersOptions>(options =>
+    {
+        options.ForwardedHeaders = ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedFor;
+        options.KnownProxies.Clear();
+        options.KnownNetworks.Clear();
+        options.AllowedHosts = new List<string>
+        {
+            "*.azurewebsites.net",
+            "*.azurefd.net"
+        };
+    });
+        
     #endregion
     
     #region Contentful
@@ -232,6 +250,9 @@ try
     #endregion
     
     #region Security and Cross-Site-Scripting protection
+
+    app.UseCookiePolicy();
+    app.UseForwardedHeaders();
     
     // add headers
     app.Use(async (context, next) =>
@@ -244,7 +265,6 @@ try
     
     app.UseCsp(x =>
     {
-       
         x.ByDefaultAllow.FromNowhere();
 
         var config = app.Configuration.GetSection("Csp").Get<CspConfiguration>() ?? new CspConfiguration();

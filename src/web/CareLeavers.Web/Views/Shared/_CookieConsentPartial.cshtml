@@ -1,0 +1,99 @@
+@using CareLeavers.Web.Configuration
+@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.Extensions.Options
+
+@inject IContentfulConfiguration ContentfulConfiguration
+@inject IOptions<CookiePolicyOptions> CookiePolicyOptions
+@inject IOptions<ScriptOptions> ScriptOptions
+@inject IWebHostEnvironment WebHostEnvironment
+
+@{
+    var ops = CookiePolicyOptions.Value;
+    var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    var scriptConfig = ScriptOptions.Value;
+    
+    var consentCookie = Context.Request.Cookies[ops.ConsentCookie.Name!];
+    
+    var showBanner = consentCookie == null;
+    var acceptCookieString = consentFeature?.CreateConsentCookie() ?? string.Empty;
+    var rejectCookieString = acceptCookieString.Replace(ops.ConsentCookieValue, "no");
+    var config = await ContentfulConfiguration.GetConfiguration();
+}
+
+@if (showBanner)
+{
+    <div class="govuk-cookie-banner" data-nosnippet role="region" aria-label="Cookies on @config.ServiceName" id="cookie-container">
+        <div class="govuk-cookie-banner__message govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h2 class="govuk-cookie-banner__heading govuk-heading-m">
+                        Cookies on @config.ServiceName
+                    </h2>
+                    <div class="govuk-cookie-banner__content">
+                        <p class="govuk-body">We use some essential cookies to make this service work.</p>
+                        <p class="govuk-body">We’d also like to use analytics cookies so we can understand how you use the service and make improvements.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="govuk-button-group">
+                <button type="button" class="govuk-button" data-module="govuk-button" data-cookie-string="@acceptCookieString" id="accept-cookie">
+                    Accept analytics cookies
+                </button>
+                <button type="button" class="govuk-button" data-module="govuk-button" data-cookie-string="@rejectCookieString" id="reject-cookie">
+                    Reject analytics cookies
+                </button>
+                @Html.ActionLink("View cookies", "CookiePolicy", "Pages", null, new { @class = "govuk-link" })
+            </div>
+        </div>
+    </div>
+    
+    <script asp-add-nonce="true">
+        (function () {
+                var acceptCookieButton = document.querySelector("#accept-cookie");
+                acceptCookieButton.addEventListener("click", function (event) {
+                @if (WebHostEnvironment.IsEnvironment("Test") && !string.IsNullOrEmpty(scriptConfig.GTM))
+                {
+                    <text>
+                    gtag('consent', 'update',  {
+                        'analytics_storage': 'granted'
+                    });
+                    </text>
+                }
+                document.cookie = acceptCookieButton.dataset.cookieString;
+                    
+                @if (!string.IsNullOrEmpty(scriptConfig.Clarity))
+                {
+                    <text>
+                    window.clarity('consent', true);
+                    </text>
+                }
+                
+                var cookieContainer = document.querySelector("#cookie-container");
+                cookieContainer.remove();
+            }, false);
+            
+            var rejectCookieButton = document.querySelector("#reject-cookie");
+            rejectCookieButton.addEventListener("click", function (event) {
+                @if (WebHostEnvironment.IsEnvironment("Test") && !string.IsNullOrEmpty(scriptConfig.GTM))
+                {
+                    <text>
+                    gtag('consent', 'update',  {
+                        'analytics_storage': 'denied'
+                    });
+                    </text>
+                }
+                document.cookie = rejectCookieButton.dataset.cookieString;
+                
+                @if (!string.IsNullOrEmpty(scriptConfig.Clarity))
+                {
+                    <text>
+                    window.clarity('consent', false);
+                    </text>
+                }
+                
+                var cookieContainer = document.querySelector("#cookie-container");
+                cookieContainer.remove();
+            }, false);
+        })();
+    </script>
+}
