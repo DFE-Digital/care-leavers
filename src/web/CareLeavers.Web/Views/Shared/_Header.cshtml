@@ -1,6 +1,9 @@
+@using CareLeavers.Web.Configuration
+@using Microsoft.Extensions.Options
 @model CareLeavers.Web.Models.Content.ContentfulConfigurationEntity
 
 @inject IWebHostEnvironment WebHostEnvironment
+@inject IOptions<ScriptOptions> ScriptOptions
 
 @if (!WebHostEnvironment.IsProduction())
 {
@@ -9,7 +12,10 @@
     </div>
 }
 
-<partial name="_CookieConsentPartial" />
+@if (ScriptOptions.Value.ShowCookieBanner)
+{
+    <partial name="_CookieConsentPartial"/>
+}
 
 <div class="govuk-width-container">
     <govuk-phase-banner>

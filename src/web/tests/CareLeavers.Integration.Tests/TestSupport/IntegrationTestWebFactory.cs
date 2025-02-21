@@ -55,6 +55,7 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
                 Clarity = "test-clarity",
                 GTM = "GTM-TEST",
                 ShareThis = "abcdefghijk",
+                ShowCookieBanner = false,
                 AddCssVersion = false
             }));
 

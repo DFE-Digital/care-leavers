@@ -33,11 +33,12 @@ public class ContentfulControllerTests
         
         var urls = xml.GetElementsByTagName("loc");
         
-        Assert.That(urls.Count, Is.EqualTo(2));
+        Assert.That(urls.Count, Is.EqualTo(3));
         Assert.Multiple(() =>
         {
             Assert.That(urls[0]?.InnerText, Is.EqualTo("/home"));
             Assert.That(urls[1]?.InnerText, Is.EqualTo("/about"));
+            Assert.That(urls[2]?.InnerText, Is.EqualTo("/pages/cookie-policy"));
         });
     }
 

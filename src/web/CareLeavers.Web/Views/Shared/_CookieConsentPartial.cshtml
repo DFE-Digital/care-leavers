@@ -4,10 +4,13 @@
 
 @inject IContentfulConfiguration ContentfulConfiguration
 @inject IOptions<CookiePolicyOptions> CookiePolicyOptions
+@inject IOptions<ScriptOptions> ScriptOptions
+@inject IWebHostEnvironment WebHostEnvironment
 
 @{
     var ops = CookiePolicyOptions.Value;
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    var scriptConfig = ScriptOptions.Value;
     
     var consentCookie = Context.Request.Cookies[ops.ConsentCookie.Name!];
     
@@ -46,24 +49,48 @@
     
     <script asp-add-nonce="true">
         (function () {
-            var acceptCookieButton = document.querySelector("#accept-cookie");
-            acceptCookieButton.addEventListener("click", function (event) {
-                gtag('consent', 'update', {
-                    'analytics_storage': 'granted'
-                });
+                var acceptCookieButton = document.querySelector("#accept-cookie");
+                acceptCookieButton.addEventListener("click", function (event) {
+                @if (WebHostEnvironment.IsEnvironment("Test") && !string.IsNullOrEmpty(scriptConfig.GTM))
+                {
+                    <text>
+                    gtag('consent', 'update',  {
+                        'analytics_storage': 'granted'
+                    });
+                    </text>
+                }
                 document.cookie = acceptCookieButton.dataset.cookieString;
-                window.clarity('consent');
-				var cookieContainer = document.querySelector("#cookie-container");
-				cookieContainer.remove();
+                    
+                @if (!string.IsNullOrEmpty(scriptConfig.Clarity))
+                {
+                    <text>
+                    window.clarity('consent', true);
+                    </text>
+                }
+                
+                var cookieContainer = document.querySelector("#cookie-container");
+                cookieContainer.remove();
             }, false);
             
             var rejectCookieButton = document.querySelector("#reject-cookie");
             rejectCookieButton.addEventListener("click", function (event) {
-                gtag('consent', 'update', {
-                    'analytics_storage': 'denied'
-                });
+                @if (WebHostEnvironment.IsEnvironment("Test") && !string.IsNullOrEmpty(scriptConfig.GTM))
+                {
+                    <text>
+                    gtag('consent', 'update',  {
+                        'analytics_storage': 'denied'
+                    });
+                    </text>
+                }
                 document.cookie = rejectCookieButton.dataset.cookieString;
-                window.clarity('consent', false);
+                
+                @if (!string.IsNullOrEmpty(scriptConfig.Clarity))
+                {
+                    <text>
+                    window.clarity('consent', false);
+                    </text>
+                }
+                
                 var cookieContainer = document.querySelector("#cookie-container");
                 cookieContainer.remove();
             }, false);
