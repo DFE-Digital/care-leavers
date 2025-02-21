@@ -12,7 +12,8 @@ public class ScriptOptions
     public string? Clarity { get; init; } = "";
     
     public string? ShareThis { get; init; } = "";
+    
+    public bool CookieConsentEnabled { get; init; }
 
     public bool AddCssVersion { get; init; } = true;
-
 }

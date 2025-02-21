@@ -9,6 +9,10 @@
                 t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
                 y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
             })(window, document, "clarity", "script", "test-clarity");
+
+            (function () {
+                window.clarity('consent', false);
+            }());
         
 		</script>
 		
@@ -38,6 +42,56 @@
 				<strong>IntegrationTest</strong>
 				version of Care leavers website.</div>
 		</div>
+		<div class="govuk-cookie-banner" data-nosnippet="" role="region" aria-label="Cookies on Care leavers" id="cookie-container">
+			<div class="govuk-cookie-banner__message govuk-width-container">
+				<div class="govuk-grid-row">
+					<div class="govuk-grid-column-two-thirds">
+						<h2 class="govuk-cookie-banner__heading govuk-heading-m">
+							Cookies on Care leavers
+						</h2>
+						<div class="govuk-cookie-banner__content">
+							<p class="govuk-body">We use some essential cookies to make this service work.</p>
+							<p class="govuk-body">We’d also like to use analytics cookies so we can understand how you use the service and make improvements.</p>
+						</div>
+					</div>
+				</div>
+				<div class="govuk-button-group">
+					<button type="button" class="govuk-button" data-module="govuk-button" data-cookie-string=".AspNet.Consent=yes; expires=Sat, 21 Feb 2026 09:57:50 GMT; path=/; samesite=strict" id="accept-cookie">
+						Accept analytics cookies
+					</button>
+					<button type="button" class="govuk-button" data-module="govuk-button" data-cookie-string=".AspNet.Consent=no; expires=Sat, 21 Feb 2026 09:57:50 GMT; path=/; samesite=strict" id="reject-cookie">
+						Reject analytics cookies
+					</button>
+					<a class="govuk-link" href="/pages/cookie-policy">View cookies</a>
+				</div>
+			</div>
+		</div>
+		<script nonce="mock-nonce">
+        (function () {
+            var acceptCookieButton = document.querySelector("#accept-cookie");
+            acceptCookieButton.addEventListener("click", function (event) {
+                gtag('consent', 'update', {
+                    'analytics_storage': 'granted'
+                });
+                document.cookie = acceptCookieButton.dataset.cookieString;
+                window.clarity('consent');
+				var cookieContainer = document.querySelector("#cookie-container");
+				cookieContainer.remove();
+            }, false);
+            
+            var rejectCookieButton = document.querySelector("#reject-cookie");
+            rejectCookieButton.addEventListener("click", function (event) {
+                gtag('consent', 'update', {
+                    'analytics_storage': 'denied'
+                });
+                document.cookie = rejectCookieButton.dataset.cookieString;
+                window.clarity('consent', false);
+                var cookieContainer = document.querySelector("#cookie-container");
+                cookieContainer.remove();
+            }, false);
+        })();
+    
+		</script>
 		<div class="govuk-width-container">
 			<div class="govuk-phase-banner">
 				<p class="govuk-phase-banner__content">
@@ -138,6 +192,11 @@
 				<div class="govuk-footer__meta">
 					<div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
 						<h2 class="govuk-visually-hidden">Support links</h2>
+						<ul class="govuk-footer__inline-list">
+							<li class="govuk-footer__inline-list-item">
+								<a class="govuk-footer__link" href="/pages/cookie-policy">Cookie Policy</a>
+							</li>
+						</ul>
 						<svg aria-hidden="true" focusable="false" class="govuk-footer__licence-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 483.2 195.7" height="17" width="41">
 							<path fill="currentColor" d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145"></path>
 						</svg>

@@ -5,7 +5,7 @@ import exp from "node:constants";
 export class HomePage extends BasePage {
     private supportForCareLeaversLink: Locator;
     private mainHeading: Locator;
-    private firstParagraph: Locator;
+    private firstHeaderParagraph: Locator;
     private footer: Locator;
 
     private supportHeading: Locator;
@@ -28,9 +28,11 @@ export class HomePage extends BasePage {
         //Website title
         this.supportForCareLeaversLink = page.locator('a.dfe-header__link--service').nth(1);
 
+        let headerSection = page.locator('div#main-header-container')
+        let contentSection = page.locator('div#main-content-container')
 
         this.mainHeading = page.locator('h1');
-        this.firstParagraph = page.locator('p.govuk-body').first();
+        this.firstHeaderParagraph = headerSection.locator('p.govuk-body').first();
         this.footer = page.locator('footer');
         this.supportHeading = page.locator('h1.govuk-heading-xl');
         this.whoIsThisForSection = page.locator('#Who-is-this-support-for-');
@@ -61,7 +63,7 @@ export class HomePage extends BasePage {
         
         await expect(this.supportForCareLeaversLink).toHaveText(/Support for/i);
         await expect(this.mainHeading).toHaveText("Get support if you've been in care");
-        await expect(this.firstParagraph).toContainText("Starting life as an adult can be challenging");
+        await expect(this.firstHeaderParagraph).toContainText("Starting life as an adult can be challenging");
         await expect(this.whoIsThisForSection).toContainText('support for');
         // Check if the element has a specific class
         await expect(this.page.locator('#Who-is-this-support-for-')).toHaveClass(/govuk-heading-l/);
