@@ -9,11 +9,11 @@
     var ops = CookiePolicyOptions.Value;
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
     
-    var consentCookie = Context.Request.Cookies[ops.ConsentCookie.Name];
+    var consentCookie = Context.Request.Cookies[ops.ConsentCookie.Name!];
     
     var showBanner = consentCookie == null;
     var acceptCookieString = consentFeature?.CreateConsentCookie() ?? string.Empty;
-    var rejectCookieString = acceptCookieString.Replace("yes", "no");
+    var rejectCookieString = acceptCookieString.Replace(ops.ConsentCookieValue, "no");
     var config = await ContentfulConfiguration.GetConfiguration();
 }
 
@@ -44,12 +44,6 @@
         </div>
     </div>
     
-    @* <div id="cookieConsent" class="alert alert-info alert-dismissible fade show" role="alert"> *@
-    @*     Use this space to summarize your privacy and cookie use policy. <a asp-page="/Privacy">Learn More</a>. *@
-    @*     <button type="button" class="accept-policy close" data-dismiss="alert" aria-label="Close" data-cookie-string="@cookieString"> *@
-    @*         <span aria-hidden="true">Accept</span> *@
-    @*     </button> *@
-    @* </div> *@
     <script asp-add-nonce="true">
         (function () {
             var acceptCookieButton = document.querySelector("#accept-cookie");
