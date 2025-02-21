@@ -1,11 +1,16 @@
 @model CareLeavers.Web.Models.ViewModels.CookiePolicyModel
 
+@{
+    ViewBag.Title = "Cookies Policy";
+    Layout = "_Layout";
+}
+
 @section BeforeGDSContent
 {
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <h1 class="govuk-heading-xl">
-                Cookies Policy
+                @ViewBag.Title
             </h1>
         </div>
     </div>
