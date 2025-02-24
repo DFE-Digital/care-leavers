@@ -1,0 +1,194 @@
+@using CareLeavers.Web.Configuration
+@model CareLeavers.Web.Models.ViewModels.CookiePolicyModel
+
+@inject IContentfulConfiguration ContentfulConfiguration
+
+@{
+    ViewBag.Title = "Cookies Policy";
+    Layout = "_Layout";
+
+    var config = await ContentfulConfiguration.GetConfiguration();
+}
+
+@section BeforeGDSContent
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">
+                @ViewBag.Title
+            </h1>
+        </div>
+    </div>
+}
+
+@if (Model.ShowSuccessBanner)
+{
+    <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-cookie-confirmation="" style="display: block;">
+        <div class="govuk-notification-banner__header">
+            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                Success
+            </h2>
+        </div>
+        <div class="govuk-notification-banner__content">
+            <p class="govuk-notification-banner__heading">
+                You’ve set your cookie preferences
+            </p>
+        </div>
+    </div>
+}
+
+<h2 class="govuk-heading-l">What are cookies?</h2>
+<p class="govuk-body">
+    Cookies are small files saved on your device when you visit a website. 
+    We use cookies to ensure the functionality of this site and to collect information on how you use our service. 
+    You can choose to opt into optional cookies that help us improve the service.
+</p>
+<h2 class="govuk-heading-l">Essential cookies</h2>
+<p class="govuk-body">
+    Essential cookies keep your information secure while you use @config.ServiceName 
+    These cookies enable core functionality, such as security, network management, and accessibility. 
+    We do not require permission to use essential cookies.
+</p>
+<table class="govuk-table" aria-label="Essential cookies that we store">
+    <thead class="govuk-table__head">
+    <tr>
+        <th scope="col" class="govuk-table__header">
+            Name
+        </th>
+
+        <th scope="col" class="govuk-table__header">
+            Purpose
+        </th>
+        <th scope="col" class="govuk-table__header">
+            Expires
+        </th>
+    </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+    <tr>
+        <td class="govuk-table__cell">
+            .AspNet.Consent
+        </td>
+        <td class="govuk-table__cell">
+            Stores if user has non-essential cookies
+        </td>
+        <td class="govuk-table__cell">
+            1 year
+        </td>
+    </tr>
+    <tr>
+        <td class="govuk-table__cell">
+            .AspNetCore.Antiforgery
+        </td>
+        <td class="govuk-table__cell">
+            Protects against Cross-Site Request Forgery attacks
+        </td>
+        <td class="govuk-table__cell">
+            Session
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr class="govuk-section-break govuk-section-break--l g" />
+<h2 class="govuk-heading-l">Optional cookies</h2>
+<p class="govuk-body">
+    We use optional cookies only with your consent. 
+    These help us understand how you interact with our website, allowing us to make improvements. 
+    You can opt in or out of these cookies at any time on this page.
+</p>
+<table class="govuk-table" aria-label="Optional cookies that we store">
+    <thead class="govuk-table__head">
+    <tr>
+        <th scope="col" class="govuk-table__header">
+            Name
+        </th>
+
+        <th scope="col" class="govuk-table__header">
+            Purpose
+        </th>
+        <th scope="col" class="govuk-table__header">
+            Expires
+        </th>
+    </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+    <tr>
+        <td class="govuk-table__cell">
+            _ga
+        </td>
+        <td class="govuk-table__cell">
+            Used by Google Analytics to distinguish users
+        </td>
+        <td class="govuk-table__cell">
+            2 years
+        </td>
+    </tr>
+    <tr>
+        <td class="govuk-table__cell">
+            _gat
+        </td>
+        <td class="govuk-table__cell">
+            Google Analytics throttling rate request
+        </td>
+        <td class="govuk-table__cell">
+            1 minute
+        </td>
+    </tr>
+    <tr>
+        <td class="govuk-table__cell">
+            _gid
+        </td>
+        <td class="govuk-table__cell">
+            Used by Google Analytics to distinguish users
+        </td>
+        <td class="govuk-table__cell">
+            1 day
+        </td>
+    </tr>
+    <tr>
+        <td class="govuk-table__cell">
+            _clck
+        </td>
+        <td class="govuk-table__cell">
+            Persists the Clarity User ID and preferences, unique to this site
+        </td>
+        <td class="govuk-table__cell">
+            1 year
+        </td>
+    </tr>
+    <tr>
+        <td class="govuk-table__cell">
+            _clsk
+        </td>
+        <td class="govuk-table__cell">
+            Connects a user’s page views into a single session recording
+        </td>
+        <td class="govuk-table__cell">
+            1 day
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr class="govuk-section-break govuk-section-break--l g" />
+@using (Html.BeginForm("PostCookiePolicy", "Pages", FormMethod.Post, new { @class = "govuk-form" }))
+{
+    <fieldset class="govuk-fieldset">
+        <div class="govuk-form-group">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                Do you want to use cookies that measure your website use?
+            </legend>
+            <div class="govuk-radios" data-module="govuk-radios">
+                <div class="govuk-radios__item">
+                    @Html.RadioButtonFor(x => x.AcceptCookies, true, new { @class = "govuk-radios__input", id = "analytics-cookies-on" })
+                    @Html.LabelFor(x => x.AcceptCookies, "Yes", new { @class = "govuk-label govuk-radios__label"})
+                </div>
+
+                <div class="govuk-radios__item">
+                    @Html.RadioButtonFor(x => x.AcceptCookies, false, new { @class = "govuk-radios__input", id = "analytics-cookies-off" })
+                    @Html.LabelFor(x => x.AcceptCookies, "No", new { @class = "govuk-label govuk-radios__label"})
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <button class="govuk-button" type="submit">Save changes</button>
+}

@@ -8,8 +8,10 @@ export class BasePage {
     }
 
     async navigateTo(url: string) {
-        console.log(`Navigating to ${url}`);
         await this.page.goto(url, { waitUntil: 'networkidle' });
+
+        // Print the complete URL to confirm where the test is running
+        const currentURL = this.page.url();
     }
 
     async validateURLContains(path: string) {

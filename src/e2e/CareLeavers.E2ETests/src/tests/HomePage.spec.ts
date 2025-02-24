@@ -15,8 +15,7 @@ test.describe('Home Page Tests', () => {
 
     /*test('should verify navigation works for each link', async () => {
         await homePage.verifyNavigation();
-    });
-     */
+    });*/
 
     test('should validate footer links', async () => {
         await homePage.verifyFooterLinks();
