@@ -23,7 +23,7 @@ module.exports = function (migration) {
         .required(false)
         .validations([
             {
-                in: ["Blue"],
+                in: ["Blue", "Grey", "Green"],
             },
         ])
         .disabled(false)
