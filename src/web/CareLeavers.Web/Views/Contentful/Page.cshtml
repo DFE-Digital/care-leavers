@@ -16,16 +16,15 @@
     };
 }
 
-@if (Model.ShowLastUpdated)
-{
-    <hr/>
-    <partial name="Breadcrumbs" model="@Model"/>
-}
-
 @section BeforeGDSContent
 {
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+
+@if (Model.ShowLastUpdated)
+{
+    <partial name="Breadcrumbs" model="@Model"/>
+}
             <h1 class="govuk-heading-xl">
                 @Model.Title
             </h1>

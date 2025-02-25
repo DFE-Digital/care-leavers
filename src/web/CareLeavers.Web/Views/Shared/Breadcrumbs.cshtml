@@ -36,14 +36,18 @@
         {
             var breadcrumb = breadcrumbs[i];
             <li class="govuk-breadcrumbs__list-item">
-                @if (i == breadcrumbs.Count - 1)
-                {
-                    <span>@breadcrumb.Title</span>
-                }
-                else
-                {
-                    <a href="@breadcrumb.Slug" class="govuk-breadcrumbs__link">@breadcrumb.Title</a>
-                }
+                
+                @* option to make current page non-clickable *@
+
+                @* @if (i == breadcrumbs.Count - 1) *@
+                @* { *@
+                @*     <span>@breadcrumb.Title</span> *@
+                @* } *@
+                @* else *@
+                @* { *@
+                
+                <a href="@breadcrumb.Slug" class="govuk-breadcrumbs__link">@breadcrumb.Title</a>
+
             </li>
         }
     </ol>
