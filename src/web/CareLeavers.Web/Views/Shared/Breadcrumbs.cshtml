@@ -1,15 +1,50 @@
 @model CareLeavers.Web.Models.Content.Page
 
+
+@{
+    if (Model?.Slug == "/" || Model?.Slug == "home")
+    {
+        return;
+    }
+    
+    var breadcrumbs = new List<(string Title, string Slug)>();
+    var currentPage = Model;
+    
+    while (currentPage != null)
+    {
+        if (!string.IsNullOrEmpty(currentPage.Title) && !string.IsNullOrEmpty(currentPage.Slug))
+        {
+            breadcrumbs.Add((currentPage.Title, currentPage.Slug));
+        }
+        currentPage = currentPage.Parent;
+    }
+
+    breadcrumbs.Reverse();
+
+    if (breadcrumbs.Count > 0 && breadcrumbs[0].Slug == "/" || breadcrumbs[0].Slug == "home")
+    {
+        breadcrumbs.RemoveAt(0);
+    }
+}
+
 <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
     <ol class="govuk-breadcrumbs__list">
         <li class="govuk-breadcrumbs__list-item">
-            <a class="govuk-breadcrumbs__link" href="#">Home</a>
+            <a href="/" class="govuk-breadcrumbs__link">Home</a>
         </li>
-        <li class="govuk-breadcrumbs__list-item">
-            <a class="govuk-breadcrumbs__link" href="#">Passports, travel and living abroad</a>
-        </li>
-        <li class="govuk-breadcrumbs__list-item">
-            <a class="govuk-breadcrumbs__link" href="#">Travel abroad</a>
-        </li>
+        @for (int i = 0; i < breadcrumbs.Count; i++)
+        {
+            var breadcrumb = breadcrumbs[i];
+            <li class="govuk-breadcrumbs__list-item">
+                @if (i == breadcrumbs.Count - 1)
+                {
+                    <span>@breadcrumb.Title</span>
+                }
+                else
+                {
+                    <a href="@breadcrumb.Slug" class="govuk-breadcrumbs__link">@breadcrumb.Title</a>
+                }
+            </li>
+        }
     </ol>
 </nav>
