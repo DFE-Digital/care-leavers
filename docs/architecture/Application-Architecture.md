@@ -4,7 +4,7 @@
 
 ![Interaction viewpoint](../images/Application_Architecture.png)
 
-### Component Summary
+## Component Summary
 
 |      Component       | SLA                                               |
 |:--------------------:|:--------------------------------------------------|
@@ -14,7 +14,7 @@
 | Azure AI Translation | 99.99%                                            |
 |    Contentful API    | [99.99%](https://www.contentful.com/enterprise/)  |
 
-#### Availability
+## Availability
 
 The table shows the composite availability. All Services is for when the entire system is running.
 Because of the nature of how Redis caches the site, if either Redis or Contentful is down, the site would be able to
