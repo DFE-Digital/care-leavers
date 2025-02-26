@@ -12,5 +12,7 @@ module.exports = function (migration) {
         .disabled(false)
         .omitted(false);
 
-    page.changeFieldControl("showBreadcrumb", "builtin", "boolean", {});
+    page.moveField("showBreadcrumb").afterField("type");
+
+    page.changeEditorInterface("showBreadcrumb", "builtin", "boolean", {});
 };
