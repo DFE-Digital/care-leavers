@@ -62,7 +62,7 @@ export class BasePage {
 
     // Set an expired consent cookie to trigger re-prompt
     async setExpiredConsentCookie(context: BrowserContext) {
-        const baseURL = process.env.BASE_URL; 
+        const baseURL = process.env.BASE_URL || 'http://localhost:7050'; 
 
         if (!baseURL) {
             throw new Error("BASE_URL is not defined");
