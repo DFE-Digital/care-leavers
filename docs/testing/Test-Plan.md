@@ -2,10 +2,10 @@
 
 ## Revision/Document History
 
-| Version | Date          | Author             | Reviewer(s) | Approver | Description of Changes |
-|---------|---------------|--------------------|-------------|----------|------------------------|
+| Version | Date          | Author               | Reviewer(s) | Approver | Description of Changes         |
+|---------|---------------|----------------------|-------------|----------|--------------------------------|
 | 1.0     | [21/03/2025]  | Varsha Krishnamurthy |             |          | Initial draft of the test plan |
-| 1.1     | [DD/MM/YYYY]  |                    |             |          | [Brief description of updates] |
+| 1.1     | [DD/MM/YYYY]  |                      |             |          | [Brief description of updates] |
 
 ## Introduction
 
