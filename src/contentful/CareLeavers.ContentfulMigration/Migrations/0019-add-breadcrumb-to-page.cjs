@@ -12,7 +12,12 @@ module.exports = function (migration) {
         .disabled(false)
         .omitted(false);
 
+    
     page.moveField("showBreadcrumb").afterField("type");
 
-    page.changeEditorInterface("showBreadcrumb", "builtin", "boolean", {});
+    page.changeFieldControl("showBreadcrumb", "builtin", "boolean", { helpText: 'Whether or not to show the breadcrumb links at the top of the page' });
+
+    const editorLayout = page.editEditorLayout()
+    editorLayout.moveField('showBreadcrumb').toTheBottomOfFieldGroup('layout')
+    editorLayout.moveField('showBreadcrumb').afterField('type')
 };
