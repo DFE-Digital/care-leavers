@@ -99,14 +99,25 @@
 
 @await RenderSectionAsync("BeforeContent", required: false)
 
-@if (IsSectionDefined("BeforeGDSContent"))
+@{
+    var pageModel = Model as CareLeavers.Web.Models.Content.Page;
+    var showBreadcrumb = pageModel?.ShowBreadcrumb ?? false;
+}
+
+@if (IsSectionDefined("BeforeGDSContent") || showBreadcrumb)
+
 {
     <section class="dfe-page-grey">
         <div class="govuk-width-container" id="main-header-container">
-            @await RenderSectionAsync("BeforeGDSContent")
+            @if (showBreadcrumb)
+            {
+                <partial name="Breadcrumbs" model="pageModel"/>
+            }
+            @await RenderSectionAsync("BeforeGDSContent", required: false)
         </div>
     </section>
 }
+
 <div class="govuk-width-container @ViewBag.ContainerClasses" id="main-content-container">
     @await RenderSectionAsync("BeforeContent", required: false)
     <main class="govuk-main-wrapper @ViewBag.MainClasses" id="main-content" role="main" lang="@ViewBag.MainLang">

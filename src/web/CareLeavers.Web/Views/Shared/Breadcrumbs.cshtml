@@ -3,11 +3,17 @@
 @inject IContentfulConfiguration ConfigService
 
 @{
+    if (!Model.ShowBreadcrumb)
+    {
+        return;
+    }
+
+
     var config = await ConfigService.GetConfiguration();
     var homePageSlug = config?.HomePage?.Slug;
-}
 
-@{
+
+
     if (Model?.Slug == homePageSlug)
     {
         return;
