@@ -62,9 +62,9 @@ export class BasePage {
 
     // Set an expired consent cookie to trigger re-prompt
     async setExpiredConsentCookie(context: BrowserContext) {
-        const baseUrl = process.env.BASE_URL; 
+        const baseURL = process.env.BASE_URL; 
 
-        if (!baseUrl) {
+        if (!baseURL) {
             throw new Error("BASE_URL is not defined");
         }
 
@@ -72,7 +72,7 @@ export class BasePage {
             {
                 name: '.AspNet.Consent',
                 value: 'expired',
-                domain: new URL(baseUrl).hostname, // Extract domain from BASE_URL
+                domain: new URL(baseURL).hostname, // Extract domain from BASE_URL
                 path: '/',
                 expires: Date.now() / 1000 - 10, // Set to past time to expire
                 secure: true,
