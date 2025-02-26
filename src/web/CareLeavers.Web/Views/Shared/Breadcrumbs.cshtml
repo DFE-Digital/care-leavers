@@ -1,8 +1,14 @@
+@using CareLeavers.Web.Configuration
 @model CareLeavers.Web.Models.Content.Page
-
+@inject IContentfulConfiguration ConfigService
 
 @{
-    if (Model?.Slug == "/" || Model?.Slug == "home")
+    var config = await ConfigService.GetConfiguration();
+    var homePageSlug = config?.HomePage?.Slug;
+}
+
+@{
+    if (Model?.Slug == homePageSlug)
     {
         return;
     }
@@ -30,7 +36,7 @@
 <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
     <ol class="govuk-breadcrumbs__list">
         <li class="govuk-breadcrumbs__list-item">
-            <a href="/" class="govuk-breadcrumbs__link">Home</a>
+            <a href="@homePageSlug" class="govuk-breadcrumbs__link">Home</a>
         </li>
         @for (int i = 0; i < breadcrumbs.Count; i++)
         {
