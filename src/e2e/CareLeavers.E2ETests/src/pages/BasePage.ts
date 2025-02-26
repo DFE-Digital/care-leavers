@@ -36,11 +36,11 @@ export class BasePage {
         await expect(this.cookieBanner).not.toBeVisible();
     }
     async rejectCookies() {
-        await expect(this.cookieBanner).toBeVisible({ timeout: 10000 });
+        await expect(this.rejectButton).toBeVisible({ timeout: 10000 });
         await this.rejectButton.click();
 
         // Small delay to let UI settle
-        await this.page.waitForTimeout(500); 
+        await this.page.waitForTimeout(1000);
         // Ensure the banner disappears
         await expect(this.cookieBanner).not.toBeVisible();
     }
@@ -62,18 +62,23 @@ export class BasePage {
 
     // Set an expired consent cookie to trigger re-prompt
     async setExpiredConsentCookie(context: BrowserContext) {
-        const domain = process.env.PLAYWRIGHT_BASE_URL
+        const baseUrl = process.env.BASE_URL; 
+
+        if (!baseUrl) {
+            throw new Error("BASE_URL is not defined");
+        }
+
         await context.addCookies([
             {
                 name: '.AspNet.Consent',
                 value: 'expired',
-                domain: domain,
+                domain: new URL(baseUrl).hostname, // Extract domain from BASE_URL
                 path: '/',
-                expires: Date.now() - 1000,
-                httpOnly: false,
+                expires: Date.now() / 1000 - 10, // Set to past time to expire
                 secure: true,
-                sameSite: 'Strict',
-            },
+                httpOnly: true,
+                sameSite: 'Strict'
+            }
         ]);
     }
 }
