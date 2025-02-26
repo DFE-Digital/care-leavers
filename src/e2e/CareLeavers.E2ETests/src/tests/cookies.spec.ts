@@ -42,9 +42,6 @@ test.describe('Reject Cookie Functionality', () => {
             // 2. Reject cookies
             await basePage.rejectCookies();
 
-            // Add a small delay to ensure cookies are processed
-            await page.waitForTimeout(3000);
-
             // 3. Verify that the consent cookie is now set to 'no'
             const cookiesAfterReject = await context.cookies();
             const consentCookieAfterReject = cookiesAfterReject.find(cookie => cookie.name === '.AspNet.Consent');

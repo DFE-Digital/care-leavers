@@ -38,9 +38,6 @@ export class BasePage {
     async rejectCookies() {
         await expect(this.rejectButton).toBeVisible({ timeout: 10000 });
         await this.rejectButton.click();
-
-        // Small delay to let UI settle
-        await this.page.waitForTimeout(1000);
         // Ensure the banner disappears
         await expect(this.cookieBanner).not.toBeVisible();
     }
