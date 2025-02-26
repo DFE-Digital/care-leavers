@@ -101,7 +101,7 @@
 
 @{
     var pageModel = Model as CareLeavers.Web.Models.Content.Page;
-    var showBreadcrumb = pageModel?.ShowBreadcrumb ?? false;
+    var showBreadcrumb = pageModel?.ShowBreadcrumb ?? true;
 }
 
 @if (IsSectionDefined("BeforeGDSContent") || showBreadcrumb)
