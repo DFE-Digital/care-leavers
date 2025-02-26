@@ -27,7 +27,7 @@
 
     breadcrumbs.Reverse();
 
-    if (breadcrumbs.Count > 0 && breadcrumbs[0].Slug == "@homePageSlug")
+    if (breadcrumbs.Count > 0 && breadcrumbs[0].Slug == homePageSlug)
     {
         breadcrumbs.RemoveAt(0);
     }
@@ -52,7 +52,7 @@
                 @* else *@
                 @* { *@
 
-                    <a href="@breadcrumb.Slug" class="govuk-breadcrumbs__link">@breadcrumb.Title</a>
+                <a href="@breadcrumb.Slug" class="govuk-breadcrumbs__link">@breadcrumb.Title</a>
                 
             </li>
         }
