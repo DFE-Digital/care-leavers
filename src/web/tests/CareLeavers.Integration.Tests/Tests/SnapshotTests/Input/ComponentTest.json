@@ -8,6 +8,7 @@
   "type": 0,
   "title": "Component Test",
   "slug": "component-test",
+  "showBreadcrumb": true,
   "showContentsBlock": true,
   "showLastUpdated": true,
   "showShareThis": true,
@@ -329,7 +330,7 @@
                       "version": null
                     },
                     "metadata": null,
-                    "fetched": "2025-02-25T14:59:18.591906+00:00"
+                    "fetched": "2025-02-26T13:10:21.318712+00:00"
                   }
                 ]
               },
@@ -463,7 +464,7 @@
                 "version": null
               },
               "metadata": null,
-              "fetched": "2025-02-25T14:59:18.591764+00:00"
+              "fetched": "2025-02-26T13:10:21.318589+00:00"
             }
           }
         },
@@ -863,7 +864,7 @@
                       "version": null
                     },
                     "metadata": null,
-                    "fetched": "2025-02-25T14:59:18.592535+00:00"
+                    "fetched": "2025-02-26T13:10:21.319129+00:00"
                   }
                 ]
               },
@@ -996,7 +997,7 @@
                 "version": null
               },
               "metadata": null,
-              "fetched": "2025-02-25T14:59:18.592509+00:00"
+              "fetched": "2025-02-26T13:10:21.319107+00:00"
             }
           }
         },
@@ -1156,7 +1157,7 @@
                       "version": null
                     },
                     "metadata": null,
-                    "fetched": "2025-02-25T14:59:18.596268+00:00"
+                    "fetched": "2025-02-26T13:10:21.3214+00:00"
                   }
                 ]
               },
@@ -1290,7 +1291,7 @@
                 "version": null
               },
               "metadata": null,
-              "fetched": "2025-02-25T14:59:18.59287+00:00"
+              "fetched": "2025-02-26T13:10:21.319462+00:00"
             }
           }
         },
@@ -1453,5 +1454,5 @@
     "version": null
   },
   "metadata": null,
-  "fetched": "2025-02-25T14:59:18.586799+00:00"
+  "fetched": "2025-02-26T13:10:21.315409+00:00"
 }
