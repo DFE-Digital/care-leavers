@@ -7,24 +7,24 @@
     {
         return;
     }
-
-
+    
     var config = await ConfigService.GetConfiguration();
     var homePageSlug = config?.HomePage?.Slug;
 
-
-
-    if (Model?.Slug == homePageSlug)
+    if (Model.Slug == homePageSlug)
     {
         return;
     }
     
     var breadcrumbs = new List<(string Title, string Slug)>();
-    var currentPage = Model;
+    var currentPage = Model.Parent;
     
     while (currentPage != null)
     {
-        if (!string.IsNullOrEmpty(currentPage.Title) && !string.IsNullOrEmpty(currentPage.Slug))
+        if (!string.IsNullOrEmpty(currentPage.Title) && 
+            !string.IsNullOrEmpty(currentPage.Slug) &&
+            currentPage.Slug != homePageSlug &&
+            currentPage.Slug != Model.Slug)
         {
             breadcrumbs.Add((currentPage.Title, currentPage.Slug));
         }
@@ -32,23 +32,18 @@
     }
 
     breadcrumbs.Reverse();
-
-    if (breadcrumbs.Count > 0 && breadcrumbs[0].Slug == homePageSlug)
-    {
-        breadcrumbs.RemoveAt(0);
-    }
 }
 
 <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
     <ol class="govuk-breadcrumbs__list">
         <li class="govuk-breadcrumbs__list-item">
-            <a href="@homePageSlug" class="govuk-breadcrumbs__link">Home</a>
+            @Html.ActionLink("Home", "GetContent", "Contentful", new { slug = homePageSlug }, new { @class = "govuk-breadcrumbs__link" })
         </li>
         @for (var i = 0; i < breadcrumbs.Count; i++)
         {
             var breadcrumb = breadcrumbs[i];
             <li class="govuk-breadcrumbs__list-item">
-                <a href="@breadcrumb.Slug" class="govuk-breadcrumbs__link">@breadcrumb.Title</a>
+                @Html.ActionLink(breadcrumb.Title, "GetContent", "Contentful", new { slug = breadcrumb.Slug }, new { @class = "govuk-breadcrumbs__link" })
             </li>
         }
     </ol>
