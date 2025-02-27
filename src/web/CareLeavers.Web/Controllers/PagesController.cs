@@ -8,6 +8,12 @@ namespace CareLeavers.Web.Controllers;
 [Route("/pages")]
 public class PagesController : Controller
 {
+    [HttpGet("privacy-policies")]
+    public IActionResult PrivacyPolicies()
+    {
+        return View();
+    }
+    
     [HttpGet("cookie-policy")]
     public IActionResult CookiePolicy()
     {
