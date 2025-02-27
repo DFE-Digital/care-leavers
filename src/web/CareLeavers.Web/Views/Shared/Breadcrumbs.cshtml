@@ -44,22 +44,11 @@
         <li class="govuk-breadcrumbs__list-item">
             <a href="@homePageSlug" class="govuk-breadcrumbs__link">Home</a>
         </li>
-        @for (int i = 0; i < breadcrumbs.Count; i++)
+        @for (var i = 0; i < breadcrumbs.Count; i++)
         {
             var breadcrumb = breadcrumbs[i];
             <li class="govuk-breadcrumbs__list-item">
-                
-                @* option to make current page non-clickable *@
-                @* *@
-                @* @if (i == breadcrumbs.Count - 1) *@
-                @* { *@
-                @*     <span>@breadcrumb.Title</span> *@
-                @* } *@
-                @* else *@
-                @* { *@
-
                 <a href="@breadcrumb.Slug" class="govuk-breadcrumbs__link">@breadcrumb.Title</a>
-                
             </li>
         }
     </ol>
