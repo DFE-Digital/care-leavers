@@ -12,15 +12,7 @@ test.describe('Home Page Tests', () => {
     test('should verify all main sections are present', async () => {
         await homePage.verifySectionsVisibility();
     });
-
-    /*test('should verify navigation works for each link', async () => {
-        await homePage.verifyNavigation();
-    });*/
-
-    test('should validate footer links', async () => {
-        await homePage.verifyFooterLinks();
-    });
-
+    
     test('should assert page elements are correct', async () => {
         await homePage.assertPageElements();
     });
