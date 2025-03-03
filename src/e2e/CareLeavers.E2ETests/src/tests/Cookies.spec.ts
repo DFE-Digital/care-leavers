@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 import { BasePage } from '../pages/BasePage';
-import { pagesToTest } from '../helpers/urls-to-check';
+import { commonPagesToTest } from '../helpers/urls-to-check';
 
 // Main test to validate cookie banner
 test.describe('Cookie Banner Functionality', () => {
-    pagesToTest.forEach((path) => {
+    commonPagesToTest.forEach((path) => {
         test(`Validate cookie banner on ${path}`, async ({ page, context }) => {
             const basePage = new BasePage(page);
 
@@ -31,7 +31,7 @@ test.describe('Cookie Banner Functionality', () => {
 
 // Test to reject cookies
 test.describe('Reject Cookie Functionality', () => {
-    pagesToTest.forEach((path) => {
+    commonPagesToTest.forEach((path) => {
         test(`Reject cookie banner on ${path}`, async ({ page, context }) => {
             const basePage = new BasePage(page);
 

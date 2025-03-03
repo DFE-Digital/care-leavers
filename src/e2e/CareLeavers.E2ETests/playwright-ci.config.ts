@@ -39,6 +39,9 @@ export default defineConfig({
             use: {
                 browserName: 'chromium',
                 ...devices['Pixel 8'],
+                isMobile: true,
+                viewport: { width: 412, height: 914 }, 
+                userAgent: devices['Pixel 8']?.userAgent ?? devices['Pixel 7']?.userAgent, 
             },
         },
         {
