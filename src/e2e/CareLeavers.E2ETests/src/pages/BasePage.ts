@@ -33,7 +33,7 @@ export class BasePage {
     
     // Locators for Metadata column
     public readonly metadataDefinitions: Locator;
-    
+
     //Locators for helplines-If you need Help at the bottom of the page
     public readonly helplineLink: Locator;
     public readonly ifYouNeedHelpSection: Locator;
