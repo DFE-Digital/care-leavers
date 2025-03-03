@@ -403,5 +403,5 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-*.css.map
-*.css
+src/**/*.css.map
+src/**/*.css

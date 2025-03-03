@@ -23,6 +23,10 @@ public class Page : ContentfulContent
     
     public string? Slug { get; set; }
     
+    
+    public bool ShowBreadcrumb { get; set; } = true;
+
+    
     public bool ShowContentsBlock { get; set; }
     
     public bool ShowLastUpdated { get; set; }

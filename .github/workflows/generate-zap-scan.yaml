@@ -48,8 +48,8 @@ jobs:
 
       - name: Commit and Push Report
         run: |
-          mv report_md.md docs/testing/Security-Scan-Report.md
-          git add docs/testing/Security-Scan-Report.md
+          mv report_md.md docs/scans/Security-Scan-Report.md
+          git add docs/scans/Security-Scan-Report.md
           git config --global user.name "Documentation Bot"
           git config --global user.email "documentation-bot-bot@users.noreply.github.com"
           git commit -am "Generated zap scan report"
