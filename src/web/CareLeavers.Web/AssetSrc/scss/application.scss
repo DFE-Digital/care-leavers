@@ -122,6 +122,15 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
   padding: 20px;
 }
 
+
+@media print {
+  .dfe-header,
+  .govuk-cookie-banner,
+  .govuk-footer__inline-list {
+    display: none !important;
+  }
+}
+
 @media (max-width: 768px) {
   .split-panel {
     flex-direction: column;
