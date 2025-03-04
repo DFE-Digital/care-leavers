@@ -6,6 +6,13 @@ module.exports = function (migration) {
         .deleteField("position"); // Remove redundant field
 
     card
+        .editField('types')
+        .items({
+            type: "Symbol",
+            validations: [{ in: ["Guide", "Support"] }],
+        })
+    
+    card
         .changeFieldControl("types", "builtin", "checkbox");
 
     const grid = migration
