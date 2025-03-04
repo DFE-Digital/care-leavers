@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { BasePage } from '../pages/BasePage';
-import { commonPagesToTest, helplineLinksToTest } from '../helpers/urls-to-check';
+import {commonPagesToTest, helplineLinksToTest, shareAndPrintLinksToTest} from '../helpers/urls-to-check';
 
 // Defining a hook that runs before each test to create the basePage
 test.describe('Shared Website Functionalities', () => {
@@ -32,6 +32,32 @@ test.describe('Shared Website Functionalities', () => {
                 const isDesktop = page.viewportSize()?.width ? page.viewportSize()!.width > 600 : false;
                 await basePage.navigateTo(path);
                 await basePage.verifyNavigation(isDesktop);
+            });
+        });
+    });
+
+    // Test to validate Social Media Share and Print Buttons 
+    test.describe('Social Media Share and Print Buttons Visibility', () => {
+        shareAndPrintLinksToTest.forEach((path) => {
+            test(`Verify share and print buttons are visible on ${path}`, async ({ page }) => {
+                const basePage = new BasePage(page);
+
+                // Navigate to the page and Verify all share and print buttons are visible
+                await basePage.navigateTo(path);
+                await basePage.verifyShareButtonsVisibility();
+            });
+        });
+    });
+
+    // Test to validate Metadata of page is visible
+    test.describe('Metadata Visibility Across Multiple Pages', () => {
+        commonPagesToTest.forEach((path) => {
+            test(`Verify metadata is populated on ${path}`, async ({ page }) => {
+                const basePage = new BasePage(page);
+
+                // Navigate to the page and Verify all share and print buttons are visible
+                await basePage.navigateTo(path);
+                await basePage.verifyMetadataIsPopulated();
             });
         });
     });
