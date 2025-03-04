@@ -26,8 +26,9 @@ public class Page : ContentfulContent
     
     public bool ShowBreadcrumb { get; set; } = true;
 
+    public bool ShowContentsBlock { get; set; } = false;
     
-    public bool ShowContentsBlock { get; set; }
+    public HeadingType[] ContentsHeadings { get; set; } = [ ];
     
     public bool ShowLastUpdated { get; set; }
     
