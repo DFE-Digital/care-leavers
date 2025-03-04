@@ -1,3 +1,4 @@
+@using System.Globalization
 @using CareLeavers.Web.Configuration
 @using CareLeavers.Web.Models.Enums
 @using Microsoft.AspNetCore.Mvc.TagHelpers
@@ -33,7 +34,7 @@
     </div>
 }
 
-<div class="govuk-grid-row">
+<div class="govuk-grid-row" data-last-fetched="@Model.Fetched.ToString("s", CultureInfo.InvariantCulture)">
     <div class="@pageWidth">
         @if (Model.Type.HasValue)
         {
@@ -48,7 +49,7 @@
         @if (Model.ShowLastUpdated)
         {
             <hr/>
-            <partial name="_LastUpdated" model="@Model"/>
+            <partial name="_LastUpdated" model="@Model.Sys"/>
         }
         
     </div>
