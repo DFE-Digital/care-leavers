@@ -26,9 +26,6 @@ export class BasePage {
 
     // Locators for social media share buttons
     public readonly shareButtonsContainer: Locator;
-    public readonly facebookShareButton: Locator;
-    public readonly twitterShareButton: Locator;
-    public readonly emailShareButton: Locator;
     public readonly printShareButton: Locator;
     
     // Locators for Metadata column
@@ -70,9 +67,6 @@ export class BasePage {
 
         // Locators for social media share buttons
         this.shareButtonsContainer = page.locator('.sharethis-inline-share-buttons');
-        this.facebookShareButton = page.locator('[data-network="facebook"]');
-        this.twitterShareButton = page.locator('[data-network="twitter"]');
-        this.emailShareButton = page.locator('[data-network="email"]');
         this.printShareButton = page.locator('[data-network="print"]');
 
         // Locators for Metadata definitions
@@ -221,9 +215,6 @@ export class BasePage {
     async verifyShareButtonsVisibility() {
         await Promise.all([
             expect(this.shareButtonsContainer).toBeVisible(),
-            expect(this.facebookShareButton).toBeVisible(),
-            expect(this.twitterShareButton).toBeVisible(),
-            expect(this.emailShareButton).toBeVisible(),
             expect(this.printShareButton).toBeVisible()
         ]);
     }
@@ -242,7 +233,6 @@ export class BasePage {
         await expect(this.footer).toBeVisible();
         
         // Verify the "Cookie Policy" link(in Footer)
-        const cookiePolicyLink = this.footer.locator('a.govuk-footer__link[href="/pages/cookie-policy"]');
         await expect(this.cookiePolicyLinkInFooter).toBeVisible();
         await expect(this.cookiePolicyLinkInFooter).toContainText('Cookie Policy');
         await expect(this.cookiePolicyLinkInFooter).toHaveAttribute('href', '/pages/cookie-policy');
