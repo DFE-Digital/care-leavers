@@ -1,5 +1,5 @@
 @using System.Globalization
-@model CareLeavers.Web.Models.Content.ContentfulContent
+@model Contentful.Core.Models.SystemProperties
 
 <div class="govuk-grid-row">
     <div class="metadata-logo-wrapper">
@@ -12,14 +12,10 @@
 
                     </dd>
                     <dt class="gem-c-metadata__term">Published</dt>
-                    <dd class="gem-c-metadata__definition">@Model.Sys.CreatedAt?.ToString("dd MMMM yyyy", DateTimeFormatInfo.InvariantInfo)</dd>
+                    <dd class="gem-c-metadata__definition">@Model.CreatedAt?.ToString("dd MMMM yyyy", DateTimeFormatInfo.InvariantInfo)</dd>
                     <dt class="gem-c-metadata__term">Last updated</dt>
                     <dd class="gem-c-metadata__definition">
-                        @Model.Sys.UpdatedAt?.ToString("dd MMMM yyyy", DateTimeFormatInfo.InvariantInfo)
-                    </dd>
-                    <dt class="gem-c-metadata__term">Paged Fetched</dt>
-                    <dd class="gem-c-metadata__definition">
-                        @Model.Fetched.ToString("dd MMMM yyyy HH:mm:ss", DateTimeFormatInfo.InvariantInfo)
+                        @Model.UpdatedAt?.ToString("dd MMMM yyyy", DateTimeFormatInfo.InvariantInfo)
                     </dd>
                 </dl>
             </div>
