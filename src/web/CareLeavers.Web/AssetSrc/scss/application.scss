@@ -129,7 +129,10 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
   }
   .dfe-header,
   .govuk-cookie-banner,
-  .govuk-footer__inline-list {
+  .govuk-footer__inline-list,
+  .card-image,
+  .full-width-image
+  {
     display: none !important;
   }
   .dfe-page-grey {
@@ -148,27 +151,10 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
     padding-top: 0;
     padding-bottom: 0;
   }
-  .govuk-grid-column-two-thirds {
-    width: 100% !important;
-    max-width: 960px !important;
-    margin: 0 auto !important;
-    padding-left: 10px !important;
-    flex: none !important;
-  }
-
-  .govuk-width-container {
-    max-width: 960px !important;
-    width: 100% !important;
-    padding-left: 10px !important;
-    padding-right: 20px !important;
-    margin: 0 auto !important;
-  }
-
-  .govuk-main-wrapper {
-    width: 100% !important;
-    max-width: 960px !important;
-    margin: 0 auto !important;
-  }
+  .dfe-grid-container
+ {
+    margin-bottom: 0;
+ }
 }
 
 @media (max-width: 768px) {
