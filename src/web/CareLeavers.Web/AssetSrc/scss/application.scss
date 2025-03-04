@@ -122,6 +122,47 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
   padding: 20px;
 }
 
+
+@media print {
+  body {
+    width: 100%;
+  }
+  .dfe-header,
+  .govuk-cookie-banner,
+  .govuk-footer__inline-list,
+  .card-image,
+  .full-width-image
+  {
+    display: none !important;
+  }
+  .dfe-page-grey {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .dfe-heading-xl {
+    padding-bottom: 10px;
+  }
+  .govuk-main-wrapper {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .govuk-footer__meta {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .govuk-footer {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .dfe-grid-container
+ {
+    margin-bottom: 0;
+ }
+  .govuk-grid-column-two-thirds {
+    width: 1200px;
+  }
+}
+
 @media (max-width: 768px) {
   .split-panel {
     flex-direction: column;
