@@ -10,6 +10,8 @@ module.exports = function (migration) {
 
     page
         .moveField("contentsHeadings").afterField("showContentsBlock") // Move to after show contents block
+        
+    page
         .changeFieldControl("contentsHeadings", "builtin", "checkbox"); // Change to checklist
     
 };
