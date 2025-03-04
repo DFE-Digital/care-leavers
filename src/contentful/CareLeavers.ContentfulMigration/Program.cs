@@ -115,6 +115,7 @@ var migrationFiles = Directory.GetFiles(migrationPath, "*.cjs", SearchOption.Top
 // Scan for migration files
 
 var anyMigrationsHaveApplied = false;
+var migrationsHaveFailed = false;
 
 foreach (var migrationFile in migrationFiles)
 {
@@ -140,6 +141,13 @@ foreach (var migrationFile in migrationFiles)
     });
     
     anyMigrationsHaveApplied = true;
+
+    if (!success)
+    {
+        migrationsHaveFailed = true;
+        Console.WriteLine($"Migration {migrationFile} failed.");
+        break;
+    }
 }
 
 if (anyMigrationsHaveApplied)
@@ -171,6 +179,8 @@ if (anyMigrationsHaveApplied)
         (updatedEntryResp.SystemProperties.Version ?? 1));
 }
 
+return migrationsHaveFailed ? -1 : 0;
+
 async Task<bool> RunContentfulCommand(string args)
 {
     var process = new Process
@@ -195,5 +205,3 @@ async Task<bool> RunContentfulCommand(string args)
     
     return process.ExitCode == 0;
 }
-
-return 0;
