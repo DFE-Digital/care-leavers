@@ -139,6 +139,9 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
     padding-top: 0;
     padding-bottom: 0;
   }
+  .dfe-heading-xl {
+    padding-bottom: 10px;
+  }
   .govuk-main-wrapper {
     padding-top: 0;
     padding-bottom: 0;
@@ -155,6 +158,9 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
  {
     margin-bottom: 0;
  }
+  .govuk-grid-column-two-thirds {
+    width: 1200px;
+  }
 }
 
 @media (max-width: 768px) {
