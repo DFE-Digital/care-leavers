@@ -142,6 +142,7 @@ try
         renderer.AddRenderer(new GDSEntityLinkContentRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSStatusCheckerRenderer(serviceProvider));
         renderer.AddRenderer(new GDSRiddleRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSBannerRenderer(serviceProvider));
 
         return renderer;
     });

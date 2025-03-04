@@ -9,7 +9,9 @@ public enum GridType
     AlternatingImageAndText,
     [EnumMember(Value = "External Links")]
     ExternalLinks,
+    [Obsolete("No longer used, use Banner entity instead")]
     Banner,
+    [Obsolete("No longer used, use Banner entity instead")]
     [EnumMember(Value = "Small Banner")]
     SmallBanner
 }
