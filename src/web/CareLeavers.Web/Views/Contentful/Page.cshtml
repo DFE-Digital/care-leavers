@@ -28,7 +28,7 @@
             
             @if (Model.Header != null)
             {
-                <gds-contentful-rich-text document="@Model.Header"></gds-contentful-rich-text>
+                <gds-contentful-rich-text document="@Model.Header" larger-text="true"></gds-contentful-rich-text>
             }
         </div>
     </div>
@@ -39,6 +39,10 @@
         @if (Model.Type.HasValue)
         {
             <span class="govuk-caption-m">@Model.Type</span>
+        }
+        @if (Model.ShowContentsBlock)
+        {
+            <gds-contentful-contents document="@Model.MainContent" levels="@Model.ContentsHeadings"/>
         }
         <gds-contentful-rich-text document="@Model.MainContent"></gds-contentful-rich-text>
         @if (Model.Width == PageWidth.FullWidth)
