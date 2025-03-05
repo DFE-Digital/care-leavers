@@ -20,9 +20,18 @@
 <div class="govuk-width-container">
     <govuk-phase-banner>
         <govuk-phase-banner-tag>@Model.Phase.ToString()</govuk-phase-banner-tag>
-        <span class="govuk-phase-banner__text">
-            This is a new service. Help us improve it and <a class="govuk-link" href="#">give your feedback by email</a>.
-        </span>
+            @if (!string.IsNullOrEmpty(Model.FeedbackText))
+            {
+                <span class="govuk-phase-banner__text">
+                This is a new service. Help us improve it and <a class="govuk-link" href="@Model.FeedbackUrl">@Model.FeedbackText</a>.
+                </span>
+            }
+            else
+            {
+                <span class="govuk-phase-banner__text">
+                    This is a new service.
+                </span>
+            }
     </govuk-phase-banner>
 </div>
 
