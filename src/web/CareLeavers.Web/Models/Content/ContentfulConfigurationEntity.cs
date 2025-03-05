@@ -27,4 +27,6 @@ public class ContentfulConfigurationEntity : ContentfulContent
     public string? FeedbackText { get; set; } = string.Empty;
 
     public string? FeedbackUrl { get; set; } = string.Empty;
+
+    public Dictionary<string, string> Redirects { get; set; } = new();
 }
