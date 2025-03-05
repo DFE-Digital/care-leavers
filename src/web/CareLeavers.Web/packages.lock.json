@@ -42,6 +42,12 @@
           "Microsoft.Extensions.FileProviders.Embedded": "8.0.11"
         }
       },
+      "HtmlAgilityPack": {
+        "type": "Direct",
+        "requested": "[1.11.74, )",
+        "resolved": "1.11.74",
+        "contentHash": "q0wRGbegtr4sZXjCNoV3OeRLTOcTNJQKiO9etNVSKPoTo33unmSK8Ahg36C4jIg/Hd3aw8YnTQjtKpBy+wlOpg=="
+      },
       "Joonasw.AspNetCore.SecurityHeaders": {
         "type": "Direct",
         "requested": "[5.0.0, )",

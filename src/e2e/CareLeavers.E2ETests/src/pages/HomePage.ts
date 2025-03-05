@@ -23,7 +23,7 @@ export class HomePage extends BasePage {
         this.mainHeading = page.locator('h1');
         this.supportHeading = page.locator('h1.govuk-heading-xl');
         let headerSection = page.locator('div#main-header-container')
-        this.firstHeaderParagraph = headerSection.locator('p.govuk-body').first();
+        this.firstHeaderParagraph = headerSection.locator('p.govuk-body-l').first();
 
         // Main Content Sections
         this.whoIsThisForSection = page.locator('#Who-is-this-support-for-');

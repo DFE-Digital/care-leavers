@@ -78,7 +78,7 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
 }
 .cat-card-details {
   padding: 30px;
-  min-height: 20px;
+  min-height: 160px;
 }
 
 @media (max-width: 40.0525em) {
@@ -363,9 +363,12 @@ html
 .banner {
   padding-top: 40px;
   padding-bottom: 30px;
-  background-color: #EAF5FF;
   margin-bottom: 30px;
   margin-inline: min(-1*var(--m),var(--w)/2 - 50cqw);
+}
+
+.banner-blue {
+  background-color: #EAF5FF;
 }
 
 .banner > .banner-content {

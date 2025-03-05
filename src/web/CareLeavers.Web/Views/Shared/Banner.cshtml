@@ -1,0 +1,37 @@
+@using CareLeavers.Web.Models.Enums
+@model CareLeavers.Web.Models.Content.Banner
+@{
+    string? link = Model?.Link?.Slug ?? string.Empty;
+    string cssClass = "banner";
+    string bgClass = "split-panel";
+
+    switch (Model?.Background)
+    {
+        case BackgroundColour.Blue:
+            cssClass = "banner banner-blue";
+            bgClass = "split-panel split-panel--bg-white";
+            break;
+    }
+}
+
+<section class="dfe-section @cssClass">
+    <div class="banner-content">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full govuk-!-margin-top-5 govuk-!-margin-bottom-5">
+                <div class="govuk-grid-row @bgClass">
+
+                    <div class="govuk-grid-column-one-half text-column">
+                        <h3 class="govuk-heading-l">@Model?.Title</h3>
+                        <p class="govuk-body">@Model?.Text</p>
+                        <p class="govuk-body">
+                            <a href="@link">@Model?.LinkText</a>
+                        </p>
+                    </div>
+                    <div class="govuk-grid-column-one-half image-column">
+                        <div class="image-container" style="background-image: url('@Model?.Image?.File?.Url');"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
