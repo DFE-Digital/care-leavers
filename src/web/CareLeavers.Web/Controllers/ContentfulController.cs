@@ -1,13 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Xml.Linq;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
-using Contentful.Core.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using Formatting = Newtonsoft.Json.Formatting;
+using Serilog;
 
 namespace CareLeavers.Web.Controllers;
 
@@ -47,6 +43,14 @@ public class ContentfulController(IContentService contentService) : Controller
 
         if (page == null)
         {
+            var config = await contentService.GetConfiguration();
+            
+            if (config!.Redirects.TryGetValue(slug, out var redirect))
+            {
+                Log.Logger.Information("Redirecting {Slug} to {Redirect}", slug, redirect);
+                return RedirectToAction("GetContent", new { slug = redirect });
+            }
+            
             return NotFound();
         }
 
