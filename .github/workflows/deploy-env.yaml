@@ -106,6 +106,7 @@ jobs:
           TF_VAR_contentful_use_preview_api: ${{ vars.CONTENTFUL_PREVIEW }}
           TF_VAR_caching_type: ${{ vars.CACHING_TYPE }}
           TF_VAR_scripts_clarity: ${{ vars.SCRIPTS_CLARITY }}
+          TF_VAR_custom_domain: ${{ vars.CUSTOM_DOMAIN }}
           TF_VAR_aspnetcore_environment: ${{ github.event.inputs.environment }}
 
       - name: 'Terraform Apply'

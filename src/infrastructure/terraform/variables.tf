@@ -46,6 +46,12 @@ variable "scripts_clarity" {
   type        = string
 }
 
+variable "custom_domain" {
+  description = "Custom front-door domain"
+  type        = string
+  default     = ""
+}
+
 variable "aspnetcore_environment" {
   description = "ASP.NET Core environment"
   type        = string
