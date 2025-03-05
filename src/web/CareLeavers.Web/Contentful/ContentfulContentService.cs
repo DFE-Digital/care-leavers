@@ -33,7 +33,14 @@ public class ContentfulContentService : IContentService
 
             var pageEntries = await _contentfulClient.GetEntries(pages);
 
-            return pageEntries.FirstOrDefault();
+            var page = pageEntries.FirstOrDefault();
+            
+            if (page != null)
+            {
+                await _distributedCache.SetAsync($"content:id:{page.Sys.Id}", page.Slug);
+            }
+
+            return page;
         });
     }
     

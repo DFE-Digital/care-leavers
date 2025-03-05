@@ -8,7 +8,9 @@ using Serilog;
 namespace CareLeavers.Web.Controllers;
 
 [Route("/")]
-public class ContentfulController(IContentService contentService) : Controller
+public class ContentfulController(
+    IContentService contentService,
+    ILogger<ContentfulController> logger) : Controller
 {
     [Route("/")]
     public async Task<IActionResult> Homepage([FromServices] IContentfulConfiguration contentfulConfiguration)
@@ -47,7 +49,7 @@ public class ContentfulController(IContentService contentService) : Controller
             
             if (config!.Redirects.TryGetValue(slug, out var redirect))
             {
-                Log.Logger.Information("Redirecting {Slug} to {Redirect}", slug, redirect);
+                logger.LogInformation("Redirecting {Slug} to {Redirect}", slug, redirect);
                 return RedirectToAction("GetContent", new { slug = redirect });
             }
             
