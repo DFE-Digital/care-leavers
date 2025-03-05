@@ -47,7 +47,7 @@ variable "scripts_clarity" {
 }
 
 variable "custom_domain" {
-  description = "Clarity code"
+  description = "Custom front-door domain"
   type        = string
   default     = ""
 }
