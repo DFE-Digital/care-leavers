@@ -288,7 +288,7 @@ try
 
         config.AllowFontUrls.ForEach(f => x.AllowFonts.From(f));
         
-        x.AllowFraming.FromNowhere(); // Block framing on other sites, equivalent to X-Frame-Options: DENY
+        x.AllowFraming.FromSelf(); // Block framing on other sites, equivalent to X-Frame-Options: DENY
 
         x.AllowFormActions.ToSelf();
 
