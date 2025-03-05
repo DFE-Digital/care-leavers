@@ -1,3 +1,4 @@
+using CareLeavers.Web.Caching;
 using CareLeavers.Web.Models.Content;
 using Contentful.Core;
 using Contentful.Core.Models;
@@ -9,7 +10,8 @@ namespace CareLeavers.Web.Contentful.Webhooks;
 
 public class PublishContentfulWebhook(
     IContentfulClient contentfulClient,
-    IDistributedCache distributedCache)
+    IDistributedCache distributedCache,
+    ILogger<PublishContentfulWebhook> logger)
 {
     public async Task Consume(Entry<ContentfulContent> entry)
     {
@@ -45,9 +47,22 @@ public class PublishContentfulWebhook(
         if (entry.SystemProperties.ContentType.SystemProperties.Id == Page.ContentType)
         {
             var pageEntry = await contentfulClient.GetEntry<Page>(entry.SystemProperties.Id);
-            Log.Logger.Information("The following slug will be purged: {Slug}", pageEntry.Slug);
 
-            await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
+            var oldSlug = await distributedCache.GetAsync<string>($"content:id:{pageEntry.Sys.Id}");
+            
+            if (oldSlug != null && oldSlug != pageEntry.Slug)
+            {
+                logger.LogInformation("Slug changed from {OldSlug} to {NewSlug}", oldSlug, pageEntry.Slug);
+                await distributedCache.RemoveAsync($"content:{oldSlug}");
+                await distributedCache.SetAsync($"content:id:{pageEntry.Sys.Id}", pageEntry.Slug);
+            }
+            else
+            {
+                logger.LogInformation("The following slug will be purged: {Slug}", pageEntry.Slug);
+
+                await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
+                await distributedCache.RemoveAsync($"content:id:{pageEntry.Sys.Id}");
+            }
         }
         else if (entry.SystemProperties.ContentType.SystemProperties.Id == ContentfulConfigurationEntity.ContentType)
         {
