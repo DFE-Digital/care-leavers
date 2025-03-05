@@ -51,6 +51,8 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   https_redirect_enabled = true
   patterns_to_match      = ["/*"]
   supported_protocols    = ["Http", "Https"]
+
+  cdn_frontdoor_custom_domain_ids = var.custom_domain != "" ? [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id] : null
 }
 
 resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy" {
@@ -65,6 +67,14 @@ resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy"
         domain {
           cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.id
         }
+
+        dynamic "domain" {
+          for_each = var.custom_domain != "" ? ["apply"] : []
+          content {
+            cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id
+          }
+        }
+
         patterns_to_match = ["/*"]
       }
     }
@@ -79,7 +89,6 @@ resource "azurerm_cdn_frontdoor_custom_domain" "fd-custom-domain" {
 
   tls {
     certificate_type    = "ManagedCertificate"
-    minimum_tls_version = "TLS12"
   }
 }
 
