@@ -29,7 +29,7 @@ public class GDSEntityLinkContentRenderer(ContentRendererCollection rendererColl
     public async Task<string> RenderAsync(IContent content)
     {
         var tb = new TagBuilder("a");
-        tb.AddCssClass("govuk-hyperlink");
+        tb.AddCssClass("govuk-link");
         
         if (content is Hyperlink)
         {
