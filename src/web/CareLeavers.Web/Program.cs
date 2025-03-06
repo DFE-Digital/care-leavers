@@ -98,7 +98,7 @@ try
     
     #region Contentful
     
-    builder.Services.AddScoped<IContentService, ContentfulContentService>();
+    builder.Services.AddTransient<IContentService, ContentfulContentService>();
     if (builder.Configuration.GetValue<bool>("UseMockedContentful"))
     {
         var httpClient = new HttpClient(new FakeMessageHandler());
@@ -211,6 +211,7 @@ try
         {
             var webhookConsumer = new PublishContentfulWebhook(
                 app.Services.GetRequiredService<IContentfulClient>(),
+                app.Services.GetRequiredService<IContentfulManagementClient>(),
                 app.Services.GetRequiredService<IDistributedCache>(),
                 app.Services.GetRequiredService<ILogger<PublishContentfulWebhook>>());
 

@@ -10,6 +10,7 @@ namespace CareLeavers.Web.Contentful.Webhooks;
 
 public class PublishContentfulWebhook(
     IContentfulClient contentfulClient,
+    IContentfulManagementClient contentfulManagementClient,
     IDistributedCache distributedCache,
     ILogger<PublishContentfulWebhook> logger)
 {
@@ -47,6 +48,10 @@ public class PublishContentfulWebhook(
         if (entry.SystemProperties.ContentType.SystemProperties.Id == Page.ContentType)
         {
             var pageEntry = await contentfulClient.GetEntry<Page>(entry.SystemProperties.Id);
+            if (pageEntry == null)
+            {
+                return;
+            }
 
             var oldSlug = await distributedCache.GetAsync<string>($"content:id:{pageEntry.Sys.Id}");
             
@@ -55,6 +60,41 @@ public class PublishContentfulWebhook(
                 logger.LogInformation("Slug changed from {OldSlug} to {NewSlug}", oldSlug, pageEntry.Slug);
                 await distributedCache.RemoveAsync($"content:{oldSlug}");
                 await distributedCache.SetAsync($"content:id:{pageEntry.Sys.Id}", pageEntry.Slug);
+                
+                var query = new QueryBuilder<ContentfulConfigurationEntity>()
+                    .ContentTypeIs(ContentfulConfigurationEntity.ContentType)
+                    .Include(1);
+                
+                var configurationEntries = await contentfulClient.GetEntries(query);
+                var configuration = configurationEntries.FirstOrDefault();
+                
+                if (configuration != null)
+                {
+                    logger.LogInformation("Updating redirects for {OldSlug}", oldSlug);
+                    configuration.Redirects[oldSlug] = pageEntry.Slug ?? string.Empty;
+                    
+                    var redirectsToUpdate = configuration.Redirects.Where(x => x.Value == oldSlug).ToList();
+                    foreach (var (key, value) in redirectsToUpdate)
+                    {
+                        logger.LogInformation("Updating redirect for {Key} to {Value}", key, pageEntry.Slug);
+                        configuration.Redirects[key] = pageEntry.Slug ?? string.Empty;
+                    }
+
+                    dynamic dynamicConfig = configuration;
+                    ((IDictionary<string, object>)dynamicConfig).Remove("sys");
+                    
+                    var configEntry = new Entry<dynamic>()
+                    {
+                        SystemProperties = new SystemProperties
+                        {
+                            Id = configuration.Sys.Id
+                        },
+                        Fields = dynamicConfig
+                    };
+                    
+                    await contentfulManagementClient.CreateOrUpdateEntry(configEntry);
+                    await distributedCache.RemoveAsync("content:configuration");
+                }
             }
             else
             {
