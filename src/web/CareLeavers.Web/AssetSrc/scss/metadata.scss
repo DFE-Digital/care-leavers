@@ -74,16 +74,21 @@
   box-decoration-break: clone
 }
 
-.gem-c-metadata a:link {
-  color: #1d70b8
+html body a:-webkit-any-link {
+  color: #1d70b8;
+}
+
+.gem-c-metadata a {
+  color: #1d70b8;
+  text-decoration: underline;
 }
 
 .gem-c-metadata a:visited {
-  color: #4c2c92
+  color: #4c2c92;
 }
 
 .gem-c-metadata a:hover {
-  color: #003078
+  color: #003078;
 }
 
 .gem-c-metadata a:active {

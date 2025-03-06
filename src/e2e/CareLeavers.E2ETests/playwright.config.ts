@@ -20,6 +20,7 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     baseURL: 'https://localhost:7050/',
+    ignoreHTTPSErrors: true,
   },
   projects: [
     {

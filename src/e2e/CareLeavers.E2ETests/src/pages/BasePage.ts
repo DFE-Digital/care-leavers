@@ -24,6 +24,13 @@ export class BasePage {
     public readonly mobileMenuContainer: Locator;
     public readonly closeMenuButton: Locator;
 
+    // Locators for social media share buttons
+    public readonly shareButtonsContainer: Locator;
+    public readonly printShareButton: Locator;
+    
+    // Locators for Metadata column
+    public readonly metadataDefinitions: Locator;
+
     //Locators for helplines-If you need Help at the bottom of the page
     public readonly helplineLink: Locator;
     public readonly ifYouNeedHelpSection: Locator;
@@ -58,6 +65,13 @@ export class BasePage {
         this.mobileMenuLinks = page.locator('.dfe-header__navigation-list a');
         this.closeMenuButton = page.locator('#close-menu');
 
+        // Locators for social media share buttons
+        this.shareButtonsContainer = page.locator('.sharethis-inline-share-buttons');
+        this.printShareButton = page.locator('[data-network="print"]');
+
+        // Locators for Metadata definitions
+        this.metadataDefinitions = page.locator('.gem-c-metadata__definition');
+        
         //Locators for helplines-If you need Help at the bottom of the page
         this.helplineLink = page.locator('p.govuk-body a.govuk-hyperlink');
         this.ifYouNeedHelpSection = page.locator('#If-you-need-help-now');
@@ -197,12 +211,28 @@ export class BasePage {
         }
     }
     
+    //Verify that the Social Media and Share buttons are visible 
+    async verifyShareButtonsVisibility() {
+        await Promise.all([
+            expect(this.shareButtonsContainer).toBeVisible(),
+            expect(this.printShareButton).toBeVisible()
+        ]);
+    }
+
+    //Verify Metadata(Page Published and Last Updated) are visible 
+    async verifyMetadataIsPopulated() {
+        const count = await this.metadataDefinitions.count();
+        for (let i = 0; i < count; i++) {
+            await expect(this.metadataDefinitions.nth(i)).not.toBeEmpty();
+        }
+    }
+    
+    //verify footer Links are visible
     async verifyFooterLinks() {
         //Ensure the footer is visible 
         await expect(this.footer).toBeVisible();
         
         // Verify the "Cookie Policy" link(in Footer)
-        const cookiePolicyLink = this.footer.locator('a.govuk-footer__link[href="/pages/cookie-policy"]');
         await expect(this.cookiePolicyLinkInFooter).toBeVisible();
         await expect(this.cookiePolicyLinkInFooter).toContainText('Cookie Policy');
         await expect(this.cookiePolicyLinkInFooter).toHaveAttribute('href', '/pages/cookie-policy');

@@ -8,7 +8,7 @@ public class GDSHorizontalRulerContentRenderer : IContentRenderer
 
     public Task<string> RenderAsync(IContent content)
     {
-        return Task.FromResult("<hr class=\"govuk-section-break govuk-section-break--xl govuk-section-break--visible\">");
+        return Task.FromResult("<hr class=\"govuk-section-break govuk-section-break--l govuk-section-break--visible\">");
     }
 
     public int Order { get; set; } = 10;

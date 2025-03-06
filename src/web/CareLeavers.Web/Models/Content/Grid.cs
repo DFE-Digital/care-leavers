@@ -11,8 +11,6 @@ public class Grid : ContentfulContent
     
     public GridType? GridType { get; set; }
     
-    public bool ShowTitle { get; set; }
-    
     public List<IContent>? Content { get; set; }
 
     public string? CssClass { get; set; } = "govuk-grid-column-full";
