@@ -67,7 +67,7 @@ export class BasePage {
 
         // Locators for social media share buttons
         this.shareButtonsContainer = page.locator('.sharethis-inline-share-buttons');
-        this.printShareButton = page.locator('[data-network="print"]');
+        this.printShareButton = page.locator('#print-link');
 
         // Locators for Metadata definitions
         this.metadataDefinitions = page.locator('.gem-c-metadata__definition');
