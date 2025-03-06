@@ -35,7 +35,7 @@ test.describe('Shared Website Functionalities', () => {
             });
         });
     });
-
+    
     // Test to validate Social Media Share and Print Buttons 
     test.describe('Social Media Share and Print Buttons Visibility', () => {
         shareAndPrintLinksToTest.forEach((path) => {
