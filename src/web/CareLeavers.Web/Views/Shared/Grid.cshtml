@@ -25,12 +25,9 @@
             <section class="dfe-section alternating-image-text">
                 @if (Model.Content != null && Model.Content.Any())
                 {
-                    var position = -1;
                     foreach (var content in Model.Content)
                     {
-                        position++;
                         var card = (Card)content;
-                        card.Position = position;
                         <partial model="@card" name="Grid/AlternatingImageAndText"/>
                     }
                 }
