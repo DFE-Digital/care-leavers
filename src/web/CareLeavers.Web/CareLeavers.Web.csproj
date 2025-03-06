@@ -13,6 +13,10 @@
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
+      <Content Update="AssetSrc\assets\icon-print.png">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
@@ -25,6 +29,17 @@
       <PackageReference Include="Serilog" Version="4.2.0" />
       <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
       <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\assets\images\favicon.ico" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\images\favicon.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\images\govuk-crest.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\images\govuk-icon-180.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\images\govuk-icon-192.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\images\govuk-icon-512.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\images\govuk-icon-mask.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\images\govuk-opengraph-image.png" />
     </ItemGroup>
 
 </Project>
