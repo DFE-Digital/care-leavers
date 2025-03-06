@@ -154,7 +154,7 @@
 									</div>
 									<div class="box-content">
 										<h3 class="govuk-heading-s">
-											<a target="_blank">External Agency Test</a>
+											<a target="_blank" class="govuk-link">External Agency Test</a>
 											<span class="govuk-body-s">(Opens in a new tab)</span>
 										</h3>
 										<p class="govuk-body-s">Test test</p>
@@ -174,16 +174,11 @@
 								</div>
 							</section>
 							<p class="govuk-body"></p>
-							<div class="govuk-grid-row">
-								<div class="govuk-grid-column-full">
-									<div class="sharethis-inline-share-buttons"></div>
-								</div>
-							</div>
 							<hr>
 							<div class="govuk-grid-row">
 								<div class="metadata-logo-wrapper">
 									<div class="govuk-grid-column-two-thirds metadata-column">
-										<div class="gem-c-metadata" data-module="gem-toggle metadata" data-gem-toggle-module-started="true" data-metadata-module-started="true">
+										<div class="gem-c-metadata" data-module="gem-toggle metadata">
 											<dl class="gem-c-metadata__list">
 												<dt class="gem-c-metadata__term">From:</dt>
 												<dd class="gem-c-metadata__definition notranslate">
@@ -197,7 +192,16 @@
 												</dd>
 											</dl>
 										</div>
+										<div class="gem-c-print-link govuk-!-display-none-print govuk-!-margin-top-3 govuk-!-margin-bottom-8">
+											<button class="govuk-link govuk-body-s gem-c-print-link__button" data-module="print-link" id="print-link">Print this page</button>
+										</div>
 									</div>
+								</div>
+							</div>
+							<div class="govuk-grid-row">
+								<div class="govuk-grid-column-full">
+									<h3 class="govuk-heading-m">Share this page</h3>
+									<div class="sharethis-inline-share-buttons"></div>
 								</div>
 							</div>
 						</gds-contentful-contents>
@@ -245,6 +249,23 @@
 				</div>
 			</div>
 		</footer>
+		<script defer="" nonce="mock-nonce">
+            const printPage  = () => window.print();
+
+            const addPrintButtonEventListener  = () => {
+                const printButton = document.getElementById("print-link");
+
+                if (!printButton) {
+                    return;
+                }
+
+                printButton.addEventListener('click', printPage);
+
+            }
+
+            addPrintButtonEventListener();
+        
+		</script>
 		<script src="/govuk/all.min.js?v=RHpXsNmLgFsVb0_A7CLeltntRsu0LVT9kE8cBjem4vY" type="module"></script>
 		<script nonce="mock-nonce" type="module">
 import { initAll } from '/govuk/all.min.js'
