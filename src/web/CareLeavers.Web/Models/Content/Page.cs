@@ -29,8 +29,8 @@ public class Page : ContentfulContent
     public bool ShowContentsBlock { get; set; } = false;
     
     public HeadingType[] ContentsHeadings { get; set; } = [ ];
-    
-    public bool ShowLastUpdated { get; set; }
+
+    public bool ShowLastUpdated { get; set; } = true;
     
     public bool ShowShareThis { get; set; }
     

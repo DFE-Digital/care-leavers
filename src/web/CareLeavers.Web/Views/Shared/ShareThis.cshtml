@@ -2,21 +2,18 @@
 
 @if (Model.ShowShareThis)
 {
-    @if (!Model.ShowLastUpdated)
+    if (!Model.ShowLastUpdated)
     {
+        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible"/>
         <div class="govuk-grid-row">
             <div class="metadata-logo-wrapper">
                 <div class="govuk-grid-column-two-thirds metadata-column">
-                    @if (Model.ShowShareThis && Model.ShowLastUpdated)
-                    {
                         <div class="gem-c-print-link govuk-!-display-none-print govuk-!-margin-top-3 govuk-!-margin-bottom-8">
                             <button class="govuk-link govuk-body-s gem-c-print-link__button" data-module="print-link" id="print-link">Print this page</button>
                         </div>
-                    }
                 </div>
             </div>
         </div>
-
     }
     
     <div class="govuk-grid-row">

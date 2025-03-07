@@ -48,11 +48,8 @@
             <gds-contentful-contents document="@Model.MainContent" levels="@Model.ContentsHeadings"/>
         }
         <gds-contentful-rich-text document="@Model.MainContent"></gds-contentful-rich-text>
-        @if (Model.ShowLastUpdated)
-        {
-            <hr/>
-            <partial name="LastUpdated" model="@Model"/>
-        }
+        
+        <partial name="LastUpdated" model="@Model"/>
         
         <partial name="ShareThis" model="Model"/>
     </div>
