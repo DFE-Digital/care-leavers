@@ -69,7 +69,7 @@ public class MockedContentfulConfiguration : IContentfulConfiguration
                         [
                             new Text()
                             {
-                                Value = "If you need help now"
+                                Value = "If you need help now",
                             }
                         ]
                     },
@@ -79,7 +79,39 @@ public class MockedContentfulConfiguration : IContentfulConfiguration
                         [
                             new Text()
                             {
-                                Value = "If you're in crisis, need advice or just someone to talk to, there are people who can help"
+                                Value =
+                                    "If you're in crisis, need advice or just someone to talk to, there are people who can help"
+                            }
+                        ]
+                    },
+                    new Paragraph()
+                    {
+                        Content =
+                        [
+                            new EntryStructure()
+                            {
+                                NodeType = "entry-hyperlink",
+                                Content = 
+                                [
+                                    new Text()
+                                    {
+                                        Value = "View all helplines",
+                                        Marks = 
+                                        [
+                                            new Mark
+                                            {
+                                                Type = "bold"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                Data = new EntryStructureData()
+                                {
+                                    Target = new Page()
+                                    {
+                                        Slug = "helplines"
+                                    }
+                                }
                             }
                         ]
                     }

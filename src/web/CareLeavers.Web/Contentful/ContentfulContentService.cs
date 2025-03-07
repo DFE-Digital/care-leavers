@@ -56,7 +56,7 @@ public class ContentfulContentService : IContentService
         {
             var config = new QueryBuilder<ContentfulConfigurationEntity>()
                 .ContentTypeIs(ContentfulConfigurationEntity.ContentType)
-                .Include(4)
+                .Include(2)
                 .Limit(1);
 
             var configEntries = await _contentfulClient.GetEntries(config);
