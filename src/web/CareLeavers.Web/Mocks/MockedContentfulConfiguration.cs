@@ -33,6 +33,30 @@ public class MockedContentfulConfiguration : IContentfulConfiguration
                     {
                         Slug = "all-support"
                     }
+                },
+                new NavigationElement
+                {
+                    Title = "Your rights",
+                    Link = new Page
+                    {
+                        Slug = "status"
+                    }
+                },
+                new NavigationElement
+                {
+                    Title = "Leaving care guides",
+                    Link = new Page
+                    {
+                        Slug = "leaving-care-guides"
+                    }
+                },
+                new NavigationElement
+                {
+                    Title = "Helplines",
+                    Link = new Page
+                    {
+                        Slug = "helplines"
+                    }
                 }
             ],
             Footer = new Document
