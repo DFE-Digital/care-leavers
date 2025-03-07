@@ -34,6 +34,12 @@ public class ContentfulController(IContentService contentService) : Controller
         {
             return NotFound();
         }
+        
+        if (slug == "configuration")
+        {
+            var config = await contentService.GetConfiguration();
+            return Content(JsonConvert.SerializeObject(config, Constants.SerializerSettings), "application/json");
+        }
 
         var page = await contentService.GetPage(slug);
 
