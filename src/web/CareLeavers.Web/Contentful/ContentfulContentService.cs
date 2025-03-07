@@ -28,7 +28,7 @@ public class ContentfulContentService : IContentService
             var pages = new QueryBuilder<Page>()
                 .ContentTypeIs(Page.ContentType)
                 .FieldEquals(c => c.Slug, slug)
-                .Include(5)
+                .Include(4)
                 .Limit(1);
 
             var pageEntries = await _contentfulClient.GetEntries(pages);
@@ -43,7 +43,7 @@ public class ContentfulContentService : IContentService
         {
             var query = new QueryBuilder<StatusChecker>()
                 .ContentTypeIs(StatusChecker.ContentType)
-                .Include(5)
+                .Include(4)
                 .Limit(1);
             
             return await _contentfulClient.GetEntry(id, query);
@@ -56,7 +56,7 @@ public class ContentfulContentService : IContentService
         {
             var config = new QueryBuilder<ContentfulConfigurationEntity>()
                 .ContentTypeIs(ContentfulConfigurationEntity.ContentType)
-                .Include(5)
+                .Include(2)
                 .Limit(1);
 
             var configEntries = await _contentfulClient.GetEntries(config);
