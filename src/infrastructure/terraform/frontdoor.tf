@@ -88,7 +88,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "fd-custom-domain" {
   host_name                = var.custom_domain
 
   tls {
-    certificate_type    = "ManagedCertificate"
+    certificate_type = "ManagedCertificate"
   }
 }
 
