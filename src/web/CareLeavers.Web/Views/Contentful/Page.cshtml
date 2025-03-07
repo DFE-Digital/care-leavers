@@ -1,10 +1,13 @@
 @using System.Globalization
 @using CareLeavers.Web.Configuration
 @using CareLeavers.Web.Models.Enums
+@using Joonasw.AspNetCore.SecurityHeaders.Csp
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model CareLeavers.Web.Models.Content.Page
 
 @inject IContentfulConfiguration ContentfulConfiguration
+@inject ICspNonceService CspNonceService
+
 
 @{
     ViewBag.Title = Model.Title;
@@ -45,26 +48,25 @@
             <gds-contentful-contents document="@Model.MainContent" levels="@Model.ContentsHeadings"/>
         }
         <gds-contentful-rich-text document="@Model.MainContent"></gds-contentful-rich-text>
-        @if (Model.Width == PageWidth.FullWidth)
-        {
-            <partial name="ShareThis" model="Model.ShowShareThis"/>
-        }
-        
         @if (Model.ShowLastUpdated)
         {
             <hr/>
-            <partial name="_LastUpdated" model="@Model.Sys"/>
+            <partial name="LastUpdated" model="@Model"/>
         }
         
+        <partial name="ShareThis" model="Model.ShowShareThis"/>
     </div>
     @if (Model.Width == PageWidth.TwoThirds)
     {
         <div class="govuk-grid-column-one-third">
+            &nbsp;
+        </div>
+        <div class="govuk-grid-column-full">
             @if (Model.SecondaryContent != null)
             {
+                <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
                 <gds-contentful-rich-text document="@Model.SecondaryContent"></gds-contentful-rich-text>
             }
-            <partial name="ShareThis" model="Model.ShowShareThis"/>
         </div>
     }
 </div>
@@ -81,5 +83,28 @@
                 <gds-contentful-rich-text document="@config.Footer"/>
             </div>
         </div>
+    }
+}
+
+@section Scripts
+{
+    @if (Model.ShowShareThis)
+    {
+        <script asp-add-nonce="true" defer>
+            const printPage  = () => window.print();
+
+            const addPrintButtonEventListener  = () => {
+                const printButton = document.getElementById("print-link");
+
+                if (!printButton) {
+                    return;
+                }
+
+                printButton.addEventListener('click', printPage);
+
+            }
+
+            addPrintButtonEventListener();
+        </script>
     }
 }

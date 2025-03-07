@@ -201,3 +201,18 @@
     color: #000 !important
   }
 }
+
+.gem-c-print-link__button {
+  display: block;
+  border: 1px solid #505a5f;
+  color: #1d70b8;
+  cursor: pointer;
+  margin: 0;
+}
+
+.gem-c-print-link__link, .gem-c-print-link__button {
+  background: url('/assets/icon-print.png') no-repeat 10px 50%;
+  background-size: 16px 18px;
+  padding: 10px 10px 10px 36px;
+  text-decoration: none;
+}
