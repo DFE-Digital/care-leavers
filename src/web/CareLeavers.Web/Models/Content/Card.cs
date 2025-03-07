@@ -16,5 +16,4 @@ public class Card : ContentfulContent
 
     public List<string> Types { get; set; } = new();
 
-    public int Position { get; set; } = 0;
 }

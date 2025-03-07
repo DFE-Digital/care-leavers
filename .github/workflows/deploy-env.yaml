@@ -117,18 +117,12 @@ jobs:
       - name: Lowercase the repo name and username
         run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
 
-      - name: 'Get publishing profile'
-        run: |
-          publishingProfile=$(az webapp deployment list-publishing-profiles --name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-app-service --slot staging --resource-group s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-rg --xml)
-          echo "PUBLISHING_PROFILE=$publishingProfile" >>${GITHUB_ENV}
-
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: ${{ vars.DEV_AZURE_WEBAPP_NAME }}
+          app-name: s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-app-service
           slot-name: 'staging'
-          publish-profile: ${{ env.PUBLISHING_PROFILE }}
           images: 'ghcr.io/${{ env.REPO }}:${{ github.sha }}'
 
       - name: Swap slot to production

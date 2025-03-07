@@ -18,24 +18,53 @@ public class GDSEntityLinkContentRenderer(ContentRendererCollection rendererColl
             };
         }
 
+        if (content is Hyperlink)
+        {
+            return true;
+        }
+
         return false;
     }
 
     public async Task<string> RenderAsync(IContent content)
     {
-        var link = (content as EntryStructure);
         var tb = new TagBuilder("a");
-        tb.AddCssClass("govuk-hyperlink");
-        switch (link?.Data.Target)
+        tb.AddCssClass("govuk-link");
+        
+        if (content is Hyperlink)
         {
-            case Page p:
-                tb.Attributes["href"] = p.Slug;
+            var link = (content as Hyperlink);
+            tb.Attributes["href"] = link.Data.Uri;
+            if (link.Content.Any())
+            {
                 foreach (var subContent in link.Content)
                 {
                     var renderer = rendererCollection.GetRendererForContent(subContent);
                     tb.InnerHtml.AppendHtml(await renderer.RenderAsync(subContent));
                 }
-                break;
+            }
+            else
+            {
+                tb.InnerHtml.Append(link.Data.Title);
+            }
+        }
+        else
+        {
+
+            var link = (content as EntryStructure);
+
+            switch (link?.Data.Target)
+            {
+                case Page p:
+                    tb.Attributes["href"] = p.Slug;
+                    foreach (var subContent in link.Content)
+                    {
+                        var renderer = rendererCollection.GetRendererForContent(subContent);
+                        tb.InnerHtml.AppendHtml(await renderer.RenderAsync(subContent));
+                    }
+
+                    break;
+            }
         }
 
         return tb.HasInnerHtml ? tb.ToHtmlString() : string.Empty;

@@ -157,7 +157,7 @@
 						<section class="dfe-section govuk-!-margin-top-5">
 							<div class="dfe-grid-container dfe-grid-container--wider govuk-!-margin-top-5">
 								<div class="hf-card">
-									<a href="support-money-and-benefits">
+									<a href="support-money-and-benefits" class="govuk-link">
 										<div class="hf-card-container">
 											<img class="full-width-image card-image" alt="" role="presentation" src="//images.ctfassets.net/3y72rykjd1o5/2OQB2chv6WQnhuQcoPmRl2/eda63f1183152bc36378065f714ee696/money_and_benefits.png">
 											<div class="cat-card-details">
@@ -168,7 +168,7 @@
 									</a>
 								</div>
 								<div class="hf-card">
-									<a href="support-housing-and-accommodation">
+									<a href="support-housing-and-accommodation" class="govuk-link">
 										<div class="hf-card-container">
 											<img class="full-width-image card-image" alt="" role="presentation" src="//images.ctfassets.net/3y72rykjd1o5/2hY4PJ2XkBrPIAWUVfLZgD/a84d0e5218a255349ddb186ae97a1230/housing_and_benefits.png">
 											<div class="cat-card-details">
@@ -181,16 +181,11 @@
 							</div>
 						</section>
 						<p class="govuk-body"></p>
-						<div class="govuk-grid-row">
-							<div class="govuk-grid-column-full">
-								<div class="sharethis-inline-share-buttons"></div>
-							</div>
-						</div>
 						<hr>
 						<div class="govuk-grid-row">
 							<div class="metadata-logo-wrapper">
 								<div class="govuk-grid-column-two-thirds metadata-column">
-									<div class="gem-c-metadata" data-module="gem-toggle metadata" data-gem-toggle-module-started="true" data-metadata-module-started="true">
+									<div class="gem-c-metadata" data-module="gem-toggle metadata">
 										<dl class="gem-c-metadata__list">
 											<dt class="gem-c-metadata__term">From:</dt>
 											<dd class="gem-c-metadata__definition notranslate">
@@ -204,7 +199,16 @@
 											</dd>
 										</dl>
 									</div>
+									<div class="gem-c-print-link govuk-!-display-none-print govuk-!-margin-top-3 govuk-!-margin-bottom-8">
+										<button class="govuk-link govuk-body-s gem-c-print-link__button" data-module="print-link" id="print-link">Print this page</button>
+									</div>
 								</div>
+							</div>
+						</div>
+						<div class="govuk-grid-row">
+							<div class="govuk-grid-column-full">
+								<h3 class="govuk-heading-m">Share this page</h3>
+								<div class="sharethis-inline-share-buttons"></div>
 							</div>
 						</div>
 					</div>
@@ -251,6 +255,23 @@
 				</div>
 			</div>
 		</footer>
+		<script defer="" nonce="mock-nonce">
+            const printPage  = () => window.print();
+
+            const addPrintButtonEventListener  = () => {
+                const printButton = document.getElementById("print-link");
+
+                if (!printButton) {
+                    return;
+                }
+
+                printButton.addEventListener('click', printPage);
+
+            }
+
+            addPrintButtonEventListener();
+        
+		</script>
 		<script src="/govuk/all.min.js?v=RHpXsNmLgFsVb0_A7CLeltntRsu0LVT9kE8cBjem4vY" type="module"></script>
 		<script nonce="mock-nonce" type="module">
 import { initAll } from '/govuk/all.min.js'

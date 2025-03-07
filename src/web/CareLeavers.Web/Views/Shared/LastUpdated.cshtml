@@ -1,10 +1,10 @@
 @using System.Globalization
-@model Contentful.Core.Models.SystemProperties
+@model CareLeavers.Web.Models.Content.Page
 
 <div class="govuk-grid-row">
     <div class="metadata-logo-wrapper">
         <div class="govuk-grid-column-two-thirds metadata-column">
-            <div class="gem-c-metadata" data-module="gem-toggle metadata" data-gem-toggle-module-started="true" data-metadata-module-started="true">
+            <div class="gem-c-metadata" data-module="gem-toggle metadata">
                 <dl class="gem-c-metadata__list">
                     <dt class="gem-c-metadata__term">From:</dt>
                     <dd class="gem-c-metadata__definition notranslate">
@@ -12,13 +12,19 @@
 
                     </dd>
                     <dt class="gem-c-metadata__term">Published</dt>
-                    <dd class="gem-c-metadata__definition">@Model.CreatedAt?.ToString("dd MMMM yyyy", DateTimeFormatInfo.InvariantInfo)</dd>
+                    <dd class="gem-c-metadata__definition">@Model.Sys.CreatedAt?.ToString("dd MMMM yyyy", DateTimeFormatInfo.InvariantInfo)</dd>
                     <dt class="gem-c-metadata__term">Last updated</dt>
                     <dd class="gem-c-metadata__definition">
-                        @Model.UpdatedAt?.ToString("dd MMMM yyyy", DateTimeFormatInfo.InvariantInfo)
+                        @Model.Sys.UpdatedAt?.ToString("dd MMMM yyyy", DateTimeFormatInfo.InvariantInfo)
                     </dd>
                 </dl>
             </div>
+            @if (Model.ShowShareThis)
+            {
+                <div class="gem-c-print-link govuk-!-display-none-print govuk-!-margin-top-3 govuk-!-margin-bottom-8">
+                    <button class="govuk-link govuk-body-s gem-c-print-link__button" data-module="print-link" id="print-link">Print this page</button>
+                </div>
+            }
         </div>
     </div>
 </div>

@@ -24,11 +24,6 @@ gulp.task('dfe-assets', function() {
         .pipe(gulp.dest(paths.dist + 'assets'));
 });
 
-gulp.task('gov-assets', function() {
-    return gulp.src('node_modules/dfe-frontend/packages/assets/**/*', {encoding:false})
-        .pipe(gulp.dest(paths.dist + 'assets'));
-});
-
 gulp.task("sass", function () {
     return gulp.src(paths.src + '/scss/**/*.scss')
         .pipe(sass({
@@ -38,11 +33,17 @@ gulp.task("sass", function () {
         // .pipe(connect.reload());
 });
 
+gulp.task("images", function() {
+    return gulp.src(paths.src + '/assets/**/*', {encoding:false})
+        .pipe(gulp.dest(paths.dist + 'assets'));
+})
+
 gulp.task("dev",
     gulp.series(
         "dfe-js",
         "dfe-css",
         "dfe-assets",
+        "images",
         "sass"
     )
 );
