@@ -60,7 +60,7 @@ public class GDSContentfulContentsTagHelper : TagHelper
             {
                 TagBuilder item = new TagBuilder("li");
                 item.AddCssClass("govuk-body-s");
-                item.InnerHtml.AppendHtml($"<a href=\"#{heading.Id}\">{heading.InnerHtml}</a>");
+                item.InnerHtml.AppendHtml($"<a href=\"#{heading.Id}\" class=\"govuk-link\">{heading.InnerHtml}</a>");
                 list.InnerHtml.AppendHtml(item);
             }
 
