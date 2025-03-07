@@ -139,10 +139,12 @@ try
         renderer.AddRenderer(new GDSGridRenderer(serviceProvider));
         renderer.AddRenderer(new GDSHorizontalRulerContentRenderer());
         renderer.AddRenderer(new GDSRichContentRenderer(serviceProvider));
-        renderer.AddRenderer(new GDSEntityLinkContentRenderer(renderer.Renderers));
+        renderer.AddRenderer(new GDSLinkRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSStatusCheckerRenderer(serviceProvider));
         renderer.AddRenderer(new GDSRiddleRenderer(serviceProvider));
         renderer.AddRenderer(new GDSBannerRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSDefinitionBlockRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSDefinitionLinkRenderer());
 
         return renderer;
     });
@@ -201,6 +203,8 @@ try
     {
         NamingStrategy = new CamelCaseNamingStrategy()
     };
+    contentfulClient.SerializerSettings.MaxDepth = 128;
+    contentfulClient.Serializer.MaxDepth = 128;
 
     Constants.Serializer = contentfulClient.Serializer;
     Constants.SerializerSettings = contentfulClient.SerializerSettings;
