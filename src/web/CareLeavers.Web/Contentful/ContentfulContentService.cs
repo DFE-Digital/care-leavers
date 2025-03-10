@@ -39,8 +39,7 @@ public class ContentfulContentService : IContentService
         return _distributedCache.GetOrSetAsync($"statuschecker:{id}", async () =>
         {
             var query = new QueryBuilder<StatusChecker>()
-                .ContentTypeIs(StatusChecker.ContentType)
-                .Limit(1);
+                .ContentTypeIs(StatusChecker.ContentType);
             
             return await _contentfulClient.GetEntry(id, query);
         });
