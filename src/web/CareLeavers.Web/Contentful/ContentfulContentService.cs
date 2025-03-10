@@ -1,5 +1,6 @@
 using CareLeavers.Web.Caching;
 using CareLeavers.Web.Models.Content;
+using CareLeavers.Web.Models.ViewModels;
 using Contentful.Core;
 using Contentful.Core.Models;
 using Contentful.Core.Search;
@@ -32,6 +33,48 @@ public class ContentfulContentService : IContentService
 
             return pageEntries.FirstOrDefault();
         });
+    }
+
+    public async Task<List<SimplePage>> GetBreadcrumbs(string slug, bool includeHome = true)
+    {
+        // Get homepage slug
+        var homePage = new SimplePage((await GetConfiguration())?.HomePage);
+        
+        // Get site hierarchy
+        var hierarchy = await GetSiteHierarchy();
+        
+        // Keep backing up until the homepage
+        List<SimplePage> breadcrumbs = [];
+
+        var currentPage = hierarchy.Find(p => p.Slug == slug);;
+        if (currentPage == null)
+        {
+            return breadcrumbs;
+        }
+        
+        var parentPage = hierarchy.Find(p => p.Slug == currentPage.Parent);
+
+        while (parentPage != null && parentPage.Id != homePage.Id)
+        {
+            if (!breadcrumbs.Exists(b => b.Id == parentPage.Id))
+                breadcrumbs.Add(parentPage);
+            
+            parentPage = hierarchy.Find(p => p.Slug == parentPage.Parent);
+        }
+
+        if (((parentPage == null) || breadcrumbs.Count == 0) && includeHome && !breadcrumbs.Exists(b => b.Id == homePage.Id))
+        {
+            breadcrumbs.Add(homePage);
+        }
+
+        // Always set homepage title to home for breadcrumbs
+        foreach (var simplePage in breadcrumbs.Where(simplePage => simplePage.Id == homePage.Id))
+        {
+            simplePage.Title = "Home";
+        }
+        
+        breadcrumbs.Reverse();
+        return breadcrumbs;
     }
 
     public Task<StatusChecker?> GetStatusChecker(string id)
@@ -134,7 +177,7 @@ public class ContentfulContentService : IContentService
         }) ?? [];
     }
     
-    public Task<Dictionary<string, string>> GetSiteHierarchy()
+    public Task<List<SimplePage>> GetSiteHierarchy()
     {
         return _distributedCache.GetOrSetAsync("content:hierarchy", async () =>
         {
@@ -144,11 +187,11 @@ public class ContentfulContentService : IContentService
 
             var pageEntries = await _contentfulClient.GetEntries(pages);
             var slugs = await GetSiteSlugs();
-            
+
             return pageEntries
-                .Where(x => x.Parent != null && x.Slug != null)
-                .Select(p => new KeyValuePair<string, string>(slugs[p.Sys.Id], slugs[p.Parent.Sys.Id]))
-                .ToDictionary();
+                .Where(x => x.Slug != null)
+                .Select(p => new SimplePage(p.Sys.Id, p.Title, slugs[p.Sys.Id],  p.Parent != null ? slugs[p.Parent.Sys.Id] : null))
+                .ToList();
         });
     }
 }

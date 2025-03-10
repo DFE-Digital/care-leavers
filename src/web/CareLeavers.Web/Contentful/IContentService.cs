@@ -1,4 +1,5 @@
 using CareLeavers.Web.Models.Content;
+using CareLeavers.Web.Models.ViewModels;
 using Contentful.Core.Models;
 
 namespace CareLeavers.Web.Contentful;
@@ -7,11 +8,13 @@ public interface IContentService
 {
     Task<Page?> GetPage(string slug);
 
-    Task<Dictionary<string, string>> GetSiteHierarchy();
+    Task<List<SimplePage>> GetSiteHierarchy();
     
     Task<ContentfulConfigurationEntity?> GetConfiguration();
 
     Task<Dictionary<string, string>> GetSiteSlugs();
+
+    Task<List<SimplePage>> GetBreadcrumbs(string slug, bool includeHome = true);
 
     Task<StatusChecker?> GetStatusChecker(string id);
 
