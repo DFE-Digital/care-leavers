@@ -1,13 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Xml.Linq;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
-using Contentful.Core.Configuration;
+using CareLeavers.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using Formatting = Newtonsoft.Json.Formatting;
 
 namespace CareLeavers.Web.Controllers;
 
@@ -41,6 +37,7 @@ public class ContentfulController(IContentService contentService) : Controller
     }
 
     [Route("/{**slug}")]
+    [ContentfulCaching]
     public async Task<IActionResult> GetContent(string slug)
     {
         var page = await contentService.GetPage(slug);
