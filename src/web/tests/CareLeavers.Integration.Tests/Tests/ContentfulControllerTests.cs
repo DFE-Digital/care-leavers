@@ -14,9 +14,11 @@ public class ContentfulControllerTests
         var wrapper = await File.ReadAllTextAsync(Path.Combine(WebFixture.WrapperBasePath, "RequestWrapper.json"));
 
         wrapper = wrapper.Replace("**REPLACE**", @"{
-    ""slug"" : ""home""
+    ""slug"" : ""home"",
+    ""sys"" : { ""id"" : ""12345"" } 
   }, {
-    ""slug"" : ""about""
+    ""slug"" : ""about"",
+    ""sys"" : { ""id"" : ""12346"" } 
   }");
         
         WebFixture.SetContentfulJson(wrapper);
