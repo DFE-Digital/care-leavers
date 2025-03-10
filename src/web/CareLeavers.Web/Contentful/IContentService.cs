@@ -8,7 +8,7 @@ public interface IContentService
 {
     Task<Page?> GetPage(string slug);
 
-    Task<List<SimplePage>> GetSiteHierarchy();
+    Task<List<SimplePage>?> GetSiteHierarchy();
     
     Task<ContentfulConfigurationEntity?> GetConfiguration();
 

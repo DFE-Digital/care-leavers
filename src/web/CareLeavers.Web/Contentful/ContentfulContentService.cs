@@ -38,7 +38,14 @@ public class ContentfulContentService : IContentService
     public async Task<List<SimplePage>> GetBreadcrumbs(string slug, bool includeHome = true)
     {
         // Get homepage slug
-        var homePage = new SimplePage((await GetConfiguration())?.HomePage);
+        var home = (await GetConfiguration())?.HomePage;
+        var homePage = new SimplePage()
+        {
+            Id = home.Sys.Id,
+            Title = home.Title,
+            Slug = home.Slug,
+            Parent = null
+        };
         
         // Get site hierarchy
         var hierarchy = await GetSiteHierarchy();
@@ -177,7 +184,7 @@ public class ContentfulContentService : IContentService
         }) ?? [];
     }
     
-    public Task<List<SimplePage>> GetSiteHierarchy()
+    public Task<List<SimplePage>?> GetSiteHierarchy()
     {
         return _distributedCache.GetOrSetAsync("content:hierarchy", async () =>
         {
@@ -190,7 +197,13 @@ public class ContentfulContentService : IContentService
 
             return pageEntries
                 .Where(x => x.Slug != null)
-                .Select(p => new SimplePage(p.Sys.Id, p.Title, slugs[p.Sys.Id],  p.Parent != null ? slugs[p.Parent.Sys.Id] : null))
+                .Select(p => new SimplePage()
+                {
+                   Id = p.Sys.Id,
+                   Slug = slugs[p.Sys.Id],
+                   Title = p.Title,
+                   Parent = p.Parent != null ? slugs[p.Parent.Sys.Id] : null
+                })
                 .ToList();
         });
     }
