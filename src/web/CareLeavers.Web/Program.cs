@@ -107,9 +107,10 @@ try
         mockedContentfulClient.SerializerSettings.Converters.RemoveAt(0);
         mockedContentfulClient.SerializerSettings.Converters.Insert(0, new GDSAssetJsonConverter());
         mockedContentfulClient.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        mockedContentfulClient.SerializerSettings.MaxDepth = 128;
         mockedContentfulClient.SerializerSettings.ContractResolver = new DefaultContractResolver
         {
-            NamingStrategy = new CamelCaseNamingStrategy()
+            NamingStrategy = new CamelCaseNamingStrategy(),
         };
         
         builder.Services.AddSingleton<IContentfulClient>(x => mockedContentfulClient);
@@ -197,6 +198,7 @@ try
     contentfulClient.SerializerSettings.Converters.Insert(0, new GDSAssetJsonConverter());
     contentfulClient.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     contentfulClient.SerializerSettings.Formatting = Formatting.Indented;
+    contentfulClient.SerializerSettings.MaxDepth = 128;
     contentfulClient.SerializerSettings.ContractResolver = new DefaultContractResolver
     {
         NamingStrategy = new CamelCaseNamingStrategy()
