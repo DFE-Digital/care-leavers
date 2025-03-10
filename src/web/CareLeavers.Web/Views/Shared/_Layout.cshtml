@@ -1,5 +1,6 @@
-﻿@using System.Globalization
-@using CareLeavers.Web.Configuration
+﻿@using CareLeavers.Web.Configuration
+@using CareLeavers.Web.Models.ViewModels
+@using CareLeavers.Web.Translation
 @using GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.AspNetCore.TagHelpers
 @using Joonasw.AspNetCore.SecurityHeaders.Csp
@@ -12,15 +13,24 @@
 @inject ICspNonceService CspNonceService
 @inject IContentfulConfiguration ContentfulConfiguration
 @inject IOptions<ScriptOptions> ScriptOptions
+@inject ITranslationService TranslationService
 
 @{
     var config = await ContentfulConfiguration.GetConfiguration();
     var scriptConfig = ScriptOptions.Value;
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>() ?? throw new NullReferenceException();
+    
+    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
+    if (string.IsNullOrEmpty(languageCode))
+    {
+        languageCode = "en";
+    }
+    
+    var language = await TranslationService.GetLanguage(languageCode);
 }
 
 <!DOCTYPE html>
-<html class="govuk-template" lang="en">
+<html class="govuk-template" lang="@languageCode">
 
 <head>
     @if (WebHostEnvironment.IsEnvironment("Test") && !string.IsNullOrEmpty(scriptConfig.GTM))
@@ -94,13 +104,14 @@
 @Html.GovUkFrontendJsEnabledScript(CspNonceService.GetNonce())
 <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 @{
-    await Html.RenderPartialAsync("_Header", config);
+    await Html.RenderPartialAsync("_Header", new HeaderViewModel
+    {
+        ContentfulConfiguration = config,
+        Language = language
+    });
 }
 
-
 @await RenderSectionAsync("BeforeContent", required: false)
-
-
 
 @if (IsSectionDefined("BeforeGDSContent"))
 

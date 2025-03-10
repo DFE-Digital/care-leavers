@@ -12,6 +12,17 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
   font-family: $govuk-font-family; // Override all fonts to match
 }
 
+.translate {
+  display: block;
+  text-align: right;
+  width: 90px;
+  float: right;
+  font-size: 1em;
+  background-image: url("/assets/icon-print.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
 .environment-banner {
   padding-top: 5px;
   padding-bottom: 5px;
