@@ -3,6 +3,7 @@ using System.Text;
 using System.Xml.Linq;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
+using CareLeavers.Web.Filters;
 using Contentful.Core.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -44,6 +45,7 @@ public class ContentfulController(IContentService contentService) : Controller
 
     [Route("/{slug}")]
     [Route("/{languageCode}/{slug}")]
+    [ContentfulCaching]
     public async Task<IActionResult> GetContent(string slug, string? languageCode)
     {
         if (languageCode == "en")

@@ -2,9 +2,9 @@ namespace CareLeavers.Web.Translation;
 
 public class NoTranslationService : ITranslationService
 {
-    public Task<string> Translate(string text, string toLanguage)
+    public Task<string?> TranslateHtml(string text, string toLanguage)
     {
-        return Task.FromResult(text);
+        return Task.FromResult<string?>(text);
     }
 
     public Task<TranslationLanguage> GetLanguage(string code)

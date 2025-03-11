@@ -14,4 +14,6 @@ public class TranslationLanguage
     public string Name { get; set; } = string.Empty;
     
     public string NativeName { get; set; } = string.Empty;
+    
+    public string Direction { get; set; } = "ltr";
 }

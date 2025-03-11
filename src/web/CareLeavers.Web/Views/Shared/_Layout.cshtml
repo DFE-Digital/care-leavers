@@ -27,10 +27,16 @@
     }
     
     var language = await TranslationService.GetLanguage(languageCode);
+    
+    var configViewModel = new ConfigViewModel
+    {
+        ContentfulConfiguration = config,
+        Language = language
+    };
 }
 
 <!DOCTYPE html>
-<html class="govuk-template" lang="@languageCode">
+<html class="govuk-template" dir="@language.Direction" lang="@languageCode">
 
 <head>
     @if (WebHostEnvironment.IsEnvironment("Test") && !string.IsNullOrEmpty(scriptConfig.GTM))
@@ -104,11 +110,7 @@
 @Html.GovUkFrontendJsEnabledScript(CspNonceService.GetNonce())
 <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 @{
-    await Html.RenderPartialAsync("_Header", new HeaderViewModel
-    {
-        ContentfulConfiguration = config,
-        Language = language
-    });
+    await Html.RenderPartialAsync("_Header", configViewModel);
 }
 
 @await RenderSectionAsync("BeforeContent", required: false)
@@ -139,7 +141,7 @@
 }
 
 @{
-    await Html.RenderPartialAsync("_Footer", config);
+    await Html.RenderPartialAsync("_Footer", configViewModel);
 }
 
 @await RenderSectionAsync("Scripts", false)

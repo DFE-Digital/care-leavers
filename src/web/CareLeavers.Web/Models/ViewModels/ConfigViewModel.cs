@@ -3,7 +3,7 @@ using CareLeavers.Web.Translation;
 
 namespace CareLeavers.Web.Models.ViewModels;
 
-public class HeaderViewModel
+public class ConfigViewModel
 {
     public ContentfulConfigurationEntity ContentfulConfiguration { get; set; } = new();
 

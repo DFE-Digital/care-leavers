@@ -2,7 +2,7 @@ namespace CareLeavers.Web.Translation;
 
 public interface ITranslationService
 {
-    Task<string> Translate(string text, string toLanguage);
+    Task<string?> TranslateHtml(string text, string toLanguage);
     
     Task<TranslationLanguage> GetLanguage(string code);
     
