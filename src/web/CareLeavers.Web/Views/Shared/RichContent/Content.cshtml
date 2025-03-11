@@ -4,7 +4,8 @@
 @inject IContentService ContentService
 
 @{
-    var content = await ContentService.Hydrate(Model);
+    //var content = await ContentService.Hydrate(Model);
+    var content = Model;
 
     string color = "";
     switch (content.Background)

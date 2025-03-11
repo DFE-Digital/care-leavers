@@ -20,10 +20,15 @@ public class WebFixture
     }
 
     public const string WrapperBasePath = "../../../Tests";
-    
-    public static void SetContentfulJson(string content)
+
+    public static void ClearContent()
     {
-        _webFactory.FakeMessageHandler.Response = content;
+        _webFactory.FakeMessageHandler.Content.Clear();
+    }
+    
+    public static void AddContent(ContentfulContent content)
+    {
+        _webFactory.FakeMessageHandler.Content.Add(content);
     }
     
     public static HttpClient GetClient() => _webFactory.CreateClient();

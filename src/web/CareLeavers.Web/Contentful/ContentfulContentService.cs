@@ -94,25 +94,6 @@ public class ContentfulContentService : IContentService
             return await _contentfulClient.GetEntry(id, query);
         });
     }
-
-    public Task<RichContent?> Hydrate(RichContent? richContent)
-    {
-        var id = richContent?.Sys.Id;
-
-        if (id != null)
-            return _distributedCache.GetOrSetAsync(id, async () =>
-            {
-                var query = new QueryBuilder<RichContent>()
-                    .ContentTypeIs(RichContent.ContentType)
-                    .FieldEquals("sys.id", id)
-                    .Include(2)
-                    .Limit(1);
-
-                return (await _contentfulClient.GetEntries(query)).FirstOrDefault();
-            });
-
-        return Task.FromResult(richContent);
-    }
     
     public Task<Grid?> Hydrate(Grid? grid)
     {
@@ -133,23 +114,23 @@ public class ContentfulContentService : IContentService
         return Task.FromResult(grid);
     }
     
-    public Task<RichContentBlock?> Hydrate(RichContentBlock? richContent)
+    public Task<RichContentBlock?> Hydrate(RichContentBlock? richContentBlock)
     {
-        var id = richContent?.Sys.Id;
+        var id = richContentBlock?.Sys.Id;
 
-        if (richContent != null)
-            return _distributedCache.GetOrSetAsync(richContent.Sys.Id, async () =>
+        if (richContentBlock != null)
+            return _distributedCache.GetOrSetAsync(richContentBlock.Sys.Id, async () =>
             {
                 var query = new QueryBuilder<RichContentBlock>()
                     .ContentTypeIs(RichContentBlock.ContentType)
                     .FieldEquals("sys.id", id)
-                    .Include(2)
+                    .Include(3)
                     .Limit(1);
 
                 return (await _contentfulClient.GetEntries(query)).FirstOrDefault();
             });
 
-        return Task.FromResult(richContent);
+        return Task.FromResult(richContentBlock);
     }
 
     public Task<ContentfulConfigurationEntity?> GetConfiguration()

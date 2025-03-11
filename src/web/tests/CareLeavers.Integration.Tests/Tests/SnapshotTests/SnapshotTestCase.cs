@@ -2,10 +2,10 @@ namespace CareLeavers.Integration.Tests.Tests.SnapshotTests;
 
 public class SnapshotTestCase : TestCaseData
 {
-    public SnapshotTestCase(string fileName) : base(fileName)
+    public SnapshotTestCase(string folder) : base(folder)
     {
         
     }
     
-    public string FileName => Arguments[0] as string ?? string.Empty;
+    public string Folder => Arguments[0] as string ?? string.Empty;
 }

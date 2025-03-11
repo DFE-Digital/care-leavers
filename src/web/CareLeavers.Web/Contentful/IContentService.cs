@@ -20,8 +20,6 @@ public interface IContentService
 
     Task<RichContentBlock?> Hydrate(RichContentBlock? entity);
     
-    Task<RichContent?> Hydrate(RichContent? entity);
-    
     Task<Grid?> Hydrate(Grid? entity);
 
 }

@@ -20,8 +20,9 @@ public class ContentfulControllerTests
     ""slug"" : ""about"",
     ""sys"" : { ""id"" : ""12346"" } 
   }");
-        
-        WebFixture.SetContentfulJson(wrapper);
+
+        WebFixture.ClearContent();
+        WebFixture.AddContent(new ContentfulContent() { Content = wrapper });
         
         // Act
         var response = await client.GetAsync("/sitemap.xml");
@@ -52,10 +53,11 @@ public class ContentfulControllerTests
         var wrapper = await File.ReadAllTextAsync(Path.Combine(WebFixture.WrapperBasePath, "RequestWrapper.json"));
         wrapper = wrapper.Replace("**REPLACE**", string.Empty);
 
-        WebFixture.SetContentfulJson(wrapper);
+        WebFixture.ClearContent();
+        WebFixture.AddContent(new ContentfulContent() { Content = wrapper });
         
         // Act
-        var response = await client.GetAsync("/home");
+        var response = await client.GetAsync("/not-found-random-page");
         
         // Assert
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
