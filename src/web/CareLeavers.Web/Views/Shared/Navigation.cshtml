@@ -6,18 +6,8 @@
 @inject  IContentService ContentService
 
 @{
-    var currentLink = ViewContext.RouteData.Values["slug"]?.ToString();
-    var currentPage = await ContentService.GetPage(currentLink);
-    
-    var config = await ConfigService.GetConfiguration();
-    var homePageSlug = config?.HomePage?.Slug;
-
-    while (currentPage != null && currentPage.Slug != homePageSlug && currentPage.Parent != null && currentPage.Parent.Slug != homePageSlug)
-    {
-        currentPage = currentPage.Parent;
-    }
-
-   currentLink = currentPage.Slug;
+    string currentPage = ViewContext.RouteData.Values["slug"]?.ToString();
+    var breadcrumbs = await ContentService.GetBreadcrumbs(currentPage, false);
 }
 
 <nav class="dfe-header__navigation" id="header-navigation" role="navigation" aria-label="Primary navigation" aria-labelledby="label-navigation">
@@ -35,7 +25,7 @@
             @foreach (var link in Model.Navigation)
             {
                 string className = "dfe-header__navigation-item";
-                if (link.Slug == currentLink)
+                if (link.Slug == currentPage || breadcrumbs.Exists(b => b.Slug == link.Slug))
                 {
                     className += " dfe-header__navigation-item--current";
                 }

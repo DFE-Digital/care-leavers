@@ -27,7 +27,7 @@ export class HomePage extends BasePage {
 
         // Main Content Sections
         this.whoIsThisForSection = page.locator('#Who-is-this-support-for-');
-        this.findSupportSection = page.locator('#Find-the-right-support');
+        this.findSupportSection = page.locator('#Find-support');
         this.knowWhatSupportSection = page.locator('#know-what-support');//update locators
         this.GuidesSection = page.locator('#helpful-guides');//update locators 
         
@@ -44,10 +44,10 @@ export class HomePage extends BasePage {
     async assertPageElements() {
         await this.validateURLContains('/home');
         // Check if the main heading is visible
-        await expect(this.mainHeading).toHaveText("Get support if you've been in care");
+        await expect(this.mainHeading).toHaveText("Find support for care leavers");
 
         // Validate first paragraph
-        await expect(this.firstHeaderParagraph).toContainText("Starting life as an adult can be challenging");
+        await expect(this.firstHeaderParagraph).toContainText("Leaving care can be a challenging time");
 
         // Check if the "who is this for" section is visible
         await expect(this.whoIsThisForSection).toContainText('support for');
