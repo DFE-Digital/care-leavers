@@ -22,6 +22,12 @@ public class SnapshotTests
         }
     ];
     
+    [SetUp]
+    public void Setup()
+    {
+        WebFixture.ClearContent();
+    }
+    
     [TestCaseSource(nameof(TestCases)), Explicit]
     public async Task GenerateSnapshots(string folder)
     {
