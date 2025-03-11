@@ -85,6 +85,10 @@ public class ContentfulController(IContentService contentService) : Controller
         {
             returnObject = await contentService.Hydrate(new RichContentBlock() { Sys = new SystemProperties() { Id = id } });
         }
+        else if (contentType == Banner.ContentType)
+        {
+            returnObject = await contentService.Hydrate(new Banner() { Sys = new SystemProperties() { Id = id } });
+        }
 
         return Content(JsonConvert.SerializeObject(returnObject, Constants.SerializerSettings), "application/json");
     }

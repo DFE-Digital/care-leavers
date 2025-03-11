@@ -21,5 +21,9 @@ public interface IContentService
     Task<RichContentBlock?> Hydrate(RichContentBlock? entity);
     
     Task<Grid?> Hydrate(Grid? entity);
+    
+    Task<Banner?> Hydrate(Banner? entity);
+
+    Task<string> GetSlug(string id);
 
 }

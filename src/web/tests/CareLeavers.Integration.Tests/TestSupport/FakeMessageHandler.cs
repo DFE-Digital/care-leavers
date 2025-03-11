@@ -29,7 +29,7 @@ public class FakeMessageHandler : HttpClientHandler
                 response = matchingContent.Content;
             }
         } 
-        // If we're requesting config, just grab the first page
+        // If we're requesting config, just grab the first config
         else if (request.RequestUri != null && request.RequestUri.PathAndQuery.Contains("content_type=configuration"))
         {
             var query = QueryHelpers.ParseQuery(request.RequestUri.Query);
