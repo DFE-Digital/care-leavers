@@ -1,4 +1,5 @@
 locals {
+  base_url = var.custom_domain != "" ? var.custom_domain : azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.host_name
   web_app_settings = {
     "ASPNETCORE_ENVIRONMENT"                = var.aspnetcore_environment
     "ContentfulOptions__DeliveryApiKey"     = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-delivery-api-key.versionless_id})"
@@ -6,7 +7,7 @@ locals {
     "ContentfulOptions__SpaceId"            = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-space-id.versionless_id})"
     "ContentfulOptions__Environment"        = var.contentful_environment
     "ContentfulOptions__UsePreviewApi"      = var.contentful_use_preview_api
-    "BaseUrl"                               = "https://${azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.host_name}"
+    "BaseUrl"                               = "https://${local.base_url}"
     "ApplicationInsights__ConnectionString" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.application-insights-connection-string.versionless_id})"
     "Caching__Type"                         = var.caching_type
     "Caching__ConnectionString"             = lower(var.caching_type) == "redis" ? "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-cache-connection-string[0].versionless_id})" : ""
