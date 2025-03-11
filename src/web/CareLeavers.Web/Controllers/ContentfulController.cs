@@ -20,6 +20,7 @@ public class ContentfulController(IContentService contentService) : Controller
         [FromServices] IContentfulConfiguration contentfulConfiguration,
         [FromQuery] string? languageCode = null)
     {
+        languageCode ??= "en";
         var config = await contentfulConfiguration.GetConfiguration();
         return RedirectToAction("GetContent", new { slug = config.HomePage?.Slug, languageCode });
     }
@@ -45,12 +46,12 @@ public class ContentfulController(IContentService contentService) : Controller
 
     [Route("/{slug}")]
     [Route("/{languageCode}/{slug}")]
-    [ContentfulCaching]
+    [Translation]
     public async Task<IActionResult> GetContent(string slug, string? languageCode)
     {
-        if (languageCode == "en")
+        if (string.IsNullOrEmpty(languageCode))
         {
-            return RedirectToAction("GetContent", new { slug, languageCode = string.Empty });
+            return RedirectToAction("GetContent", new { slug, languageCode = "en" });
         }
         
         var page = await contentService.GetPage(slug);

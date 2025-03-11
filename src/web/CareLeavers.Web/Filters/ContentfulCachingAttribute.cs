@@ -7,11 +7,13 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace CareLeavers.Web.Filters;
 
-public class ContentfulCaching : ActionFilterAttribute
+public class TranslationAttribute : ActionFilterAttribute
 {
     private MemoryStream? _memoryStream;
     private Stream? _originalBodyStream;
 
+    public string? HardcodedSlug { get; init; }
+    
     public override async Task OnActionExecutionAsync(
         ActionExecutingContext context,
         ActionExecutionDelegate next)
@@ -21,7 +23,7 @@ public class ContentfulCaching : ActionFilterAttribute
 
         var distributedCache = context.HttpContext.RequestServices.GetRequiredService<IDistributedCache>();
 
-        var slug = context.RouteData.Values["slug"]?.ToString();
+        var slug = HardcodedSlug ?? context.RouteData.Values["slug"]?.ToString();
         var languageCode = context.RouteData.Values["languageCode"]?.ToString();
 
         if (slug == null || string.IsNullOrEmpty(languageCode) || languageCode == "en")
@@ -58,7 +60,7 @@ public class ContentfulCaching : ActionFilterAttribute
         
         var translationService = context.HttpContext.RequestServices.GetRequiredService<ITranslationService>();
 
-        var slug = context.RouteData.Values["slug"]?.ToString();
+        var slug = HardcodedSlug ?? context.RouteData.Values["slug"]?.ToString();
         var languageCode = context.RouteData.Values["languageCode"]?.ToString();
 
         if (slug == null || 
