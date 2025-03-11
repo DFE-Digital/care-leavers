@@ -308,7 +308,6 @@ try
             .ToSelf();
         
         config.AllowConnectUrls.ForEach(f => x.AllowConnections.To(f));
-        
 
     });
     
