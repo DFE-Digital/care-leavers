@@ -44,7 +44,7 @@ export class BasePage {
     constructor(page: Page) {
         this.page = page;
         //Locator for the Website Title navigation Link
-        this.WebsiteNameLink = page.locator('a.dfe-header__link--service').nth(1);
+        this.WebsiteNameLink = page.locator('a.dfe-header__link--service');
 
         // Locators for cookie banner and buttons
         this.cookieBanner = page.locator('.govuk-cookie-banner');
