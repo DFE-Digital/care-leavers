@@ -43,7 +43,7 @@ flowchart TD
     accDescr: "App Service to Contentful Environment Mapping"
     
     A["Local Dev Environment"]-->CDev["Contentful - Dev"]
-    B["App Service - Test"]-->CStag["Contentful - Staging"]
+    B["App Service - Test"]-->CStag["Contentful - Test"]
     C["App Service - Staging"]--Preview-->CProd["Contentful - Production"]
     D["App Service - Production"]--Published-->CProd
 ```
@@ -58,8 +58,7 @@ flowchart TD
     A["Install the CLI"]-->B["Login to Contentful"]
     B-->C["Running Migrations .NET App"]
     C-->D["Foreach migration"]
-    D-->E{Is migration 
-    already applied?}
+    D-->E{Is migration already applied?}
     E--No-->G{Any migrations left?}
     E--Yes-->F["Run Migration"]
     F-->G

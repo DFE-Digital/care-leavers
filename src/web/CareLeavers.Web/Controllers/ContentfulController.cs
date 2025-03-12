@@ -3,8 +3,10 @@ using System.Text;
 using System.Xml.Linq;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
+using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Filters;
 using Contentful.Core.Configuration;
+using Contentful.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -42,6 +44,57 @@ public class ContentfulController(IContentService contentService) : Controller
         var page = await contentService.GetPage(slug);
 
         return Content(JsonConvert.SerializeObject(page, Constants.SerializerSettings), "application/json");
+    }
+
+    [Route("/json/configuration")]
+    [ExcludeFromCodeCoverage(Justification = "Development only")]
+    public async Task<IActionResult> GetConfigurationAsJson([FromServices] IWebHostEnvironment environment)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        if (!environment.IsDevelopment())
+        {
+            return NotFound();
+        }
+
+        var configuration = await contentService.GetConfiguration();
+
+        return Content(JsonConvert.SerializeObject(configuration, Constants.SerializerSettings), "application/json");
+    }
+    
+    [Route("/json/{contentType}/{id}")]
+    [ExcludeFromCodeCoverage(Justification = "Development only")]
+    public async Task<IActionResult> GetContentAsJson(string contentType, string id, [FromServices] IWebHostEnvironment environment)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        if (!environment.IsDevelopment())
+        {
+            return NotFound();
+        }
+
+        var returnObject = new object();
+        
+        if (contentType == Grid.ContentType)
+        {
+            returnObject = await contentService.Hydrate(new Grid() { Sys = new SystemProperties() { Id = id } });
+        } 
+        else if (contentType == RichContentBlock.ContentType)
+        {
+            returnObject = await contentService.Hydrate(new RichContentBlock() { Sys = new SystemProperties() { Id = id } });
+        }
+        else if (contentType == Banner.ContentType)
+        {
+            returnObject = await contentService.Hydrate(new Banner() { Sys = new SystemProperties() { Id = id } });
+        }
+
+        return Content(JsonConvert.SerializeObject(returnObject, Constants.SerializerSettings), "application/json");
     }
 
     [Route("/{slug}")]

@@ -13,7 +13,7 @@ export const helplineLinksToTest = [
 
 // List of Pages that will have the share and print buttons
 export const shareAndPrintLinksToTest = [
-    '/home',
+    '/category-money',
    // '/all-support',- commenting this for now as the buttons aren't visible on this page
 ];
 

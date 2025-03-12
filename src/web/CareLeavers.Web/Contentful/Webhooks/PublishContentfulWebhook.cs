@@ -56,6 +56,9 @@ public class PublishContentfulWebhook(
         }
         else
         {
+            Log.Logger.Information("Removing content item directly from cache with Id: {Id}", entry.SystemProperties.Id);
+            await distributedCache.RemoveAsync(entry.SystemProperties.Id);
+            
             var pageEntries = await FindLinkedPages(entry.SystemProperties.Id, []);
 
             Log.Logger.Information("The following slugs will be purged: {Slugs}", pageEntries.Select(x => x.Slug));
