@@ -19,8 +19,8 @@ test.describe('Home Page Tests', () => {
 
     test('should verify navigation for all support cards', async () => {
         const supportCards = [
-            { title: "Money and benefits", url: "/money-and-benefits" },
-            { title: "Housing and accommodation", url: "/housing-and-accommodation-support" }
+            { title: "Money and benefits", url: "/category-money" },
+            { title: "Housing and accommodation", url: "/category-housing" }
             //add more cards
         ];
         await homePage.verifySupportCardsNavigation(supportCards);

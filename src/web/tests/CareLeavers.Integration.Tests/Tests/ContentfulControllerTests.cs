@@ -6,6 +6,12 @@ namespace CareLeavers.Integration.Tests.Tests;
 
 public class ContentfulControllerTests
 {
+    [SetUp]
+    public void Setup()
+    {
+        WebFixture.ClearContent();
+    }
+    
     [Test]
     public async Task SitemapIsGenerated()
     {
@@ -21,7 +27,6 @@ public class ContentfulControllerTests
     ""sys"" : { ""id"" : ""12346"" } 
   }");
 
-        WebFixture.ClearContent();
         WebFixture.AddContent(new ContentfulContent() { Content = wrapper });
         
         // Act
@@ -53,7 +58,6 @@ public class ContentfulControllerTests
         var wrapper = await File.ReadAllTextAsync(Path.Combine(WebFixture.WrapperBasePath, "RequestWrapper.json"));
         wrapper = wrapper.Replace("**REPLACE**", string.Empty);
 
-        WebFixture.ClearContent();
         WebFixture.AddContent(new ContentfulContent() { Content = wrapper });
         
         // Act

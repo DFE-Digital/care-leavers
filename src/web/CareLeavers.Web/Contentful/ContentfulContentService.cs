@@ -114,6 +114,31 @@ public class ContentfulContentService : IContentService
         return Task.FromResult(grid);
     }
     
+    public Task<Banner?> Hydrate(Banner? banner)
+    {
+        var id = banner?.Sys.Id;
+
+        if (id != null)
+            return _distributedCache.GetOrSetAsync(id, async () =>
+            {
+                var query = new QueryBuilder<Banner>()
+                    .ContentTypeIs(Banner.ContentType)
+                    .FieldEquals("sys.id", id)
+                    .Include(2)
+                    .Limit(1);
+
+                return (await _contentfulClient.GetEntries(query)).FirstOrDefault();
+            });
+
+        return Task.FromResult(banner);
+    }
+
+    public async Task<string> GetSlug(string id)
+    {
+        var slugs = await GetSiteSlugs();
+        return slugs[id];
+    }
+
     public Task<RichContentBlock?> Hydrate(RichContentBlock? richContentBlock)
     {
         var id = richContentBlock?.Sys.Id;
@@ -164,7 +189,7 @@ public class ContentfulContentService : IContentService
                 .ToDictionary();
         }) ?? [];
     }
-    
+
     public Task<List<SimplePage>?> GetSiteHierarchy()
     {
         return _distributedCache.GetOrSetAsync("content:hierarchy", async () =>
@@ -175,15 +200,16 @@ public class ContentfulContentService : IContentService
 
             var pageEntries = await _contentfulClient.GetEntries(pages);
             var slugs = await GetSiteSlugs();
+            
 
             return pageEntries
                 .Where(x => x.Slug != null)
                 .Select(p => new SimplePage()
                 {
-                   Id = p.Sys.Id,
-                   Slug = slugs[p.Sys.Id],
-                   Title = p.Title,
-                   Parent = p.Parent != null ? slugs[p.Parent.Sys.Id] : null
+                    Id = p.Sys.Id,
+                    Slug = slugs.FirstOrDefault(s => s.Key == p.Sys.Id).Value,
+                    Title = p.Title,
+                    Parent = p.Parent != null ? slugs.FirstOrDefault(s => s.Key == p.Parent.Sys.Id).Value : null
                 })
                 .ToList();
         });
