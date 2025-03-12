@@ -2,7 +2,7 @@ using Contentful.Core.Models;
 
 namespace CareLeavers.Web.Models.Content;
 
-public class DefinitionContent : ContentfulContent
+public class Definition : ContentfulContent
 {
     public static string ContentType { get; } = "definitionContent";
     
