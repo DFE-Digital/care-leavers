@@ -18,7 +18,7 @@ public class ContentfulEntityResolver : IContentTypeResolver
         { StatusChecker.ContentType, typeof(StatusChecker) },
         { Banner.ContentType, typeof(Banner) },
         { DefinitionLink.ContentType, typeof(DefinitionLink) },
-        { DefinitionBlock.ContentType, typeof(DefinitionBlock) },
+        { Definition.ContentType, typeof(Definition) },
     };
     
     public Type? Resolve(string contentTypeId)

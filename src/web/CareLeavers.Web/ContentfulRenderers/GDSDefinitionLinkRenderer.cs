@@ -45,7 +45,7 @@ public class GDSDefinitionLinkRenderer() : IContentRenderer
             var slug = link.Page.Slug;
 
             // Get sanitised id for anchor
-            var anchor = TagBuilder.CreateSanitizedId(link.DefinitionBlock.Title, "-");
+            var anchor = TagBuilder.CreateSanitizedId($"definition-{link.Definition.Title}", "-");
             
             // Set link
             tb.Attributes["href"] = $"/{slug}#{anchor}";

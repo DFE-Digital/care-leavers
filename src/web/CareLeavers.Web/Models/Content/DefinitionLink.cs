@@ -6,7 +6,7 @@ public class DefinitionLink : ContentfulContent
     
     public required string Title { get; set; }
     
-    public required DefinitionBlock DefinitionBlock { get; set; }
+    public required Definition Definition { get; set; }
     
     public required Page Page { get; set; }
     

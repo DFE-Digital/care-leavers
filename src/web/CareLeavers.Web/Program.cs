@@ -143,7 +143,7 @@ try
         renderer.AddRenderer(new GDSStatusCheckerRenderer(serviceProvider));
         renderer.AddRenderer(new GDSRiddleRenderer(serviceProvider));
         renderer.AddRenderer(new GDSBannerRenderer(serviceProvider));
-        renderer.AddRenderer(new GDSDefinitionBlockRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSDefinitionRenderer(serviceProvider));
         renderer.AddRenderer(new GDSDefinitionLinkRenderer());
 
         return renderer;
