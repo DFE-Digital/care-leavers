@@ -66,7 +66,7 @@ export class BasePage {
         this.closeMenuButton = page.locator('#close-menu');
 
         // Locators for social media share buttons
-        this.shareButtonsContainer = page.locator('.sharethis-inline-share-buttons');
+        this.shareButtonsContainer = page.locator('.shareaholic-canvas');
         this.printShareButton = page.locator('#print-link');
 
         // Locators for Metadata definitions
