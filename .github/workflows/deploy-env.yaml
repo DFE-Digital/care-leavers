@@ -130,4 +130,4 @@ jobs:
 
       - name: Flush Redis Cache
         if: ${{ vars.CACHING_TYPE == 'Redis' }}
-        run: az redis flush --name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-redis-cache --resource-group s186${{ vars.ENVIRONMENT_PREFIX }}-cl-caching-rg
+        run: az redis flush --name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-redis-cache --resource-group s186${{ vars.ENVIRONMENT_PREFIX }}-cl-caching-rg --yes
