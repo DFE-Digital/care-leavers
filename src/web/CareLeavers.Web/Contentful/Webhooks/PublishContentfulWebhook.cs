@@ -56,9 +56,6 @@ public class PublishContentfulWebhook(
         }
         else
         {
-            Log.Logger.Information("Removing content item directly from cache with Id: {Id}", entry.SystemProperties.Id);
-            await distributedCache.RemoveAsync(entry.SystemProperties.Id);
-            
             var pageEntries = await FindLinkedPages(entry.SystemProperties.Id, []);
 
             Log.Logger.Information("The following slugs will be purged: {Slugs}", pageEntries.Select(x => x.Slug));
@@ -68,6 +65,14 @@ public class PublishContentfulWebhook(
                 await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
             }
         }
+        
+        // Now wipe all direct IDs that have been cached
+        foreach (var id in idsScanned)
+        {
+            Log.Logger.Information("Removing content item directly from cache with Id: {Id}", id);
+            await distributedCache.RemoveAsync(id);
+        }
+        
 
         await distributedCache.RemoveAsync("content:sitemap");
     }
