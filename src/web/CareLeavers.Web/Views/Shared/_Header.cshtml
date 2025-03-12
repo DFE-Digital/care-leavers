@@ -49,20 +49,11 @@
             </a>
         </div>
         <div class="dfe-header__content" id="content-header">
-            <ul class="dfe-header__action-links">
-                @{
-                    if (Context.User.Identity?.IsAuthenticated == true)
-                    {
-                        <li>
-                            <a asp-controller="Auth" asp-action="SignOut" class="govuk-link govuk-link--inverse">Sign out</a>
-                        </li>
-                    }
-                }
-            </ul>
+            
         </div>
     </div>
     <div class="dfe-width-container dfe-header__service-name">
-        <a href="/" class="dfe-header__link--service">@Model.ServiceName</a>
+        @Model.ServiceName
     </div>
     @{ await Html.RenderPartialAsync("Navigation"); }
 </header>

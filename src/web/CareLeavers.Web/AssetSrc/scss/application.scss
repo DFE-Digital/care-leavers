@@ -42,6 +42,9 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
 .hf-card a {
   text-decoration: none;
 }
+.hf-card:focus-within {
+  @include govuk-focused-text;
+}
 
 .hf-card a .hf-card-details p {
   color: #0b0c0c;
@@ -52,10 +55,17 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
   color: #155388;
 }
 
+.hf-card:focus-within a .hf-card-container,
 .hf-card a:hover .hf-card-container {
   background-color: #003a69;
 }
 
+.hf-card:focus-within a .hf-card-container .hf-card-details p,
+.hf-card:focus-within a .hf-card-container .hf-card-details h2,
+.hf-card:focus-within a .hf-card-container .hf-card-details h3,
+.hf-card:focus-within a .hf-card-container .cat-card-details p,
+.hf-card:focus-within a .hf-card-container .cat-card-details h2,
+.hf-card:focus-within a .hf-card-container .cat-card-details h3,
 .hf-card a:hover .hf-card-container .hf-card-details p,
 .hf-card a:hover .hf-card-container .hf-card-details h2,
 .hf-card a:hover .hf-card-container .hf-card-details h3,
@@ -385,11 +395,10 @@ html
 
 .dfe-header .dfe-header__service-name {
   text-align: right;
-}
-
-a.dfe-header__link--service {
+  @include dfe-font(22);
   font-weight: 800;
 }
+
 
 .riddle2-wrapper {
   max-width:100%; width:100%;
