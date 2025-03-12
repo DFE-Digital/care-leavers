@@ -127,3 +127,7 @@ jobs:
 
       - name: Swap slot to production
         run: az webapp deployment slot swap --name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-app-service --resource-group s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-rg --slot staging --target-slot production
+
+      - name: Flush Redis Cache
+        if: ${{ vars.CACHING_TYPE == 'Redis' }}
+        run: az redis flush --name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-redis-cache --resource-group s186${{ vars.ENVIRONMENT_PREFIX }}-cl-caching-rg
