@@ -91,15 +91,17 @@ public class TranslationAttribute : ActionFilterAttribute
         context.HttpContext.Response.Body = _originalBodyStream!;
         await context.HttpContext.Response.Body!.WriteAsync(_memoryStream.ToArray());
 
-        if (!distributedCache.TryGetValue($"content:{slug}:languages", out Dictionary<string, string>? translations))
+        if (!distributedCache.TryGetValue($"content:{slug}:languages", out HashSet<string>? translations))
         {
-            translations = new Dictionary<string, string>();
+            translations = [];
         }
-        translations ??= new Dictionary<string, string>();
-        
-        translations[languageCode] = slug;
 
+        translations ??= [];
+
+        translations.Add(languageCode);
+
+        _memoryStream.Seek(0, SeekOrigin.Begin);
         await distributedCache.SetAsync($"content:{slug}:languages", translations);
-        await distributedCache.SetAsync($"content:{slug}:language:{languageCode}", responseBody);
+        await distributedCache.SetAsync($"content:{slug}:language:{languageCode}", _memoryStream.ToArray());
     }
 }
