@@ -1,21 +1,16 @@
-@using CareLeavers.Web.Contentful
 @using CareLeavers.Web.Models.Enums
 @model CareLeavers.Web.Models.Content.RichContent
-@inject IContentService ContentService
 
 @{
-    //var content = await ContentService.Hydrate(Model);
-    var content = Model;
-
     string color = "";
-    switch (content.Background)
+    switch (Model.Background)
     {
         case BackgroundColour.Blue:
             color = "dfe box-ext";
             break;
     }
 
-    var width = content.Width switch
+    var width = Model.Width switch
     {
         ContentWidth.OneThird => "govuk-grid-column-one-third",
         ContentWidth.TwoThirds => "govuk-grid-column-two-thirds",
@@ -25,7 +20,7 @@
     @if (color != "")
     {
         <section class="dfe-section @color">
-            <gds-contentful-rich-text document="@content.Content"/>
+            <gds-contentful-rich-text document="@Model.Content"/>
         </section>
     }
     else
@@ -33,7 +28,7 @@
         <section class="dfe-section">
 
             <div class="@width">
-                <gds-contentful-rich-text document="@content.Content"/>
+                <gds-contentful-rich-text document="@Model.Content"/>
             </div>
 
         </section>
