@@ -10,8 +10,9 @@ on:
         type: choice
         options:
           - development
-          - staging
+          - test
           - production
+          - e2e
 
 jobs:
   contentful:
