@@ -21,7 +21,7 @@
 {
     <li>
         @Html.ActionLink(
-            translation.NativeName, 
+            $"{translation.NativeName} ({translation.Name})", 
             "Homepage", 
             "Contentful", 
     new { languageCode = translation.Code }, 
