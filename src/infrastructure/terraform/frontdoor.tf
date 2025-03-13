@@ -86,7 +86,7 @@ resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy"
 
 resource "azurerm_cdn_frontdoor_rule_set" "frontdoor-web-rule-set" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
-  name                     = "${local.service_prefix}-web-fd-security-rule-set"
+  name                     = "securityRuleSet"
 }
 
 resource "azurerm_cdn_frontdoor_rule" "security_txt_rule" {
