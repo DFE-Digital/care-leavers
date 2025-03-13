@@ -4,7 +4,7 @@ public class AzureTranslationOptions
 {
     public static string Name = "AzureTranslation";
     
-    public string SubscriptionKey { get; set; } = string.Empty;
+    public string AccessKey { get; set; } = string.Empty;
     
     public string Endpoint { get; set; } = string.Empty;
     

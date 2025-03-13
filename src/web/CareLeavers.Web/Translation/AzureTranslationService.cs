@@ -15,7 +15,7 @@ public class AzureTranslationService : ITranslationService
     {
         _azureTranslationClient =
             new TextTranslationClient(
-                new AzureKeyCredential(options.Value.SubscriptionKey), 
+                new AzureKeyCredential(options.Value.AccessKey), 
                 new Uri(options.Value.Endpoint),
                 options.Value.Region);
         

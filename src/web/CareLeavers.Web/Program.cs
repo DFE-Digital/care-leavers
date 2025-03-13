@@ -139,7 +139,7 @@ try
 
     builder.Services.AddOptions<AzureTranslationOptions>().BindConfiguration(AzureTranslationOptions.Name);
 
-    if (string.IsNullOrEmpty(builder.Configuration.GetValue<string>("AzureTranslation:SubscriptionKey")))
+    if (string.IsNullOrEmpty(builder.Configuration.GetValue<string>("AzureTranslation:AccessKey")))
     {
         Log.Logger.Information("Azure Translation subscription key not found, translation service will be disabled");
         builder.Services.AddSingleton<ITranslationService, NoTranslationService>();

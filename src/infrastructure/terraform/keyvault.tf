@@ -65,3 +65,11 @@ resource "azurerm_key_vault_secret" "application-insights-connection-string" {
 
   depends_on = [azurerm_key_vault_access_policy.github-kv-access]
 }
+
+resource "azurerm_key_vault_secret" "azure-translation-access-key" {
+  key_vault_id = azurerm_key_vault.key-vault.id
+  name         = "azure-translation-access-key"
+  value        = var.azure_translation_access_key
+
+  depends_on = [azurerm_key_vault_access_policy.github-kv-access]
+}
