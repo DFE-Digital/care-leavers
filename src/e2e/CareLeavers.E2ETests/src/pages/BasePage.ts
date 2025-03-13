@@ -5,6 +5,9 @@ export class BasePage {
 
     //Locator for the Website Title navigation Link
     public readonly WebsiteNameLink: Locator;
+    
+    //Logo
+    private logo: Locator;
 
     // Locators for cookie banner and buttons
     public readonly cookieBanner: Locator;
@@ -45,6 +48,9 @@ export class BasePage {
         this.page = page;
         //Locator for the Website Title navigation Link
         this.WebsiteNameLink = page.locator('a.dfe-header__link--service').nth(1);
+
+        //Logo 
+        this.logo = page.locator('img[alt="Department for Education"]\'');
 
         // Locators for cookie banner and buttons
         this.cookieBanner = page.locator('.govuk-cookie-banner');
@@ -92,6 +98,8 @@ export class BasePage {
     // Validate URL contains a specific path
     async validateURLContains(path: string) {
         await expect(this.page).toHaveURL(new RegExp(path));
+        await expect(this.logo).toBeVisible();
+
     }
 
     // Wait for the page to load

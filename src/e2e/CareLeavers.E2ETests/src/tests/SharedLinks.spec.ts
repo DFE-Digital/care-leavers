@@ -74,7 +74,6 @@ test.describe('Shared Website Functionalities', () => {
         });
     });
 
-    /*commented for now until the mocks are updated to include this 
     // Test to validate helpline links
     test.describe('Helpline Links Functionality', () => {
         helplineLinksToTest.forEach((path) => {
@@ -86,6 +85,5 @@ test.describe('Shared Website Functionalities', () => {
                 await expect(basePage.helplineLink).toBeVisible();
             });
         });
-    });
-    */
+    })
 });
