@@ -7,5 +7,5 @@ public class ConfigViewModel
 {
     public ContentfulConfigurationEntity ContentfulConfiguration { get; set; } = new();
 
-    public TranslationLanguage Language { get; set; } = TranslationLanguage.Default;
+    public TranslationLanguage Language { get; set; } = new();
 }
