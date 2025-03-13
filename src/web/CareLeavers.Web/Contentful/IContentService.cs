@@ -1,6 +1,5 @@
 using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Models.ViewModels;
-using Contentful.Core.Models;
 
 namespace CareLeavers.Web.Contentful;
 

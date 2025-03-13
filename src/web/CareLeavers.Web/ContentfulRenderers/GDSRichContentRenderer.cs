@@ -1,4 +1,3 @@
-using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Models.Content;
 using Contentful.Core.Models;
 
