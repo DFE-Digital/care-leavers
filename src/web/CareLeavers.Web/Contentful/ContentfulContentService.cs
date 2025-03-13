@@ -61,11 +61,14 @@ public class ContentfulContentService : IContentService
         
         var parentPage = hierarchy.Find(p => p.Slug == currentPage.Parent);
 
-        while (parentPage != null && parentPage.Id != homePage.Id)
+        while (parentPage != null)
         {
             if (!breadcrumbs.Exists(b => b.Id == parentPage.Id))
-                breadcrumbs.Add(parentPage);
-            
+            {
+                if (includeHome || parentPage.Id != homePage.Id)
+                    breadcrumbs.Add(parentPage);
+            }
+
             parentPage = hierarchy.Find(p => p.Slug == parentPage.Parent);
         }
 
