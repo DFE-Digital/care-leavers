@@ -13,6 +13,7 @@
     ViewBag.Title = Model.Title;
     Layout = "_Layout";
     var config = await ContentfulConfiguration.GetConfiguration();
+    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
 
     var pageWidth = Model.Width switch
     {
@@ -29,7 +30,7 @@
                                          action: "GetContent", 
                                          controller: "Contentful", 
                                          protocol: "https",
-                                         values: new { slug = Model.Slug }
+                                         values: new { slug = Model.Slug, language = languageCode }
                                          )"/>
     @if (Model.SeoImage != null)
     {
@@ -39,7 +40,7 @@
         <meta property="og:image:height" content="@Model.SeoImage.File.Details.Image.Height"/>
         <meta property="og:image:alt" content="@Model.SeoImage.Description"/>
     }
-    <meta property="og:locale" content="en_GB"/>
+    <meta property="og:locale" content="@languageCode"/>
     @if (!string.IsNullOrEmpty(Model.SeoDescription))
     {
         <meta property="og:description" content="@Model.SeoDescription"/>

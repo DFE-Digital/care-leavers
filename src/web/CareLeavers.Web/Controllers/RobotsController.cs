@@ -6,7 +6,7 @@ namespace CareLeavers.Web.Controllers;
 public class RobotsController : Controller
 {
     [Route("/robots.txt")]
-    public async Task<IActionResult> Robots()
+    public IActionResult Robots()
     {
         if (!ModelState.IsValid)
         {
