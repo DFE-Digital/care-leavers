@@ -12,12 +12,39 @@
 @{
     ViewBag.Title = Model.Title;
     Layout = "_Layout";
+    var config = await ContentfulConfiguration.GetConfiguration();
 
     var pageWidth = Model.Width switch
     {
         PageWidth.TwoThirds => "govuk-grid-column-two-thirds",
         _ => "govuk-grid-column-full"
     };
+}
+@section Head
+{
+    <meta property="og:site_name" content="@config.ServiceName"/>
+    <meta property="og:title" content="@(!string.IsNullOrEmpty(Model.SeoTitle) ? Model.SeoTitle : Model.Title)"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="@Url.Action(
+                                         action: "GetContent", 
+                                         controller: "Contentful", 
+                                         protocol: "https",
+                                         values: new { slug = Model.Slug }
+                                         )"/>
+    @if (Model.SeoImage != null)
+    {
+        <meta property="og:image" content="@Model.SeoImage.File.Url"/>
+        <meta property="og:image:type" content="@Model.SeoImage.File.ContentType"/>
+        <meta property="og:image:width" content="@Model.SeoImage.File.Details.Image.Width"/>
+        <meta property="og:image:height" content="@Model.SeoImage.File.Details.Image.Height"/>
+        <meta property="og:image:alt" content="@Model.SeoImage.Description"/>
+    }
+    <meta property="og:locale" content="en_GB"/>
+    @if (!string.IsNullOrEmpty(Model.SeoDescription))
+    {
+        <meta property="og:description" content="@Model.SeoDescription"/>
+    }
+
 }
 
 @section BeforeGDSContent
@@ -68,9 +95,7 @@
     }
 </div>
 
-@{
-    var config = await ContentfulConfiguration.GetConfiguration();
-}
+
 @if (Model.ShowFooter && config.Footer != null)
 {
     @section AfterGDSContent
