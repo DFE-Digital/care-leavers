@@ -84,6 +84,36 @@ resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy"
   }
 }
 
+resource "azurerm_cdn_frontdoor_rule_set" "frontdoor-web-rule-set" {
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
+  name                     = "${local.service_prefix}-web-fd-security-rule-set"
+}
+
+resource "azurerm_cdn_frontdoor_rule" "security_txt_rule" {
+  name                      = "securitytxtredirect"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.frontdoor-web-rule-set.id
+  order                     = 1
+  behavior_on_match         = "Continue"
+
+  actions {
+
+    url_redirect_action {
+      redirect_type        = "PermanentRedirect"
+      redirect_protocol    = "Https"
+      destination_hostname = "vdp.security.education.gov.uk"
+      destination_path     = "/.well-known/security.txt"
+    }
+  }
+
+  conditions {
+    url_filename_condition {
+      operator     = "BeginsWith"
+      match_values = ["security.txt", "/.well-known/security.txt"]
+      transforms   = ["Lowercase"]
+    }
+  }
+}
+
 resource "azurerm_cdn_frontdoor_custom_domain" "fd-custom-domain" {
   count                    = var.custom_domain != "" ? 1 : 0
   name                     = "${local.service_prefix}-fd-custom-domain"
