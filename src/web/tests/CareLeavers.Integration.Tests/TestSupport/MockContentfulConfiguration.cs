@@ -17,6 +17,7 @@ public class MockContentfulConfiguration : IContentfulConfiguration
                 Title = "Care Leavers"
             },
             ServiceName = "Care leavers",
+            TranslationEnabled = true,
             Footer = new Document
             {
                 Content =
