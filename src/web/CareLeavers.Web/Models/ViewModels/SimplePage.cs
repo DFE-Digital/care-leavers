@@ -1,6 +1,3 @@
-using System.Text.Json.Serialization;
-using CareLeavers.Web.Models.Content;
-
 namespace CareLeavers.Web.Models.ViewModels;
 
 public class SimplePage
