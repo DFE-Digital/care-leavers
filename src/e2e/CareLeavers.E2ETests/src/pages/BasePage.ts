@@ -195,11 +195,11 @@ export class BasePage {
 
             // click each link and ensure the menu is visible each time
             const links = [
-                { index: 0, href: '/home' },
-                { index: 1, href: '/all-support' },
-                /*{ index: 2, href: '/status' },
-                { index: 3, href: '/guides-advice' },
-                { index: 4, href: '/helplines' },*/
+                { index: 0, href: '/en/home' },
+                { index: 1, href: '/en/all-support' },
+                /*{ index: 2, href: '/en/status' },
+                { index: 3, href: '/en/guides-advice' },
+                { index: 4, href: '/en/helplines' },*/
             ];
 
             for (const link of links) {
