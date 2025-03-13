@@ -116,15 +116,16 @@ try
         renderer.AddRenderer(new GDSParagraphRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSHeaderRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSAssetRenderer(renderer.Renderers));
-        renderer.AddRenderer(new GDSGridRenderer(serviceProvider));
-        renderer.AddRenderer(new GDSHorizontalRulerContentRenderer());
-        renderer.AddRenderer(new GDSRichContentRenderer(serviceProvider));
         renderer.AddRenderer(new GDSLinkRenderer(renderer.Renderers));
+        renderer.AddRenderer(new GDSListRenderer(renderer.Renderers));
+        renderer.AddRenderer(new GDSHorizontalRulerContentRenderer());
+        renderer.AddRenderer(new GDSDefinitionLinkRenderer());
+        renderer.AddRenderer(new GDSGridRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSRichContentRenderer(serviceProvider));
         renderer.AddRenderer(new GDSStatusCheckerRenderer(serviceProvider));
         renderer.AddRenderer(new GDSRiddleRenderer(serviceProvider));
         renderer.AddRenderer(new GDSBannerRenderer(serviceProvider));
         renderer.AddRenderer(new GDSDefinitionRenderer(serviceProvider));
-        renderer.AddRenderer(new GDSDefinitionLinkRenderer());
 
         return renderer;
     });

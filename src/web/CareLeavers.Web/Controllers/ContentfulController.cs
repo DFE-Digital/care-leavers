@@ -1,15 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Xml.Linq;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Models.Content;
-using Contentful.Core.Configuration;
 using Contentful.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using Formatting = Newtonsoft.Json.Formatting;
 
 namespace CareLeavers.Web.Controllers;
 

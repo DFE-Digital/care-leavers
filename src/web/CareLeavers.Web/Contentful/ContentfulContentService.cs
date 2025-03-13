@@ -2,7 +2,6 @@ using CareLeavers.Web.Caching;
 using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Models.ViewModels;
 using Contentful.Core;
-using Contentful.Core.Models;
 using Contentful.Core.Search;
 using Microsoft.Extensions.Caching.Distributed;
 

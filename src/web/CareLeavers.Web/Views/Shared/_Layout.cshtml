@@ -1,5 +1,4 @@
-﻿@using System.Globalization
-@using CareLeavers.Web.Configuration
+﻿@using CareLeavers.Web.Configuration
 @using GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.AspNetCore.TagHelpers
 @using Joonasw.AspNetCore.SecurityHeaders.Csp
@@ -67,9 +66,11 @@
         </script>
         <!-- End Clarity -->
     }
-    <!-- Begin ShareThis -->
-    <script type="text/javascript" asp-add-nonce="true" src="https://platform-api.sharethis.com/js/sharethis.js#property=@scriptConfig.ShareThis&product=inline-share-buttons&source=platform" async="async"></script>
-    <!-- End ShareThis -->
+    <!-- BEGIN SHAREAHOLIC CODE -->
+    <link rel="preload" href="https://cdn.shareaholic.net/assets/pub/shareaholic.js" as="script" />
+    <meta name="shareaholic:site_id" content="@scriptConfig.ShareaholicSiteId" />
+    <script asp-add-nonce="true" data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js"></script>
+    <!-- END SHAREAHOLIC CODE -->
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - @config.ServiceName</title>

@@ -1,5 +1,4 @@
 using CareLeavers.Web.Contentful;
-using CareLeavers.Web.Models.Content;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CareLeavers.Web.Controllers;

@@ -1,8 +1,5 @@
 using CareLeavers.Web.Models.Content;
-using Contentful.AspNetCore.Authoring;
 using Contentful.Core.Models;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace CareLeavers.Web.ContentfulRenderers;
 
