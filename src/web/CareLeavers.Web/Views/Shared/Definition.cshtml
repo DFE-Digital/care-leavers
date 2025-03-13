@@ -1,0 +1,5 @@
+@model CareLeavers.Web.Models.Content.Definition
+
+<div id="@TagBuilder.CreateSanitizedId($"definition-{Model.Title}", "-")" title="@Model.Title" role="definition">
+    <gds-contentful-rich-text document="@Model.Content"></gds-contentful-rich-text>
+</div>

@@ -47,7 +47,7 @@ export class BasePage {
     constructor(page: Page) {
         this.page = page;
         //Locator for the Website Title navigation Link
-        this.WebsiteNameLink = page.locator('a.dfe-header__link--service').nth(1);
+        this.WebsiteNameLink = page.locator('a.dfe-header__link--service');
 
         //Logo 
         this.logo = page.locator('img[alt="Department for Education"]\'');
@@ -72,7 +72,7 @@ export class BasePage {
         this.closeMenuButton = page.locator('#close-menu');
 
         // Locators for social media share buttons
-        this.shareButtonsContainer = page.locator('.sharethis-inline-share-buttons');
+        this.shareButtonsContainer = page.locator('.shareaholic-canvas');
         this.printShareButton = page.locator('#print-link');
 
         // Locators for Metadata definitions

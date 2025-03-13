@@ -10,7 +10,7 @@
     <div class="box-content">
         <h3 class="govuk-heading-s"><a href="@Model.Url" target="_blank" class="govuk-link">@Model.Name</a> <span class="govuk-body-s">(Opens in a new tab)</span></h3>
         <p class="govuk-body-s">@Model.Description</p>
-        <p class="govuk-body-s"><strong>Call:</strong> @Model.Call</p>
+        <p class="govuk-body-s"><strong>Call:</strong> <a href="tel:@Model.Call">@Model.Call</a></p>
         <p class="govuk-body-s"><strong>Opening times:</strong> @Model.OpeningTimes</p>
         <p class="govuk-body-s"><strong>Free:</strong> @(Model.Free ? "Yes" : "No")</p>
         <p class="govuk-body-s"><strong>Accessibility:</strong> @Model.Accessibility</p>

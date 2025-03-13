@@ -17,7 +17,7 @@ test.describe('Shared Website Functionalities', () => {
             test(`Validate navigation links on ${path}`, async () => {
                 // Navigate to page & check that WebsiteNameLink is visible
                 await basePage.navigateTo(path);
-                await expect(basePage.WebsiteNameLink).toHaveText(/Support for/i);
+                await expect(basePage.WebsiteNameLink).toHaveAccessibleName(/Support for/i);
                 await expect(basePage.WebsiteNameLink).toBeVisible();
             });
         });

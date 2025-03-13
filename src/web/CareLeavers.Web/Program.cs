@@ -6,7 +6,6 @@ using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Contentful.Webhooks;
 using CareLeavers.Web.ContentfulRenderers;
-using CareLeavers.Web.Mocks;
 using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Telemetry;
 using Contentful.AspNetCore;
@@ -99,27 +98,8 @@ try
     #region Contentful
     
     builder.Services.AddScoped<IContentService, ContentfulContentService>();
-    if (builder.Configuration.GetValue<bool>("UseMockedContentful"))
-    {
-        var httpClient = new HttpClient(new FakeMessageHandler());
-        var mockedContentfulClient = new ContentfulClient(httpClient, "test", "test", "test");
-        mockedContentfulClient.ContentTypeResolver = new ContentfulEntityResolver();
-        mockedContentfulClient.SerializerSettings.Converters.RemoveAt(0);
-        mockedContentfulClient.SerializerSettings.Converters.Insert(0, new GDSAssetJsonConverter());
-        mockedContentfulClient.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-        mockedContentfulClient.SerializerSettings.ContractResolver = new DefaultContractResolver
-        {
-            NamingStrategy = new CamelCaseNamingStrategy()
-        };
-        
-        builder.Services.AddSingleton<IContentfulClient>(x => mockedContentfulClient);
-        builder.Services.AddScoped<IContentfulConfiguration, MockedContentfulConfiguration>();
-    }
-    else
-    {
-        builder.Services.AddContentful(builder.Configuration);
-        builder.Services.AddScoped<IContentfulConfiguration, ContentfulConfiguration>();
-    }
+    builder.Services.AddContentful(builder.Configuration);
+    builder.Services.AddScoped<IContentfulConfiguration, ContentfulConfiguration>();
     
     builder.Services.AddTransient<HtmlRenderer>(serviceProvider =>
     {
@@ -136,13 +116,16 @@ try
         renderer.AddRenderer(new GDSParagraphRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSHeaderRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSAssetRenderer(renderer.Renderers));
-        renderer.AddRenderer(new GDSGridRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSLinkRenderer(renderer.Renderers));
+        renderer.AddRenderer(new GDSListRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSHorizontalRulerContentRenderer());
+        renderer.AddRenderer(new GDSDefinitionLinkRenderer());
+        renderer.AddRenderer(new GDSGridRenderer(serviceProvider));
         renderer.AddRenderer(new GDSRichContentRenderer(serviceProvider));
-        renderer.AddRenderer(new GDSEntityLinkContentRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSStatusCheckerRenderer(serviceProvider));
         renderer.AddRenderer(new GDSRiddleRenderer(serviceProvider));
         renderer.AddRenderer(new GDSBannerRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSDefinitionRenderer(serviceProvider));
 
         return renderer;
     });
@@ -201,6 +184,8 @@ try
     {
         NamingStrategy = new CamelCaseNamingStrategy()
     };
+    contentfulClient.SerializerSettings.MaxDepth = 128;
+    contentfulClient.Serializer.MaxDepth = 128;
 
     Constants.Serializer = contentfulClient.Serializer;
     Constants.SerializerSettings = contentfulClient.SerializerSettings;

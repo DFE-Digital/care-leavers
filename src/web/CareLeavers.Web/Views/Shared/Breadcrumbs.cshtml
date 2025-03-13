@@ -1,47 +1,21 @@
-@using CareLeavers.Web.Configuration
+@using CareLeavers.Web.Contentful
 @model CareLeavers.Web.Models.Content.Page
-@inject IContentfulConfiguration ConfigService
+@inject IContentService ContentService
 
 @{
     if (!Model.ShowBreadcrumb)
     {
         return;
     }
-    
-    var config = await ConfigService.GetConfiguration();
-    var homePageSlug = config?.HomePage?.Slug;
 
-    if (Model.Slug == homePageSlug)
-    {
-        return;
-    }
+    var breadcrumbs = await ContentService.GetBreadcrumbs(Model.Slug);
     
-    var breadcrumbs = new List<(string Title, string Slug)>();
-    var currentPage = Model.Parent;
-    
-    while (currentPage != null)
-    {
-        if (!string.IsNullOrEmpty(currentPage.Title) && 
-            !string.IsNullOrEmpty(currentPage.Slug) &&
-            currentPage.Slug != homePageSlug &&
-            currentPage.Slug != Model.Slug)
-        {
-            breadcrumbs.Add((currentPage.Title, currentPage.Slug));
-        }
-        currentPage = currentPage.Parent;
-    }
-
-    breadcrumbs.Reverse();
 }
 
 <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
     <ol class="govuk-breadcrumbs__list">
-        <li class="govuk-breadcrumbs__list-item">
-            @Html.ActionLink("Home", "GetContent", "Contentful", new { slug = homePageSlug }, new { @class = "govuk-breadcrumbs__link" })
-        </li>
-        @for (var i = 0; i < breadcrumbs.Count; i++)
+        @foreach (var breadcrumb in breadcrumbs)
         {
-            var breadcrumb = breadcrumbs[i];
             <li class="govuk-breadcrumbs__list-item">
                 @Html.ActionLink(breadcrumb.Title, "GetContent", "Contentful", new { slug = breadcrumb.Slug }, new { @class = "govuk-breadcrumbs__link" })
             </li>

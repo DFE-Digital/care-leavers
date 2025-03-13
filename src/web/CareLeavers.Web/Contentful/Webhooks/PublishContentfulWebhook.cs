@@ -65,6 +65,14 @@ public class PublishContentfulWebhook(
                 await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
             }
         }
+        
+        // Now wipe all direct IDs that have been cached
+        foreach (var id in idsScanned)
+        {
+            Log.Logger.Information("Removing content item directly from cache with Id: {Id}", id);
+            await distributedCache.RemoveAsync(id);
+        }
+        
 
         await distributedCache.RemoveAsync("content:sitemap");
     }
