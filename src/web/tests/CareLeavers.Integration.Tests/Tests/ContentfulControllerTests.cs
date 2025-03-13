@@ -43,8 +43,8 @@ public class ContentfulControllerTests
         Assert.That(urls.Count, Is.EqualTo(4));
         Assert.Multiple(() =>
         {
-            Assert.That(urls[0]?.InnerText, Is.EqualTo("/home"));
-            Assert.That(urls[1]?.InnerText, Is.EqualTo("/about"));
+            Assert.That(urls[0]?.InnerText, Is.EqualTo("/en/home"));
+            Assert.That(urls[1]?.InnerText, Is.EqualTo("/en/about"));
             Assert.That(urls[2]?.InnerText, Is.EqualTo("/en/pages/cookie-policy"));
             Assert.That(urls[3]?.InnerText, Is.EqualTo("/en/pages/privacy-policies"));
         });

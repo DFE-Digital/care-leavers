@@ -18,13 +18,13 @@ public class SitemapController(IContentService contentService) : Controller
 
         // Get all slugs, but add the default locale of "en"
         var slugs = (await contentService.GetSiteSlugs())
-            .Select(s => Url.Action("GetContent", "Contentful", new { languageCode = "en", slug = s.Value }, protocol: "https")).ToList();
+            .Select(s => Url.Action("GetContent", "Contentful", new { languageCode = "en", slug = s.Value })).ToList();
         
         XNamespace ns = "http://www.sitemaps.org/schemas/sitemap/0.9";
         
         // add known .NET pages
-        slugs.Add(Url.Action("CookiePolicy", "Pages", new { languageCode = "en" }, protocol: "https"));
-        slugs.Add(Url.Action("PrivacyPolicies", "Pages", new { languageCode = "en" }, protocol: "https"));
+        slugs.Add(Url.Action("CookiePolicy", "Pages", new { languageCode = "en" }));
+        slugs.Add(Url.Action("PrivacyPolicies", "Pages", new { languageCode = "en" }));
 
         var xmlDoc = new XDocument(
             new XDeclaration("1.0", "UTF-8", null),
