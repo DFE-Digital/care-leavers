@@ -27,7 +27,8 @@ public class SitemapController(IContentService contentService) : Controller
         XNamespace ns = "http://www.sitemaps.org/schemas/sitemap/0.9";
         
         // add known .NET pages
-        slugs.Add("cookiepolicy", Url.Action("CookiePolicy", "Pages")!.TrimStart('/'));
+        slugs.Add("cookiepolicy", Url.Action("CookiePolicy", "Pages", new { languageCode = "en" })!.TrimStart('/'));
+        slugs.Add("privacypolicies", Url.Action("PrivacyPolicies", "Pages", new { languageCode = "en" })!.TrimStart('/'));
 
         var xmlDoc = new XDocument(
             new XDeclaration("1.0", "UTF-8", null),
