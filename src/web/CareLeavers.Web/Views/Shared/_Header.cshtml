@@ -19,9 +19,12 @@
 
 <div class="govuk-width-container">
     <div class="govuk-phase-banner">
-        <p class="translate">
-            @Html.ActionLink(Model.Language.NativeName, "Index", "Translation", null, new { @class = "govuk-link" })
-        </p>
+        @if (Model.ContentfulConfiguration.TranslationEnabled)
+        {
+            <p class="translate">
+                @Html.ActionLink(Model.Language.NativeName, "Index", "Translation", null, new { @class = "govuk-link" })
+            </p>
+        }
         <div class="govuk-phase-banner__content">
             <strong class="govuk-phase-banner__content__tag govuk-tag">
                 @Model.ContentfulConfiguration.Phase.ToString()

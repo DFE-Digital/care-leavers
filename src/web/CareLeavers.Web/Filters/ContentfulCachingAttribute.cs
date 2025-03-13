@@ -1,5 +1,6 @@
 using System.Text;
 using CareLeavers.Web.Caching;
+using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Translation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -22,11 +23,16 @@ public class TranslationAttribute : ActionFilterAttribute
         _originalBodyStream = null;
 
         var distributedCache = context.HttpContext.RequestServices.GetRequiredService<IDistributedCache>();
+        var contentfulConfiguration = context.HttpContext.RequestServices.GetRequiredService<IContentfulConfiguration>();
+        var config = await contentfulConfiguration.GetConfiguration();
 
         var slug = HardcodedSlug ?? context.RouteData.Values["slug"]?.ToString();
         var languageCode = context.RouteData.Values["languageCode"]?.ToString();
 
-        if (slug == null || string.IsNullOrEmpty(languageCode) || languageCode == "en")
+        if (slug == null || 
+            string.IsNullOrEmpty(languageCode) || 
+            languageCode == "en" ||
+            !config.TranslationEnabled)
         {
             await base.OnActionExecutionAsync(context, next);
             return;
