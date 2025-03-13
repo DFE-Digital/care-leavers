@@ -1,6 +1,6 @@
 @using CareLeavers.Web.Configuration
 @using Microsoft.Extensions.Options
-@model CareLeavers.Web.Models.Content.ContentfulConfigurationEntity
+@model CareLeavers.Web.Models.ViewModels.ConfigViewModel
 
 @inject IWebHostEnvironment WebHostEnvironment
 @inject IOptions<ScriptOptions> ScriptOptions
@@ -8,31 +8,38 @@
 @if (!WebHostEnvironment.IsProduction())
 {
     <div class="environment-banner">
-        <div class="govuk-body-s"><strong>ATTENTION!</strong> This is the <strong>@WebHostEnvironment.EnvironmentName</strong> version of @Model.ServiceName website.</div>
+        <div class="govuk-body-s"><strong>ATTENTION!</strong> This is the <strong>@WebHostEnvironment.EnvironmentName</strong> version of @Model.ContentfulConfiguration.ServiceName website.</div>
     </div>
 }
 
 @if (ScriptOptions.Value.ShowCookieBanner)
 {
-    <partial name="_CookieConsentPartial"/>
+    <partial name="_CookieConsentPartial" model="@Model"/>
 }
 
 <div class="govuk-width-container">
-    <govuk-phase-banner>
-        <govuk-phase-banner-tag>@Model.Phase.ToString()</govuk-phase-banner-tag>
-            @if (!string.IsNullOrEmpty(Model.FeedbackText))
-            {
-                <span class="govuk-phase-banner__text">
-                This is a new service. Your <a class="govuk-link" href="@Model.FeedbackUrl">@Model.FeedbackText</a> will help us to improve it.
-                </span>
-            }
-            else
-            {
-                <span class="govuk-phase-banner__text">
-                    This is a new service.
-                </span>
-            }
-    </govuk-phase-banner>
+    <div class="govuk-phase-banner">
+        @if (Model.ContentfulConfiguration.TranslationEnabled)
+        {
+            <p class="translate">
+                @Html.ActionLink(Model.Language.NativeName, "Index", "Translation", null, new { @class = "govuk-link" })
+            </p>
+        }
+        <div class="govuk-phase-banner__content">
+            <strong class="govuk-phase-banner__content__tag govuk-tag">
+                @Model.ContentfulConfiguration.Phase.ToString()
+            </strong>
+            <span class="govuk-phase-banner__text">
+                This is a new service.
+                @if (!string.IsNullOrEmpty(Model.ContentfulConfiguration.FeedbackText))
+                {
+                    <text>
+                        Your <a class="govuk-link" href="@Model.ContentfulConfiguration.FeedbackUrl">@Model.ContentfulConfiguration.FeedbackText</a> will help us to improve it.
+                    </text>
+                }
+            </span>
+        </div>
+    </div>
 </div>
 
 <header class="dfe-header" role="banner">
@@ -43,9 +50,9 @@
             </button>
         </div>
         <div class="dfe-header__logo">
-            <a class="dfe-header__link dfe-header__link--service " href="~/" aria-label="@Model.ServiceName homepage">
-                <img src="~/assets/dfe-logo.png" class="dfe-logo" alt="@Model.ServiceName homepage">
-                <img src="~/assets/dfe-logo-alt.png" class="dfe-logo-hover" alt="@Model.ServiceName homepage">
+            <a class="dfe-header__link dfe-header__link--service " href="~/" aria-label="@Model.ContentfulConfiguration.ServiceName homepage">
+                <img src="~/assets/dfe-logo.png" class="dfe-logo" alt="@Model.ContentfulConfiguration.ServiceName homepage">
+                <img src="~/assets/dfe-logo-alt.png" class="dfe-logo-hover" alt="@Model.ContentfulConfiguration.ServiceName homepage">
             </a>
         </div>
         <div class="dfe-header__content" id="content-header">
@@ -53,7 +60,7 @@
         </div>
     </div>
     <div class="dfe-width-container dfe-header__service-name">
-        @Model.ServiceName
+        @Model.ContentfulConfiguration.ServiceName
     </div>
-    @{ await Html.RenderPartialAsync("Navigation"); }
+    @{ await Html.RenderPartialAsync("Navigation", Model); }
 </header>

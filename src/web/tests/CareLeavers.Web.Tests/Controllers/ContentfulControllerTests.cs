@@ -16,6 +16,6 @@ public class ContentfulControllerTests
         
         var result = await controller.Homepage(new MockContentfulConfiguration());
         
-        Assert.That(result, Is.InstanceOf<RedirectResult>());
+        Assert.That(result, Is.InstanceOf<RedirectToActionResult>());
     }
 }

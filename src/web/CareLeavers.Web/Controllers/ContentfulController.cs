@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Models.Content;
+using CareLeavers.Web.Filters;
 using Contentful.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -12,10 +13,13 @@ namespace CareLeavers.Web.Controllers;
 public class ContentfulController(IContentService contentService) : Controller
 {
     [Route("/")]
-    public async Task<IActionResult> Homepage([FromServices] IContentfulConfiguration contentfulConfiguration)
+    public async Task<IActionResult> Homepage(
+        [FromServices] IContentfulConfiguration contentfulConfiguration,
+        [FromQuery] string? languageCode = null)
     {
+        languageCode ??= "en";
         var config = await contentfulConfiguration.GetConfiguration();
-        return Redirect($"/{config.HomePage?.Slug}");
+        return RedirectToAction("GetContent", new { slug = config.HomePage?.Slug, languageCode });
     }
 
     [Route("/json/{**slug}")]
@@ -88,9 +92,16 @@ public class ContentfulController(IContentService contentService) : Controller
         return Content(JsonConvert.SerializeObject(returnObject, Constants.SerializerSettings), "application/json");
     }
 
-    [Route("/{**slug}")]
-    public async Task<IActionResult> GetContent(string slug)
+    [Route("/{slug}")]
+    [Route("/{languageCode}/{slug}")]
+    [Translation]
+    public async Task<IActionResult> GetContent(string slug, string? languageCode)
     {
+        if (string.IsNullOrEmpty(languageCode))
+        {
+            return RedirectToAction("GetContent", new { slug, languageCode = "en" });
+        }
+        
         var page = await contentService.GetPage(slug);
 
         if (page == null)

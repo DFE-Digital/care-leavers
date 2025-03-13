@@ -1,0 +1,31 @@
+@model IEnumerable<CareLeavers.Web.Translation.TranslationLanguage>
+
+@{
+    ViewBag.Title = "Choose a language";
+    Layout = "_Layout";
+}
+
+@section BeforeGDSContent
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">
+                @ViewBag.Title
+            </h1>
+        </div>
+    </div>
+}
+
+<ul class="govuk-list">
+@foreach (var translation in Model)
+{
+    <li>
+        @Html.ActionLink(
+            $"{translation.NativeName} ({translation.Name})", 
+            "Homepage", 
+            "Contentful", 
+    new { languageCode = translation.Code }, 
+    new { @class = "govuk-link" })
+    </li>
+}
+</ul>
