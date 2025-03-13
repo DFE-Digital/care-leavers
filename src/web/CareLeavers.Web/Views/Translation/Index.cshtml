@@ -4,6 +4,10 @@
     ViewBag.Title = "Choose a language";
     Layout = "_Layout";
 }
+@section Head
+{
+    <meta name="robots" content="noindex, nofollow" />
+}
 
 @section BeforeGDSContent
 {
@@ -25,7 +29,7 @@
             "Homepage", 
             "Contentful", 
     new { languageCode = translation.Code }, 
-    new { @class = "govuk-link" })
+    new { @class = "govuk-link", rel = "nofollow" })
     </li>
 }
 </ul>

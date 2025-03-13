@@ -55,7 +55,7 @@
                 'analytics_storage': '@(consentFeature.HasConsent ? "granted" : "denied")',
             });
         </script>
-        
+
         <!-- Google Tag Manager -->
         <script asp-add-nonce="true">
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
@@ -84,8 +84,8 @@
         <!-- End Clarity -->
     }
     <!-- BEGIN SHAREAHOLIC CODE -->
-    <link rel="preload" href="https://cdn.shareaholic.net/assets/pub/shareaholic.js" as="script" />
-    <meta name="shareaholic:site_id" content="@scriptConfig.ShareaholicSiteId" />
+    <link rel="preload" href="https://cdn.shareaholic.net/assets/pub/shareaholic.js" as="script"/>
+    <meta name="shareaholic:site_id" content="@scriptConfig.ShareaholicSiteId"/>
     <script asp-add-nonce="true" data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js"></script>
     <!-- END SHAREAHOLIC CODE -->
     <meta charset="utf-8"/>
@@ -97,7 +97,10 @@
     <link rel="stylesheet" href="~/css/application.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="stylesheet" href="~/css/metadata.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="stylesheet" href="~/css/navigation.css" asp-append-version="@scriptConfig.AddCssVersion"/>
-    <link rel="stylesheet" href="~/css/cta.css" asp-append-version="@scriptConfig.AddCssVersion" />
+    <link rel="stylesheet" href="~/css/cta.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    @if (IsSectionDefined("Head")) {
+        @await RenderSectionAsync("Head", required: false)
+    }
 </head>
 
 <body class="govuk-template__body">

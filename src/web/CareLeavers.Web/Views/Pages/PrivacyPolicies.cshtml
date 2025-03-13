@@ -5,9 +5,26 @@
 
 @{
     var config = await ContentfulConfiguration.GetConfiguration();
+    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
 
     ViewBag.Title = $"Privacy policies: {config.ServiceName} website";
     Layout = "_Layout";
+}
+
+@section Head
+{
+    <meta property="og:site_name" content="@config.ServiceName"/>
+    <meta property="og:title" content="@ViewBag.Title"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="@Url.Action(
+                                         action: "PrivacyPolicies",
+                                         controller: "Pages",
+                                         protocol: "https",
+                                         values: new { language = languageCode}
+                                     )"/>
+
+    <meta property="og:locale" content="en_GB"/>
+
 }
 
 @section BeforeGDSContent
