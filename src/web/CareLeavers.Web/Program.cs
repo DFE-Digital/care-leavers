@@ -91,7 +91,7 @@ try
         {
             "*.azurewebsites.net",
             "*.azurefd.net",
-            "support-for-care-leavers.education.gov.uk"
+            "*.support-for-care-leavers.education.gov.uk"
         };
     });
         
