@@ -422,7 +422,7 @@
                                           ]
                                         },
                                         "showLastUpdated": true,
-                                        "showShareThis": true,
+                                        "showShareLinks": true,
                                         "showFooter": true,
                                         "header": {
                                           "$type": "Contentful.Core.Models.Document, Contentful.Core",
