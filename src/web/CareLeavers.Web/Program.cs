@@ -90,7 +90,8 @@ try
         options.AllowedHosts = new List<string>
         {
             "*.azurewebsites.net",
-            "*.azurefd.net"
+            "*.azurefd.net",
+            "support-for-care-leavers.education.gov.uk"
         };
     });
         
