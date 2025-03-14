@@ -5,6 +5,10 @@ export class BasePage {
 
     //Locator for the Website Title navigation Link
     public readonly WebsiteNameLink: Locator;
+    
+    // Locators for the logo link and logo images
+    public logoLink: Locator;
+    public defaultLogo: Locator;
 
     // Locators for cookie banner and buttons
     public readonly cookieBanner: Locator;
@@ -46,6 +50,10 @@ export class BasePage {
         //Locator for the Website Title navigation Link
         this.WebsiteNameLink = page.locator('a.dfe-header__link--service');
 
+        //Logo 
+        this.logoLink = page.locator('a.dfe-header__link');
+        this.defaultLogo = page.locator('img.dfe-logo');
+        
         // Locators for cookie banner and buttons
         this.cookieBanner = page.locator('.govuk-cookie-banner');
         this.acceptButton = page.locator('#accept-cookie');   
@@ -73,8 +81,8 @@ export class BasePage {
         this.metadataDefinitions = page.locator('.gem-c-metadata__definition');
         
         //Locators for helplines-If you need Help at the bottom of the page
-        this.helplineLink = page.locator('p.govuk-body a.govuk-hyperlink');
-        this.ifYouNeedHelpSection = page.locator('#If-you-need-help-now');
+        this.helplineLink = page.locator('p.govuk-body a.govuk-link[href="helplines"]');
+        this.ifYouNeedHelpSection = page.locator('#Talk-to-someone');
 
         //Locators for web page Footers
         this.footer = page.locator('footer');
@@ -117,7 +125,14 @@ export class BasePage {
         return cookies.some((cookie: Cookie) => cookie.name === '.AspNet.Consent');
 
     }
+    
+    async verifyLogoPresence() {
+        // Verify the link element is visible
+        await expect(this.logoLink).toBeVisible();
 
+        // Verify that logo images are visible
+        await expect(this.defaultLogo).toBeVisible();
+    }
     // Clear cookies
     async clearCookies(context: BrowserContext) {
         await context.clearCookies();
@@ -208,6 +223,52 @@ export class BasePage {
                 await this.mobileMenuLinks.nth(link.index).click();
                 await this.page.waitForURL(new RegExp(link.href));
             }
+        }
+    }
+
+    // Locate breadcrumb items on the page
+    getBreadcrumbItems(): Locator {
+        return this.page.locator('.govuk-breadcrumbs__link');
+    }
+
+    // Get text of a breadcrumb link by index
+    async getBreadcrumbLinkText(index: number): Promise<string> {
+        const breadcrumb = this.getBreadcrumbItems().nth(index);
+        return await breadcrumb.innerText();
+    }
+
+    //Method to check breadcrumbs
+    async checkBreadcrumbs(url: string, expectedBreadcrumbs: string[]) {
+        await this.navigateTo(url);
+        await this.waitForPageLoad();
+
+        const breadcrumbItems = this.getBreadcrumbItems();
+        const breadcrumbCount = await breadcrumbItems.count();
+        if (breadcrumbCount !== expectedBreadcrumbs.length) {
+            throw new Error(`Expected ${expectedBreadcrumbs.length} breadcrumbs, but found ${breadcrumbCount}`);
+        }
+        for (let i = 0; i < breadcrumbCount; i++) {
+
+            const actualText = await this.getBreadcrumbLinkText(i);
+
+            if (actualText.trim().toLowerCase() === 'home') {
+                const link = breadcrumbItems.nth(i);
+                await link.click(); // Click the Home breadcrumb
+                await this.waitForPageLoad();
+                const breadcrumbItemsAfterHome = this.getBreadcrumbItems();
+                const breadcrumbCountAfterHome = await breadcrumbItemsAfterHome.count();
+                if (breadcrumbCountAfterHome !== 0) {
+                    throw new Error("Expected no breadcrumbs on the home page.");
+                }
+                return; // Skip further checks if Home was clicked
+            }
+
+            expect(actualText.trim()).toBe(expectedBreadcrumbs[i]);
+
+            const expectedURL = `/${expectedBreadcrumbs[i].toLowerCase().replace(/\s+/g, '-')}`;
+            const link = breadcrumbItems.nth(i);
+            await link.click();
+            await this.page.waitForURL(expectedURL);
         }
     }
     
