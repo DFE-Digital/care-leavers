@@ -8,6 +8,7 @@ using CareLeavers.Web.Contentful.Webhooks;
 using CareLeavers.Web.ContentfulRenderers;
 using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Telemetry;
+using CareLeavers.Web.Translation;
 using Contentful.AspNetCore;
 using Contentful.AspNetCore.MiddleWare;
 using Contentful.Core;
@@ -89,7 +90,8 @@ try
         options.AllowedHosts = new List<string>
         {
             "*.azurewebsites.net",
-            "*.azurefd.net"
+            "*.azurefd.net",
+            "*.support-for-care-leavers.education.gov.uk"
         };
     });
         
@@ -136,7 +138,19 @@ try
 
     builder.Services.AddOptions<ScriptOptions>().BindConfiguration(ScriptOptions.Name);
     builder.Services.AddOptions<CachingOptions>().BindConfiguration(CachingOptions.Name);
-    
+
+    builder.Services.AddOptions<AzureTranslationOptions>().BindConfiguration(AzureTranslationOptions.Name);
+
+    if (string.IsNullOrEmpty(builder.Configuration.GetValue<string>("AzureTranslation:AccessKey")))
+    {
+        Log.Logger.Information("Azure Translation subscription key not found, translation service will be disabled");
+        builder.Services.AddSingleton<ITranslationService, NoTranslationService>();
+    }
+    else
+    {
+        builder.Services.AddScoped<ITranslationService, AzureTranslationService>();
+    }
+
     #endregion
     
     #region Distributed Caching

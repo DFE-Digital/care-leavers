@@ -11,6 +11,11 @@ public static class DistributedCacheExtensions
     public static DistributedCacheEntryOptions DefaultCacheOptions { get; set; } =
         new DistributedCacheEntryOptions()
             .SetAbsoluteExpiration(TimeSpan.FromHours(1));
+
+    public static Task SetAsync(this IDistributedCache cache, string key, byte[] bytes)
+    {
+        return cache.SetAsync(key, bytes, DefaultCacheOptions);
+    }
     
     public static Task SetAsync<T>(this IDistributedCache cache, string key, T value)
     {

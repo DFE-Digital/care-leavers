@@ -9,7 +9,18 @@
 @import url('https://rsms.me/inter/inter.css');
 $govuk-font-family: 'Inter', sans-serif; // Override govuk font
 * {
-  font-family: $govuk-font-family; // Override all fonts to match
+  font-family: $govuk-font-family !important; // Override all fonts to match
+}
+
+.translate {
+  display: block;
+  text-align: right;
+  width: 90px;
+  float: right;
+  font-size: 1em;
+  background-image: url("/assets/icon-translate.png");
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .environment-banner {

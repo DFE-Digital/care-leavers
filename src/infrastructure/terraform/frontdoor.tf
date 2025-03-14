@@ -8,6 +8,7 @@ resource "azurerm_cdn_frontdoor_profile" "frontdoor-web-profile" {
 resource "azurerm_cdn_frontdoor_origin_group" "frontdoor-origin-group" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
   name                     = "${local.service_prefix}-web-fd-origin-group"
+  session_affinity_enabled = false
 
   health_probe {
     interval_in_seconds = 60
@@ -46,6 +47,7 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group.id
   cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.frontdoor-web-origin.id]
+  enabled = true
 
   forwarding_protocol    = "MatchRequest"
   https_redirect_enabled = true
@@ -53,6 +55,7 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   supported_protocols    = ["Http", "Https"]
 
   cdn_frontdoor_custom_domain_ids = var.custom_domain != "" ? [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id] : null
+  link_to_default_domain          = true
 }
 
 resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy" {

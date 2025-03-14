@@ -12,7 +12,7 @@ locals {
     "Caching__Type"                         = var.caching_type
     "Caching__ConnectionString"             = lower(var.caching_type) == "redis" ? "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-cache-connection-string[0].versionless_id})" : ""
     "Scripts__Clarity"                      = var.scripts_clarity,
-    # "Translation__AzureApiKey"              = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.translation-access-key.versionless_id})"
+    "AzureTranslation__AccessKey"           = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.azure-translation-access-key.versionless_id})"
   }
 }
 

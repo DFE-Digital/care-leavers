@@ -1,3 +1,4 @@
+using CareLeavers.Web.Caching;
 using CareLeavers.Web.Models.Content;
 using Contentful.Core;
 using Contentful.Core.Models;
@@ -48,6 +49,16 @@ public class PublishContentfulWebhook(
             Log.Logger.Information("The following slug will be purged: {Slug}", pageEntry.Slug);
 
             await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
+            
+            if (distributedCache.TryGetValue($"content:{pageEntry.Slug}:languages", out List<string>? translations))
+            {
+                foreach (var translation in translations ?? [])
+                {
+                    await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:language:{translation}");
+                }
+                
+                await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:languages");
+            }
         }
         else if (entry.SystemProperties.ContentType.SystemProperties.Id == ContentfulConfigurationEntity.ContentType)
         {
@@ -63,6 +74,16 @@ public class PublishContentfulWebhook(
             foreach (var pageEntry in pageEntries)
             {
                 await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
+                
+                if (distributedCache.TryGetValue($"content:{pageEntry.Slug}:languages", out List<string>? translations))
+                {
+                    foreach (var translation in translations ?? [])
+                    {
+                        await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:language:{translation}");
+                    }
+                    
+                    await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:languages");
+                }
             }
         }
         

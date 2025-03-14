@@ -1,4 +1,6 @@
 ﻿@using CareLeavers.Web.Configuration
+@using CareLeavers.Web.Models.ViewModels
+@using CareLeavers.Web.Translation
 @using GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.AspNetCore.TagHelpers
 @using Joonasw.AspNetCore.SecurityHeaders.Csp
@@ -11,15 +13,30 @@
 @inject ICspNonceService CspNonceService
 @inject IContentfulConfiguration ContentfulConfiguration
 @inject IOptions<ScriptOptions> ScriptOptions
+@inject ITranslationService TranslationService
 
 @{
     var config = await ContentfulConfiguration.GetConfiguration();
     var scriptConfig = ScriptOptions.Value;
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>() ?? throw new NullReferenceException();
+    
+    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
+    if (string.IsNullOrEmpty(languageCode))
+    {
+        languageCode = "en";
+    }
+    
+    var language = await TranslationService.GetLanguage(languageCode);
+    
+    var configViewModel = new ConfigViewModel
+    {
+        ContentfulConfiguration = config,
+        Language = language
+    };
 }
 
 <!DOCTYPE html>
-<html class="govuk-template" lang="en">
+<html class="govuk-template" dir="@language.Direction" lang="@languageCode">
 
 <head>
     @if (WebHostEnvironment.IsEnvironment("Test") && !string.IsNullOrEmpty(scriptConfig.GTM))
@@ -38,7 +55,7 @@
                 'analytics_storage': '@(consentFeature.HasConsent ? "granted" : "denied")',
             });
         </script>
-        
+
         <!-- Google Tag Manager -->
         <script asp-add-nonce="true">
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
@@ -67,8 +84,8 @@
         <!-- End Clarity -->
     }
     <!-- BEGIN SHAREAHOLIC CODE -->
-    <link rel="preload" href="https://cdn.shareaholic.net/assets/pub/shareaholic.js" as="script" />
-    <meta name="shareaholic:site_id" content="@scriptConfig.ShareaholicSiteId" />
+    <link rel="preload" href="https://cdn.shareaholic.net/assets/pub/shareaholic.js" as="script"/>
+    <meta name="shareaholic:site_id" content="@scriptConfig.ShareaholicSiteId"/>
     <script asp-add-nonce="true" data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js"></script>
     <!-- END SHAREAHOLIC CODE -->
     <meta charset="utf-8"/>
@@ -80,7 +97,10 @@
     <link rel="stylesheet" href="~/css/application.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="stylesheet" href="~/css/metadata.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="stylesheet" href="~/css/navigation.css" asp-append-version="@scriptConfig.AddCssVersion"/>
-    <link rel="stylesheet" href="~/css/cta.css" asp-append-version="@scriptConfig.AddCssVersion" />
+    <link rel="stylesheet" href="~/css/cta.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    @if (IsSectionDefined("Head")) {
+        @await RenderSectionAsync("Head", required: false)
+    }
 </head>
 
 <body class="govuk-template__body">
@@ -95,7 +115,7 @@
 @Html.GovUkFrontendJsEnabledScript(CspNonceService.GetNonce())
 <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 @{
-    await Html.RenderPartialAsync("_Header", config);
+    await Html.RenderPartialAsync("_Header", configViewModel);
 }
 
 
@@ -129,7 +149,7 @@
 }
 
 @{
-    await Html.RenderPartialAsync("_Footer", config);
+    await Html.RenderPartialAsync("_Footer", configViewModel);
 }
 
 @await RenderSectionAsync("Scripts", false)

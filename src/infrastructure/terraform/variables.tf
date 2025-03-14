@@ -56,3 +56,10 @@ variable "aspnetcore_environment" {
   description = "ASP.NET Core environment"
   type        = string
 }
+
+variable "azure_translation_access_key" {
+  description = "Azure Translation Access Key"
+  type        = string
+  sensitive   = true
+  default     = ""
+}

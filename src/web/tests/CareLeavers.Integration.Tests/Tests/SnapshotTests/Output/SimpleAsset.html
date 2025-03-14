@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="govuk-template" lang="en">
+<html class="govuk-template" dir="ltr" lang="en">
 	<head>
 		
 		<!-- Clarity -->
@@ -33,6 +33,11 @@
 		<link rel="stylesheet" href="/css/metadata.css">
 		<link rel="stylesheet" href="/css/navigation.css">
 		<link rel="stylesheet" href="/css/cta.css">
+		<meta property="og:site_name" content="Care leavers">
+		<meta property="og:title" content="Image Test">
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://localhost/en/image-test?language=en">
+		<meta property="og:locale" content="en">
 	</head>
 	<body class="govuk-template__body">
 		<script nonce="mock-nonce">document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script>
@@ -46,14 +51,17 @@
 		</div>
 		<div class="govuk-width-container">
 			<div class="govuk-phase-banner">
-				<p class="govuk-phase-banner__content">
-					<strong class="govuk-phase-banner__content__tag govuk-tag">Beta</strong>
-					<span class="govuk-phase-banner__text">
-						<span class="govuk-phase-banner__text">
-							This is a new service.
-						</span>
-					</span>
+				<p class="translate">
+					<a class="govuk-link" href="/translation" rel="nofollow">en</a>
 				</p>
+				<div class="govuk-phase-banner__content">
+					<strong class="govuk-phase-banner__content__tag govuk-tag">
+						Beta
+					</strong>
+					<span class="govuk-phase-banner__text">
+						This is a new service.
+					</span>
+				</div>
 			</div>
 		</div>
 		<header class="dfe-header" role="banner">
@@ -114,7 +122,7 @@
 				<nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
 					<ol class="govuk-breadcrumbs__list">
 						<li class="govuk-breadcrumbs__list-item">
-							<a class="govuk-breadcrumbs__link" href="/home">Home</a>
+							<a class="govuk-breadcrumbs__link" href="/en/home">Home</a>
 						</li>
 					</ol>
 				</nav>
@@ -168,10 +176,10 @@
 						<h2 class="govuk-visually-hidden">Support links</h2>
 						<ul class="govuk-footer__inline-list">
 							<li class="govuk-footer__inline-list-item">
-								<a class="govuk-footer__link" href="/pages/cookie-policy">Cookie Policy</a>
+								<a class="govuk-footer__link" href="/en/pages/cookie-policy">Cookie Policy</a>
 							</li>
 							<li class="govuk-footer__inline-list-item">
-								<a class="govuk-footer__link" href="/pages/privacy-policies">Privacy Policies</a>
+								<a class="govuk-footer__link" href="/en/pages/privacy-policies">Privacy Policies</a>
 							</li>
 						</ul>
 						<svg aria-hidden="true" focusable="false" class="govuk-footer__licence-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 483.2 195.7" height="17" width="41">

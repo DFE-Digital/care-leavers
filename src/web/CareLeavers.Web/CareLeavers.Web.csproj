@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Azure.AI.Translation.Text" Version="1.0.0" />
         <PackageReference Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.2.0" />
         <PackageReference Include="contentful.aspnetcore" Version="8.3.0" />
         <PackageReference Include="GovUk.Frontend.AspNetCore" Version="2.8.0" />
