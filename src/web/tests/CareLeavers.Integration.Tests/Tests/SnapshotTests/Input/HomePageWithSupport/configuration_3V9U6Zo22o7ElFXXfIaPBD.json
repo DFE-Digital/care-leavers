@@ -19,7 +19,7 @@
       "$values": []
     },
     "showLastUpdated": false,
-    "showShareThis": false,
+    "showShareLinks": false,
     "showFooter": true,
     "header": {
       "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -458,7 +458,7 @@
                         "$values": []
                       },
                       "showLastUpdated": false,
-                      "showShareThis": false,
+                      "showShareLinks": false,
                       "showFooter": true,
                       "header": {
                         "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -921,7 +921,7 @@
                     ]
                   },
                   "showLastUpdated": true,
-                  "showShareThis": false,
+                  "showShareLinks": false,
                   "showFooter": true,
                   "header": {
                     "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -1519,7 +1519,7 @@
                         "$values": []
                       },
                       "showLastUpdated": false,
-                      "showShareThis": false,
+                      "showShareLinks": false,
                       "showFooter": true,
                       "header": {
                         "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -1945,7 +1945,7 @@
             "$values": []
           },
           "showLastUpdated": false,
-          "showShareThis": false,
+          "showShareLinks": false,
           "showFooter": true,
           "header": {
             "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -2384,7 +2384,7 @@
                               "$values": []
                             },
                             "showLastUpdated": false,
-                            "showShareThis": false,
+                            "showShareLinks": false,
                             "showFooter": true,
                             "header": {
                               "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -2847,7 +2847,7 @@
                           ]
                         },
                         "showLastUpdated": true,
-                        "showShareThis": false,
+                        "showShareLinks": false,
                         "showFooter": true,
                         "header": {
                           "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -3445,7 +3445,7 @@
                               "$values": []
                             },
                             "showLastUpdated": false,
-                            "showShareThis": false,
+                            "showShareLinks": false,
                             "showFooter": true,
                             "header": {
                               "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -4002,7 +4002,7 @@
               "$values": []
             },
             "showLastUpdated": false,
-            "showShareThis": false,
+            "showShareLinks": false,
             "showFooter": true,
             "header": {
               "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -4626,7 +4626,7 @@
                             ]
                           },
                           "showLastUpdated": true,
-                          "showShareThis": false,
+                          "showShareLinks": false,
                           "showFooter": true,
                           "header": {
                             "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -5224,7 +5224,7 @@
                                 "$values": []
                               },
                               "showLastUpdated": false,
-                              "showShareThis": false,
+                              "showShareLinks": false,
                               "showFooter": true,
                               "header": {
                                 "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -5641,7 +5641,7 @@
             "$values": []
           },
           "showLastUpdated": false,
-          "showShareThis": false,
+          "showShareLinks": false,
           "showFooter": true,
           "header": {
             "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -6057,7 +6057,7 @@
             ]
           },
           "showLastUpdated": true,
-          "showShareThis": false,
+          "showShareLinks": false,
           "showFooter": true,
           "header": {
             "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -6433,7 +6433,7 @@
             "$values": []
           },
           "showLastUpdated": false,
-          "showShareThis": false,
+          "showShareLinks": false,
           "showFooter": true,
           "header": {
             "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -6811,7 +6811,7 @@
               "$values": []
             },
             "showLastUpdated": false,
-            "showShareThis": false,
+            "showShareLinks": false,
             "showFooter": true,
             "header": {
               "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -7250,7 +7250,7 @@
                                 "$values": []
                               },
                               "showLastUpdated": false,
-                              "showShareThis": false,
+                              "showShareLinks": false,
                               "showFooter": true,
                               "header": {
                                 "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -7713,7 +7713,7 @@
                             ]
                           },
                           "showLastUpdated": true,
-                          "showShareThis": false,
+                          "showShareLinks": false,
                           "showFooter": true,
                           "header": {
                             "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -8311,7 +8311,7 @@
                                 "$values": []
                               },
                               "showLastUpdated": false,
-                              "showShareThis": false,
+                              "showShareLinks": false,
                               "showFooter": true,
                               "header": {
                                 "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -8730,7 +8730,7 @@
             ]
           },
           "showLastUpdated": false,
-          "showShareThis": true,
+          "showShareLinks": true,
           "showFooter": false,
           "header": null,
           "mainContent": {
@@ -9706,7 +9706,7 @@
                         "$values": []
                       },
                       "showLastUpdated": false,
-                      "showShareThis": false,
+                      "showShareLinks": false,
                       "showFooter": true,
                       "header": {
                         "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -10145,7 +10145,7 @@
                                           "$values": []
                                         },
                                         "showLastUpdated": false,
-                                        "showShareThis": false,
+                                        "showShareLinks": false,
                                         "showFooter": true,
                                         "header": {
                                           "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -10608,7 +10608,7 @@
                                       ]
                                     },
                                     "showLastUpdated": true,
-                                    "showShareThis": false,
+                                    "showShareLinks": false,
                                     "showFooter": true,
                                     "header": {
                                       "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -11206,7 +11206,7 @@
                                           "$values": []
                                         },
                                         "showLastUpdated": false,
-                                        "showShareThis": false,
+                                        "showShareLinks": false,
                                         "showFooter": true,
                                         "header": {
                                           "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -11625,7 +11625,7 @@
                       ]
                     },
                     "showLastUpdated": false,
-                    "showShareThis": true,
+                    "showShareLinks": true,
                     "showFooter": false,
                     "header": null,
                     "mainContent": {
