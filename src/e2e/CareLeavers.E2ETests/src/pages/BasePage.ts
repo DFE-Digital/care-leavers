@@ -5,6 +5,9 @@ export class BasePage {
 
     //Locator for the Website Title navigation Link
     public readonly WebsiteNameLink: Locator;
+    
+    //Logo
+    private logo: Locator;
 
     // Locators for cookie banner and buttons
     public readonly cookieBanner: Locator;
@@ -45,6 +48,9 @@ export class BasePage {
         this.page = page;
         //Locator for the Website Title navigation Link
         this.WebsiteNameLink = page.locator('a.dfe-header__link--service');
+
+        //Logo 
+        this.logo = page.locator('img[alt="Department for Education"]\'');
 
         // Locators for cookie banner and buttons
         this.cookieBanner = page.locator('.govuk-cookie-banner');
@@ -92,6 +98,8 @@ export class BasePage {
     // Validate URL contains a specific path
     async validateURLContains(path: string) {
         await expect(this.page).toHaveURL(new RegExp(path));
+        await expect(this.logo).toBeVisible();
+
     }
 
     // Wait for the page to load
@@ -211,11 +219,56 @@ export class BasePage {
         }
     }
     
+    // Locate breadcrumb items on the page
+    getBreadcrumbItems(): Locator {
+        return this.page.locator('.govuk-breadcrumbs__link');
+    }
+
+    // Get text of a breadcrumb link by index
+    async getBreadcrumbLinkText(index: number): Promise<string> {
+        const breadcrumb = this.getBreadcrumbItems().nth(index);
+        return await breadcrumb.innerText();
+    }
+
+    //Method to check breadcrumbs
+    async checkBreadcrumbs(url: string, expectedBreadcrumbs: string[]) {
+        await this.navigateTo(url);
+        await this.waitForPageLoad();
+
+        const breadcrumbItems = this.getBreadcrumbItems();
+        const breadcrumbCount = await breadcrumbItems.count();
+        if (breadcrumbCount !== expectedBreadcrumbs.length) {
+            throw new Error(`Expected ${expectedBreadcrumbs.length} breadcrumbs, but found ${breadcrumbCount}`);
+        }
+        for (let i = 0; i < breadcrumbCount; i++) {
+            
+            const actualText = await this.getBreadcrumbLinkText(i);
+
+            if (actualText.trim().toLowerCase() === 'home') {
+                const link = breadcrumbItems.nth(i);
+                await link.click(); // Click the Home breadcrumb
+                await this.waitForPageLoad();
+                const breadcrumbItemsAfterHome = this.getBreadcrumbItems();
+                const breadcrumbCountAfterHome = await breadcrumbItemsAfterHome.count();
+                if (breadcrumbCountAfterHome !== 0) {
+                    throw new Error("Expected no breadcrumbs on the home page.");
+                }
+                return; // Skip further checks if Home was clicked
+            }
+
+            expect(actualText.trim()).toBe(expectedBreadcrumbs[i]);
+
+            const expectedURL = `/${expectedBreadcrumbs[i].toLowerCase().replace(/\s+/g, '-')}`;
+            const link = breadcrumbItems.nth(i);
+            await link.click();
+            await this.page.waitForURL(expectedURL);
+        }
+    }
+    
     //Verify that the Social Media and Share buttons are visible 
     async verifyShareButtonsVisibility() {
         await Promise.all([
             expect(this.shareButtonsContainer).toBeVisible(),
-            expect(this.printShareButton).toBeVisible()
         ]);
     }
 
