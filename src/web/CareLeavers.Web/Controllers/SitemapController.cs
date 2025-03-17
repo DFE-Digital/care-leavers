@@ -30,7 +30,7 @@ public class SitemapController(IContentService contentService) : Controller
             new XDeclaration("1.0", "UTF-8", null),
             new XElement(ns + "urlset",
                 slugs.Select(slug => new XElement(ns + "url",
-                    new XElement(ns + "loc", slug)
+                    new XElement(ns + "loc", $"{configuration["BaseUrl"]}{slug}")
                 ))
             ));
 
