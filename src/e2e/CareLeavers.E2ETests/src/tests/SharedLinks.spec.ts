@@ -10,7 +10,7 @@ test.describe('Shared Website Functionalities', () => {
         // Instantiate BasePage for each test
         basePage = new BasePage(page);
     });
-
+    
     // Test to validate WebsiteNameLink 
     test.describe('Navigation Links Functionality', () => {
         commonPagesToTest.forEach((path) => {
@@ -19,6 +19,7 @@ test.describe('Shared Website Functionalities', () => {
                 await basePage.navigateTo(path);
                 await expect(basePage.WebsiteNameLink).toHaveAccessibleName(/Support for/i);
                 await expect(basePage.WebsiteNameLink).toBeVisible();
+                
             });
         });
     });
@@ -73,8 +74,7 @@ test.describe('Shared Website Functionalities', () => {
             });
         });
     });
-
-    /*commented for now until the mocks are updated to include this 
+    
     // Test to validate helpline links
     test.describe('Helpline Links Functionality', () => {
         helplineLinksToTest.forEach((path) => {
@@ -87,5 +87,4 @@ test.describe('Shared Website Functionalities', () => {
             });
         });
     });
-    */
 });
