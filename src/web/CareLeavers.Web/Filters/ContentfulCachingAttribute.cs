@@ -34,7 +34,11 @@ public class TranslationAttribute : ActionFilterAttribute
         {
             languages.AddRange((await translationService.GetLanguages()).Select(l => l.Code));
         }
-
+        else
+        {
+            languages.Add("en");
+        }
+        
         if (slug == null || 
             !config.TranslationEnabled ||
             string.IsNullOrEmpty(languageCode) || 
@@ -82,6 +86,10 @@ public class TranslationAttribute : ActionFilterAttribute
         if (config.TranslationEnabled)
         {
             languages.AddRange((await translationService.GetLanguages()).Select(l => l.Code));
+        }
+        else
+        {
+            languages.Add("en");
         }
 
         if (slug == null || 
