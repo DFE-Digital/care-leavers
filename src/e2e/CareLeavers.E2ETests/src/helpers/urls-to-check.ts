@@ -8,8 +8,8 @@ export const commonPagesToTest = [
     '/en/work-and-employment',
     '/en/education-and-training',
     '/en/health-and-wellbeing',
-    /*
    '/en/unaccompanied-asylum-seeking-young-people',
+    /*
    '/en/pathway-plan',
    '/en/personal-adviser',
    '/en/leaving-care-allowance',

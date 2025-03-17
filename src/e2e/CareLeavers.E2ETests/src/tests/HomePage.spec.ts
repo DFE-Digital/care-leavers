@@ -23,7 +23,8 @@ test.describe('Home Page Tests', () => {
             { title: "Housing and accommodation", url: "/housing-and-accommodation" },
             { title: "Work and employment", url: "/work-and-employment" },
             { title: "Education and training", url: "/education-and-training" },
-            { title: "Health and wellbeing", url: "/health-and-wellbeing" }
+            { title: "Health and wellbeing", url: "/health-and-wellbeing" },
+            {title: "Unaccompanied asylum-seeking young people", url: "/unaccompanied-asylum-seeking-young-people"}
            //add more cards if and when needed
         ];
         await homePage.verifySupportCardsNavigation(supportCards);
