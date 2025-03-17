@@ -35,7 +35,7 @@ public class RobotsController (IContentfulConfiguration contentfulConfiguration,
         
         sb.AppendLine("Allow: /");
         sb.AppendLine();
-        sb.AppendLine($"Sitemap: {Url.ActionLink(action: "Sitemap", controller: "Sitemap", protocol: "https")}");
+        sb.AppendLine($"Sitemap: {Url.ActionLink("Sitemap", "Sitemap", protocol: "https")}");
         
         return Content(sb.ToString(), "text/plain");
     }
