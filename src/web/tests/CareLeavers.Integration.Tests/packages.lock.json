@@ -593,8 +593,8 @@
       },
       "Microsoft.Extensions.Caching.StackExchangeRedis": {
         "type": "Transitive",
-        "resolved": "8.0.13",
-        "contentHash": "fIVAYp6PcwjAz0nzAFxd3s/eVwihKuR/P1t300ZES25oBRndi/Sk60YA+GBq1vPTvDSxmygI0YlGo2CZO4Tb0g==",
+        "resolved": "8.0.14",
+        "contentHash": "SWdxLb0WsCGJtmCFD3neN/J+n8sdbiAYg9X843/XHqX7oShyttTVGdUfidDBBVy97CXHMaEGqc9kDrv6IHq2bQ==",
         "dependencies": {
           "Microsoft.Extensions.Caching.Abstractions": "8.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
@@ -2343,7 +2343,7 @@
           "GovUk.Frontend.AspNetCore": "[2.8.0, )",
           "HtmlAgilityPack": "[1.11.74, )",
           "Joonasw.AspNetCore.SecurityHeaders": "[5.0.0, )",
-          "Microsoft.Extensions.Caching.StackExchangeRedis": "[8.0.13, )",
+          "Microsoft.Extensions.Caching.StackExchangeRedis": "[8.0.14, )",
           "Serilog": "[4.2.0, )",
           "Serilog.AspNetCore": "[8.0.3, )",
           "Serilog.Sinks.ApplicationInsights": "[4.0.0, )",
