@@ -47,7 +47,7 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group.id
   cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.frontdoor-web-origin.id]
-  enabled = true
+  enabled                       = true
 
   forwarding_protocol    = "MatchRequest"
   https_redirect_enabled = true
