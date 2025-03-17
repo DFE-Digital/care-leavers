@@ -55,9 +55,9 @@
       },
       "HtmlAgilityPack": {
         "type": "Direct",
-        "requested": "[1.11.74, )",
-        "resolved": "1.11.74",
-        "contentHash": "q0wRGbegtr4sZXjCNoV3OeRLTOcTNJQKiO9etNVSKPoTo33unmSK8Ahg36C4jIg/Hd3aw8YnTQjtKpBy+wlOpg=="
+        "requested": "[1.12.0, )",
+        "resolved": "1.12.0",
+        "contentHash": "VHtVZmfoYhQyA/POvZRLuTpCz1zhzIDrdYRJIRV73e9wKAzjW71biYNOHOWx8MxEX3TE4TWVfx1QDRoZcj2AWw=="
       },
       "Joonasw.AspNetCore.SecurityHeaders": {
         "type": "Direct",
@@ -71,9 +71,9 @@
       },
       "Microsoft.Extensions.Caching.StackExchangeRedis": {
         "type": "Direct",
-        "requested": "[8.0.13, )",
-        "resolved": "8.0.13",
-        "contentHash": "fIVAYp6PcwjAz0nzAFxd3s/eVwihKuR/P1t300ZES25oBRndi/Sk60YA+GBq1vPTvDSxmygI0YlGo2CZO4Tb0g==",
+        "requested": "[8.0.14, )",
+        "resolved": "8.0.14",
+        "contentHash": "SWdxLb0WsCGJtmCFD3neN/J+n8sdbiAYg9X843/XHqX7oShyttTVGdUfidDBBVy97CXHMaEGqc9kDrv6IHq2bQ==",
         "dependencies": {
           "Microsoft.Extensions.Caching.Abstractions": "8.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
