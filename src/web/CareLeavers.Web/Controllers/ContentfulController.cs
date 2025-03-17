@@ -3,6 +3,7 @@ using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Filters;
+using CareLeavers.Web.Translation;
 using Contentful.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -10,7 +11,7 @@ using Newtonsoft.Json;
 namespace CareLeavers.Web.Controllers;
 
 [Route("/")]
-public class ContentfulController(IContentService contentService) : Controller
+public class ContentfulController(IContentService contentService, ITranslationService translationService) : Controller
 {
     [Route("/")]
     public async Task<IActionResult> Homepage(
@@ -101,6 +102,18 @@ public class ContentfulController(IContentService contentService) : Controller
         {
             return RedirectToAction("GetContent", new { slug, languageCode = "en" });
         }
+
+        var languages = new List<string>();
+        if ((await contentService.GetConfiguration()).TranslationEnabled)
+        {
+            languages.AddRange((await translationService.GetLanguages()).Select(l => l.Code));
+
+            if (!languages.Contains(languageCode))
+            {
+                return RedirectToAction("GetContent", new { slug, languageCode = "en" });
+            }
+        }
+        
         
         var page = await contentService.GetPage(slug);
 
