@@ -20,59 +20,18 @@ export const commonPagesToTest = [
     '/former-relevant-child',
     '/person-qualifying-for-advice-and-assistance',
     '/leaving-care-guides',
-    /*
-    '/en/what-happens-when-you-leave-care',
-    '/en/care-terms-explained',
-    */
-    '/helplines',
-];
-
-// List of helpline-related links to test-Only certain pages will have this link
-export const helplineLinksToTest = [
-    '/home',
-    '/all-support',
-    '/money-and-benefits',
-    '/housing-and-accommodation',
-    '/work-and-employment',
-    '/education-and-training',
-    '/health-and-wellbeing',
-    '/unaccompanied-asylum-seeking-young-people',
-    '/pathway-plan',
-    '/personal-adviser',
-    '/leaving-care-allowance',
-    '/higher-education-bursary',
-    '/local-offer-for-care-leavers',
-    '/your-rights',
-    '/eligible-child',
-    '/relevant-child',
-    '/former-relevant-child',
-    '/person-qualifying-for-advice-and-assistance',
-    '/leaving-care-guides',
-    '/en/what-happens-when-you-leave-care',
-    '/en/care-terms-explained'
-];
-
-// List of Pages that will have the share and print buttons
-export const shareAndPrintLinksToTest = [
-    '/money-and-benefits',
-    '/housing-and-accommodation',
-    '/work-and-employment',
-    '/education-and-training',
-    '/health-and-wellbeing',
-    '/unaccompanied-asylum-seeking-young-people',
-    '/pathway-plan',
-    '/personal-adviser',
-    '/leaving-care-allowance',
-    '/higher-education-bursary',
-    '/local-offer-for-care-leavers',
-    '/eligible-child',
-    '/relevant-child',
-    '/former-relevant-child',
-    '/person-qualifying-for-advice-and-assistance',
     '/en/what-happens-when-you-leave-care',
     '/en/care-terms-explained',
     '/helplines'
 ];
+
+// List of helpline-related links to test-Only certain pages will have this link
+export const helplineLinksToTest = commonPagesToTest.filter(path => path !== '/helplines');
+
+// List of Pages that will have the share and print buttons
+export const shareAndPrintLinksToTest = commonPagesToTest.filter(
+    path => !['/home', '/all-support', '/your-rights', '/leaving-care-guides'].includes(path)
+);
 
 // List of URLS and their expected Breadcrumbs
 export const breadcrumbTestData = [
@@ -81,7 +40,6 @@ export const breadcrumbTestData = [
     { urls: ['/leaving-care-allowance',], expectedBreadcrumbs: ['Home', 'All support','Housing and accommodation'] },
     { urls: ['/eligible-child','/relevant-child','/former-relevant-child','/person-qualifying-for-advice-and-assistance'], expectedBreadcrumbs: ['Home','Your rights'] },
     { urls: ['/what-happens-when-you-leave-care','/care-terms-explained'], expectedBreadcrumbs: ['Home','Leaving care guides'] },
-    // Add more urls cases as needed
 ];
 
 // List of support cards
