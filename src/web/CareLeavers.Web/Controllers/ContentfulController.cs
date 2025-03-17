@@ -103,21 +103,17 @@ public class ContentfulController(IContentService contentService, ITranslationSe
             return RedirectToAction("GetContent", new { slug, languageCode = "en" });
         }
 
-        var config = await contentService.GetConfiguration();
         var languages = new List<string>();
-        if (config is { TranslationEnabled: true })
+        if ((await contentService.GetConfiguration()).TranslationEnabled)
         {
             languages.AddRange((await translationService.GetLanguages()).Select(l => l.Code));
-        }
-        else
-        {
-            languages.Add("en");
+
+            if (!languages.Contains(languageCode))
+            {
+                return RedirectToAction("GetContent", new { slug, languageCode = "en" });
+            }
         }
         
-        if (!languages.Contains(languageCode))
-        {
-            return RedirectToAction("GetContent", new { slug, languageCode = "en" });
-        }
         
         var page = await contentService.GetPage(slug);
 
