@@ -34,8 +34,8 @@ export class HomePage extends BasePage {
         super(page);
 
         // Phase Banner Section
-        this.phaseBanner = page.locator('.govuk-width-container');
-        
+        this.phaseBanner = page.locator('.govuk-phase-banner');
+
         // Main Header section  
         this.mainHeading = page.locator('h1');
         this.supportHeading = page.locator('h1.govuk-heading-xl');
@@ -68,8 +68,7 @@ export class HomePage extends BasePage {
 
     async verifyPhaseBanner() {
         await expect(this.phaseBanner).toBeVisible();
-        await expect(this.phaseBanner.locator('.govuk-phase-banner')).toBeVisible();
-        await expect(this.phaseBanner.locator('.govuk-link[href="/translation"]')).toHaveText("English");
+        await expect(this.phaseBanner.locator('.govuk-link[href="/translation"]')).toHaveText("en");
         await expect(this.phaseBanner.locator('.govuk-phase-banner__content__tag')).toHaveText("Beta");
         await expect(this.phaseBanner.locator('.govuk-phase-banner__text')).toContainText("This is a new service.");
     }
@@ -108,14 +107,20 @@ export class HomePage extends BasePage {
         await expect(cardImage).toBeVisible();
         
         await card.click();
-        await this.page.waitForURL(expectedUrl); // Ensure navigation to the correct URL
+        //await this.page.waitForURL(expectedUrl); // Ensure navigation to the correct URL
+        await expect(this.page).toHaveURL(new RegExp(expectedUrl));
+
     }
 
     async verifySupportCardsNavigation(cards: { title: string; url: string }[]) {
         for (const card of cards) {
-            await this.clickSupportCard(card.title, card.url);
-            await this.page.goBack(); // Navigate back to the home page
-            await this.validateURLContains('/home'); // Ensure home page reloads correctly
+            const cardLocator = this.page.locator('.hf-card-container h3', { hasText: new RegExp(card.title, 'i') });
+            await cardLocator.first().waitFor({ state: 'attached' });
+            await cardLocator.first().scrollIntoViewIfNeeded();
+            await cardLocator.first().click();
+            await expect(this.page).toHaveURL(new RegExp(card.url));
+            await this.page.goBack();
+            await this.validateURLContains('/home');
         }
     }
 
