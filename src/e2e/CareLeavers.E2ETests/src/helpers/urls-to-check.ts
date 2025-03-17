@@ -55,3 +55,13 @@ export const breadcrumbTestData = [
     // Add more urls cases as needed
 ];
 
+// List of support cards
+export const supportCards = [
+    { title: "Money and benefits", url: "/money-and-benefits" },
+    { title: "Housing and accommodation", url: "/housing-and-accommodation" },
+    { title: "Work and employment", url: "/work-and-employment" },
+    { title: "Education and training", url: "/education-and-training" },
+    { title: "Health and wellbeing", url: "/health-and-wellbeing" },
+    { title: "Unaccompanied asylum-seeking young people", url: "/unaccompanied-asylum-seeking-young-people" }
+];
+

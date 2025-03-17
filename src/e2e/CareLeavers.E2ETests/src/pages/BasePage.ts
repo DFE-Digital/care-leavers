@@ -15,6 +15,11 @@ export class BasePage {
     public readonly acceptButton: Locator;
     public readonly rejectButton: Locator;
 
+    // Main Header Sections Locators 
+    public readonly mainHeading: Locator;
+    public readonly firstHeaderParagraph: Locator;
+    public readonly supportHeading: Locator;
+
     //Locators for Navigation Bar
     public readonly navLinkHome: Locator;
     public readonly navLinkAllSupport: Locator;
@@ -58,6 +63,12 @@ export class BasePage {
         this.cookieBanner = page.locator('.govuk-cookie-banner');
         this.acceptButton = page.locator('#accept-cookie');   
         this.rejectButton = page.locator('#reject-cookie');
+
+        // Main Header section  
+        this.mainHeading = page.locator('h1');
+        this.supportHeading = page.locator('h1.govuk-heading-xl');
+        let headerSection = page.locator('div#main-header-container')
+        this.firstHeaderParagraph = headerSection.locator('p.govuk-body-l').first();
 
         //Locators for Navigation Bar
         this.navLinkHome = page.locator('a.dfe-header__navigation-link', { hasText: "Home" });
@@ -112,6 +123,7 @@ export class BasePage {
         await this.acceptButton.click();
         await expect(this.cookieBanner).not.toBeVisible();
     }
+    
     async rejectCookies() {
         await expect(this.rejectButton).toBeVisible();
         await this.rejectButton.click();
@@ -127,12 +139,10 @@ export class BasePage {
     }
     
     async verifyLogoPresence() {
-        // Verify the link element is visible
         await expect(this.logoLink).toBeVisible();
-
-        // Verify that logo images are visible
         await expect(this.defaultLogo).toBeVisible();
     }
+    
     // Clear cookies
     async clearCookies(context: BrowserContext) {
         await context.clearCookies();
@@ -163,6 +173,15 @@ export class BasePage {
         ]);
     }
 
+    // Generic method to verify PAGE Main heading and its paragraph text
+    async verifyHeading(expectedHeading: string, expectedParagraph: string) {
+        await expect(this.mainHeading).toBeVisible();
+        await expect(this.mainHeading).toHaveText(expectedHeading);
+        await expect(this.firstHeaderParagraph).toBeVisible();
+        await expect(this.firstHeaderParagraph).toContainText(expectedParagraph);
+        await expect(this.supportHeading).toBeVisible();
+    }
+    
     // Navigation Bar functionality
     // Helper method to ensure the menu is visible and reopens it if needed
     async ensureMenuIsVisible() {

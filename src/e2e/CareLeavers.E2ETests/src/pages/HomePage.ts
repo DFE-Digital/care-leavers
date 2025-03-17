@@ -5,11 +5,6 @@ export class HomePage extends BasePage {
     
     // Phase Banner Section
     private phaseBanner: Locator;
-
-    // Main Header Sections Locators
-    private mainHeading: Locator;
-    private firstHeaderParagraph: Locator;
-    private supportHeading: Locator;
     
     //Sections Locators
     private whoIsThisForSection: Locator;
@@ -35,12 +30,6 @@ export class HomePage extends BasePage {
 
         // Phase Banner Section
         this.phaseBanner = page.locator('.govuk-phase-banner');
-
-        // Main Header section  
-        this.mainHeading = page.locator('h1');
-        this.supportHeading = page.locator('h1.govuk-heading-xl');
-        let headerSection = page.locator('div#main-header-container')
-        this.firstHeaderParagraph = headerSection.locator('p.govuk-body-l').first();
 
         // Main Content Sections
         this.whoIsThisForSection = page.locator('#Who-is-this-support-for-');
@@ -74,47 +63,35 @@ export class HomePage extends BasePage {
     }
     async assertPageElements() {
         await this.validateURLContains('/home');
-        // Check if the main heading is visible
-        await expect(this.mainHeading).toHaveText("Find support for care leavers");
 
-        // Validate first paragraph
-        await expect(this.firstHeaderParagraph).toContainText("Leaving care can be a challenging time");
-
-        // Check if the "who is this for" section is visible
-        await expect(this.whoIsThisForSection).toContainText('support for');
-        await expect(this.page.locator('#Who-is-this-support-for-')).toHaveClass(/govuk-heading-l/);
+        // Verify the logo is present
+        await this.verifyLogoPresence();
         
         //Phase Banner verification
         await this.verifyPhaseBanner();
+        
+        // Validate the main heading and paragraph
+        await this.verifyHeading(
+            "Find support for care leavers",
+            "Leaving care can be a challenging time"
+        );
+        
+        // Check if the "who is this for" section is visible
+        await expect(this.whoIsThisForSection).toContainText('support for');
+        await expect(this.page.locator('#Who-is-this-support-for-')).toHaveClass(/govuk-heading-l/);
+
     }
 
     async verifySectionsVisibility() {
-        await expect(this.supportHeading).toBeVisible();
-        await expect(this.firstHeaderParagraph).toBeVisible();
         await expect(this.whoIsThisForSection).toBeVisible();
         await expect(this.findSupportSection).toBeVisible();
         await expect(this.knowWhatSupportSection).toBeVisible();
        await expect(this.guidesSection).toBeVisible();
     }
     
-    async clickSupportCard(cardTitle: string, expectedUrl: string) {
-        // Find the card with the matching title and Click
-        const card = this.supportCards.filter({ hasText: cardTitle });
-        await expect(card).toBeVisible();  
-        
-        // Validate that the card contains an image
-        const cardImage = card.locator('img');  
-        await expect(cardImage).toBeVisible();
-        
-        await card.click();
-        //await this.page.waitForURL(expectedUrl); // Ensure navigation to the correct URL
-        await expect(this.page).toHaveURL(new RegExp(expectedUrl));
-
-    }
-
     async verifySupportCardsNavigation(cards: { title: string; url: string }[]) {
         for (const card of cards) {
-            const cardLocator = this.page.locator('.hf-card-container h3', { hasText: new RegExp(card.title, 'i') });
+            const cardLocator = this.supportCards.locator('h3', { hasText: new RegExp(card.title, 'i') });
             await cardLocator.first().waitFor({ state: 'attached' });
             await cardLocator.first().scrollIntoViewIfNeeded();
             await cardLocator.first().click();
@@ -126,7 +103,7 @@ export class HomePage extends BasePage {
 
     async verifyKnowWhatSupportSection() {
         await expect(this.knowWhatSupportSection.locator('h3')).toBeVisible();  // Validate the heading exists 
-        await expect(this.knowWhatSupportSection.locator('p')).toBeVisible();   // Validate at least one paragraph exists
+        await expect(this.knowWhatSupportSection.locator('p').first()).toBeVisible(); // Validate first paragraph
         
         // Validate the link exists and is functional
         await expect(this.supportLink).toBeVisible();
