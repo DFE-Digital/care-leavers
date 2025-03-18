@@ -19,12 +19,12 @@ test.describe('Home Page Tests', () => {
 
     test('should verify navigation for all support cards', async () => {
         const supportCards = [
-            { title: "Money and benefits", url: "/money-and-benefits" },
-            { title: "Housing and accommodation", url: "/housing-and-accommodation" },
-            { title: "Work and employment", url: "/work-and-employment" },
-            { title: "Education and training", url: "/education-and-training" },
-            { title: "Health and wellbeing", url: "/health-and-wellbeing" },
-            {title: "Unaccompanied asylum-seeking young people", url: "/unaccompanied-asylum-seeking-young-people"}
+            { title: "Money and benefits", url: "/en/money-and-benefits" },
+            { title: "Housing and accommodation", url: "/en/housing-and-accommodation" },
+            { title: "Work and employment", url: "/en/work-and-employment" },
+            { title: "Education and training", url: "/en/education-and-training" },
+            { title: "Health and wellbeing", url: "/en/health-and-wellbeing" },
+            {title: "Unaccompanied asylum-seeking young people", url: "/en/unaccompanied-asylum-seeking-young-people"}
            //add more cards if and when needed
         ];
         await homePage.verifySupportCardsNavigation(supportCards);
