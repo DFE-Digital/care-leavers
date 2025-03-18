@@ -33,12 +33,17 @@ export const shareAndPrintLinksToTest = commonPagesToTest.filter(
     path => !['/home', '/all-support', '/your-rights', '/leaving-care-guides'].includes(path)
 );
 
-// List of URLS and their expected Breadcrumbs
+// List of Pages that will have the Metadata
+export const metaDataLinksToTest = commonPagesToTest.filter(
+    path => !['/home', '/all-support', '/your-rights', '/leaving-care-guides','/helplines'].includes(path)
+);
+
+// List of URLS and their expected Breadcrumbs(optimised data list)
 export const breadcrumbTestData = [
-    { urls: ['/all-support','/your-rights','/leaving-care-guides','/helplines'], expectedBreadcrumbs: ['Home'] },
-    { urls: ['/money-and-benefits', '/housing-and-accommodation','/work-and-employment','/education-and-training','/health-and-wellbeing','/unaccompanied-asylum-seeking-young-people','/pathway-plan','/personal-adviser','/higher-education-bursary','/local-offer-for-care-leavers'], expectedBreadcrumbs: ['Home', 'All support'] },// add more as site grows
-    { urls: ['/leaving-care-allowance',], expectedBreadcrumbs: ['Home', 'All support','Housing and accommodation'] },
-    { urls: ['/eligible-child','/relevant-child','/former-relevant-child','/person-qualifying-for-advice-and-assistance'], expectedBreadcrumbs: ['Home','Your rights'] },
+    { urls: ['/all-support','/leaving-care-guides'], expectedBreadcrumbs: ['Home'] },
+    { urls: ['/money-and-benefits','/work-and-employment','/unaccompanied-asylum-seeking-young-people','/pathway-plan','/personal-adviser'], expectedBreadcrumbs: ['Home', 'All support'] },
+    { urls: ['/leaving-care-allowance'], expectedBreadcrumbs: ['Home', 'All support','Housing and accommodation'] },
+    { urls: ['/eligible-child','/person-qualifying-for-advice-and-assistance'], expectedBreadcrumbs: ['Home','Your rights'] },
     { urls: ['/what-happens-when-you-leave-care','/care-terms-explained'], expectedBreadcrumbs: ['Home','Leaving care guides'] },
 ];
 
