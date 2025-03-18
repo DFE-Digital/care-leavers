@@ -39,7 +39,7 @@
 <html class="govuk-template" dir="@language.Direction" lang="@languageCode">
 
 <head>
-    @if (WebHostEnvironment.IsEnvironment("Test") && !string.IsNullOrEmpty(scriptConfig.GTM))
+    @if (WebHostEnvironment.IsProduction() && !string.IsNullOrEmpty(scriptConfig.GTM))
     {
         <script asp-add-nonce="true">
             // Define dataLayer and the gtag function.
@@ -104,7 +104,7 @@
 </head>
 
 <body class="govuk-template__body">
-@if (WebHostEnvironment.IsEnvironment("Test") && !string.IsNullOrEmpty(scriptConfig.GTM))
+@if (WebHostEnvironment.IsProduction() && !string.IsNullOrEmpty(scriptConfig.GTM))
 {
     <!-- Google Tag Manager (noscript) -->
     <noscript>

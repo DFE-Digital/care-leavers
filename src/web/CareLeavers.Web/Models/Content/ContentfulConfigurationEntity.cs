@@ -29,4 +29,6 @@ public class ContentfulConfigurationEntity : ContentfulContent
     public string? FeedbackUrl { get; set; } = string.Empty;
     
     public bool TranslationEnabled { get; set; } = false;
+    
+    public List<string> ExcludeFromTranslation { get; set; } = [];
 }

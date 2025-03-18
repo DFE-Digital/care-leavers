@@ -203,7 +203,6 @@ public class ContentfulContentService : IContentService
             var pageEntries = await _contentfulClient.GetEntries(pages);
             var slugs = await GetSiteSlugs();
             
-
             return pageEntries
                 .Where(x => x.Slug != null)
                 .Select(p => new SimplePage()

@@ -274,6 +274,7 @@ try
             .AddNonce();
 
         config.AllowScriptUrls.ForEach(f => x.AllowScripts.From(f));
+        config.AllowHashes.ForEach(f => x.AllowScripts.WithHash(f));
 
         x.AllowStyles
             .FromSelf()
@@ -303,6 +304,11 @@ try
             .ToSelf();
         
         config.AllowConnectUrls.ForEach(f => x.AllowConnections.To(f));
+        
+        if (config.ReportOnly)
+        {
+            x.SetReportOnly();
+        }
 
     });
     

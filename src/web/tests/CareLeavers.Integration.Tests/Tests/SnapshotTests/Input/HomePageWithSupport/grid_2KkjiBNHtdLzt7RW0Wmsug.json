@@ -178,7 +178,7 @@
             ]
           },
           "showLastUpdated": true,
-          "showShareThis": true,
+          "showShareLinks": true,
           "showFooter": false,
           "header": {
             "$type": "Contentful.Core.Models.Document, Contentful.Core",
