@@ -15,7 +15,7 @@
     "$values": []
   },
   "showLastUpdated": false,
-  "showShareThis": false,
+  "showShareLinks": false,
   "showFooter": true,
   "header": {
     "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -454,7 +454,7 @@
                       "$values": []
                     },
                     "showLastUpdated": false,
-                    "showShareThis": false,
+                    "showShareLinks": false,
                     "showFooter": true,
                     "header": {
                       "$type": "Contentful.Core.Models.Document, Contentful.Core",
@@ -1273,7 +1273,7 @@
                       "$values": []
                     },
                     "showLastUpdated": false,
-                    "showShareThis": false,
+                    "showShareLinks": false,
                     "showFooter": true,
                     "header": {
                       "$type": "Contentful.Core.Models.Document, Contentful.Core",

@@ -32,7 +32,7 @@ public class Page : ContentfulContent
 
     public bool ShowLastUpdated { get; set; } = true;
     
-    public bool ShowShareThis { get; set; }
+    public bool ShowShareLinks { get; set; }
     
     public bool ShowFooter { get; set; }
     
