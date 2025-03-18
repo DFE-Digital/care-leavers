@@ -94,7 +94,7 @@ public class PublishContentfulWebhook(
             await distributedCache.RemoveAsync(id);
         }
         
-
         await distributedCache.RemoveAsync("content:sitemap");
+        await distributedCache.RemoveAsync("content:hierarchy");
     }
 }
