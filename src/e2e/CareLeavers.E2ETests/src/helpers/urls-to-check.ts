@@ -26,11 +26,11 @@ export const commonPagesToTest = [
 ];
 
 // List of helpline-related links to test-Only certain pages will have this link
-export const helplineLinksToTest = commonPagesToTest.filter(path => path !== '/helplines');
+export const helplineLinksToTest = commonPagesToTest.filter(path => path !== '/en/helplines');
 
 // List of Pages that will have the share and print buttons
 export const shareAndPrintLinksToTest = commonPagesToTest.filter(
-    path => !['/home', '/all-support', '/your-rights', '/leaving-care-guides'].includes(path)
+    path => !['/en/home', '/en/all-support', '/en/your-rights', '/en/leaving-care-guides'].includes(path)
 );
 
 // List of URLS and their expected Breadcrumbs
@@ -46,16 +46,16 @@ export const breadcrumbTestData = [
 
 // List of Pages that will have the Metadata
 export const metaDataLinksToTest = commonPagesToTest.filter(
-    path => !['/home', '/all-support', '/your-rights', '/leaving-care-guides','/helplines'].includes(path)
+    path => !['/en/home', '/en/all-support', '/en/your-rights', '/en/leaving-care-guides','/en/helplines'].includes(path)
 );
 
 // List of support cards
 export const supportCards = [
-    { title: "Money and benefits", url: "/money-and-benefits" },
-    { title: "Housing and accommodation", url: "/housing-and-accommodation" },
-    { title: "Work and employment", url: "/work-and-employment" },
-    { title: "Education and training", url: "/education-and-training" },
-    { title: "Health and wellbeing", url: "/health-and-wellbeing" },
-    { title: "Unaccompanied asylum-seeking young people", url: "/unaccompanied-asylum-seeking-young-people" }
+    { title: "Money and benefits", url: "/en/money-and-benefits" },
+    { title: "Housing and accommodation", url: "/en/housing-and-accommodation" },
+    { title: "Work and employment", url: "/en/work-and-employment" },
+    { title: "Education and training", url: "/en/education-and-training" },
+    { title: "Health and wellbeing", url: "/en/health-and-wellbeing" },
+    { title: "Unaccompanied asylum-seeking young people", url: "/en/unaccompanied-asylum-seeking-young-people" }
 ];
 
