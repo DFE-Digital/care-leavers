@@ -1,21 +1,26 @@
+@using CareLeavers.Web.Contentful
 @model CareLeavers.Web.Models.Content.StatusChecker
+@inject IContentService ContentService
+@{
+    var checker = await ContentService.Hydrate(Model);
+}
 <form method="post" action="/statuschecker/index">
-    <input type="hidden" name="CheckerId" id="CheckerId" value="@Model.Sys?.Id"/>
+    <input type="hidden" name="CheckerId" id="CheckerId" value="@checker?.Sys?.Id"/>
     <div class="govuk-form-group">
         <fieldset class="govuk-fieldset">
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                 <h2 class="govuk-fieldset__heading">
-                    @Model.InitialQuestion
+                    @checker?.InitialQuestion
                 </h2>
             </legend>
-            @if (Model.Answers != null)
+            @if (checker?.Answers != null)
             {
                 <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                    @foreach (var answer in Model.Answers)
+                    @foreach (var answer in checker.Answers)
                     {
                         <div class="govuk-checkboxes__item">
-                            <input class="govuk-checkboxes__input" id="Answers" name="Answers" type="checkbox" value="@answer.Sys.Id">
-                            <label class="govuk-label govuk-checkboxes__label" for="waste">
+                            <input class="govuk-checkboxes__input" id="@answer.Sys.Id" name="Answers" type="checkbox" value="@answer.Sys.Id">
+                            <label class="govuk-label govuk-checkboxes__label" for="@answer.Sys.Id">
                                 @answer.Answer
                             </label>
                         </div>
