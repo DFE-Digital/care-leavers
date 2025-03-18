@@ -23,16 +23,28 @@ public class TranslationAttribute : ActionFilterAttribute
         _originalBodyStream = null;
 
         var distributedCache = context.HttpContext.RequestServices.GetRequiredService<IDistributedCache>();
+        var translationService = context.HttpContext.RequestServices.GetRequiredService<ITranslationService>();
         var contentfulConfiguration = context.HttpContext.RequestServices.GetRequiredService<IContentfulConfiguration>();
         var config = await contentfulConfiguration.GetConfiguration();
 
         var slug = HardcodedSlug ?? context.RouteData.Values["slug"]?.ToString();
         var languageCode = context.RouteData.Values["languageCode"]?.ToString();
-
+        var languages = new List<string>();
+        if (config.TranslationEnabled)
+        {
+            languages.AddRange((await translationService.GetLanguages()).Select(l => l.Code));
+        }
+        else
+        {
+            languages.Add("en");
+        }
+        
         if (slug == null || 
+            !config.TranslationEnabled ||
             string.IsNullOrEmpty(languageCode) || 
             languageCode == "en" ||
-            !config.TranslationEnabled)
+            !languages.Contains(languageCode)
+            )
         {
             await base.OnActionExecutionAsync(context, next);
             return;
@@ -65,14 +77,26 @@ public class TranslationAttribute : ActionFilterAttribute
         await base.OnResultExecutionAsync(context, next);
         
         var translationService = context.HttpContext.RequestServices.GetRequiredService<ITranslationService>();
-
+        var contentfulConfiguration = context.HttpContext.RequestServices.GetRequiredService<IContentfulConfiguration>();
+        var config = await contentfulConfiguration.GetConfiguration();
+        
         var slug = HardcodedSlug ?? context.RouteData.Values["slug"]?.ToString();
         var languageCode = context.RouteData.Values["languageCode"]?.ToString();
+        var languages = new List<string>();
+        if (config.TranslationEnabled)
+        {
+            languages.AddRange((await translationService.GetLanguages()).Select(l => l.Code));
+        }
+        else
+        {
+            languages.Add("en");
+        }
 
         if (slug == null || 
             string.IsNullOrEmpty(languageCode) || 
             _memoryStream == null || 
-            _originalBodyStream == null)
+            _originalBodyStream == null || 
+            !languages.Contains(languageCode))
         {
             return;
         }
