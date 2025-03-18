@@ -12,7 +12,7 @@ test.describe('Breadcrumbs Functionality', () => {
 
     // Test that breadcrumbs are not visible on the Home page
     test('Breadcrumbs should not be visible on the home page (/)', async ({ page }) => {
-        await basePage.navigateTo('/'); // Navigate to the homepage
+        await basePage.navigateTo('/en/home'); // Navigate to the homepage
         await basePage.waitForPageLoad();
         const breadcrumbItems = basePage.getBreadcrumbItems();
         const breadcrumbCount = await breadcrumbItems.count();
@@ -24,7 +24,7 @@ test.describe('Breadcrumbs Functionality', () => {
         urls.forEach((url) => {
             test(`Breadcrumbs for ${url} should be visible, correctly formatted, and clickable`, async ({ page }) => {
                 // Skip breadcrumb check for the home page
-                if (url === '/') {
+                if (url === '/' || url === '/en/home/') {
                     return; // Skip further checks for the home page
                 }
                 await basePage.checkBreadcrumbs(url, expectedBreadcrumbs);
