@@ -51,7 +51,7 @@
         (function () {
                 var acceptCookieButton = document.querySelector("#accept-cookie");
                 acceptCookieButton.addEventListener("click", function (event) {
-                @if (WebHostEnvironment.IsEnvironment("Test") && !string.IsNullOrEmpty(scriptConfig.GTM))
+                @if (WebHostEnvironment.IsProduction() && !string.IsNullOrEmpty(scriptConfig.GTM))
                 {
                     <text>
                     gtag('consent', 'update',  {
@@ -74,7 +74,7 @@
             
             var rejectCookieButton = document.querySelector("#reject-cookie");
             rejectCookieButton.addEventListener("click", function (event) {
-                @if (WebHostEnvironment.IsEnvironment("Test") && !string.IsNullOrEmpty(scriptConfig.GTM))
+                @if (WebHostEnvironment.IsProduction() && !string.IsNullOrEmpty(scriptConfig.GTM))
                 {
                     <text>
                     gtag('consent', 'update',  {
