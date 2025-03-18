@@ -86,15 +86,23 @@ public class ContentfulContentService : IContentService
         return breadcrumbs;
     }
 
-    public Task<StatusChecker?> GetStatusChecker(string id)
+    public Task<StatusChecker?> Hydrate(StatusChecker? statusChecker)
     {
-        return _distributedCache.GetOrSetAsync($"statuschecker:{id}", async () =>
-        {
-            var query = new QueryBuilder<StatusChecker>()
-                .ContentTypeIs(StatusChecker.ContentType);
-            
-            return await _contentfulClient.GetEntry(id, query);
-        });
+        var id = statusChecker?.Sys.Id;
+
+        if (id != null)
+            return _distributedCache.GetOrSetAsync(id, async () =>
+            {
+                var query = new QueryBuilder<StatusChecker>()
+                    .ContentTypeIs(StatusChecker.ContentType)
+                    .FieldEquals("sys.id", id)
+                    .Include(2)
+                    .Limit(1);
+
+                return (await _contentfulClient.GetEntries(query)).FirstOrDefault();
+            });
+
+        return Task.FromResult(statusChecker);
     }
     
     public Task<Grid?> Hydrate(Grid? grid)
