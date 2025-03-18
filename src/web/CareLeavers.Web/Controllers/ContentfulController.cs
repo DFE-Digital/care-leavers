@@ -109,7 +109,7 @@ public class ContentfulController(IContentService contentService, ITranslationSe
         {
             languages.AddRange((await translationService.GetLanguages()).Select(l => l.Code));
         }
-        else
+        if (languages.Count == 0)
         {
             languages.Add("en");
         }
