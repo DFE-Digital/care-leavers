@@ -3,39 +3,21 @@ name: Validate - Deployment
 on:
   workflow_dispatch:
     inputs:
-      environment:
+      domain_prefix:
         type: choice
-        description: 'Environment to run scan against'
+        description: 'Domain prefix to run against'
         required: true
-        default: 'Test'
+        default: 'test'
         options:
-          - 'Test'
-          - 'Staging'
-          - 'Production'
+          - 'test'
+          - 'staging'
+          - 'www'
 jobs:
   accessibility_scan:
     name: 'Run Pa11y Accessibility Scan'
     runs-on: ubuntu-latest
-    environment:
-      name: ${{ github.event.inputs.environment }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: 'Az CLI login'
-        uses: azure/login@v2
-        with:
-          creds: |
-            {
-                "clientId": "${{ secrets.AZURE_CLIENT_ID }}",
-                "clientSecret": "${{ secrets.AZURE_CLIENT_SECRET }}",
-                "tenantId": "${{ secrets.AZURE_TENANT_ID }}",
-                "subscriptionId": "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-            }
-
-      - name: Get Azure Frontdoor URL
-        run: |
-          FRONTDOOR_URL=$(az afd endpoint list -g s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-rg --profile-name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-fd-profile | jq -r '.[0].hostName')
-          echo "FRONTDOOR_URL=$FRONTDOOR_URL" >>${GITHUB_ENV}
 
       - name: Set Node.js 20.x
         uses: actions/setup-node@v4
@@ -50,4 +32,4 @@ jobs:
 
       - name: Run accessibility scans
         working-directory: ./src/e2e/pa11y
-        run: yarn pa11y-ci --config pa11y.json --sitemap https://${{ env.FRONTDOOR_URL }}/sitemap.xml
+        run: yarn pa11y-ci --config pa11y.json --sitemap https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml

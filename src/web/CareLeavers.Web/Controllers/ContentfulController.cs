@@ -1,22 +1,32 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
+using System.Xml.Linq;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
+using CareLeavers.Web.Models.Content;
+using CareLeavers.Web.Filters;
+using CareLeavers.Web.Translation;
+using Contentful.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Serilog;
 
 namespace CareLeavers.Web.Controllers;
 
 [Route("/")]
 public class ContentfulController(
-    IContentService contentService,
-    ILogger<ContentfulController> logger) : Controller
+    IContentService contentService, 
+    ITranslationService translationService,
+    ILogger<ContentfulController> logger) 
+    : Controller
 {
     [Route("/")]
-    public async Task<IActionResult> Homepage([FromServices] IContentfulConfiguration contentfulConfiguration)
+    public async Task<IActionResult> Homepage(
+        [FromServices] IContentfulConfiguration contentfulConfiguration,
+        [FromQuery] string? languageCode = null)
     {
+        languageCode ??= "en";
         var config = await contentfulConfiguration.GetConfiguration();
-        return Redirect($"/{config.HomePage?.Slug}");
+        return RedirectToAction("GetContent", new { slug = config.HomePage?.Slug, languageCode });
     }
 
     [Route("/json/{**slug}")]
@@ -38,15 +48,87 @@ public class ContentfulController(
         return Content(JsonConvert.SerializeObject(page, Constants.SerializerSettings), "application/json");
     }
 
-    [Route("/{**slug}")]
-    public async Task<IActionResult> GetContent(string slug)
+    [Route("/json/configuration")]
+    [ExcludeFromCodeCoverage(Justification = "Development only")]
+    public async Task<IActionResult> GetConfigurationAsJson([FromServices] IWebHostEnvironment environment)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        if (!environment.IsDevelopment())
+        {
+            return NotFound();
+        }
+
+        var configuration = await contentService.GetConfiguration();
+
+        return Content(JsonConvert.SerializeObject(configuration, Constants.SerializerSettings), "application/json");
+    }
+    
+    [Route("/json/{contentType}/{id}")]
+    [ExcludeFromCodeCoverage(Justification = "Development only")]
+    public async Task<IActionResult> GetContentAsJson(string contentType, string id, [FromServices] IWebHostEnvironment environment)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        if (!environment.IsDevelopment())
+        {
+            return NotFound();
+        }
+
+        var returnObject = new object();
+        
+        if (contentType == Grid.ContentType)
+        {
+            returnObject = await contentService.Hydrate(new Grid() { Sys = new SystemProperties() { Id = id } });
+        } 
+        else if (contentType == RichContentBlock.ContentType)
+        {
+            returnObject = await contentService.Hydrate(new RichContentBlock() { Sys = new SystemProperties() { Id = id } });
+        }
+        else if (contentType == Banner.ContentType)
+        {
+            returnObject = await contentService.Hydrate(new Banner() { Sys = new SystemProperties() { Id = id } });
+        }
+
+        return Content(JsonConvert.SerializeObject(returnObject, Constants.SerializerSettings), "application/json");
+    }
+
+    [Route("/{slug}")]
+    [Route("/{languageCode}/{slug}")]
+    [Translation]
+    public async Task<IActionResult> GetContent(string slug, string? languageCode)
+    {
+        if (string.IsNullOrEmpty(languageCode))
+        {
+            return RedirectToAction("GetContent", new { slug, languageCode = "en" });
+        }
+
+        var config = await contentService.GetConfiguration();
+        var languages = new List<string>();
+        if (config is { TranslationEnabled: true })
+        {
+            languages.AddRange((await translationService.GetLanguages()).Select(l => l.Code));
+        }
+        if (languages.Count == 0)
+        {
+            languages.Add("en");
+        }
+        
+        if (!languages.Contains(languageCode))
+        {
+            return RedirectToAction("GetContent", new { slug, languageCode = "en" });
+        }
+        
         var page = await contentService.GetPage(slug);
 
         if (page == null)
         {
-            var config = await contentService.GetConfiguration();
-            
             if (config!.Redirects.TryGetValue(slug, out var redirect))
             {
                 logger.LogInformation("Redirecting {Slug} to {Redirect}", slug, redirect);

@@ -1,5 +1,6 @@
 using AngleSharp.Html;
 using AngleSharp.Html.Parser;
+using CareLeavers.Web.Models.Content;
 
 namespace CareLeavers.Integration.Tests.Tests.SnapshotTests;
 
@@ -7,10 +8,6 @@ public class SnapshotTests
 {
     public static List<SnapshotTestCase> TestCases { get; set; } =
     [
-        new("SimpleParagraph")
-        {
-            TestName = "Simple Paragraphs tagged with govuk classes"
-        },
         new ("SimpleAsset")
         {
             TestName = "Image asset rendered correctly"
@@ -19,40 +16,71 @@ public class SnapshotTests
         {
             TestName = "Home page from prototype with support section"
         },
-        new("ComponentTest")
+        new ("PageWithBanner")
         {
-            TestName = "Component test page with banner, small banner, and external agency"
+            TestName = "Guide page with rich text, links, and a banner"
         }
-
     ];
     
-    [TestCaseSource(nameof(TestCases)), Explicit]
-    public async Task GenerateSnapshots(string fileName)
+    [SetUp]
+    public void Setup()
     {
-        var resp = await DoTest(fileName);
+        WebFixture.ClearContent();
+    }
+    
+    [TestCaseSource(nameof(TestCases)), Explicit]
+    public async Task GenerateSnapshots(string folder)
+    {
+        var resp = await DoTest(folder);
         
-        await File.WriteAllTextAsync($"{WebFixture.WrapperBasePath}/SnapshotTests/Output/{fileName}.html", resp);
+        await File.WriteAllTextAsync($"{WebFixture.WrapperBasePath}/SnapshotTests/Output/{folder}.html", resp);
 
         Assert.Pass();
     }
 
     [TestCaseSource(nameof(TestCases))]
-    public async Task AssertSnapshots(string fileName)
+    public async Task AssertSnapshots(string folder)
     {
-       var existing = await File.ReadAllTextAsync($"{WebFixture.WrapperBasePath}/SnapshotTests/Output/{fileName}.html");
+       var existing = await File.ReadAllTextAsync($"{WebFixture.WrapperBasePath}/SnapshotTests/Output/{folder}.html");
        
-       var resp = await DoTest(fileName);
+       var resp = await DoTest(folder);
        
        Assert.That(resp, Is.EqualTo(existing));
     }
 
-    private async Task<string> DoTest(string fileName)
+    private async Task<string> DoTest(string folder)
     {
-        var content = await File.ReadAllTextAsync(Path.Combine(WebFixture.WrapperBasePath, "SnapshotTests", "Input", $"{fileName}.json"));
+        // Get our files
+        var files = Directory
+            .GetFiles(Path.Combine(WebFixture.WrapperBasePath, "SnapshotTests", "Input", folder))
+            .ToList();
+        
+        // Setup our slug for the page content
+        foreach (var file in files)
+        {
+            
+                  var id = Path.GetFileNameWithoutExtension(file);
+                  var contentType = string.Empty;
+
+                  if (Path.GetFileNameWithoutExtension(file).Contains("_"))
+                  {
+                      id = Path.GetFileNameWithoutExtension(file).Split("_", StringSplitOptions.None).Last();
+                      contentType = Path.GetFileNameWithoutExtension(file).Split("_", StringSplitOptions.None).First();
+                  }
+                  
+                  WebFixture.AddContent(new ContentfulContent()
+                  {
+                      ContentType = contentType,
+                      Id = id,
+                      Slug = contentType == Page.ContentType ? folder : contentType == ContentfulConfigurationEntity.ContentType ? "config" : null,
+                      Content = await FullJson((await File.ReadAllTextAsync(Path.Combine(file))))
+                  });
+                  
+
+            
+        }
         
         var client = WebFixture.GetClient();
-        
-        WebFixture.SetContentfulJson(await FullJson(content));
         
         var response = await client.GetStringAsync("");
 

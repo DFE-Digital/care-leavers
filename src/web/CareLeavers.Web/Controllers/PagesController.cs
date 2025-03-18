@@ -1,3 +1,4 @@
+using CareLeavers.Web.Filters;
 using CareLeavers.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
@@ -5,16 +6,17 @@ using Microsoft.Extensions.Options;
 
 namespace CareLeavers.Web.Controllers;
 
-[Route("/pages")]
 public class PagesController : Controller
 {
-    [HttpGet("privacy-policies")]
+    [HttpGet("{languageCode}/pages/privacy-policies")]
+    [Translation(HardcodedSlug="pages/privacy-policies")]
     public IActionResult PrivacyPolicies()
     {
         return View();
     }
     
-    [HttpGet("cookie-policy")]
+    [HttpGet("{languageCode}/pages/cookie-policy")]
+    [Translation(HardcodedSlug="pages/cookie-policy")]
     public IActionResult CookiePolicy()
     {
         var consent = HttpContext.Features.Get<ITrackingConsentFeature>() ??
@@ -28,7 +30,7 @@ public class PagesController : Controller
         return View(vm);
     }
     
-    [HttpPost("cookie-policy")]
+    [HttpPost("/pages/cookie-policy")]
     public IActionResult PostCookiePolicy(
         [FromForm] CookiePolicyModel cookiePolicyModel,
         [FromServices] IOptions<CookiePolicyOptions> cookiePolicyOptions)

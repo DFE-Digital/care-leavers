@@ -17,8 +17,11 @@ public class PublishContentfulWebhook(
     public async Task Consume(Entry<ContentfulContent> entry)
     {
         contentfulClient.ContentTypeResolver = new ContentfulEntityResolver();
-            
-        var idsScanned = new HashSet<string>();
+
+        var idsScanned = new HashSet<string>
+        {
+            entry.SystemProperties.Id
+        };
     
         async Task<List<Page>> FindLinkedPages(string id, List<Page> linkedPages)
         {
@@ -48,60 +51,18 @@ public class PublishContentfulWebhook(
         if (entry.SystemProperties.ContentType.SystemProperties.Id == Page.ContentType)
         {
             var pageEntry = await contentfulClient.GetEntry<Page>(entry.SystemProperties.Id);
-            if (pageEntry == null)
-            {
-                return;
-            }
+            Log.Logger.Information("The following slug will be purged: {Slug}", pageEntry.Slug);
 
-            var oldSlug = await distributedCache.GetAsync<string>($"content:id:{pageEntry.Sys.Id}");
+            await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
             
-            if (oldSlug != null && oldSlug != pageEntry.Slug)
+            if (distributedCache.TryGetValue($"content:{pageEntry.Slug}:languages", out List<string>? translations))
             {
-                logger.LogInformation("Slug changed from {OldSlug} to {NewSlug}", oldSlug, pageEntry.Slug);
-                await distributedCache.RemoveAsync($"content:{oldSlug}");
-                await distributedCache.SetAsync($"content:id:{pageEntry.Sys.Id}", pageEntry.Slug);
-                
-                var query = new QueryBuilder<ContentfulConfigurationEntity>()
-                    .ContentTypeIs(ContentfulConfigurationEntity.ContentType)
-                    .Include(1);
-                
-                var configurationEntries = await contentfulClient.GetEntries(query);
-                var configuration = configurationEntries.FirstOrDefault();
-                
-                if (configuration != null)
+                foreach (var translation in translations ?? [])
                 {
-                    logger.LogInformation("Updating redirects for {OldSlug}", oldSlug);
-                    configuration.Redirects[oldSlug] = pageEntry.Slug ?? string.Empty;
-                    
-                    var redirectsToUpdate = configuration.Redirects.Where(x => x.Value == oldSlug).ToList();
-                    foreach (var (key, value) in redirectsToUpdate)
-                    {
-                        logger.LogInformation("Updating redirect for {Key} to {Value}", key, pageEntry.Slug);
-                        configuration.Redirects[key] = pageEntry.Slug ?? string.Empty;
-                    }
-
-                    dynamic dynamicConfig = configuration;
-                    ((IDictionary<string, object>)dynamicConfig).Remove("sys");
-                    
-                    var configEntry = new Entry<dynamic>()
-                    {
-                        SystemProperties = new SystemProperties
-                        {
-                            Id = configuration.Sys.Id
-                        },
-                        Fields = dynamicConfig
-                    };
-                    
-                    await contentfulManagementClient.CreateOrUpdateEntry(configEntry);
-                    await distributedCache.RemoveAsync("content:configuration");
+                    await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:language:{translation}");
                 }
-            }
-            else
-            {
-                logger.LogInformation("The following slug will be purged: {Slug}", pageEntry.Slug);
-
-                await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
-                await distributedCache.RemoveAsync($"content:id:{pageEntry.Sys.Id}");
+                
+                await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:languages");
             }
         }
         else if (entry.SystemProperties.ContentType.SystemProperties.Id == ContentfulConfigurationEntity.ContentType)
@@ -118,9 +79,27 @@ public class PublishContentfulWebhook(
             foreach (var pageEntry in pageEntries)
             {
                 await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
+                
+                if (distributedCache.TryGetValue($"content:{pageEntry.Slug}:languages", out List<string>? translations))
+                {
+                    foreach (var translation in translations ?? [])
+                    {
+                        await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:language:{translation}");
+                    }
+                    
+                    await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:languages");
+                }
             }
         }
-
+        
+        // Now wipe all direct IDs that have been cached
+        foreach (var id in idsScanned)
+        {
+            Log.Logger.Information("Removing content item directly from cache with Id: {Id}", id);
+            await distributedCache.RemoveAsync(id);
+        }
+        
         await distributedCache.RemoveAsync("content:sitemap");
+        await distributedCache.RemoveAsync("content:hierarchy");
     }
 }

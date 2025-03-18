@@ -1,23 +1,13 @@
 @using CareLeavers.Web.Configuration
 @using CareLeavers.Web.Contentful
 @using Joonasw.AspNetCore.SecurityHeaders.TagHelpers
-@model CareLeavers.Web.Models.Content.ContentfulConfigurationEntity
+@model CareLeavers.Web.Models.ViewModels.ConfigViewModel
 @inject IContentfulConfiguration ConfigService
-@inject  IContentService ContentService
+@inject IContentService ContentService
 
 @{
-    var currentLink = ViewContext.RouteData.Values["slug"]?.ToString();
-    var currentPage = await ContentService.GetPage(currentLink);
-    
-    var config = await ConfigService.GetConfiguration();
-    var homePageSlug = config?.HomePage?.Slug;
-
-    while (currentPage != null && currentPage.Slug != homePageSlug && currentPage.Parent != null && currentPage.Parent.Slug != homePageSlug)
-    {
-        currentPage = currentPage.Parent;
-    }
-
-   currentLink = currentPage.Slug;
+    string currentPage = ViewContext.RouteData.Values["slug"]?.ToString();
+    var breadcrumbs = await ContentService.GetBreadcrumbs(currentPage, false);
 }
 
 <nav class="dfe-header__navigation" id="header-navigation" role="navigation" aria-label="Primary navigation" aria-labelledby="label-navigation">
@@ -32,16 +22,16 @@
             </button>
         </p>
         <ul class="dfe-header__navigation-list">
-            @foreach (var link in Model.Navigation)
+            @foreach (var link in Model.ContentfulConfiguration.Navigation)
             {
                 string className = "dfe-header__navigation-item";
-                if (link.Slug == currentLink)
+                if (link.Slug == currentPage || breadcrumbs.Exists(b => b.Slug == link.Slug))
                 {
                     className += " dfe-header__navigation-item--current";
                 }
 
                 <li class="@className">
-                    <a class="dfe-header__navigation-link" href="@Url.Action("GetContent", "Contentful", new { slug = link.Slug })">
+                    <a class="dfe-header__navigation-link" href="@Url.Action("GetContent", "Contentful", new { slug = link.Slug, languageCode = Model.Language.Code })">
                         @link.Title
                         <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" width="34" height="34">
                             <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>

@@ -5,6 +5,10 @@ export class BasePage {
 
     //Locator for the Website Title navigation Link
     public readonly WebsiteNameLink: Locator;
+    
+    // Locators for the logo link and logo images
+    public logoLink: Locator;
+    public defaultLogo: Locator;
 
     // Locators for cookie banner and buttons
     public readonly cookieBanner: Locator;
@@ -44,8 +48,12 @@ export class BasePage {
     constructor(page: Page) {
         this.page = page;
         //Locator for the Website Title navigation Link
-        this.WebsiteNameLink = page.locator('a.dfe-header__link--service').nth(1);
+        this.WebsiteNameLink = page.locator('a.dfe-header__link--service');
 
+        //Logo 
+        this.logoLink = page.locator('a.dfe-header__link');
+        this.defaultLogo = page.locator('img.dfe-logo');
+        
         // Locators for cookie banner and buttons
         this.cookieBanner = page.locator('.govuk-cookie-banner');
         this.acceptButton = page.locator('#accept-cookie');   
@@ -66,20 +74,20 @@ export class BasePage {
         this.closeMenuButton = page.locator('#close-menu');
 
         // Locators for social media share buttons
-        this.shareButtonsContainer = page.locator('.sharethis-inline-share-buttons');
-        this.printShareButton = page.locator('[data-network="print"]');
+        this.shareButtonsContainer = page.locator('.shareaholic-canvas');
+        this.printShareButton = page.locator('#print-link');
 
         // Locators for Metadata definitions
         this.metadataDefinitions = page.locator('.gem-c-metadata__definition');
         
         //Locators for helplines-If you need Help at the bottom of the page
-        this.helplineLink = page.locator('p.govuk-body a.govuk-hyperlink');
-        this.ifYouNeedHelpSection = page.locator('#If-you-need-help-now');
+        this.helplineLink = page.locator('p.govuk-body a.govuk-link[href="helplines"]');
+        this.ifYouNeedHelpSection = page.locator('#Talk-to-someone');
 
         //Locators for web page Footers
         this.footer = page.locator('footer');
         this.footerLinks = page.locator('footer a');
-        this.cookiePolicyLinkInFooter = page.locator('a.govuk-footer__link[href="/pages/cookie-policy"]');
+        this.cookiePolicyLinkInFooter = page.locator('a.govuk-footer__link[href="/en/pages/cookie-policy"]');
         this.licenceLogo = page.locator('svg.govuk-footer__licence-logo');
 
     }
@@ -117,7 +125,14 @@ export class BasePage {
         return cookies.some((cookie: Cookie) => cookie.name === '.AspNet.Consent');
 
     }
+    
+    async verifyLogoPresence() {
+        // Verify the link element is visible
+        await expect(this.logoLink).toBeVisible();
 
+        // Verify that logo images are visible
+        await expect(this.defaultLogo).toBeVisible();
+    }
     // Clear cookies
     async clearCookies(context: BrowserContext) {
         await context.clearCookies();
@@ -195,11 +210,11 @@ export class BasePage {
 
             // click each link and ensure the menu is visible each time
             const links = [
-                { index: 0, href: '/home' },
-                { index: 1, href: '/all-support' },
-                /*{ index: 2, href: '/status' },
-                { index: 3, href: '/guides-advice' },
-                { index: 4, href: '/helplines' },*/
+                { index: 0, href: '/en/home' },
+                { index: 1, href: '/en/all-support' },
+                /*{ index: 2, href: '/en/status' },
+                { index: 3, href: '/en/guides-advice' },
+                { index: 4, href: '/en/helplines' },*/
             ];
 
             for (const link of links) {
@@ -208,6 +223,52 @@ export class BasePage {
                 await this.mobileMenuLinks.nth(link.index).click();
                 await this.page.waitForURL(new RegExp(link.href));
             }
+        }
+    }
+
+    // Locate breadcrumb items on the page
+    getBreadcrumbItems(): Locator {
+        return this.page.locator('.govuk-breadcrumbs__link');
+    }
+
+    // Get text of a breadcrumb link by index
+    async getBreadcrumbLinkText(index: number): Promise<string> {
+        const breadcrumb = this.getBreadcrumbItems().nth(index);
+        return await breadcrumb.innerText();
+    }
+
+    //Method to check breadcrumbs
+    async checkBreadcrumbs(url: string, expectedBreadcrumbs: string[]) {
+        await this.navigateTo(url);
+        await this.waitForPageLoad();
+
+        const breadcrumbItems = this.getBreadcrumbItems();
+        const breadcrumbCount = await breadcrumbItems.count();
+        if (breadcrumbCount !== expectedBreadcrumbs.length) {
+            throw new Error(`Expected ${expectedBreadcrumbs.length} breadcrumbs, but found ${breadcrumbCount}`);
+        }
+        for (let i = 0; i < breadcrumbCount; i++) {
+
+            const actualText = await this.getBreadcrumbLinkText(i);
+
+            if (actualText.trim().toLowerCase() === 'home') {
+                const link = breadcrumbItems.nth(i);
+                await link.click(); // Click the Home breadcrumb
+                await this.waitForPageLoad();
+                const breadcrumbItemsAfterHome = this.getBreadcrumbItems();
+                const breadcrumbCountAfterHome = await breadcrumbItemsAfterHome.count();
+                if (breadcrumbCountAfterHome !== 0) {
+                    throw new Error("Expected no breadcrumbs on the home page.");
+                }
+                return; // Skip further checks if Home was clicked
+            }
+
+            expect(actualText.trim()).toBe(expectedBreadcrumbs[i]);
+
+            const expectedURL = `/${expectedBreadcrumbs[i].toLowerCase().replace(/\s+/g, '-')}`;
+            const link = breadcrumbItems.nth(i);
+            await link.click();
+            await this.page.waitForURL(expectedURL);
         }
     }
     
@@ -235,7 +296,7 @@ export class BasePage {
         // Verify the "Cookie Policy" link(in Footer)
         await expect(this.cookiePolicyLinkInFooter).toBeVisible();
         await expect(this.cookiePolicyLinkInFooter).toContainText('Cookie Policy');
-        await expect(this.cookiePolicyLinkInFooter).toHaveAttribute('href', '/pages/cookie-policy');
+        await expect(this.cookiePolicyLinkInFooter).toHaveAttribute('href', '/en/pages/cookie-policy');
         
         // Verify the footer logo and licence description
         await expect(this.licenceLogo).toBeVisible();

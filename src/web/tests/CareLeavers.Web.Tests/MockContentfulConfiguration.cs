@@ -14,7 +14,8 @@ public class MockContentfulConfiguration : IContentfulConfiguration
             {
                 Slug = "home"
             },
-            ServiceName = "Care leavers"
+            ServiceName = "Care leavers",
+            TranslationEnabled = true
         });
     }
 }

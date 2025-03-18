@@ -27,6 +27,10 @@ public class ContentfulConfigurationEntity : ContentfulContent
     public string? FeedbackText { get; set; } = string.Empty;
 
     public string? FeedbackUrl { get; set; } = string.Empty;
+    
+    public bool TranslationEnabled { get; set; } = false;
+    
+    public List<string> ExcludeFromTranslation { get; set; } = [];
 
     public Dictionary<string, string> Redirects { get; set; } = new();
 }
