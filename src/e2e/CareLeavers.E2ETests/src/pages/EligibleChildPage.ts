@@ -1,25 +1,27 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
 
-export class FormerRelevantPage extends BasePage {
-    //locators for key sections
+export class EligibleChildPage extends BasePage {
+    // Define locators for key sections
     public readonly mainContent: Locator;
     public readonly supportSection: Locator;
     public readonly generalSupportSection: Locator;
     public readonly helpWithMoneySection: Locator;
     public readonly moreSupportSection: Locator;
+    public readonly supportOnce18Section: Locator;
 
     constructor(page: Page) {
         super(page);
         this.mainContent = page.locator('#main-content'); // Main content wrapper
-        this.supportSection = page.locator('#Support-as-a-former-relevant-child');
-        this.generalSupportSection = page.locator('#zGeneral-support');
+        this.supportSection = page.locator('#Support-as-an-eligible-child');
+        this.generalSupportSection = page.locator('#General-support');
         this.helpWithMoneySection = page.locator('#Help-with-money');
-        this.moreSupportSection = page.locator('#z-strong-More-support--strong---160-');
+        this.moreSupportSection = page.locator('#zstrong-More-support--strong---160-');
+        this.supportOnce18Section = page.locator('#zstrong-Support-once-you-re-18--strong---160-');
     }
 
-    async openFormerRelevantPage() {
-        await this.navigateTo('/former-relevant-child'); 
+    async openEligibleChildPage() {
+        await this.navigateTo('/eligible-child'); // Adjust URL if needed
     }
 
     async verifySectionsVisibility() {
@@ -28,14 +30,15 @@ export class FormerRelevantPage extends BasePage {
         await expect(this.generalSupportSection).toBeVisible();
         await expect(this.helpWithMoneySection).toBeVisible();
         await expect(this.moreSupportSection).toBeVisible();
+        await expect(this.supportOnce18Section).toBeVisible();
     }
 
     async assertPageElements() {
-        await this.validateURLContains('/former-relevant-child');
+        await this.validateURLContains('/eligible-child');
         await this.verifyLogoPresence();
         await this.verifyHeading(
-            "Former relevant child",  
-            "Find out what support you have the right to if your care leaver status is ‘former relevant child'"
+            "Eligible child",
+            "Find out what support you have the right to if your care leaver status is ‘eligible child’"
         );
 
         await expect(this.mainContent).toBeVisible();
@@ -43,5 +46,6 @@ export class FormerRelevantPage extends BasePage {
         await expect(this.generalSupportSection).toBeVisible();
         await expect(this.helpWithMoneySection).toBeVisible();
         await expect(this.moreSupportSection).toBeVisible();
+        await expect(this.supportOnce18Section).toBeVisible();
     }
 }
