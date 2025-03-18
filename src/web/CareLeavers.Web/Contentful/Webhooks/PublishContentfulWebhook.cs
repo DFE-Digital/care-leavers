@@ -15,8 +15,11 @@ public class PublishContentfulWebhook(
     public async Task Consume(Entry<ContentfulContent> entry)
     {
         contentfulClient.ContentTypeResolver = new ContentfulEntityResolver();
-            
-        var idsScanned = new HashSet<string>();
+
+        var idsScanned = new HashSet<string>
+        {
+            entry.SystemProperties.Id
+        };
     
         async Task<List<Page>> FindLinkedPages(string id, List<Page> linkedPages)
         {
