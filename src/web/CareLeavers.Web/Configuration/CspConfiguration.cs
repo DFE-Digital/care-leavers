@@ -16,4 +16,8 @@ public class CspConfiguration
     public List<string> AllowImageUrls { get; init; } = [];
     
     public List<string> AllowConnectUrls { get; init; } = [];
+
+    public List<string> AllowHashes { get; set; } = [];
+
+    public bool ReportOnly { get; set; } = false;
 }
