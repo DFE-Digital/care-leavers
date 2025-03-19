@@ -19,6 +19,23 @@ public class ContentfulContentService : IContentService
         _contentfulClient.ContentTypeResolver = new ContentfulEntityResolver();
     }
     
+    public async Task<RedirectionRule?> GetRedirectionRule(string fromSlug)
+    {
+        var rule = await _distributedCache.GetOrSetAsync($"content:redirection:{fromSlug}", async () =>
+        {
+            var rules = new QueryBuilder<RedirectionRule>()
+                .ContentTypeIs(RedirectionRule.ContentType)
+                .FieldEquals(c => c.FromSlug, fromSlug)
+                .Limit(1);
+
+            var ruleEntries = await _contentfulClient.GetEntries(rules);
+
+            return ruleEntries.FirstOrDefault();
+        });
+
+        return rule;
+    }
+    
     public async Task<Page?> GetPage(string slug)
     {
         var page = await _distributedCache.GetOrSetAsync($"content:{slug}", async () =>

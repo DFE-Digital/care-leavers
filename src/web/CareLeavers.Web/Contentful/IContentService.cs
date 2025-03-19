@@ -5,6 +5,8 @@ namespace CareLeavers.Web.Contentful;
 
 public interface IContentService
 {
+    Task<RedirectionRule?> GetRedirectionRule(string fromSlug);
+    
     Task<Page?> GetPage(string slug);
 
     Task<List<SimplePage>?> GetSiteHierarchy();
