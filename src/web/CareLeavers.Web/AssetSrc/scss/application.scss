@@ -181,6 +181,7 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
  }
   .govuk-grid-column-two-thirds {
     width: 1200px;
+    padding: 0 15px;
   }
 }
 
@@ -284,6 +285,8 @@ section.dfe {
   border-radius: 15px;
   padding: 25px;
   display: block;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 
 .box-guide {
