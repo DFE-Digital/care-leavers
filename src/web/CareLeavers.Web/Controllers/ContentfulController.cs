@@ -110,11 +110,10 @@ public class ContentfulController(IContentService contentService, ITranslationSe
             return NotFound();
         }
 
-        var redirectionRule = await contentService.GetRedirectionRule(slug);
-        
-        if (redirectionRule != null)
+        var redirectionRule = await contentService.GetRedirectionRules(slug);
+        if (redirectionRule?.Rules != null && redirectionRule.Rules.TryGetValue(slug, out var destinationSlug))
         {
-            return RedirectToAction("GetContent", new { slug = redirectionRule.ToSlug, languageCode });
+            return RedirectToAction("GetContent", new { slug = destinationSlug, languageCode });
         }
 
         var languages = new List<string>();

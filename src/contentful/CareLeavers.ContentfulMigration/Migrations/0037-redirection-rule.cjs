@@ -1,27 +1,13 @@
 module.exports = function (migration) {
-    const page = migration
-        .createContentType("redirectionRule")
-        .name("Redirection Rule")
-        .description("A content type representing a page redirection")
-        .displayField("fromSlug");
+    const redirectionRule = migration
+        .createContentType("redirectionRules")
+        .name("Redirection Rules")
+        .description("A content type representing a page redirections")
+        .displayField("title");
 
-    page
-        .createField("fromSlug")
-        .name("From Slug")
-        .type("Symbol")
-        .localized(false)
-        .required(true)
-        .validations([
-            {
-                unique: true,
-            }
-        ])
-        .disabled(false)
-        .omitted(false);
-
-    page
-        .createField("toSlug")
-        .name("To Slug")
+    redirectionRule
+        .createField("title")
+        .name("Title")
         .type("Symbol")
         .localized(false)
         .required(true)
@@ -29,6 +15,15 @@ module.exports = function (migration) {
         .disabled(false)
         .omitted(false);
 
-    page.changeFieldControl("fromSlug", "builtin", "slugEditor", {});
-    page.changeFieldControl("toSlug", "builtin", "slugEditor", {});
+    redirectionRule
+        .createField("rules")
+        .name("Rules")
+        .type("Object")
+        .localized(false)
+        .required(true)
+        .validations([])
+        .disabled(false)
+        .omitted(false);
+
+    redirectionRule.changeFieldControl("title", "builtin", "singleLine", {});
 };

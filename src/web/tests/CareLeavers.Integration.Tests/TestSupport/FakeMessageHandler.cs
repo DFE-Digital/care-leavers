@@ -38,10 +38,10 @@ public class FakeMessageHandler : HttpClientHandler
                 response = matchingContent.Content;
             }
         }
-        // If we're requesting config, just grab the first config
+        // Same for redirection rules
         else if (request.RequestUri != null && request.RequestUri.PathAndQuery.Contains("content_type=redirectionRule"))
         {
-            var matchingContent = Content.FirstOrDefault(c => c.ContentType == RedirectionRule.ContentType);
+            var matchingContent = Content.FirstOrDefault(c => c.ContentType == RedirectionRules.ContentType);
             if (matchingContent != null)
             {
                 response = matchingContent.Content;

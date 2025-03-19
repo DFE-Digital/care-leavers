@@ -79,7 +79,7 @@ public class SnapshotTests
         
         WebFixture.AddContent(new ContentfulContent()
         {
-            ContentType = RedirectionRule.ContentType,
+            ContentType = RedirectionRules.ContentType,
             Id = "12345",
             Content = await FullJson("")
         });
