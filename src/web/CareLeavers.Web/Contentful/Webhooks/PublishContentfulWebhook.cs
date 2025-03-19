@@ -45,8 +45,13 @@ public class PublishContentfulWebhook(
         
             return linkedPages.ToList();
         }
-    
-        if (entry.SystemProperties.ContentType.SystemProperties.Id == Page.ContentType)
+        
+        if (entry.SystemProperties.ContentType.SystemProperties.Id == RedirectionRules.ContentType)
+        {
+            Log.Logger.Information("Redirection rules entry updated, purging redirections cache");
+            await distributedCache.RemoveAsync($"content:redirections");
+        }
+        else if (entry.SystemProperties.ContentType.SystemProperties.Id == Page.ContentType)
         {
             var pageEntry = await contentfulClient.GetEntry<Page>(entry.SystemProperties.Id);
             Log.Logger.Information("The following slug will be purged: {Slug}", pageEntry.Slug);
