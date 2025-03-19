@@ -15,8 +15,11 @@ public class PublishContentfulWebhook(
     public async Task Consume(Entry<ContentfulContent> entry)
     {
         contentfulClient.ContentTypeResolver = new ContentfulEntityResolver();
-            
-        var idsScanned = new HashSet<string>();
+
+        var idsScanned = new HashSet<string>
+        {
+            entry.SystemProperties.Id
+        };
     
         async Task<List<Page>> FindLinkedPages(string id, List<Page> linkedPages)
         {
@@ -42,8 +45,13 @@ public class PublishContentfulWebhook(
         
             return linkedPages.ToList();
         }
-    
-        if (entry.SystemProperties.ContentType.SystemProperties.Id == Page.ContentType)
+        
+        if (entry.SystemProperties.ContentType.SystemProperties.Id == RedirectionRules.ContentType)
+        {
+            Log.Logger.Information("Redirection rules entry updated, purging redirections cache");
+            await distributedCache.RemoveAsync($"content:redirections");
+        }
+        else if (entry.SystemProperties.ContentType.SystemProperties.Id == Page.ContentType)
         {
             var pageEntry = await contentfulClient.GetEntry<Page>(entry.SystemProperties.Id);
             Log.Logger.Information("The following slug will be purged: {Slug}", pageEntry.Slug);
@@ -94,7 +102,7 @@ public class PublishContentfulWebhook(
             await distributedCache.RemoveAsync(id);
         }
         
-
         await distributedCache.RemoveAsync("content:sitemap");
+        await distributedCache.RemoveAsync("content:hierarchy");
     }
 }

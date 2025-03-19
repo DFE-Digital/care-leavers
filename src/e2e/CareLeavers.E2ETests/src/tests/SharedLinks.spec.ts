@@ -1,6 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { BasePage } from '../pages/BasePage';
-import {commonPagesToTest, helplineLinksToTest, shareAndPrintLinksToTest} from '../helpers/urls-to-check';
+import {
+    commonPagesToTest,
+    helplineLinksToTest,
+    metaDataLinksToTest,
+    shareAndPrintLinksToTest
+} from '../helpers/urls-to-check';
 
 // Defining a hook that runs before each test to create the basePage
 test.describe('Shared Website Functionalities', () => {
@@ -10,7 +15,7 @@ test.describe('Shared Website Functionalities', () => {
         // Instantiate BasePage for each test
         basePage = new BasePage(page);
     });
-
+    
     // Test to validate WebsiteNameLink 
     test.describe('Navigation Links Functionality', () => {
         commonPagesToTest.forEach((path) => {
@@ -19,6 +24,7 @@ test.describe('Shared Website Functionalities', () => {
                 await basePage.navigateTo(path);
                 await expect(basePage.WebsiteNameLink).toHaveAccessibleName(/Support for/i);
                 await expect(basePage.WebsiteNameLink).toBeVisible();
+                
             });
         });
     });
@@ -51,7 +57,7 @@ test.describe('Shared Website Functionalities', () => {
 
     // Test to validate Metadata of page is visible
     test.describe('Metadata Visibility Across Multiple Pages', () => {
-        commonPagesToTest.forEach((path) => {
+        metaDataLinksToTest.forEach((path) => {
             test(`Verify metadata is populated on ${path}`, async ({ page }) => {
                 const basePage = new BasePage(page);
 
@@ -73,8 +79,7 @@ test.describe('Shared Website Functionalities', () => {
             });
         });
     });
-
-    /*commented for now until the mocks are updated to include this 
+    
     // Test to validate helpline links
     test.describe('Helpline Links Functionality', () => {
         helplineLinksToTest.forEach((path) => {
@@ -87,5 +92,4 @@ test.describe('Shared Website Functionalities', () => {
             });
         });
     });
-    */
 });

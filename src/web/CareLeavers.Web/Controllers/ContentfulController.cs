@@ -3,6 +3,7 @@ using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Filters;
+using CareLeavers.Web.Translation;
 using Contentful.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -10,7 +11,7 @@ using Newtonsoft.Json;
 namespace CareLeavers.Web.Controllers;
 
 [Route("/")]
-public class ContentfulController(IContentService contentService) : Controller
+public class ContentfulController(IContentService contentService, ITranslationService translationService) : Controller
 {
     [Route("/")]
     public async Task<IActionResult> Homepage(
@@ -98,6 +99,34 @@ public class ContentfulController(IContentService contentService) : Controller
     public async Task<IActionResult> GetContent(string slug, string? languageCode)
     {
         if (string.IsNullOrEmpty(languageCode))
+        {
+            return RedirectToAction("GetContent", new { slug, languageCode = "en" });
+        }
+
+        var config = await contentService.GetConfiguration();
+
+        if (config == null)
+        {
+            return NotFound();
+        }
+
+        var redirectionRule = await contentService.GetRedirectionRules(slug);
+        if (redirectionRule?.Rules != null && redirectionRule.Rules.TryGetValue(slug, out var destinationSlug))
+        {
+            return RedirectToAction("GetContent", new { slug = destinationSlug, languageCode });
+        }
+
+        var languages = new List<string>();
+        if (config is { TranslationEnabled: true })
+        {
+            languages.AddRange((await translationService.GetLanguages()).Select(l => l.Code));
+        }
+        if (languages.Count == 0)
+        {
+            languages.Add("en");
+        }
+        
+        if (!languages.Contains(languageCode))
         {
             return RedirectToAction("GetContent", new { slug, languageCode = "en" });
         }

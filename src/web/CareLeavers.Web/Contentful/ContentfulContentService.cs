@@ -19,9 +19,23 @@ public class ContentfulContentService : IContentService
         _contentfulClient.ContentTypeResolver = new ContentfulEntityResolver();
     }
     
-    public Task<Page?> GetPage(string slug)
+    public Task<RedirectionRules?> GetRedirectionRules(string fromSlug)
     {
-        return _distributedCache.GetOrSetAsync($"content:{slug}", async () =>
+        return _distributedCache.GetOrSetAsync("content:redirections", async () =>
+        {
+            var rules = new QueryBuilder<RedirectionRules>()
+                .ContentTypeIs(RedirectionRules.ContentType)
+                .Limit(1);
+
+            var ruleEntries = await _contentfulClient.GetEntries(rules);
+
+            return ruleEntries.FirstOrDefault();
+        });
+    }
+    
+    public async Task<Page?> GetPage(string slug)
+    {
+        var page = await _distributedCache.GetOrSetAsync($"content:{slug}", async () =>
         {
             var pages = new QueryBuilder<Page>()
                 .ContentTypeIs(Page.ContentType)
@@ -32,6 +46,13 @@ public class ContentfulContentService : IContentService
 
             return pageEntries.FirstOrDefault();
         });
+
+        if (page != null)
+        {
+            await _distributedCache.GetOrSetAsync(page.Sys.Id, () => Task.FromResult(page));
+        }
+
+        return page;
     }
 
     public async Task<List<SimplePage>> GetBreadcrumbs(string slug, bool includeHome = true)
@@ -86,15 +107,23 @@ public class ContentfulContentService : IContentService
         return breadcrumbs;
     }
 
-    public Task<StatusChecker?> GetStatusChecker(string id)
+    public Task<StatusChecker?> Hydrate(StatusChecker? statusChecker)
     {
-        return _distributedCache.GetOrSetAsync($"statuschecker:{id}", async () =>
-        {
-            var query = new QueryBuilder<StatusChecker>()
-                .ContentTypeIs(StatusChecker.ContentType);
-            
-            return await _contentfulClient.GetEntry(id, query);
-        });
+        var id = statusChecker?.Sys.Id;
+
+        if (id != null)
+            return _distributedCache.GetOrSetAsync(id, async () =>
+            {
+                var query = new QueryBuilder<StatusChecker>()
+                    .ContentTypeIs(StatusChecker.ContentType)
+                    .FieldEquals("sys.id", id)
+                    .Include(2)
+                    .Limit(1);
+
+                return (await _contentfulClient.GetEntries(query)).FirstOrDefault();
+            });
+
+        return Task.FromResult(statusChecker);
     }
     
     public Task<Grid?> Hydrate(Grid? grid)
@@ -203,7 +232,6 @@ public class ContentfulContentService : IContentService
             var pageEntries = await _contentfulClient.GetEntries(pages);
             var slugs = await GetSiteSlugs();
             
-
             return pageEntries
                 .Where(x => x.Slug != null)
                 .Select(p => new SimplePage()

@@ -1,4 +1,6 @@
 using CareLeavers.Web.Contentful;
+using CareLeavers.Web.Models.Content;
+using Contentful.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CareLeavers.Web.Controllers;
@@ -12,7 +14,11 @@ public class StatusCheckerController (IContentService contentService) : Controll
     [Route("/statuschecker")]
     public async Task<IActionResult> Index(string[] answers, string checkerId)
     {
-        var statusChecker = await contentService.GetStatusChecker(checkerId);
+        var checker = new StatusChecker()
+        {
+            Sys = new SystemProperties() { Id = checkerId }
+        };
+        var statusChecker = await contentService.Hydrate(checker);
 
         if (statusChecker is { Answers: not null } && statusChecker.Answers.Count != 0)
         {

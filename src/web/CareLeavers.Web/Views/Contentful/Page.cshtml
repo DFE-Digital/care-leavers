@@ -27,11 +27,11 @@
     <meta property="og:title" content="@(!string.IsNullOrEmpty(Model.SeoTitle) ? Model.SeoTitle : Model.Title)"/>
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="@Url.Action(
-                                         action: "GetContent", 
-                                         controller: "Contentful", 
+                                         action: "GetContent",
+                                         controller: "Contentful",
                                          protocol: "https",
                                          values: new { slug = Model.Slug, language = languageCode }
-                                         )"/>
+                                     )"/>
     @if (Model.SeoImage != null)
     {
         <meta property="og:image" content="@Model.SeoImage.File.Url"/>
@@ -40,11 +40,18 @@
         <meta property="og:image:height" content="@Model.SeoImage.File.Details.Image.Height"/>
         <meta property="og:image:alt" content="@Model.SeoImage.Description"/>
     }
-    <meta property="og:locale" content="@languageCode"/>
+    <meta property="og:locale" content="@(languageCode == "en" ? "en_GB" : languageCode)"/>
     @if (!string.IsNullOrEmpty(Model.SeoDescription))
     {
         <meta property="og:description" content="@Model.SeoDescription"/>
     }
+
+    <link rel="canonical" href="@Url.Action(
+                                    action: "GetContent",
+                                    controller: "Contentful",
+                                    protocol: "https",
+                                    values: new { slug = Model.Slug, language = "en" }
+                                )"/>
 
 }
 
@@ -111,7 +118,7 @@
 
 @section Scripts
 {
-    @if (Model.ShowShareThis)
+    @if (Model.ShowShareLinks)
     {
         <script asp-add-nonce="true" defer>
             const printPage  = () => window.print();

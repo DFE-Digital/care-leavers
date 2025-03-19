@@ -1,5 +1,7 @@
 import { test} from '@playwright/test';
 import { HomePage } from '../pages/HomePage';
+import {supportCards} from "../helpers/urls-to-check";
+
 
 test.describe('Home Page Tests', () => {
     let homePage: HomePage;
@@ -8,7 +10,7 @@ test.describe('Home Page Tests', () => {
         homePage = new HomePage(page);
         await homePage.openHomePage();
     });
-
+    
     test('should verify all main sections are present', async () => {
         await homePage.verifySectionsVisibility();
     });
@@ -18,11 +20,14 @@ test.describe('Home Page Tests', () => {
     });
 
     test('should verify navigation for all support cards', async () => {
-        const supportCards = [
-            { title: "Money and benefits", url: "/en/category-money" },
-            { title: "Housing and accommodation", url: "/en/category-housing" }
-            //add more cards
-        ];
         await homePage.verifySupportCardsNavigation(supportCards);
+    });
+
+    test('should verify "Know what support you can get" section', async () => {
+        await homePage.verifyKnowWhatSupportSection();
+    });
+
+    test('should verify "Guides" section', async () => {
+        await homePage.verifyGuidesSection();
     });
 });

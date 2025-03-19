@@ -5,6 +5,8 @@ namespace CareLeavers.Web.Contentful;
 
 public interface IContentService
 {
+    Task<RedirectionRules?> GetRedirectionRules(string fromSlug);
+    
     Task<Page?> GetPage(string slug);
 
     Task<List<SimplePage>?> GetSiteHierarchy();
@@ -14,14 +16,14 @@ public interface IContentService
     Task<Dictionary<string, string>> GetSiteSlugs();
 
     Task<List<SimplePage>> GetBreadcrumbs(string slug, bool includeHome = true);
-
-    Task<StatusChecker?> GetStatusChecker(string id);
-
+    
     Task<RichContentBlock?> Hydrate(RichContentBlock? entity);
     
     Task<Grid?> Hydrate(Grid? entity);
     
     Task<Banner?> Hydrate(Banner? entity);
+    
+    Task<StatusChecker?> Hydrate(StatusChecker? entity);
 
     Task<string> GetSlug(string id);
 
