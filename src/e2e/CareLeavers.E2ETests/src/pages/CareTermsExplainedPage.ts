@@ -1,7 +1,7 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
 
-export class WhatHappensWhenYouLeaveCarePage extends BasePage {
+export class CareTermsExplainedPage extends BasePage {
     // Defining locators for key sections
     public readonly mainContent: Locator;
     public readonly tableOfContents: Locator;
@@ -16,13 +16,11 @@ export class WhatHappensWhenYouLeaveCarePage extends BasePage {
 
         // Store all sections in an object 
         this.sections = {
-            whoThisGuideIsFor: page.locator('#Who-this-guide-is-for'),
-            whatHappensAndWhen: page.locator('#What-happens-and-when'),
-            meetingPersonalAdviser: page.locator('#Meeting-your-personal-adviser'),
-            checkingSupport: page.locator('#Checking-what-support-you-need'),
-            makingPathwayPlan: page.locator('#Making-your-Pathway-Plan'),
-            discussingFuture: page.locator('#Discussing-your-future'),
-            supportAfterLeavingCare: page.locator('#Support-after-you-leave-care'),
+            inCare: page.locator('#What-does--in-care--mean-'),
+            lookedAfter: page.locator('#What-does--looked-after--mean-'),
+            careLeaver: page.locator('#What-is-a-care-leaver-'),
+            notLookedAfter: page.locator('#Who-is-not--looked-after--'),
+            careLeaverStatus: page.locator('#What-is-a-care-leaver-status-'),
         };
 
         // Locators for the Helpful Links section
@@ -30,20 +28,22 @@ export class WhatHappensWhenYouLeaveCarePage extends BasePage {
         this.helpfulLinks = [
             page.locator('a[href="housing-and-accommodation"]'),
             page.locator('a[href="money-and-benefits"]'),
-            page.locator('div.hf-card:nth-child(3) a[href="all-support"]')  
+            page.locator('div.hf-card:nth-child(3) a[href="all-support"]')
         ];
     }
 
-    async openWhatHappensPage() {
-        await this.navigateTo('/what-happens-when-you-leave-care');
+    // Navigate to the page
+    async openCareTermsPage() {
+        await this.navigateTo('/care-terms-explained');
     }
 
+    // Assert page elements are correct
     async assertPageElements() {
-        await this.validateURLContains('/what-happens-when-you-leave-care');
+        await this.validateURLContains('/care-terms-explained');
         await this.verifyLogoPresence();
         await this.verifyHeading(
-            "What happens when you leave care",
-            "What to expect as you prepare to leave care to begin independent life."
+            "Care terms explained",
+            "Learn what the terms ‘in care’, ‘looked after’, and ‘care leaver’ mean."
         );
 
         await expect(this.mainContent).toBeVisible();
@@ -65,15 +65,14 @@ export class WhatHappensWhenYouLeaveCarePage extends BasePage {
         }
     }
 
+    // Verify the table of contents links and their corresponding sections
     async verifyTOCNavigation() {
         const tocLinks = [
-            { href: '#Who-this-guide-is-for', key: 'whoThisGuideIsFor' },
-            { href: '#What-happens-and-when', key: 'whatHappensAndWhen' },
-            { href: '#Meeting-your-personal-adviser', key: 'meetingPersonalAdviser' },
-            { href: '#Checking-what-support-you-need', key: 'checkingSupport' },
-            { href: '#Making-your-Pathway-Plan', key: 'makingPathwayPlan' },
-            { href: '#Discussing-your-future', key: 'discussingFuture' },
-            { href: '#Support-after-you-leave-care', key: 'supportAfterLeavingCare' }
+            { href: '#What-does--in-care--mean-', key: 'inCare' },
+            { href: '#What-does--looked-after--mean-', key: 'lookedAfter' },
+            { href: '#What-is-a-care-leaver-', key: 'careLeaver' },
+            { href: '#Who-is-not--looked-after--', key: 'notLookedAfter' },
+            { href: '#What-is-a-care-leaver-status-', key: 'careLeaverStatus' }
         ];
 
         for (const { href, key } of tocLinks) {
