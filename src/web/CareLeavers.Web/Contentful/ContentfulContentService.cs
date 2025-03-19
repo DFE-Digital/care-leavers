@@ -19,9 +19,9 @@ public class ContentfulContentService : IContentService
         _contentfulClient.ContentTypeResolver = new ContentfulEntityResolver();
     }
     
-    public Task<Page?> GetPage(string slug)
+    public async Task<Page?> GetPage(string slug)
     {
-        return _distributedCache.GetOrSetAsync($"content:{slug}", async () =>
+        var page = await _distributedCache.GetOrSetAsync($"content:{slug}", async () =>
         {
             var pages = new QueryBuilder<Page>()
                 .ContentTypeIs(Page.ContentType)
@@ -32,6 +32,13 @@ public class ContentfulContentService : IContentService
 
             return pageEntries.FirstOrDefault();
         });
+
+        if (page != null)
+        {
+            await _distributedCache.GetOrSetAsync(page.Sys.Id, () => Task.FromResult(page));
+        }
+
+        return page;
     }
 
     public async Task<List<SimplePage>> GetBreadcrumbs(string slug, bool includeHome = true)

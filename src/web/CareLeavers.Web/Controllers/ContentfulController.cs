@@ -104,6 +104,17 @@ public class ContentfulController(IContentService contentService, ITranslationSe
         }
 
         var config = await contentService.GetConfiguration();
+
+        if (config == null)
+        {
+            return NotFound();
+        }
+
+        if (config.Redirects.TryGetValue(slug, out var redirect))
+        {
+            return RedirectToAction("GetContent", new { slug = redirect, languageCode });
+        }
+
         var languages = new List<string>();
         if (config is { TranslationEnabled: true })
         {
