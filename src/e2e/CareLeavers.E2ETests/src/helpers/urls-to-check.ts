@@ -9,41 +9,29 @@ export const commonPagesToTest = [
     '/en/education-and-training',
     '/en/health-and-wellbeing',
     '/en/unaccompanied-asylum-seeking-young-people',
-    /*
-   '/en/pathway-plan',
-   '/en/personal-adviser',
-   '/en/leaving-care-allowance',
-   '/en/higher-education-bursary',
-   '/en/local-offer-for-care-leavers',
-   
-   '/en/eligible-child',
-   '/en/relevant-child',
-   '/en/former-relevant-child',
-   '/en/person-qualifying-for-advice-and-assistance',
-   '/en/what-happens-when-you-leave-care',
-   '/en/care-terms-explained',
-    */
+    '/en/pathway-plan',
+    '/en/personal-adviser',
+    '/en/leaving-care-allowance',
+    '/en/higher-education-bursary',
+    '/en/local-offer-for-care-leavers',
+    '/en/eligible-child',
+    '/en/relevant-child',
+    '/en/former-relevant-child',
+    '/en/person-qualifying-for-advice-and-assistance',
+    '/en/what-happens-when-you-leave-care',
+    '/en/care-terms-explained',
     '/en/your-rights',
     '/en/leaving-care-guides',
     '/en/helplines',
 ];
 
 // List of helpline-related links to test-Only certain pages will have this link
-export const helplineLinksToTest = [
-    '/en/home',
-    '/en/all-support',
-];
+export const helplineLinksToTest = commonPagesToTest.filter(path => path !== '/en/helplines');
 
 // List of Pages that will have the share and print buttons
-export const shareAndPrintLinksToTest = [
-    '/en/money-and-benefits',
-    '/en/housing-and-accommodation',
-    '/en/work-and-employment',
-    '/en/education-and-training',
-    '/en/health-and-wellbeing',
-    '/en/unaccompanied-asylum-seeking-young-people',
-    '/en/helplines'
-];
+export const shareAndPrintLinksToTest = commonPagesToTest.filter(
+    path => !['/en/home', '/en/all-support', '/en/your-rights', '/en/leaving-care-guides'].includes(path)
+);
 
 // List of URLS and their expected Breadcrumbs
 export const breadcrumbTestData = [
@@ -54,5 +42,20 @@ export const breadcrumbTestData = [
     { urls: ['/en/eligible-child','/en/relevant-child','/en/former-relevant-child','/en/person-qualifying-for-advice-and-assistance'], expectedBreadcrumbs: ['Home','Your rights'] },
     { urls: ['/en/what-happens-when-you-leave-care','/en/care-terms-explained'], expectedBreadcrumbs: ['Home','Leaving care guides'] },
     // Add more urls cases as needed
+];
+
+// List of Pages that will have the Metadata
+export const metaDataLinksToTest = commonPagesToTest.filter(
+    path => !['/en/home', '/en/all-support', '/en/your-rights', '/en/leaving-care-guides','/en/helplines'].includes(path)
+);
+
+// List of support cards
+export const supportCards = [
+    { title: "Money and benefits", url: "/en/money-and-benefits" },
+    { title: "Housing and accommodation", url: "/en/housing-and-accommodation" },
+    { title: "Work and employment", url: "/en/work-and-employment" },
+    { title: "Education and training", url: "/en/education-and-training" },
+    { title: "Health and wellbeing", url: "/en/health-and-wellbeing" },
+    { title: "Unaccompanied asylum-seeking young people", url: "/en/unaccompanied-asylum-seeking-young-people" }
 ];
 

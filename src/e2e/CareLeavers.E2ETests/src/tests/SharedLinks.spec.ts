@@ -1,6 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { BasePage } from '../pages/BasePage';
-import {commonPagesToTest, helplineLinksToTest, shareAndPrintLinksToTest} from '../helpers/urls-to-check';
+import {
+    commonPagesToTest,
+    helplineLinksToTest,
+    metaDataLinksToTest,
+    shareAndPrintLinksToTest
+} from '../helpers/urls-to-check';
 
 // Defining a hook that runs before each test to create the basePage
 test.describe('Shared Website Functionalities', () => {
@@ -52,7 +57,7 @@ test.describe('Shared Website Functionalities', () => {
 
     // Test to validate Metadata of page is visible
     test.describe('Metadata Visibility Across Multiple Pages', () => {
-        commonPagesToTest.forEach((path) => {
+        metaDataLinksToTest.forEach((path) => {
             test(`Verify metadata is populated on ${path}`, async ({ page }) => {
                 const basePage = new BasePage(page);
 
