@@ -1,62 +1,55 @@
-@media (max-width: 61.875em) {
+@media (min-width: 60.0625em) {
+  .govuk-service-navigation__container {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .govuk-service-navigation__item,
+  .govuk-service-navigation__service-name {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 20px 0;
+  }
+  .govuk-service-navigation__item:not(:last-child),
+  .govuk-service-navigation__service-name:not(:last-child) {
+    margin-right: 20px;
+  }
+  .govuk-service-navigation__item:not(:last-child),
+  .govuk-service-navigation__service-name:not(:last-child) {
+    margin-right: 30px;
+  }
+  .govuk-service-navigation__item--active {
+    padding-bottom: 15px;
+    border-bottom-width: 5px;
+    border-left-width: 0px;
+  }
+  .govuk-service-navigation__service-name {
+    font-size: 1.1875rem;
+    line-height: 1.3157894737;
+  }
+  .govuk-service-navigation__toggle {
+    font-size: 1.1875rem;
+    line-height: 1.3157894737;
+  }
+  .govuk-service-navigation__list {
+    font-size: 1.1875rem;
+    line-height: 1.3157894737;
+  }
+  .govuk-service-navigation__list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 60.0525em) {
   .govuk-service-navigation__item--active {
     margin-left: -15px;
     padding-left: 10px;
-    border-left-width: 5px;
   }
+}
 
-  .dfe-header__menu {
-    float: right;
-    margin-top: 0;
-  }
-
-  .dfe-header__menu-toggle {
-    background-color: #ffffff;
-    border: 1px solid #ffffff;
-    color: #003a69;
-    right: 0;
-    margin-bottom: 20px;
-
-    &:hover {
-      background-color: transparent;
-      border-color: #ffffff;
-      color: #ffffff;
-      cursor: pointer;
-    }
-  }
-
-  .dfe-header__menu--only .dfe-header__menu-toggle {
-    position: relative;
-    right: auto;
-    top: auto;
-  }
-
-  .dfe-header__navigation.js-show .dfe-width-container {
-    margin: 0;
-  }
-
-  .dfe-header {
-    padding: 15px;
-
-    .dfe-header__service-name {
-      margin-left: 16px;
-    }
-
-    .dfe-header__navigation-item--current {
-      color: #0b0c0c;
-    }
-  }
-
-  .dfe-header__navigation-item.dfe-header__navigation-item--current a {
-    color: #003a69;
-  }
-
-  .dfe-header__navigation-link:visited {
-    color: #003a69;
-  }
-
-  .dfe-header__service-name,
-  .dfe-width-container {
-    margin-right: 0;
+@media screen and (min-width: 20.0625em) and (-ms-high-contrast: active), (min-width: 100.0625em) and (-ms-high-contrast: none) {
+  .govuk-service-navigation__list {
+    display: block;
   }
 }
