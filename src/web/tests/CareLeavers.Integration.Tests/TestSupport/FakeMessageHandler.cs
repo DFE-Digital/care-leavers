@@ -32,9 +32,16 @@ public class FakeMessageHandler : HttpClientHandler
         // If we're requesting config, just grab the first config
         else if (request.RequestUri != null && request.RequestUri.PathAndQuery.Contains("content_type=configuration"))
         {
-            var query = QueryHelpers.ParseQuery(request.RequestUri.Query);
-
             var matchingContent = Content.FirstOrDefault(c => c.ContentType == ContentfulConfigurationEntity.ContentType);
+            if (matchingContent != null)
+            {
+                response = matchingContent.Content;
+            }
+        }
+        // If we're requesting config, just grab the first config
+        else if (request.RequestUri != null && request.RequestUri.PathAndQuery.Contains("content_type=redirectionRule"))
+        {
+            var matchingContent = Content.FirstOrDefault(c => c.ContentType == RedirectionRule.ContentType);
             if (matchingContent != null)
             {
                 response = matchingContent.Content;
