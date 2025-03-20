@@ -45,6 +45,20 @@ public static class DistributedCacheExtensions
 
         return true;
     }
+    
+    public static async Task<T?> GetAsync<T>(this IDistributedCache cache, string key)
+    {
+        var val = await cache.GetAsync(key);
+        if (val == null)
+        {
+            return default;
+        }
+
+        using var stream = new MemoryStream(val);
+        using var reader = new JsonTextReader(new StreamReader(stream));
+
+        return Constants.Serializer.Deserialize<T>(reader);
+    }
 
     public static async Task<T?> GetOrSetAsync<T>(
         this IDistributedCache cache, 
