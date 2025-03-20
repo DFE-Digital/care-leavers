@@ -67,5 +67,5 @@ variable "azure_translation_access_key" {
 variable "azure_frontdoor_scale" {
   description = "Azure Front Door Scale"
   type        = string
-  default     = "Standard"
+  default     = "Standard_AzureFrontDoor"
 }

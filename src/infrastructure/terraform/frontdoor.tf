@@ -109,7 +109,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   sku_name            = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name
   
   dynamic "managed_rule" {
-    for_each = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name != "Standard" ? [0] : []
+    for_each = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name == "Premium_AzureFrontDoor" ? [0] : []
     content {
       type    = "Microsoft_DefaultRuleSet"
       version = "2.1"
@@ -118,7 +118,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   }
 
   dynamic "managed_rule" {
-    for_each = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name != "Standard" ? [0] : []
+    for_each = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name == "Premium_AzureFrontDoor" ? [0] : []
     content {
       type    = "Microsoft_BotManagerRuleSet"
       version = "1.1"
