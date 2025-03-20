@@ -206,7 +206,7 @@ try
 
     app.UseContentfulWebhooks(consumers =>
     {
-        consumers.AddConsumer<Entry<ContentfulContent>>("*", "*", "*",  async entry =>
+        consumers.AddConsumer<Entry<ContentfulContent>>("*", "Entry", "*",  async entry =>
         {
             var webhookConsumer = new PublishContentfulWebhook(
                 app.Services.GetRequiredService<IContentfulClient>(),
@@ -216,6 +216,18 @@ try
 
             await webhookConsumer.Consume(entry);
             
+            return new { Result = "OK" };
+        });
+
+        consumers.AddConsumer<Asset>("*", "Asset", "*", async asset =>
+        {
+            var webhookConsumer = new PublishAssetWebhook(
+                app.Services.GetRequiredService<IContentfulClient>(),
+                app.Services.GetRequiredService<IDistributedCache>(),
+                app.Services.GetRequiredService<ILogger<PublishAssetWebhook>>());
+
+            await webhookConsumer.Consume(asset);
+
             return new { Result = "OK" };
         });
     });
