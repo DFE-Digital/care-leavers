@@ -160,7 +160,6 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
 
     match_condition {
       match_variable = "SocketAddr"
-      selector = "UserAgent"
       operator       = "GeoMatch"
       negation_condition = true
       match_values = ["GB", "ZZ"]
