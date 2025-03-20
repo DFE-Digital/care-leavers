@@ -71,18 +71,18 @@
             this.firstHeaderParagraph = headerSection.locator('p.govuk-body-l').first();
     
             //Locators for Navigation Bar
-            this.navLinkHome = page.locator('a.dfe-header__navigation-link', { hasText: "Home" });
-            this.navLinkAllSupport = page.locator('a.dfe-header__navigation-link', { hasText: "All support" });
+            this.navLinkHome = page.locator('a.govuk-service-navigation__link', { hasText: "Home" });
+            this.navLinkAllSupport = page.locator('a.govuk-service-navigation__link', { hasText: "All support" });
             //update locators 
             this.navLinkYourRights = page.locator('[role="link"][aria-label="Your rights"]');
             this.navLinkLeavingCareGuides = page.locator('[role="link"][aria-label="Leaving care guides"]');
             this.navLinkHelplines = page.locator('[role="link"][aria-label="Helplines"]');
     
             //Locators for Navigation Bar-Mobile Menu
-            this.hamburgerMenuIcon = page.locator('#menu-toggle');
-            this.mobileMenuContainer = page.locator('#header-navigation');
-            this.mobileMenuLinks = page.locator('.dfe-header__navigation-list a');
-            this.closeMenuButton = page.locator('#close-menu');
+            this.hamburgerMenuIcon = page.locator('button.govuk-service-navigation__toggle');
+            this.mobileMenuContainer = page.locator('#navigation');
+            this.mobileMenuLinks = page.locator('#navigation a');
+            this.closeMenuButton = page.locator('button.govuk-service-navigation__toggle');
     
             // Locators for social media share buttons
             this.shareButtonsContainer = page.locator('.shareaholic-share-buttons');
