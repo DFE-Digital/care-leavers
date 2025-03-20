@@ -145,8 +145,8 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
     match_condition {
       match_variable = "RequestHeader"
       selector = "UserAgent"
-      operator       = "Regex"
-      transforms = ["Lowercase", "URLDecode"]
+      operator       = "RegEx"
+      transforms = ["Lowercase", "UrlDecode"]
       match_values = ["aolbuild|baidu|bingbot|bingpreview|msnbot|duckduckgo|adsbot-google|googlebot|mediapartners-google|teoma|slurp|yandex"]
     }
   }
