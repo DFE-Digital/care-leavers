@@ -13,39 +13,17 @@ public class PublishContentfulWebhook(
     IContentfulManagementClient contentfulManagementClient,
     ILogger<PublishContentfulWebhook> logger)
 {
+    private HashSet<string> _idsScanned = [];
+
     public async Task Consume(Entry<ContentfulContent> entry)
     {
         contentfulClient.ContentTypeResolver = new ContentfulEntityResolver();
 
-        var idsScanned = new HashSet<string>
-        {
-            entry.SystemProperties.Id
-        };
-    
-        async Task<List<Page>> FindLinkedPages(string id, List<Page> linkedPages)
-        {
-            var entries = await contentfulClient.GetEntries(new QueryBuilder<ContentfulContent>()
-                .LinksToEntry(id));
-
-            foreach (var linkedEntry in entries)
-            {
-                if (!idsScanned.Add(linkedEntry.Sys.Id))
-                {
-                    continue;
-                }
-            
-                if (linkedEntry is Page pageEntry)
-                {
-                    linkedPages.Add(pageEntry);
-                }
-                else
-                {
-                    await FindLinkedPages(linkedEntry.Sys.Id, linkedPages);
-                }
-            }
+        // Reset our scanned list
+        _idsScanned.Clear();
         
-            return linkedPages.ToList();
-        }
+        // Add this entry, since we've already got it
+        _idsScanned.Add(entry.SystemProperties.Id);
         
         if (entry.SystemProperties.ContentType.SystemProperties.Id == RedirectionRules.ContentType)
         {
@@ -131,7 +109,9 @@ public class PublishContentfulWebhook(
         }
         else
         {
-            var pageEntries = await FindLinkedPages(entry.SystemProperties.Id, []);
+            var pageEntries = new List<Page>();
+            
+            await FindLinkedPages(entry.SystemProperties.Id, pageEntries);
 
             logger.LogInformation("The following slugs will be purged: {Slugs}", pageEntries.Select(x => x.Slug));
 
@@ -152,7 +132,7 @@ public class PublishContentfulWebhook(
         }
         
         // Now wipe all direct IDs that have been cached
-        foreach (var id in idsScanned)
+        foreach (var id in _idsScanned)
         {
             logger.LogInformation("Removing content item directly from cache with Id: {Id}", id);
             await distributedCache.RemoveAsync(id);
@@ -160,5 +140,30 @@ public class PublishContentfulWebhook(
         
         await distributedCache.RemoveAsync("content:sitemap");
         await distributedCache.RemoveAsync("content:hierarchy");
+    }
+    
+    private async Task FindLinkedPages(string id, List<Page> linkedPages)
+    {
+        var entries = await contentfulClient.GetEntries(new QueryBuilder<ContentfulContent>()
+            .LinksToEntry(id)
+            .Include(0)
+        );
+
+        foreach (var linkedEntry in entries)
+        {
+            if (!_idsScanned.Add(linkedEntry.Sys.Id))
+            {
+                continue;
+            }
+            
+            if (linkedEntry is Page pageEntry)
+            {
+                linkedPages.Add(pageEntry);
+            }
+            else
+            {
+                await FindLinkedPages(linkedEntry.Sys.Id, linkedPages);
+            }
+        }
     }
 }
