@@ -210,7 +210,9 @@ try
         {
             var webhookConsumer = new PublishContentfulWebhook(
                 app.Services.GetRequiredService<IContentfulClient>(),
-                app.Services.GetRequiredService<IDistributedCache>());
+                app.Services.GetRequiredService<IDistributedCache>(),
+                app.Services.GetRequiredService<IContentfulManagementClient>(),
+                app.Services.GetRequiredService<ILogger<PublishContentfulWebhook>>());
 
             await webhookConsumer.Consume(entry);
             
