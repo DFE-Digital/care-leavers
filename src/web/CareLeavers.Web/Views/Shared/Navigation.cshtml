@@ -48,18 +48,30 @@
 
 <script asp-add-nonce="true">
     document.addEventListener('DOMContentLoaded', function () {
-        const menuToggle = document.getElementById('menu-toggle');
-        const menuClose = document.getElementById('close-menu');
-        const navigation = document.getElementById('header-navigation');
+        const menuToggle = document.querySelector('.govuk-js-service-navigation-toggle');
+        const navigation = document.getElementById('navigation');
 
-        menuToggle.addEventListener('click', function () {
-            const isOpen = navigation.classList.toggle('js-show');
-            menuToggle.setAttribute('aria-expanded', isOpen.toString());
-        });
+        function updateMenuVisibility() {
+            const screenWidth = window.innerWidth;
 
-        menuClose.addEventListener('click', function () {
-            navigation.classList.remove('js-show');
-            menuToggle.setAttribute('aria-expanded', 'false');
-        });
+            if (screenWidth < 688) { // 43em = 688px
+                menuToggle.removeAttribute('hidden');
+            } else {
+                menuToggle.setAttribute('hidden', '');
+            }
+        }
+
+        // Ensure toggle button is visible at the correct screen size
+        window.addEventListener('resize', updateMenuVisibility);
+        updateMenuVisibility(); // Run on page load
+
+        if (menuToggle && navigation) {
+            menuToggle.addEventListener('click', function () {
+                const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', !isExpanded);
+                navigation.style.display = isExpanded ? 'none' : 'flex';
+            });
+        }
     });
+
 </script>
