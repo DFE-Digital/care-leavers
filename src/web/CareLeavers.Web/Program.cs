@@ -236,7 +236,7 @@ try
     
     #region Setup error pages and HSTS
     
-    app.UseStatusCodePagesWithReExecute("/Pages/Error", "?statusCode={0}");
+    app.UseStatusCodePagesWithReExecute("/en/pages/error", "?statusCode={0}");
 
     
     if (!app.Environment.IsDevelopment())
