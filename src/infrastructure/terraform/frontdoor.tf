@@ -107,7 +107,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   tags                = local.common_tags
   mode                = "Prevention"
   sku_name            = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name
-  
+
   dynamic "managed_rule" {
     for_each = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name == "Premium_AzureFrontDoor" ? [0] : []
     content {
@@ -125,7 +125,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       action  = "Block"
     }
   }
-  
+
   /*
   managed_rule {
     type    = "Microsoft_DefaultRuleSet"
@@ -139,50 +139,50 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
     action  = "Block"
   }
   */
-  
+
   custom_rule {
-    name = "allowcontentful"
-    enabled = true
-    action = "Allow"
-    type   = "MatchRule"
+    name     = "allowcontentful"
+    enabled  = true
+    action   = "Allow"
+    type     = "MatchRule"
     priority = 100
-    
+
     match_condition {
       match_variable = "RequestHeader"
-      selector = "X-Contentful-CRN"
+      selector       = "X-Contentful-CRN"
       operator       = "Contains"
-      match_values = ["crn:contentful"]
+      match_values   = ["crn:contentful"]
     }
   }
 
   custom_rule {
-    name = "allowsearchengines"
-    enabled = true
-    action = "Allow"
-    type   = "MatchRule"
+    name     = "allowsearchengines"
+    enabled  = true
+    action   = "Allow"
+    type     = "MatchRule"
     priority = 200
 
     match_condition {
       match_variable = "RequestHeader"
-      selector = "UserAgent"
+      selector       = "UserAgent"
       operator       = "RegEx"
-      transforms = ["Lowercase", "UrlDecode"]
-      match_values = ["aolbuild|baidu|bingbot|bingpreview|msnbot|duckduckgo|adsbot-google|googlebot|mediapartners-google|teoma|slurp|yandex"]
+      transforms     = ["Lowercase", "UrlDecode"]
+      match_values   = ["aolbuild|baidu|bingbot|bingpreview|msnbot|duckduckgo|adsbot-google|googlebot|mediapartners-google|teoma|slurp|yandex"]
     }
   }
 
   custom_rule {
-    name = "blocknonuk"
-    enabled = true
-    action = "Block"
-    type   = "MatchRule"
+    name     = "blocknonuk"
+    enabled  = true
+    action   = "Block"
+    type     = "MatchRule"
     priority = 300
 
     match_condition {
-      match_variable = "SocketAddr"
-      operator       = "GeoMatch"
+      match_variable     = "SocketAddr"
+      operator           = "GeoMatch"
       negation_condition = true
-      match_values = ["GB", "ZZ"]
+      match_values       = ["GB", "ZZ"]
     }
   }
 }
