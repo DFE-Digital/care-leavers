@@ -13,18 +13,10 @@
 
 @section Head
 {
-    <meta property="og:site_name" content="@config.ServiceName"/>
-    <meta property="og:title" content="@ViewBag.Title"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:url" content="@Url.Action(
-                                         action: "PageNotFound",
-                                         controller: "Pages",
-                                         protocol: "https",
-                                         values: new { language = languageCode}
-                                     )"/>
-    
-    <meta property="og:locale" content="en_GB"/>
-
+    <meta name="robots" content="noindex, nofollow"/>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
 }
 
 @section BeforeGDSContent
