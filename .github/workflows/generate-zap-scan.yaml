@@ -11,6 +11,7 @@ on:
         options:
           - 'Test'
           - 'Staging'
+          - 'Production'
 jobs:
   zap_scan:
     name: 'Run Zap Scan'
@@ -33,7 +34,7 @@ jobs:
 
       - name: Get Azure Frontdoor URL
         run: |
-          FRONTDOOR_URL=$(az afd endpoint list -g s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-rg --profile-name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-fd-profile | jq -r '.[0].hostName')
+          FRONTDOOR_URL=$(az afd endpoint list -g s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-rg --profile-name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-fd-profile | jq -r '.[1].hostName')
           echo "FRONTDOOR_URL=$FRONTDOOR_URL" >>${GITHUB_ENV}
 
       - name: ZAP Scan
