@@ -236,16 +236,30 @@ try
     
     #region Setup error pages and HSTS
     
+    app.UseStatusCodePagesWithReExecute("/Pages/Error", "?statusCode={0}");
+
+    
     if (!app.Environment.IsDevelopment())
     {
-        // TODO: Setup views for exceptions
-        app.UseExceptionHandler("/Home/Error");
-        
-        // TODO: Setup view for 404 not found
-        
+        // If we're not in development mode, use the error handler page
+        app.UseExceptionHandler("/en/pages/error");
+
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
     }
+    
+    // Redirect 404 responses to the page not found page
+    app.Use(async (context, next) =>
+    {
+        await next();
+
+        if (context.Response is { StatusCode: 404, HasStarted: false })
+        {
+            // Log the error or handle it accordingly
+            context.Request.Path = "/en/pages/page-not-found"; // Redirect to a custom not found page
+            await next();
+        }
+    });
     
     #endregion
 
