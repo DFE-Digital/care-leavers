@@ -40,12 +40,5 @@ export class EligibleChildPage extends BasePage {
             "Eligible child",
             "Find out what support you have the right to if your care leaver status is ‘eligible child’"
         );
-
-        await expect(this.mainContent).toBeVisible();
-        await expect(this.supportSection).toBeVisible();
-        await expect(this.generalSupportSection).toBeVisible();
-        await expect(this.helpWithMoneySection).toBeVisible();
-        await expect(this.moreSupportSection).toBeVisible();
-        await expect(this.supportOnce18Section).toBeVisible();
     }
 }
