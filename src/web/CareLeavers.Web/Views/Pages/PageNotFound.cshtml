@@ -1,0 +1,45 @@
+@using CareLeavers.Web.Configuration
+@model CareLeavers.Web.Models.ViewModels.CookiePolicyModel
+
+@inject IContentfulConfiguration ContentfulConfiguration
+
+@{
+    ViewBag.Title = "Page not found";
+    Layout = "_Layout";
+
+    var config = await ContentfulConfiguration.GetConfiguration();
+    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
+}
+
+@section Head
+{
+    <meta property="og:site_name" content="@config.ServiceName"/>
+    <meta property="og:title" content="@ViewBag.Title"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="@Url.Action(
+                                         action: "PageNotFound",
+                                         controller: "Pages",
+                                         protocol: "https",
+                                         values: new { language = languageCode}
+                                     )"/>
+    
+    <meta property="og:locale" content="en_GB"/>
+
+}
+
+@section BeforeGDSContent
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">
+                @ViewBag.Title
+            </h1>
+        </div>
+    </div>
+}
+<p class="govuk-body">
+    If you typed the web address, check it is correct.
+</p>
+<p class="govuk-body">
+    If you pasted the web address, check you copied the entire address.
+</p>
