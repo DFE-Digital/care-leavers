@@ -28,7 +28,14 @@ public class PublishContentfulWebhook(
         if (entry.SystemProperties.ContentType.SystemProperties.Id == RedirectionRules.ContentType)
         {
             logger.LogInformation("Redirection rules entry updated, purging redirections cache");
-            await distributedCache.RemoveAsync("content:redirections");
+            try
+            {
+                await distributedCache.RemoveAsync("content:redirections");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Unable to clear redirection rules");
+            }
         }
         else if (entry.SystemProperties.ContentType.SystemProperties.Id == Page.ContentType)
         {
@@ -41,16 +48,37 @@ public class PublishContentfulWebhook(
             
             logger.LogInformation("The following slug will be purged: {Slug}", pageEntry.Slug);
 
-            await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
+            try
+            {
+                await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Unable to purge page with slug {slug}", pageEntry.Slug);
+            }
             
             if (distributedCache.TryGetValue($"content:{pageEntry.Slug}:languages", out List<string>? translations))
             {
                 foreach (var translation in translations ?? [])
                 {
-                    await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:language:{translation}");
+                    try
+                    {
+                        await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:language:{translation}");
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(ex, "Unable to purge language list for page {slug}", pageEntry.Slug);
+                    }
                 }
-                
-                await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:languages");
+
+                try
+                {
+                    await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:languages");
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Unable to purge languages for page {slug}", pageEntry.Slug);
+                }
             }
             
             var pageById = await distributedCache.GetAsync<Page>(pageEntry.Sys.Id);
@@ -105,7 +133,14 @@ public class PublishContentfulWebhook(
         else if (entry.SystemProperties.ContentType.SystemProperties.Id == ContentfulConfigurationEntity.ContentType)
         {
             logger.LogInformation("Configuration entry updated, purging configuration cache");
-            await distributedCache.RemoveAsync("content:configuration");
+            try
+            {
+                await distributedCache.RemoveAsync("content:configuration");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Unable to purge configuration");
+            }
         }
         else
         {
@@ -117,16 +152,37 @@ public class PublishContentfulWebhook(
 
             foreach (var pageEntry in pageEntries)
             {
-                await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
-                
+                try
+                {
+                    await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Unable to purge page with slug {slug}", pageEntry.Slug);
+                }
+
                 if (distributedCache.TryGetValue($"content:{pageEntry.Slug}:languages", out List<string>? translations))
                 {
                     foreach (var translation in translations ?? [])
                     {
-                        await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:language:{translation}");
+                        try
+                        {
+                            await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:language:{translation}");
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.LogError(ex, "Unable to purge translation list for page with slug {slug}", pageEntry.Slug);
+                        }
                     }
-                    
-                    await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:languages");
+
+                    try
+                    {
+                        await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:languages");
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(ex, "Unable to purge translations for page with slug {slug}", pageEntry.Slug);
+                    }
                 }
             }
         }
@@ -135,11 +191,25 @@ public class PublishContentfulWebhook(
         foreach (var id in _idsScanned)
         {
             logger.LogInformation("Removing content item directly from cache with Id: {Id}", id);
-            await distributedCache.RemoveAsync(id);
+            try
+            {
+                await distributedCache.RemoveAsync(id);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Unable to purge entry with id {id}", id);
+            }
         }
-        
-        await distributedCache.RemoveAsync("content:sitemap");
-        await distributedCache.RemoveAsync("content:hierarchy");
+
+        try
+        {
+            await distributedCache.RemoveAsync("content:sitemap");
+            await distributedCache.RemoveAsync("content:hierarchy");
+        } 
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Unable to sitemap and hierarchy", []);
+        }
     }
     
     private async Task FindLinkedPages(string id, List<Page> linkedPages)
