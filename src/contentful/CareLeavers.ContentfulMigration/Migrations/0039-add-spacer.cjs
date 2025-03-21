@@ -23,7 +23,7 @@ module.exports = function (migration) {
         .required(true)
         .validations([
             {
-                in: ["XL", "L", "M", "S"],
+                in: ["L", "M", "S"],
             },
         ])
         .defaultValue({ "en-US": "S" })

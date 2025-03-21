@@ -45,13 +45,13 @@ public class GDSSpacerRenderer() : IContentRenderer
 
         switch (spacer.Size)
         {
-            case SpacerSize.XL:
+            case SpacerSize.L:
                 size = " govuk-section-break--xl";
                 break;
-            case SpacerSize.L:
+            case SpacerSize.M:
                 size = " govuk-section-break--l";
                 break;
-            case SpacerSize.M:
+            case SpacerSize.S:
                 size = " govuk-section-break--m";
                 break;
         }
