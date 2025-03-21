@@ -36,7 +36,7 @@ public class PagesController : Controller
     {
         if (statusCode == 404)
         {
-            return RedirectToAction("PageNotFound", new { languageCode = languageCode });
+            return View("PageNotFound");
         }
         return View();
     }
