@@ -404,4 +404,4 @@ override.tf.json
 terraform.rc
 
 src/**/*.css.map
-src/**/*.css
+src/**/*.css.DS_Store
