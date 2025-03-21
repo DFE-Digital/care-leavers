@@ -26,7 +26,8 @@ public class RobotsController (IContentfulConfiguration contentfulConfiguration,
 
         sb.AppendLine("User-agent: *");
         sb.AppendLine("Disallow: /translation");
-        sb.AppendLine("Disallow: /en/404");
+        sb.AppendLine("Disallow: /en/page-not-found");
+        sb.AppendLine("Disallow: /en/error");
 
         foreach (var language in languages.Where(l => !l.Code.Equals("en", StringComparison.InvariantCultureIgnoreCase)))
         {
