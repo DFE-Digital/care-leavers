@@ -34,11 +34,11 @@ public class GDSListRenderer(ContentRendererCollection rendererCollection) : ICo
         }
         
         var listTagType = "ul";
-        var listClass = "govuk-list govuk-list--bullet";
+        var listClass = "govuk-list govuk-list--bullet govuk-list--spaced";
         if (list.NodeType == "ordered-list")
         {
             listTagType = "ol";
-            listClass = "govuk-list govuk-list--number";
+            listClass = "govuk-list govuk-list--number govuk-list--spaced";
         }
 
         var tb = new TagBuilder(listTagType);

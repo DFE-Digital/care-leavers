@@ -122,6 +122,7 @@ try
         renderer.AddRenderer(new GDSListRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSHorizontalRulerContentRenderer());
         renderer.AddRenderer(new GDSDefinitionLinkRenderer());
+        renderer.AddRenderer(new GDSSpacerRenderer());
         renderer.AddRenderer(new GDSGridRenderer(serviceProvider));
         renderer.AddRenderer(new GDSRichContentRenderer(serviceProvider));
         renderer.AddRenderer(new GDSStatusCheckerRenderer(serviceProvider));
