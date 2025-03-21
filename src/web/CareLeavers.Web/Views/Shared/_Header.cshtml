@@ -62,5 +62,8 @@
     <div class="dfe-width-container dfe-header__service-name">
         @Model.ContentfulConfiguration.ServiceName
     </div>
-    @{ await Html.RenderPartialAsync("Navigation", Model); }
+    @if (!Model.IsError)
+    { 
+        await Html.RenderPartialAsync("Navigation", Model);
+    }
 </header>
