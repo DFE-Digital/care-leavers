@@ -1,7 +1,7 @@
 resource "azurerm_cdn_frontdoor_profile" "frontdoor-web-profile" {
   name                = "${local.service_prefix}-web-fd-profile"
   resource_group_name = azurerm_resource_group.web-rg.name
-  sku_name            = "Standard_AzureFrontDoor"
+  sku_name            = "${var.azure_frontdoor_scale}_AzureFrontDoor"
   tags                = local.common_tags
 }
 
@@ -105,6 +105,84 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   name                = "webFirewallPolicy"
   resource_group_name = azurerm_resource_group.web-rg.name
   tags                = local.common_tags
-  mode                = "Detection"
+  mode                = "Prevention"
   sku_name            = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name
+
+  dynamic "managed_rule" {
+    for_each = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name == "Premium_AzureFrontDoor" ? [0] : []
+    content {
+      type    = "Microsoft_DefaultRuleSet"
+      version = "2.1"
+      action  = "Block"
+    }
+  }
+
+  dynamic "managed_rule" {
+    for_each = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name == "Premium_AzureFrontDoor" ? [0] : []
+    content {
+      type    = "Microsoft_BotManagerRuleSet"
+      version = "1.1"
+      action  = "Block"
+    }
+  }
+
+  /*
+  managed_rule {
+    type    = "Microsoft_DefaultRuleSet"
+    version = "2.1"
+    action  = "Block"
+  }
+
+  managed_rule {
+    type    = "Microsoft_BotManagerRuleSet"
+    version = "1.1"
+    action  = "Block"
+  }
+  */
+
+  custom_rule {
+    name     = "allowcontentful"
+    enabled  = true
+    action   = "Allow"
+    type     = "MatchRule"
+    priority = 100
+
+    match_condition {
+      match_variable = "RequestHeader"
+      selector       = "X-Contentful-CRN"
+      operator       = "Contains"
+      match_values   = ["crn:contentful"]
+    }
+  }
+
+  custom_rule {
+    name     = "allowsearchengines"
+    enabled  = true
+    action   = "Allow"
+    type     = "MatchRule"
+    priority = 200
+
+    match_condition {
+      match_variable = "RequestHeader"
+      selector       = "UserAgent"
+      operator       = "RegEx"
+      transforms     = ["Lowercase", "UrlDecode"]
+      match_values   = ["aolbuild|baidu|bingbot|bingpreview|msnbot|duckduckgo|adsbot-google|googlebot|mediapartners-google|teoma|slurp|yandex"]
+    }
+  }
+
+  custom_rule {
+    name     = "blocknonuk"
+    enabled  = true
+    action   = "Block"
+    type     = "MatchRule"
+    priority = 300
+
+    match_condition {
+      match_variable     = "SocketAddr"
+      operator           = "GeoMatch"
+      negation_condition = true
+      match_values       = ["GB", "ZZ"]
+    }
+  }
 }

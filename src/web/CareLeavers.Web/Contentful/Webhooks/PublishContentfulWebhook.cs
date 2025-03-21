@@ -4,52 +4,42 @@ using Contentful.Core;
 using Contentful.Core.Models;
 using Contentful.Core.Search;
 using Microsoft.Extensions.Caching.Distributed;
-using Serilog;
 
 namespace CareLeavers.Web.Contentful.Webhooks;
 
 public class PublishContentfulWebhook(
     IContentfulClient contentfulClient,
-    IDistributedCache distributedCache)
+    IDistributedCache distributedCache,
+    IContentfulManagementClient contentfulManagementClient,
+    ILogger<PublishContentfulWebhook> logger)
 {
+    private HashSet<string> _idsScanned = [];
+
     public async Task Consume(Entry<ContentfulContent> entry)
     {
         contentfulClient.ContentTypeResolver = new ContentfulEntityResolver();
 
-        var idsScanned = new HashSet<string>
-        {
-            entry.SystemProperties.Id
-        };
-    
-        async Task<List<Page>> FindLinkedPages(string id, List<Page> linkedPages)
-        {
-            var entries = await contentfulClient.GetEntries(new QueryBuilder<ContentfulContent>()
-                .LinksToEntry(id));
-
-            foreach (var linkedEntry in entries)
-            {
-                if (!idsScanned.Add(linkedEntry.Sys.Id))
-                {
-                    continue;
-                }
-            
-                if (linkedEntry is Page pageEntry)
-                {
-                    linkedPages.Add(pageEntry);
-                }
-                else
-                {
-                    await FindLinkedPages(linkedEntry.Sys.Id, linkedPages);
-                }
-            }
+        // Reset our scanned list
+        _idsScanned.Clear();
         
-            return linkedPages.ToList();
+        // Add this entry, since we've already got it
+        _idsScanned.Add(entry.SystemProperties.Id);
+        
+        if (entry.SystemProperties.ContentType.SystemProperties.Id == RedirectionRules.ContentType)
+        {
+            logger.LogInformation("Redirection rules entry updated, purging redirections cache");
+            await distributedCache.RemoveAsync("content:redirections");
         }
-    
-        if (entry.SystemProperties.ContentType.SystemProperties.Id == Page.ContentType)
+        else if (entry.SystemProperties.ContentType.SystemProperties.Id == Page.ContentType)
         {
             var pageEntry = await contentfulClient.GetEntry<Page>(entry.SystemProperties.Id);
-            Log.Logger.Information("The following slug will be purged: {Slug}", pageEntry.Slug);
+            
+            if (pageEntry == null)
+            {
+                return;
+            }
+            
+            logger.LogInformation("The following slug will be purged: {Slug}", pageEntry.Slug);
 
             await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
             
@@ -62,17 +52,68 @@ public class PublishContentfulWebhook(
                 
                 await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:languages");
             }
+            
+            var pageById = await distributedCache.GetAsync<Page>(pageEntry.Sys.Id);
+
+            if (pageById != null && pageEntry.Slug != null && pageById.Slug != pageEntry.Slug)
+            {
+                logger.LogInformation("Slug changed from {OldSlug} to {NewSlug}", pageById.Slug, pageEntry.Slug);
+                await distributedCache.RemoveAsync($"content:{pageById.Slug}");
+
+                var redirectionContent = await contentfulClient.GetEntries(
+                    new QueryBuilder<RedirectionRules>()
+                        .ContentTypeIs(RedirectionRules.ContentType)
+                        .Include(1));
+                
+                var redirectionRules = redirectionContent.Items.FirstOrDefault() ?? new RedirectionRules()
+                {
+                    Sys = new SystemProperties()
+                    {
+                        Id = "redirectionRulesId"
+                    }
+                };
+
+                redirectionRules.Rules[pageById.Slug!] = pageEntry.Slug;
+                redirectionRules.Rules.Remove(pageEntry.Slug);
+
+                var updatedEntryResp = await contentfulManagementClient.CreateOrUpdateEntry(new Entry<dynamic>
+                {
+                    SystemProperties = new SystemProperties()
+                    {
+                        Id = redirectionRules.Sys.Id,
+                        Version = redirectionRules.Sys.Version
+                    },
+                    Fields = new
+                    {
+                        title = new Dictionary<string, dynamic> 
+                        {
+                            ["en-US"] = "Redirection Rules - DO NOT DELETE"
+                        },
+                        rules = new Dictionary<string, dynamic>
+                        {
+                            ["en-US"] = redirectionRules.Rules
+                        }
+                    }
+                }, contentTypeId: RedirectionRules.ContentType, version: redirectionRules.Sys.PublishedVersion + 1);
+
+                await contentfulManagementClient.PublishEntry(
+                    updatedEntryResp.SystemProperties.Id,
+                    updatedEntryResp.SystemProperties.Version ?? 1
+                );
+            }
         }
         else if (entry.SystemProperties.ContentType.SystemProperties.Id == ContentfulConfigurationEntity.ContentType)
         {
-            Log.Logger.Information("Configuration entry updated, purging configuration cache");
+            logger.LogInformation("Configuration entry updated, purging configuration cache");
             await distributedCache.RemoveAsync("content:configuration");
         }
         else
         {
-            var pageEntries = await FindLinkedPages(entry.SystemProperties.Id, []);
+            var pageEntries = new List<Page>();
+            
+            await FindLinkedPages(entry.SystemProperties.Id, pageEntries);
 
-            Log.Logger.Information("The following slugs will be purged: {Slugs}", pageEntries.Select(x => x.Slug));
+            logger.LogInformation("The following slugs will be purged: {Slugs}", pageEntries.Select(x => x.Slug));
 
             foreach (var pageEntry in pageEntries)
             {
@@ -91,13 +132,38 @@ public class PublishContentfulWebhook(
         }
         
         // Now wipe all direct IDs that have been cached
-        foreach (var id in idsScanned)
+        foreach (var id in _idsScanned)
         {
-            Log.Logger.Information("Removing content item directly from cache with Id: {Id}", id);
+            logger.LogInformation("Removing content item directly from cache with Id: {Id}", id);
             await distributedCache.RemoveAsync(id);
         }
         
         await distributedCache.RemoveAsync("content:sitemap");
         await distributedCache.RemoveAsync("content:hierarchy");
+    }
+    
+    private async Task FindLinkedPages(string id, List<Page> linkedPages)
+    {
+        var entries = await contentfulClient.GetEntries(new QueryBuilder<ContentfulContent>()
+            .LinksToEntry(id)
+            .Include(0)
+        );
+
+        foreach (var linkedEntry in entries)
+        {
+            if (!_idsScanned.Add(linkedEntry.Sys.Id))
+            {
+                continue;
+            }
+            
+            if (linkedEntry is Page pageEntry)
+            {
+                linkedPages.Add(pageEntry);
+            }
+            else
+            {
+                await FindLinkedPages(linkedEntry.Sys.Id, linkedPages);
+            }
+        }
     }
 }
