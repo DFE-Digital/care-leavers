@@ -40,6 +40,7 @@ public class ContentfulContentService : IContentService
             var pages = new QueryBuilder<Page>()
                 .ContentTypeIs(Page.ContentType)
                 .FieldEquals(c => c.Slug, slug)
+                .Include(2)
                 .Limit(1);
 
             var pageEntries = await _contentfulClient.GetEntries(pages);
