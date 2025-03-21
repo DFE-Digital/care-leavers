@@ -1,0 +1,28 @@
+@model ErrorViewModel
+
+@{
+    ViewBag.Title = "Sorry, there is a problem with the service";
+    Layout = "_ErrorLayout";
+}
+
+@section Head
+{
+    <meta name="robots" content="noindex, nofollow"/>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+}
+
+@section BeforeGDSContent
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">
+                @ViewBag.Title
+            </h1>
+        </div>
+    </div>
+}
+<p class="govuk-body">
+    Try again later.
+</p>

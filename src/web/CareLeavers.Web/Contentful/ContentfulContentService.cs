@@ -58,6 +58,11 @@ public class ContentfulContentService : IContentService
 
     public async Task<List<SimplePage>> GetBreadcrumbs(string slug, bool includeHome = true)
     {
+        if (slug == null)
+        {
+            return [];
+        }
+        
         // Get homepage slug
         var home = (await GetConfiguration())?.HomePage;
         var homePage = new SimplePage()
@@ -67,6 +72,8 @@ public class ContentfulContentService : IContentService
             Slug = home.Slug,
             Parent = null
         };
+        
+        
         
         // Get site hierarchy
         var hierarchy = await GetSiteHierarchy();

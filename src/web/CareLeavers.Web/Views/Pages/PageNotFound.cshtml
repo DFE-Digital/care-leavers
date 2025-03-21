@@ -1,0 +1,42 @@
+@using CareLeavers.Web.Configuration
+@model CareLeavers.Web.Models.ViewModels.CookiePolicyModel
+
+@inject IContentfulConfiguration ContentfulConfiguration
+
+@{
+    ViewBag.Title = "Page not found";
+    Layout = "_Layout";
+
+    var config = await ContentfulConfiguration.GetConfiguration();
+    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
+}
+
+@section Head
+{
+    <meta name="robots" content="noindex, nofollow"/>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+}
+
+@section BeforeGDSContent
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">
+                @ViewBag.Title
+            </h1>
+        </div>
+    </div>
+}
+<p class="govuk-body">
+    If you typed the web address, check it is correct.
+</p>
+<p class="govuk-body">
+    If you pasted the web address, check you copied the entire address.
+</p>
+<p class="govuk-body">
+    If the web address is correct or you selected a link or button, visit 
+    <a href="https://www.childrenscommissioner.gov.uk/help-at-hand" class="govuk-link">Help at Hand</a> 
+    to get help and support about being in care or if you’re a care leaver.
+</p>

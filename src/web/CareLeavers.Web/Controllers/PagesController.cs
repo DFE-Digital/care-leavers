@@ -30,6 +30,24 @@ public class PagesController : Controller
         return View(vm);
     }
     
+    [HttpGet("{languageCode}/pages/error")]
+    [HttpPost("{languageCode}/pages/error")]
+    public IActionResult Error(int statusCode, string? languageCode)
+    {
+        if (statusCode == 404)
+        {
+            return View("PageNotFound");
+        }
+        return View();
+    }
+    
+    [HttpGet("{languageCode}/pages/page-not-found")]
+    [Translation(HardcodedSlug="pages/page-not-found")]
+    public IActionResult PageNotFound()
+    {
+        return View();
+    }
+    
     [HttpPost("/pages/cookie-policy")]
     public IActionResult PostCookiePolicy(
         [FromForm] CookiePolicyModel cookiePolicyModel,
