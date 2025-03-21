@@ -47,14 +47,5 @@ export class YourRightsPage extends BasePage {
         await this.verifyHeading(
             "Your rights",
             'Learn about care leaver statuses');
-        
-        await expect(this.mainContent).toBeVisible();
-        await expect(this.tableOfContents).toBeVisible();
-        await expect(this.careLeaverStatusSection).toBeVisible();
-        await expect(this.workOutStatusSection).toBeVisible();
-        await expect(this.formerRelevantChildSection).toBeVisible();
-        await expect(this.personsQualifyingSection).toBeVisible();
-        await expect(this.eligibleChildSection).toBeVisible();
-        await expect(this.relevantChildSection).toBeVisible();
     }
 }

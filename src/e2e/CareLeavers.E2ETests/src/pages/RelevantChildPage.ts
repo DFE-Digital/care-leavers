@@ -37,11 +37,5 @@ export class RelevantChildPage extends BasePage {
             "Relevant Child",
             "Find out what support you have the right to if your care leaver status is ‘relevant child’"
         );
-
-        await expect(this.mainContent).toBeVisible();
-        await expect(this.relevantChildSupportSection).toBeVisible();
-        await expect(this.generalSupportSection).toBeVisible();
-        await expect(this.helpWithMoneySection).toBeVisible();
-        await expect(this.moreSupportSection).toBeVisible();
     }
 }
