@@ -7,7 +7,9 @@
     var block = await ContentService.Hydrate(Model);
 }
 
-    @foreach (var content in block.Entries)
-    {
+<div class="govuk-grid-row">
+     @foreach (var content in block.Entries)
+     {
         <partial name="RichContent/Content" model="@content"/>
     }
+</div>
