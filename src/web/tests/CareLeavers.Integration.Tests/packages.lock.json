@@ -147,14 +147,6 @@
           "Newtonsoft.Json": "13.0.1"
         }
       },
-      "GovUk.Frontend.AspNetCore": {
-        "type": "Transitive",
-        "resolved": "2.8.0",
-        "contentHash": "8G8UExGAwAqrSknxrm2YOph9AaDgcAJHEYC4sOzc5bV6NStjpPHX5tiU++JvaHqp9LwPVk3nr0u+s/ed20QBWg==",
-        "dependencies": {
-          "Microsoft.Extensions.FileProviders.Embedded": "8.0.11"
-        }
-      },
       "HtmlAgilityPack": {
         "type": "Transitive",
         "resolved": "1.12.0",
@@ -730,14 +722,6 @@
         "contentHash": "Az/RxWB+UlyVN/TvQFaGXx8XAXVZN5WQnnuJOsjwBzghSJc1i8zqNjIypPHOedcuIXs2XSWgOSL6YQ3BlCnoJA==",
         "dependencies": {
           "Microsoft.Extensions.FileProviders.Abstractions": "2.2.0"
-        }
-      },
-      "Microsoft.Extensions.FileProviders.Embedded": {
-        "type": "Transitive",
-        "resolved": "8.0.11",
-        "contentHash": "1tn+c7d628+dASqo0UezdeWdKrEpp2XA376MUkr4nFYDj295iPWeWOV8rOvgR0Gma1xfOEjNJur1QvS6AVnjng==",
-        "dependencies": {
-          "Microsoft.Extensions.FileProviders.Abstractions": "8.0.0"
         }
       },
       "Microsoft.Extensions.FileProviders.Physical": {
@@ -2340,7 +2324,6 @@
         "dependencies": {
           "Azure.AI.Translation.Text": "[1.0.0, )",
           "Azure.Monitor.OpenTelemetry.AspNetCore": "[1.2.0, )",
-          "GovUk.Frontend.AspNetCore": "[2.8.0, )",
           "HtmlAgilityPack": "[1.12.0, )",
           "Joonasw.AspNetCore.SecurityHeaders": "[5.0.0, )",
           "Microsoft.Extensions.Caching.StackExchangeRedis": "[8.0.14, )",

@@ -1,8 +1,6 @@
 ﻿@using CareLeavers.Web.Configuration
 @using CareLeavers.Web.Models.Content
 @using CareLeavers.Web.Models.ViewModels
-@using GovUk.Frontend.AspNetCore
-@using GovUk.Frontend.AspNetCore.TagHelpers
 @using Joonasw.AspNetCore.SecurityHeaders.Csp
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.Extensions.Options
@@ -31,7 +29,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Support for care leavers</title>
     <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/assets/images/favicon.svg"/>
-    @Html.GovUkFrontendStyleImports(appendVersion: true)
+    <link rel="stylesheet" href="~/css/govuk-frontend.min.css" asp-append-version="@scriptConfig.AddCssVersion">
     <link rel="stylesheet" href="~/css/dfefrontend.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="stylesheet" href="~/css/application.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="stylesheet" href="~/css/metadata.css" asp-append-version="@scriptConfig.AddCssVersion"/>
@@ -43,7 +41,9 @@
 </head>
 
 <body class="govuk-template__body">
-@Html.GovUkFrontendJsEnabledScript(CspNonceService.GetNonce())
+<script asp-add-nonce="true">
+    document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
+</script>
 <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 @{
     await Html.RenderPartialAsync("_Header", configViewModel);
@@ -84,7 +84,10 @@
 }
 
 @await RenderSectionAsync("Scripts", false)
-@Html.GovUkFrontendScriptImports(CspNonceService.GetNonce(), true)
+<script asp-add-nonce="true" type="module">
+    import { initAll } from '/js/govuk-frontend.min.js'
+    initAll()
+</script>
 </body>
 
 </html>
