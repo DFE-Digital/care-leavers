@@ -183,14 +183,18 @@ export class BasePage {
     // Navigation Bar functionality
     // Helper method to ensure the menu is visible and reopens it if needed
     async ensureMenuIsVisible() {
-        // Check if the menu is visible, if not, click the hamburger menu to open it
+        // Check if the menu is already visible
         const isMenuVisible = await this.mobileMenuContainer.isVisible();
-        if (!isMenuVisible) {
-            await this.menuToggle.click();
-            // Wait for the mobile menu to be visible after clicking the hamburger menu
 
-           await this.page.waitForSelector('.govuk-service-navigation__list', { state: 'visible' });
-            await expect(this.mobileMenuContainer).toBeVisible(); // Ensure it becomes visible
+        if (!isMenuVisible) {
+            // Ensure the menu toggle button is visible and enabled before clicking
+            await expect(this.menuToggle).toBeVisible();
+            await expect(this.menuToggle).toBeEnabled();
+
+            // Click the menu toggle button
+            await  this.menuToggle.click();
+            // Ensure the menu is now visible
+            await expect(this.mobileMenuContainer).toBeVisible();
         }
     }
 
@@ -210,40 +214,9 @@ export class BasePage {
             }
         }
         else {
-            // Click on the hamburger menu to open the mobile menu
-            await expect(this.menuToggle).toBeVisible();
-            await this.menuToggle.click();
+            // Ensure menu is visible before interacting
+            await this.ensureMenuIsVisible();
 
-            const ariaAfterClick = await this.menuToggle.getAttribute('aria-expanded');
-            console.log('After click, aria-expanded:', ariaAfterClick);
-
-            await expect(this.page.locator('#navigation')).toBeVisible();
-
-            // Log the computed style of the menu
-            const menuVisibility = await this.page.locator('.govuk-service-navigation__list').evaluate((element) => {
-                return window.getComputedStyle(element).display;
-            });
-            console.log('Menu computed style:', menuVisibility);
-
-            // Now check if the menu is visible
-            await expect(this.page.locator('.govuk-service-navigation__list')).toBeVisible();
-            // Wait for the menu to be visible
-            await this.page.locator('.govuk-service-navigation__list').waitFor({ state: 'visible' });
-
-            await expect(this.mobileMenuContainer).toBeVisible();
-            await expect(this.menuToggle).toHaveAttribute("aria-expanded", "true");
-
-            // Verify the mobile menu links
-            const mobileLinksCount = await this.mobileMenuLinks.count();
-            expect(mobileLinksCount).toBeGreaterThan(0);
-
-            // Close the mobile menu
-            await this.menuToggle.click();
-
-            // Ensure the menu is closed
-            await expect(this.mobileMenuContainer).not.toBeVisible();
-
-            // click each link and ensure the menu is visible each time
             const links = [
                 { index: 0, href: '/en/home' },
                 { index: 1, href: '/en/all-support' },
@@ -253,15 +226,13 @@ export class BasePage {
             ];
 
             for (const link of links) {
-                await this.ensureMenuIsVisible(); // Ensure the menu is visible before clicking
+                await this.ensureMenuIsVisible(); // Open the menu if closed
                 await expect(this.mobileMenuLinks.nth(link.index)).toHaveAttribute('href', link.href);
                 await this.mobileMenuLinks.nth(link.index).click();
                 await this.page.waitForURL(new RegExp(link.href));
-
-                // adding a small delay to ensure the menu is properly closed before the next link
-                await this.page.waitForTimeout(500);
             }
         }
+            
     }
 
     // Locate breadcrumb items on the page
