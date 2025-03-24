@@ -44,15 +44,6 @@
           "contentful.csharp": "8.3.0"
         }
       },
-      "GovUk.Frontend.AspNetCore": {
-        "type": "Direct",
-        "requested": "[2.8.0, )",
-        "resolved": "2.8.0",
-        "contentHash": "8G8UExGAwAqrSknxrm2YOph9AaDgcAJHEYC4sOzc5bV6NStjpPHX5tiU++JvaHqp9LwPVk3nr0u+s/ed20QBWg==",
-        "dependencies": {
-          "Microsoft.Extensions.FileProviders.Embedded": "8.0.11"
-        }
-      },
       "HtmlAgilityPack": {
         "type": "Direct",
         "requested": "[1.12.0, )",
@@ -623,14 +614,6 @@
         "contentHash": "Az/RxWB+UlyVN/TvQFaGXx8XAXVZN5WQnnuJOsjwBzghSJc1i8zqNjIypPHOedcuIXs2XSWgOSL6YQ3BlCnoJA==",
         "dependencies": {
           "Microsoft.Extensions.FileProviders.Abstractions": "2.2.0"
-        }
-      },
-      "Microsoft.Extensions.FileProviders.Embedded": {
-        "type": "Transitive",
-        "resolved": "8.0.11",
-        "contentHash": "1tn+c7d628+dASqo0UezdeWdKrEpp2XA376MUkr4nFYDj295iPWeWOV8rOvgR0Gma1xfOEjNJur1QvS6AVnjng==",
-        "dependencies": {
-          "Microsoft.Extensions.FileProviders.Abstractions": "8.0.0"
         }
       },
       "Microsoft.Extensions.Hosting.Abstractions": {
