@@ -48,20 +48,6 @@
         const menuToggle = document.querySelector('.govuk-js-service-navigation-toggle');
         const navigation = document.getElementById('navigation');
 
-        function updateMenuVisibility() {
-            const screenWidth = window.innerWidth;
-
-            if (screenWidth < 688) { // 43em = 688px
-                menuToggle.removeAttribute('hidden');
-            } else {
-                menuToggle.setAttribute('hidden', '');
-            }
-        }
-
-        // Ensure toggle button is visible at the correct screen size
-        window.addEventListener('resize', updateMenuVisibility);
-        updateMenuVisibility(); // Run on page load
-
         if (menuToggle && navigation) {
             menuToggle.addEventListener('click', function () {
                 const isExpanded = this.getAttribute('aria-expanded') === 'true';
