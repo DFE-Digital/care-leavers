@@ -72,11 +72,10 @@ export class BasePage {
         //Locators for Navigation Bar
         this.navLinkHome = page.locator('a.govuk-service-navigation__link', { hasText: "Home" });
         this.navLinkAllSupport = page.locator('a.govuk-service-navigation__link', { hasText: "All support" });
-        //update locators 
-        this.navLinkYourRights = page.locator('[role="link"][aria-label="Your rights"]');
-        this.navLinkLeavingCareGuides = page.locator('[role="link"][aria-label="Leaving care guides"]');
-        this.navLinkHelplines = page.locator('[role="link"][aria-label="Helplines"]');
-
+        this.navLinkYourRights = page.locator('a.govuk-service-navigation__link', { hasText: "Your rights" });
+        this.navLinkLeavingCareGuides = page.locator('a.govuk-service-navigation__link', { hasText: "Leaving care guides" });
+        this.navLinkHelplines = page.locator('a.govuk-service-navigation__link', { hasText: "Helplines" });
+        
         //Locators for Navigation Bar-Mobile Menu
         this.menuToggle = page.locator('.govuk-js-service-navigation-toggle');
         this.mobileMenuContainer = page.locator('#navigation');
@@ -188,6 +187,9 @@ export class BasePage {
         const isMenuVisible = await this.mobileMenuContainer.isVisible();
         if (!isMenuVisible) {
             await this.menuToggle.click();
+            // Wait for the mobile menu to be visible after clicking the hamburger menu
+
+           await this.page.waitForSelector('.govuk-service-navigation__list', { state: 'visible' });
             await expect(this.mobileMenuContainer).toBeVisible(); // Ensure it becomes visible
         }
     }
@@ -198,7 +200,7 @@ export class BasePage {
             // Verify desktop navigation is visible
             await expect(this.page.locator('#header-navigation')).toBeVisible();
 
-            const navLinks = [this.navLinkHome, this.navLinkAllSupport /* add other nav links here */];
+            const navLinks = [this.navLinkHome, this.navLinkAllSupport, this.navLinkYourRights, this.navLinkLeavingCareGuides, this.navLinkHelplines];
             for (const link of navLinks) {
                 const href = await link.getAttribute('href');
                 if (!href) throw new Error('Link does not have an href attribute');
@@ -212,7 +214,22 @@ export class BasePage {
             await expect(this.menuToggle).toBeVisible();
             await this.menuToggle.click();
 
-            // Wait and verify that the mobile menu is visible
+            const ariaAfterClick = await this.menuToggle.getAttribute('aria-expanded');
+            console.log('After click, aria-expanded:', ariaAfterClick);
+
+            await expect(this.page.locator('#navigation')).toBeVisible();
+
+            // Log the computed style of the menu
+            const menuVisibility = await this.page.locator('.govuk-service-navigation__list').evaluate((element) => {
+                return window.getComputedStyle(element).display;
+            });
+            console.log('Menu computed style:', menuVisibility);
+
+            // Now check if the menu is visible
+            await expect(this.page.locator('.govuk-service-navigation__list')).toBeVisible();
+            // Wait for the menu to be visible
+            await this.page.locator('.govuk-service-navigation__list').waitFor({ state: 'visible' });
+
             await expect(this.mobileMenuContainer).toBeVisible();
             await expect(this.menuToggle).toHaveAttribute("aria-expanded", "true");
 
@@ -230,9 +247,9 @@ export class BasePage {
             const links = [
                 { index: 0, href: '/en/home' },
                 { index: 1, href: '/en/all-support' },
-                /*{ index: 2, href: '/en/status' },
-                { index: 3, href: '/en/guides-advice' },
-                { index: 4, href: '/en/helplines' },*/
+                { index: 2, href: '/en/your-rights' },
+                { index: 3, href: '/en/leaving-care-guides' },
+                { index: 4, href: '/en/helplines' },
             ];
 
             for (const link of links) {
@@ -240,6 +257,9 @@ export class BasePage {
                 await expect(this.mobileMenuLinks.nth(link.index)).toHaveAttribute('href', link.href);
                 await this.mobileMenuLinks.nth(link.index).click();
                 await this.page.waitForURL(new RegExp(link.href));
+
+                // adding a small delay to ensure the menu is properly closed before the next link
+                await this.page.waitForTimeout(500);
             }
         }
     }
