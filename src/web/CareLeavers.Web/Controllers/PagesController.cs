@@ -36,7 +36,7 @@ public class PagesController : Controller
     {
         if (statusCode == 404)
         {
-            return View("PageNotFound");
+            return PageNotFound();
         }
         return View();
     }
@@ -45,7 +45,10 @@ public class PagesController : Controller
     [Translation(HardcodedSlug="pages/page-not-found")]
     public IActionResult PageNotFound()
     {
-        return View();
+        Response.StatusCode = StatusCodes.Status404NotFound;
+        var result = View("PageNotFound");
+        result.StatusCode = StatusCodes.Status404NotFound;
+        return result;
     }
     
     [HttpPost("/pages/cookie-policy")]

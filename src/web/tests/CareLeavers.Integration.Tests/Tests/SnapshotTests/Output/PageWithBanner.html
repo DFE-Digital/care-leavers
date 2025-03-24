@@ -36,9 +36,9 @@
 		<meta property="og:site_name" content="Care leavers">
 		<meta property="og:title" content="Work and employment support">
 		<meta property="og:type" content="website">
-		<meta property="og:url" content="https://localhost/en/work-and-employment-support?language=en">
+		<meta property="og:url" content="https://localhost/en/home?language=en">
 		<meta property="og:locale" content="en_GB">
-		<link rel="canonical" href="https://localhost/en/work-and-employment-support?language=en">
+		<link rel="canonical" href="https://localhost/en/home?language=en">
 	</head>
 	<body class="govuk-template__body">
 		<script nonce="mock-nonce">
@@ -70,11 +70,6 @@
 		</div>
 		<header class="dfe-header" role="banner">
 			<div class="dfe-width-container dfe-header__container">
-				<div class="dfe-header__menu">
-					<button type="button" class="dfe-header__menu-toggle" id="menu-toggle" aria-controls="header-navigation" aria-expanded="false">
-						Menu
-					</button>
-				</div>
 				<div class="dfe-header__logo">
 					<a class="dfe-header__link dfe-header__link--service " href="/" aria-label="Care leavers homepage">
 						<img src="/assets/dfe-logo.png" class="dfe-logo" alt="Care leavers homepage">
@@ -87,37 +82,33 @@
 			<div class="dfe-width-container dfe-header__service-name">
 				Care leavers
 			</div>
-			<nav class="dfe-header__navigation" id="header-navigation" role="navigation" aria-label="Primary navigation" aria-labelledby="label-navigation">
-				<div class="dfe-width-container">
-					<p class="dfe-header__navigation-title">
-						<span id="label-navigation">Menu</span>
-						<button class="dfe-header__navigation-close" id="close-menu">
-							<svg class="dfe-icon dfe-icon__close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="27" height="27">
-								<path d="M13.41 12l5.3-5.29a1 1 0 1 0-1.42-1.42L12 10.59l-5.29-5.3a1 1 0 0 0-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l5.29-5.3 5.29 5.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"></path>
-							</svg>
-							<span class="govuk-visually-hidden">Close menu</span>
-						</button>
-					</p>
-					<ul class="dfe-header__navigation-list">
-					</ul>
+			<nav class="govuk-service-navigation" data-module="govuk-service-navigation" id="header-navigation">
+				<div class="govuk-width-container">
+					<div class="govuk-service-navigation__container">
+						<nav aria-label="Menu" class="govuk-service-navigation__wrapper">
+							<button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle" aria-controls="navigation" hidden="">
+								Menu
+							</button>
+							<ul class="govuk-service-navigation__list" id="navigation">
+							</ul>
+						</nav>
+					</div>
 				</div>
 			</nav>
 			<script nonce="mock-nonce">
     document.addEventListener('DOMContentLoaded', function () {
-        const menuToggle = document.getElementById('menu-toggle');
-        const menuClose = document.getElementById('close-menu');
-        const navigation = document.getElementById('header-navigation');
+        const menuToggle = document.querySelector('.govuk-js-service-navigation-toggle');
+        const navigation = document.getElementById('navigation');
 
-        menuToggle.addEventListener('click', function () {
-            const isOpen = navigation.classList.toggle('js-show');
-            menuToggle.setAttribute('aria-expanded', isOpen.toString());
-        });
-
-        menuClose.addEventListener('click', function () {
-            navigation.classList.remove('js-show');
-            menuToggle.setAttribute('aria-expanded', 'false');
-        });
+        if (menuToggle && navigation) {
+            menuToggle.addEventListener('click', function () {
+                const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', !isExpanded);
+                navigation.style.display = isExpanded ? 'none' : 'flex';
+            });
+        }
     });
+
 
 			</script>
 		</header>

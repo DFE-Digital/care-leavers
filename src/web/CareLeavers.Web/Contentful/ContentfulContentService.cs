@@ -44,9 +44,14 @@ public class ContentfulContentService : IContentService
                 .Limit(1);
 
             var pageEntries = await _contentfulClient.GetEntries(pages);
-
             return pageEntries.FirstOrDefault();
         });
+
+        // If we get a page, but the slug doesn't match (used in tests), return null so we trigger our 404s
+        if (page?.Slug != null && !(page.Slug).Equals(slug, StringComparison.InvariantCultureIgnoreCase))
+        {
+            page = null;
+        }
 
         if (page != null)
         {
@@ -58,7 +63,7 @@ public class ContentfulContentService : IContentService
 
     public async Task<List<SimplePage>> GetBreadcrumbs(string slug, bool includeHome = true)
     {
-        if (slug == null)
+        if (string.IsNullOrEmpty(slug))
         {
             return [];
         }
@@ -67,9 +72,9 @@ public class ContentfulContentService : IContentService
         var home = (await GetConfiguration())?.HomePage;
         var homePage = new SimplePage()
         {
-            Id = home.Sys.Id,
-            Title = home.Title,
-            Slug = home.Slug,
+            Id = home?.Sys.Id,
+            Title = home?.Title,
+            Slug = home?.Slug,
             Parent = null
         };
         
@@ -81,28 +86,31 @@ public class ContentfulContentService : IContentService
         // Keep backing up until the homepage
         List<SimplePage> breadcrumbs = [];
 
-        var currentPage = hierarchy.Find(p => p.Slug == slug);;
-        if (currentPage == null)
+        if (hierarchy != null)
         {
-            return breadcrumbs;
-        }
-        
-        var parentPage = hierarchy.Find(p => p.Slug == currentPage.Parent);
-
-        while (parentPage != null)
-        {
-            if (!breadcrumbs.Exists(b => b.Id == parentPage.Id))
+            var currentPage = hierarchy.Find(p => p.Slug == slug);;
+            if (currentPage == null)
             {
-                if (includeHome || parentPage.Id != homePage.Id)
-                    breadcrumbs.Add(parentPage);
+                return breadcrumbs;
+            }
+        
+            var parentPage = hierarchy.Find(p => p.Slug == currentPage.Parent);
+
+            while (parentPage != null)
+            {
+                if (!breadcrumbs.Exists(b => b.Id == parentPage.Id))
+                {
+                    if (includeHome || parentPage.Id != homePage.Id)
+                        breadcrumbs.Add(parentPage);
+                }
+
+                parentPage = hierarchy.Find(p => p.Slug == parentPage.Parent);
             }
 
-            parentPage = hierarchy.Find(p => p.Slug == parentPage.Parent);
-        }
-
-        if (((parentPage == null) || breadcrumbs.Count == 0) && includeHome && !breadcrumbs.Exists(b => b.Id == homePage.Id))
-        {
-            breadcrumbs.Add(homePage);
+            if (((parentPage == null) || breadcrumbs.Count == 0) && includeHome && !breadcrumbs.Exists(b => b.Id == homePage.Id))
+            {
+                breadcrumbs.Add(homePage);
+            }
         }
 
         // Always set homepage title to home for breadcrumbs
