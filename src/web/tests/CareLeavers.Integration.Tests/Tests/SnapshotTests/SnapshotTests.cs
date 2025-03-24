@@ -86,7 +86,7 @@ public class SnapshotTests
 
         var client = WebFixture.GetClient();
         
-        var response = await client.GetStringAsync("");
+        var response = await client.GetStringAsync($"");
 
         var parser = new HtmlParser();
         var doc = parser.ParseDocument(response);
