@@ -57,7 +57,7 @@ public class PublishContentfulWebhook(
                 logger.LogError(ex, "Unable to purge page with slug {slug}", pageEntry.Slug);
             }
             
-            if (distributedCache.TryGetValue($"content:{pageEntry.Slug}:languages", out List<string>? translations))
+            if (distributedCache.TryGetValue($"content:{pageEntry.Slug}:languages", out HashSet<string>? translations))
             {
                 foreach (var translation in translations ?? [])
                 {
@@ -161,7 +161,7 @@ public class PublishContentfulWebhook(
                     logger.LogError(ex, "Unable to purge page with slug {slug}", pageEntry.Slug);
                 }
 
-                if (distributedCache.TryGetValue($"content:{pageEntry.Slug}:languages", out List<string>? translations))
+                if (distributedCache.TryGetValue($"content:{pageEntry.Slug}:languages", out HashSet<string>? translations))
                 {
                     foreach (var translation in translations ?? [])
                     {

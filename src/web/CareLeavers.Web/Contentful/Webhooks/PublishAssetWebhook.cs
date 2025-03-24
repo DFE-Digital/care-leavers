@@ -40,7 +40,7 @@ public class PublishAssetWebhook(
         {
             await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
                 
-            if (distributedCache.TryGetValue($"content:{pageEntry.Slug}:languages", out List<string>? translations))
+            if (distributedCache.TryGetValue($"content:{pageEntry.Slug}:languages", out HashSet<string>? translations))
             {
                 foreach (var translation in translations ?? [])
                 {
