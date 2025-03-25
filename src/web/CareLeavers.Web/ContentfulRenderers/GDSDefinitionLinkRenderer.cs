@@ -48,7 +48,7 @@ public class GDSDefinitionLinkRenderer() : IContentRenderer
             var anchor = TagBuilder.CreateSanitizedId($"definition-{link.Definition.Title}", "-");
             
             // Set link
-            tb.Attributes["href"] = $"/{slug}#{anchor}";
+            tb.Attributes["href"] = $"{slug}#{anchor}";
 
             // Use the title from the link
             tb.InnerHtml.Append(link.Title);
