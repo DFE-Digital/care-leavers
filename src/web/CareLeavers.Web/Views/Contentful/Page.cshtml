@@ -30,7 +30,7 @@
                                          action: "GetContent",
                                          controller: "Contentful",
                                          protocol: "https",
-                                         values: new { slug = Model.Slug, language = languageCode }
+                                         values: new { slug = Model.Slug, languageCode }
                                      )"/>
     @if (Model.SeoImage != null)
     {
@@ -50,7 +50,7 @@
                                     action: "GetContent",
                                     controller: "Contentful",
                                     protocol: "https",
-                                    values: new { slug = Model.Slug, language = "en" }
+                                    values: new { slug = Model.Slug, languageCode = "en" }
                                 )"/>
 
 }
