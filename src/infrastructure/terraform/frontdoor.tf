@@ -126,20 +126,6 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
     }
   }
 
-  /*
-  managed_rule {
-    type    = "Microsoft_DefaultRuleSet"
-    version = "2.1"
-    action  = "Block"
-  }
-
-  managed_rule {
-    type    = "Microsoft_BotManagerRuleSet"
-    version = "1.1"
-    action  = "Block"
-  }
-  */
-
   custom_rule {
     name     = "allowcontentful"
     enabled  = true
@@ -167,7 +153,23 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       selector       = "UserAgent"
       operator       = "RegEx"
       transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["aolbuild|baidu|bingbot|bingpreview|msnbot|duckduckgo|adsbot-google|googlebot|mediapartners-google|teoma|slurp|yandex"]
+      match_values   = ["aolbuild|baidu|bingbot|bingpreview|msnbot|duckduckgo|adsbot-google|googlebot|mediapartners-google|teoma|slurp|yandex|yahoo"]
+    }
+  }
+
+  custom_rule {
+    name     = "allowsocialmedia"
+    enabled  = true
+    action   = "Allow"
+    type     = "MatchRule"
+    priority = 300
+
+    match_condition {
+      match_variable = "RequestHeader"
+      selector       = "UserAgent"
+      operator       = "RegEx"
+      transforms     = ["Lowercase", "UrlDecode"]
+      match_values   = ["facebookexternalhit|facebookscraper|twitterbot|meta-externalagent|meta-externalfetcher|microsoftpreview|linkedinbot|pinterest|redditbot|slack|telegrambot|mastadon"]
     }
   }
 
@@ -176,7 +178,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
     enabled  = true
     action   = "Block"
     type     = "MatchRule"
-    priority = 300
+    priority = 400
 
     match_condition {
       match_variable     = "SocketAddr"
