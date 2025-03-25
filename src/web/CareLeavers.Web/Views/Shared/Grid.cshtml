@@ -8,6 +8,7 @@
 
 @{
     var grid = await ContentService.Hydrate(Model);
+    grid ??= new Grid();
 }
 
 @{

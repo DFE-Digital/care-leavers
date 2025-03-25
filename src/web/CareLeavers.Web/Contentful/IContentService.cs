@@ -15,7 +15,7 @@ public interface IContentService
 
     Task<Dictionary<string, string>> GetSiteSlugs();
 
-    Task<List<SimplePage>> GetBreadcrumbs(string slug, bool includeHome = true);
+    Task<List<SimplePage>> GetBreadcrumbs(string? slug, bool includeHome = true);
     
     Task<RichContentBlock?> Hydrate(RichContentBlock? entity);
     

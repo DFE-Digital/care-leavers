@@ -61,7 +61,7 @@ public class ContentfulContentService : IContentService
         return page;
     }
 
-    public async Task<List<SimplePage>> GetBreadcrumbs(string slug, bool includeHome = true)
+    public async Task<List<SimplePage>> GetBreadcrumbs(string? slug, bool includeHome = true)
     {
         if (string.IsNullOrEmpty(slug))
         {
@@ -232,7 +232,7 @@ public class ContentfulContentService : IContentService
 
             return pageEntries
                 .Where(x => x.Sys.Id != null && x.Slug != null)
-                .Select(x => new KeyValuePair<string,string>(x.Sys.Id, x.Slug))
+                .Select(x => new KeyValuePair<string, string>(x.Sys.Id, x.Slug ?? string.Empty))
                 .ToDictionary();
         }) ?? [];
     }

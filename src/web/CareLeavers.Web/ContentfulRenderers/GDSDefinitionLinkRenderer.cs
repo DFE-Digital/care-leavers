@@ -21,7 +21,7 @@ public class GDSDefinitionLinkRenderer() : IContentRenderer
 
     }
 
-    public async Task<string> RenderAsync(IContent content)
+    public Task<string> RenderAsync(IContent content)
     {
         var tb = new TagBuilder("a");
         tb.AddCssClass("govuk-link");
@@ -55,7 +55,7 @@ public class GDSDefinitionLinkRenderer() : IContentRenderer
             
         }
 
-        return tb.HasInnerHtml ? tb.ToHtmlString() : string.Empty;
+        return Task.FromResult(tb.HasInnerHtml ? tb.ToHtmlString() : string.Empty);
     }
 
     public int Order { get; set; } = 10;

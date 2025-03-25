@@ -6,9 +6,9 @@
 @{
     var banner = await ContentService.Hydrate(Model);
 
-    string? link = banner?.Link.Slug;
-    string cssClass = "banner";
-    string bgClass = "split-panel";
+    var link = banner?.Link?.Slug;
+    var cssClass = "banner";
+    var bgClass = "split-panel";
 
     switch (banner?.Background)
     {

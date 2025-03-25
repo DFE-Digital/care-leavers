@@ -31,13 +31,12 @@ public class GDSLinkRenderer(ContentRendererCollection rendererCollection) : ICo
         var tb = new TagBuilder("a");
         tb.AddCssClass("govuk-link");
         
-        if (content is Hyperlink)
+        if (content is Hyperlink hyperLink)
         {
-            var link = (content as Hyperlink);
-            tb.Attributes["href"] = link.Data.Uri;
-            if (link.Content.Any())
+            tb.Attributes["href"] = hyperLink.Data.Uri;
+            if (hyperLink.Content.Any())
             {
-                foreach (var subContent in link.Content)
+                foreach (var subContent in hyperLink.Content)
                 {
                     var renderer = rendererCollection.GetRendererForContent(subContent);
                     tb.InnerHtml.AppendHtml(await renderer.RenderAsync(subContent));
@@ -45,7 +44,7 @@ public class GDSLinkRenderer(ContentRendererCollection rendererCollection) : ICo
             }
             else
             {
-                tb.InnerHtml.Append(link.Data.Title);
+                tb.InnerHtml.Append(hyperLink.Data.Title);
             }
         }
         else
