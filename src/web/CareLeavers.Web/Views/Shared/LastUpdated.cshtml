@@ -13,11 +13,11 @@
                             <a class="govuk-link" href="https://www.gov.uk/government/organisations/department-for-education">Department for Education</a>
 
                         </dd>
-                        <dt class="gem-c-metadata__term">Published</dt>
-                        <dd class="gem-c-metadata__definition">@Model.Sys.CreatedAt?.ToString("dd MMMM yyyy", DateTimeFormatInfo.InvariantInfo)</dd>
-                        <dt class="gem-c-metadata__term">Last updated</dt>
+                        <dt class="gem-c-metadata__term">Published:</dt>
+                        <dd class="gem-c-metadata__definition">@Model.Sys.CreatedAt?.ToString("d MMMM yyyy", DateTimeFormatInfo.InvariantInfo)</dd>
+                        <dt class="gem-c-metadata__term">Last updated:</dt>
                         <dd class="gem-c-metadata__definition">
-                            @Model.Sys.UpdatedAt?.ToString("dd MMMM yyyy", DateTimeFormatInfo.InvariantInfo)
+                            @Model.Sys.UpdatedAt?.ToString("d MMMM yyyy", DateTimeFormatInfo.InvariantInfo)
                         </dd>
                     </dl>
                 </div>
