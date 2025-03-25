@@ -1,14 +1,6 @@
-@using CareLeavers.Web.Configuration
-@model CareLeavers.Web.Models.ViewModels.CookiePolicyModel
-
-@inject IContentfulConfiguration ContentfulConfiguration
-
 @{
     ViewBag.Title = "Page not found";
     Layout = "_Layout";
-
-    var config = await ContentfulConfiguration.GetConfiguration();
-    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
 }
 
 @section Head

@@ -39,11 +39,21 @@
         <meta property="og:image:width" content="@Model.SeoImage.File.Details.Image.Width"/>
         <meta property="og:image:height" content="@Model.SeoImage.File.Details.Image.Height"/>
         <meta property="og:image:alt" content="@Model.SeoImage.Description"/>
+    } 
+    else if (config.DefaultSeoImage != null)
+    {
+        <meta property="og:image" content="@config.DefaultSeoImage.File.Url"/>
+        <meta property="og:image:type" content="@config.DefaultSeoImage.File.ContentType"/>
+        <meta property="og:image:width" content="@config.DefaultSeoImage.File.Details.Image.Width"/>
+        <meta property="og:image:height" content="@config.DefaultSeoImage.File.Details.Image.Height"/>
+        <meta property="og:image:alt" content="@config.DefaultSeoImage.Description"/>
     }
+    
     <meta property="og:locale" content="@(languageCode == "en" ? "en_GB" : languageCode)"/>
     @if (!string.IsNullOrEmpty(Model.SeoDescription))
     {
         <meta property="og:description" content="@Model.SeoDescription"/>
+        <meta name="description" content="@Model.SeoDescription"/>
     }
 
     <link rel="canonical" href="@Url.Action(

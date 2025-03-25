@@ -31,4 +31,6 @@ public class ContentfulConfigurationEntity : ContentfulContent
     public bool TranslationEnabled { get; set; } = false;
     
     public List<string> ExcludeFromTranslation { get; set; } = [];
+    
+    public Asset? DefaultSeoImage { get; set; }
 }
