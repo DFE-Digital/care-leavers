@@ -13,7 +13,6 @@ using Contentful.AspNetCore;
 using Contentful.AspNetCore.MiddleWare;
 using Contentful.Core;
 using Contentful.Core.Models;
-using GovUk.Frontend.AspNetCore;
 using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Caching.Distributed;
@@ -57,12 +56,6 @@ try
     #region Controllers
     
     builder.Services.AddControllersWithViews();
-    
-    #endregion
-    
-    #region GOV.UK front end
-    
-    builder.Services.AddGovUkFrontend();
     
     #endregion
     

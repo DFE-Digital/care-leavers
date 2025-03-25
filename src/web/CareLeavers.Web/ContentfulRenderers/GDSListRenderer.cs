@@ -1,5 +1,5 @@
+using CareLeavers.Web.Contentful;
 using Contentful.Core.Models;
-using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CareLeavers.Web.ContentfulRenderers;

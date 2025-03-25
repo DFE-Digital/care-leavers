@@ -10,6 +10,21 @@ let paths = {
     dist: 'wwwroot/'
 }
 
+gulp.task('govuk-assets', function() {
+    return gulp.src('node_modules/govuk-frontend/dist/govuk/assets/**/*')
+        .pipe(gulp.dest(paths.dist + 'assets'));
+});
+
+gulp.task('govuk-js', function() {
+    return gulp.src('node_modules/govuk-frontend/dist/govuk/*.js', { sourcemaps: true })
+        .pipe(gulp.dest(paths.dist + 'js'));
+});
+
+gulp.task('govuk-css', function() {
+    return gulp.src('node_modules/govuk-frontend/dist/govuk/*.css', { sourcemaps: true })
+        .pipe(gulp.dest(paths.dist + 'css'));
+});
+
 gulp.task('dfe-js', function() {
     return gulp.src('node_modules/dfe-frontend/dist/*.js')
         .pipe(gulp.dest(paths.dist + 'js'));
@@ -40,6 +55,9 @@ gulp.task("images", function() {
 
 gulp.task("dev",
     gulp.series(
+        "govuk-assets",
+        "govuk-js",
+        "govuk-css",
         "dfe-js",
         "dfe-css",
         "dfe-assets",
