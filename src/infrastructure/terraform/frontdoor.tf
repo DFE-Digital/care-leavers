@@ -189,7 +189,14 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
     }
     
     match_condition {
-      match_values = ["service-unavailable"]
+      match_values = [
+        "/pages/",
+        "/assets/",
+        "/css/",
+        "/js/",
+        "/sitemap",
+        "/robots.txt"
+      ]
       match_variable = "RequestUri"
       operator       = "Contains"
       negation_condition = true
