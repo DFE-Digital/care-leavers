@@ -47,6 +47,7 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group.id
   cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.frontdoor-web-origin.id]
+  cdn_frontdoor_rule_set_ids    = [azurerm_cdn_frontdoor_rule_set.security_redirects.id]
   enabled                       = true
 
   forwarding_protocol    = "MatchRequest"
@@ -84,6 +85,63 @@ resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy"
   }
 }
 
+resource "azurerm_cdn_frontdoor_rule_set" "security_redirects" {
+  name                     = "${var.environment_prefix}SecurityRedirects"
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
+}
+
+resource "azurerm_cdn_frontdoor_rule" "security_txt_rule" {
+  depends_on = [azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group, azurerm_cdn_frontdoor_origin.frontdoor-web-origin]
+
+  name                      = "securityTxtRedirect"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.security_redirects.id
+  order                     = 0
+  behavior_on_match         = "Continue"
+
+  conditions {
+    url_path_condition {
+      operator     = "BeginsWith"
+      match_values = [".well-known/security.txt", "security.txt"]
+      transforms   = ["Lowercase"]
+    }
+  }
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "PermanentRedirect"
+      redirect_protocol    = "Https"
+      destination_hostname = "vdp.security.education.gov.uk"
+      destination_path     = "/security.txt"
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "thanks_txt_rule" {
+  depends_on = [azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group, azurerm_cdn_frontdoor_origin.frontdoor-web-origin]
+
+  name                      = "thanksTxtRedirect"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.security_redirects.id
+  order                     = 1
+  behavior_on_match         = "Continue"
+
+  conditions {
+    url_path_condition {
+      operator     = "BeginsWith"
+      match_values = [".well-known/thanks.txt", "thanks.txt"]
+      transforms   = ["Lowercase"]
+    }
+  }
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "PermanentRedirect"
+      redirect_protocol    = "Https"
+      destination_hostname = "vdp.security.education.gov.uk"
+      destination_path     = "/thanks.txt"
+    }
+  }
+}
+
 resource "azurerm_cdn_frontdoor_custom_domain" "fd-custom-domain" {
   count                    = var.custom_domain != "" ? 1 : 0
   name                     = "${local.service_prefix}-fd-custom-domain"
@@ -107,7 +165,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   tags                = local.common_tags
   mode                = "Prevention"
   sku_name            = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name
-  redirect_url = "https://${var.custom_domain}/en/pages/service-unavailable"
+  redirect_url        = "https://${var.custom_domain}/en/pages/service-unavailable"
 
   dynamic "managed_rule" {
     for_each = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name == "Premium_AzureFrontDoor" ? [0] : []
@@ -200,7 +258,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       match_variable = "RequestUri"
       operator       = "Contains"
       negation_condition = true
-      transforms = ["Lowercase", "UrlDecode"]
+      transforms         = ["Lowercase", "UrlDecode"]
     }
   }
 }
