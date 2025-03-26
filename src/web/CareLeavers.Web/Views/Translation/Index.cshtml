@@ -1,8 +1,10 @@
+@using CareLeavers.Web.Configuration
 @model IEnumerable<CareLeavers.Web.Translation.TranslationLanguage>
-
+@inject IContentfulConfiguration ContentfulConfiguration
 @{
-    ViewBag.Title = "Choose a language";
+    ViewBag.Title = "Translate this website";
     Layout = "_Layout";
+    var config = await ContentfulConfiguration.GetConfiguration();
 }
 @section Head
 {
@@ -15,24 +17,42 @@
 @section BeforeGDSContent
 {
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-xl">
                 @ViewBag.Title
             </h1>
+            <gds-contentful-rich-text document="@config.TranslationHeader" larger-text="true"></gds-contentful-rich-text>
         </div>
     </div>
 }
 
-<ul class="govuk-list">
-@foreach (var translation in Model)
-{
-    <li>
-        @Html.ActionLink(
-            $"{translation.NativeName} ({translation.Name})", 
-            "Homepage", 
-            "Contentful", 
-    new { languageCode = translation.Code }, 
-    new { @class = "govuk-link", rel = "nofollow" })
-    </li>
+@{
+    var count = (double)Model.Count();
+    var columnSize = 1;
+    if (count > 0)
+    {
+        columnSize = (int)Math.Ceiling(count / 3d);
+    }
+    var languageLists = Model.Chunk(columnSize);
 }
-</ul>
+
+<div class="govuk-grid-row">
+    @foreach (var list in languageLists)
+    {
+        <div class="govuk-grid-column-one-third">
+            <ul class="govuk-list">
+                @foreach (var translation in list)
+                {
+                    <li>
+                        @Html.ActionLink(
+                            $"{translation.NativeName} ({translation.Name})",
+                            "Homepage",
+                            "Contentful",
+                            new { languageCode = translation.Code },
+                            new { @class = "govuk-link", rel = "nofollow" })
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+</div>

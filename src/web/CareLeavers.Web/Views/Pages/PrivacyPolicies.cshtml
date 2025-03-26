@@ -19,11 +19,16 @@
                                          action: "PrivacyPolicies",
                                          controller: "Pages",
                                          protocol: "https",
-                                         values: new { languageCode }
+                                         values: new { languageCode = "en" }
                                      )"/>
 
     <meta property="og:locale" content="en_GB"/>
-
+    <link rel="canonical" href="@Url.Action(
+                                    action: "PrivacyPolicies",
+                                    controller: "Pages",
+                                    protocol: "https",
+                                    values: new { languageCode = "en" }
+                                )"/>
 }
 
 @section BeforeGDSContent

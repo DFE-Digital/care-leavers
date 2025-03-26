@@ -23,36 +23,45 @@
 }
 @section Head
 {
-    <meta property="og:site_name" content="@config.ServiceName"/>
-    <meta property="og:title" content="@(!string.IsNullOrEmpty(Model.SeoTitle) ? Model.SeoTitle : Model.Title)"/>
     <meta property="og:type" content="website"/>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:site_name" content="@config.ServiceName"/>
+    <meta property="twitter:domain" content="@Url.ActionContext.HttpContext.Request.Host">
+    <meta name="twitter:title" content="@(!string.IsNullOrEmpty(Model.SeoTitle) ? Model.SeoTitle : Model.Title)">
+    <meta property="og:title" content="@(!string.IsNullOrEmpty(Model.SeoTitle) ? Model.SeoTitle : Model.Title)"/>
     <meta property="og:url" content="@Url.Action(
                                          action: "GetContent",
                                          controller: "Contentful",
                                          protocol: "https",
                                          values: new { slug = Model.Slug, languageCode }
                                      )"/>
+    <meta property="twitter:url" content="@Url.Action(
+                                              action: "GetContent",
+                                              controller: "Contentful",
+                                              protocol: "https",
+                                              values: new { slug = Model.Slug, languageCode }
+                                          )">
+
     @if (Model.SeoImage != null)
     {
-        <meta property="og:image" content="@Model.SeoImage.File.Url"/>
-        <meta property="og:image:type" content="@Model.SeoImage.File.ContentType"/>
-        <meta property="og:image:width" content="@Model.SeoImage.File.Details.Image.Width"/>
-        <meta property="og:image:height" content="@Model.SeoImage.File.Details.Image.Height"/>
+        <meta property="og:image" content="https:@Model.SeoImage.File.Url"/>
+        <meta property="twitter:image" content="https:@Model.SeoImage.File.Url"/>
         <meta property="og:image:alt" content="@Model.SeoImage.Description"/>
+        <meta property="twitter:image:alt" content="@Model.SeoImage.Description"/>
     } 
     else if (config.DefaultSeoImage != null)
     {
-        <meta property="og:image" content="@config.DefaultSeoImage.File.Url"/>
-        <meta property="og:image:type" content="@config.DefaultSeoImage.File.ContentType"/>
-        <meta property="og:image:width" content="@config.DefaultSeoImage.File.Details.Image.Width"/>
-        <meta property="og:image:height" content="@config.DefaultSeoImage.File.Details.Image.Height"/>
+        <meta property="og:image" content="https:@config.DefaultSeoImage.File.Url"/>
+        <meta property="twitter:image" content="https:@config.DefaultSeoImage.File.Url"/>
         <meta property="og:image:alt" content="@config.DefaultSeoImage.Description"/>
+        <meta property="twitter:image:alt" content="@config.DefaultSeoImage.Description"/>
     }
     
     <meta property="og:locale" content="@(languageCode == "en" ? "en_GB" : languageCode)"/>
     @if (!string.IsNullOrEmpty(Model.SeoDescription))
     {
         <meta property="og:description" content="@Model.SeoDescription"/>
+        <meta property="twitter:description" content="@Model.SeoDescription"/>
         <meta name="description" content="@Model.SeoDescription"/>
     }
 
