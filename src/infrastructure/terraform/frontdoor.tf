@@ -47,6 +47,7 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group.id
   cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.frontdoor-web-origin.id]
+  cdn_frontdoor_rule_set_ids    = [azurerm_cdn_frontdoor_rule_set.security_redirects.id]
   enabled                       = true
 
   forwarding_protocol    = "MatchRequest"
@@ -164,7 +165,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   tags                = local.common_tags
   mode                = "Prevention"
   sku_name            = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name
-  redirect_url = "https://${var.custom_domain}/en/pages/service-unavailable"
+  redirect_url        = "https://${var.custom_domain}/en/pages/service-unavailable"
 
   dynamic "managed_rule" {
     for_each = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name == "Premium_AzureFrontDoor" ? [0] : []
@@ -244,13 +245,13 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       negation_condition = true
       match_values       = ["GB", "ZZ"]
     }
-    
+
     match_condition {
-      match_values = ["service-unavailable"]
-      match_variable = "RequestUri"
-      operator       = "Contains"
+      match_values       = ["service-unavailable"]
+      match_variable     = "RequestUri"
+      operator           = "Contains"
       negation_condition = true
-      transforms = ["Lowercase", "UrlDecode"]
+      transforms         = ["Lowercase", "UrlDecode"]
     }
   }
 }
