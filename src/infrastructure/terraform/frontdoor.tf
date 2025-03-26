@@ -95,7 +95,7 @@ resource "azurerm_cdn_frontdoor_rule" "security_txt_rule" {
 
   name                      = "securityTxtRedirect"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.security_redirects.id
-  order                     = 1
+  order                     = 0
   behavior_on_match         = "Continue"
 
   conditions {
