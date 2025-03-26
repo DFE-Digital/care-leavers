@@ -107,6 +107,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   tags                = local.common_tags
   mode                = "Prevention"
   sku_name            = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name
+  redirect_url = "https://${var.custom_domain}/en/pages/service-unavailable"
 
   dynamic "managed_rule" {
     for_each = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name == "Premium_AzureFrontDoor" ? [0] : []
@@ -176,7 +177,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   custom_rule {
     name     = "blocknonuk"
     enabled  = true
-    action   = "Block"
+    action   = "Redirect"
     type     = "MatchRule"
     priority = 400
 
@@ -185,6 +186,14 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       operator           = "GeoMatch"
       negation_condition = true
       match_values       = ["GB", "ZZ"]
+    }
+    
+    match_condition {
+      match_values = ["service-unavailable"]
+      match_variable = "RequestUri"
+      operator       = "Contains"
+      negation_condition = true
+      transforms = ["Lowercase", "UrlDecode"]
     }
   }
 }

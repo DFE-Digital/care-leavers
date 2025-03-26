@@ -1,7 +1,11 @@
-@model ErrorViewModel
+@using CareLeavers.Web.Configuration
+
+@inject IContentfulConfiguration ContentfulConfiguration
 
 @{
-    ViewBag.Title = "Sorry, there is a problem with the service";
+    var config = await ContentfulConfiguration.GetConfiguration();
+
+    ViewBag.Title = $"Sorry, the service is unavailable";
     Layout = "_ErrorLayout";
 }
 
@@ -11,8 +15,9 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
     <meta http-equiv="Pragma" content="no-cache"/>
     <meta http-equiv="Expires" content="0"/>
+    
     <link rel="canonical" href="@Url.Action(
-                                    action: "Error",
+                                    action: "ServiceUnavailable",
                                     controller: "Pages",
                                     protocol: "https",
                                     values: new { languageCode = "en" }
@@ -29,6 +34,10 @@
         </div>
     </div>
 }
-<p class="govuk-body">
-    Try again later.
-</p>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <gds-contentful-rich-text document="@config.ServiceUnavailableContent"></gds-contentful-rich-text>
+    </div>
+</div>
+
