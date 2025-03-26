@@ -108,7 +108,7 @@ resource "azurerm_cdn_frontdoor_rule" "security_txt_rule" {
 
   actions {
     url_redirect_action {
-      redirect_type        = "Found"
+      redirect_type        = "PermanentRedirect"
       redirect_protocol    = "Https"
       destination_hostname = "vdp.security.education.gov.uk"
       destination_path     = "/security.txt"
@@ -134,7 +134,7 @@ resource "azurerm_cdn_frontdoor_rule" "thanks_txt_rule" {
 
   actions {
     url_redirect_action {
-      redirect_type        = "Found"
+      redirect_type        = "PermanentRedirect"
       redirect_protocol    = "Https"
       destination_hostname = "vdp.security.education.gov.uk"
       destination_path     = "/thanks.txt"
