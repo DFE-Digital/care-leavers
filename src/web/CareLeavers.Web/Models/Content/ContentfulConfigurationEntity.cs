@@ -33,4 +33,7 @@ public class ContentfulConfigurationEntity : ContentfulContent
     public List<string> ExcludeFromTranslation { get; set; } = [];
     
     public Asset? DefaultSeoImage { get; set; }
+    
+    public Document? TranslationHeader { get; set; }
+
 }

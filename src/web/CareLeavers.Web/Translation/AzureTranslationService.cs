@@ -70,7 +70,9 @@ public class AzureTranslationService : ITranslationService
                     Name = l.Value.Name,
                     NativeName = l.Value.NativeName,
                     Direction = l.Value.Directionality is LanguageDirectionality.LeftToRight ? "ltr" : "rtl"
-                }).ToList();
+                })
+                .OrderBy(l => l.Name)
+                .ToList();
         }) ?? [];
     }
 }
