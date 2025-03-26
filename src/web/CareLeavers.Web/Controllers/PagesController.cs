@@ -30,7 +30,36 @@ public class PagesController : Controller
         return View(vm);
     }
     
+    [HttpGet("{languageCode}/pages/error")]
+    [HttpPost("{languageCode}/pages/error")]
+    public IActionResult Error(int statusCode)
+    {
+        if (statusCode == 404)
+        {
+            return PageNotFound();
+        }
+        return View();
+    }
+    
+    [HttpGet("{languageCode}/pages/service-unavailable")]
+    [Translation(HardcodedSlug="pages/service-unavailable")]
+    public IActionResult ServiceUnavailable()
+    {
+        return View();
+    }
+    
+    [HttpGet("{languageCode}/pages/page-not-found")]
+    [Translation(HardcodedSlug="pages/page-not-found")]
+    public IActionResult PageNotFound()
+    {
+        Response.StatusCode = StatusCodes.Status404NotFound;
+        var result = View("PageNotFound");
+        result.StatusCode = StatusCodes.Status404NotFound;
+        return result;
+    }
+    
     [HttpPost("/pages/cookie-policy")]
+    [HttpPost("/en/pages/cookie-policy")]
     public IActionResult PostCookiePolicy(
         [FromForm] CookiePolicyModel cookiePolicyModel,
         [FromServices] IOptions<CookiePolicyOptions> cookiePolicyOptions)

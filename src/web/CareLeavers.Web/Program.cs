@@ -13,7 +13,6 @@ using Contentful.AspNetCore;
 using Contentful.AspNetCore.MiddleWare;
 using Contentful.Core;
 using Contentful.Core.Models;
-using GovUk.Frontend.AspNetCore;
 using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Caching.Distributed;
@@ -57,12 +56,6 @@ try
     #region Controllers
     
     builder.Services.AddControllersWithViews();
-    
-    #endregion
-    
-    #region GOV.UK front end
-    
-    builder.Services.AddGovUkFrontend();
     
     #endregion
     
@@ -122,6 +115,7 @@ try
         renderer.AddRenderer(new GDSListRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSHorizontalRulerContentRenderer());
         renderer.AddRenderer(new GDSDefinitionLinkRenderer());
+        renderer.AddRenderer(new GDSSpacerRenderer());
         renderer.AddRenderer(new GDSGridRenderer(serviceProvider));
         renderer.AddRenderer(new GDSRichContentRenderer(serviceProvider));
         renderer.AddRenderer(new GDSStatusCheckerRenderer(serviceProvider));
@@ -206,14 +200,28 @@ try
 
     app.UseContentfulWebhooks(consumers =>
     {
-        consumers.AddConsumer<Entry<ContentfulContent>>("*", "*", "*",  async entry =>
+        consumers.AddConsumer<Entry<ContentfulContent>>("*", "Entry", "*",  async entry =>
         {
             var webhookConsumer = new PublishContentfulWebhook(
                 app.Services.GetRequiredService<IContentfulClient>(),
-                app.Services.GetRequiredService<IDistributedCache>());
+                app.Services.GetRequiredService<IDistributedCache>(),
+                app.Services.GetRequiredService<IContentfulManagementClient>(),
+                app.Services.GetRequiredService<ILogger<PublishContentfulWebhook>>());
 
             await webhookConsumer.Consume(entry);
             
+            return new { Result = "OK" };
+        });
+
+        consumers.AddConsumer<Asset>("*", "Asset", "*", async asset =>
+        {
+            var webhookConsumer = new PublishAssetWebhook(
+                app.Services.GetRequiredService<IContentfulClient>(),
+                app.Services.GetRequiredService<IDistributedCache>(),
+                app.Services.GetRequiredService<ILogger<PublishAssetWebhook>>());
+
+            await webhookConsumer.Consume(asset);
+
             return new { Result = "OK" };
         });
     });
@@ -222,16 +230,30 @@ try
     
     #region Setup error pages and HSTS
     
+    app.UseStatusCodePagesWithReExecute("/en/pages/error", "?statusCode={0}");
+
+    
     if (!app.Environment.IsDevelopment())
     {
-        // TODO: Setup views for exceptions
-        app.UseExceptionHandler("/Home/Error");
-        
-        // TODO: Setup view for 404 not found
-        
+        // If we're not in development mode, use the error handler page
+        app.UseExceptionHandler("/en/pages/error");
+
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
     }
+    
+    // Redirect 404 responses to the page not found page
+    app.Use(async (context, next) =>
+    {
+        await next();
+
+        if (context.Response is { StatusCode: 404, HasStarted: false })
+        {
+            // Log the error or handle it accordingly
+            context.Request.Path = "/en/pages/page-not-found"; // Redirect to a custom not found page
+            await next();
+        }
+    });
     
     #endregion
 

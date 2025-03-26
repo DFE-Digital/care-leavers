@@ -19,32 +19,66 @@ public class ContentfulContentService : IContentService
         _contentfulClient.ContentTypeResolver = new ContentfulEntityResolver();
     }
     
-    public Task<Page?> GetPage(string slug)
+    public Task<RedirectionRules?> GetRedirectionRules(string fromSlug)
     {
-        return _distributedCache.GetOrSetAsync($"content:{slug}", async () =>
+        return _distributedCache.GetOrSetAsync("content:redirections", async () =>
+        {
+            var rules = new QueryBuilder<RedirectionRules>()
+                .ContentTypeIs(RedirectionRules.ContentType)
+                .Limit(1);
+
+            var ruleEntries = await _contentfulClient.GetEntries(rules);
+
+            return ruleEntries.FirstOrDefault();
+        });
+    }
+    
+    public async Task<Page?> GetPage(string slug)
+    {
+        var page = await _distributedCache.GetOrSetAsync($"content:{slug}", async () =>
         {
             var pages = new QueryBuilder<Page>()
                 .ContentTypeIs(Page.ContentType)
                 .FieldEquals(c => c.Slug, slug)
+                .Include(2)
                 .Limit(1);
 
             var pageEntries = await _contentfulClient.GetEntries(pages);
-
             return pageEntries.FirstOrDefault();
         });
+
+        // If we get a page, but the slug doesn't match (used in tests), return null so we trigger our 404s
+        if (page?.Slug != null && !(page.Slug).Equals(slug, StringComparison.InvariantCultureIgnoreCase))
+        {
+            page = null;
+        }
+
+        if (page != null)
+        {
+            await _distributedCache.GetOrSetAsync(page.Sys.Id, () => Task.FromResult(page));
+        }
+
+        return page;
     }
 
-    public async Task<List<SimplePage>> GetBreadcrumbs(string slug, bool includeHome = true)
+    public async Task<List<SimplePage>> GetBreadcrumbs(string? slug, bool includeHome = true)
     {
+        if (string.IsNullOrEmpty(slug))
+        {
+            return [];
+        }
+        
         // Get homepage slug
         var home = (await GetConfiguration())?.HomePage;
         var homePage = new SimplePage()
         {
-            Id = home.Sys.Id,
-            Title = home.Title,
-            Slug = home.Slug,
+            Id = home?.Sys.Id,
+            Title = home?.Title,
+            Slug = home?.Slug,
             Parent = null
         };
+        
+        
         
         // Get site hierarchy
         var hierarchy = await GetSiteHierarchy();
@@ -52,28 +86,31 @@ public class ContentfulContentService : IContentService
         // Keep backing up until the homepage
         List<SimplePage> breadcrumbs = [];
 
-        var currentPage = hierarchy.Find(p => p.Slug == slug);;
-        if (currentPage == null)
+        if (hierarchy != null)
         {
-            return breadcrumbs;
-        }
-        
-        var parentPage = hierarchy.Find(p => p.Slug == currentPage.Parent);
-
-        while (parentPage != null)
-        {
-            if (!breadcrumbs.Exists(b => b.Id == parentPage.Id))
+            var currentPage = hierarchy.Find(p => p.Slug == slug);;
+            if (currentPage == null)
             {
-                if (includeHome || parentPage.Id != homePage.Id)
-                    breadcrumbs.Add(parentPage);
+                return breadcrumbs;
+            }
+        
+            var parentPage = hierarchy.Find(p => p.Slug == currentPage.Parent);
+
+            while (parentPage != null)
+            {
+                if (!breadcrumbs.Exists(b => b.Id == parentPage.Id))
+                {
+                    if (includeHome || parentPage.Id != homePage.Id)
+                        breadcrumbs.Add(parentPage);
+                }
+
+                parentPage = hierarchy.Find(p => p.Slug == parentPage.Parent);
             }
 
-            parentPage = hierarchy.Find(p => p.Slug == parentPage.Parent);
-        }
-
-        if (((parentPage == null) || breadcrumbs.Count == 0) && includeHome && !breadcrumbs.Exists(b => b.Id == homePage.Id))
-        {
-            breadcrumbs.Add(homePage);
+            if (((parentPage == null) || breadcrumbs.Count == 0) && includeHome && !breadcrumbs.Exists(b => b.Id == homePage.Id))
+            {
+                breadcrumbs.Add(homePage);
+            }
         }
 
         // Always set homepage title to home for breadcrumbs
@@ -195,7 +232,7 @@ public class ContentfulContentService : IContentService
 
             return pageEntries
                 .Where(x => x.Sys.Id != null && x.Slug != null)
-                .Select(x => new KeyValuePair<string,string>(x.Sys.Id, x.Slug))
+                .Select(x => new KeyValuePair<string, string>(x.Sys.Id, x.Slug ?? string.Empty))
                 .ToDictionary();
         }) ?? [];
     }

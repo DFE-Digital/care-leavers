@@ -1,5 +1,4 @@
 @using CareLeavers.Web.Configuration
-@model CareLeavers.Web.Models.ViewModels.CookiePolicyModel
 
 @inject IContentfulConfiguration ContentfulConfiguration
 
@@ -20,11 +19,16 @@
                                          action: "PrivacyPolicies",
                                          controller: "Pages",
                                          protocol: "https",
-                                         values: new { language = languageCode}
+                                         values: new { languageCode = "en" }
                                      )"/>
 
     <meta property="og:locale" content="en_GB"/>
-
+    <link rel="canonical" href="@Url.Action(
+                                    action: "PrivacyPolicies",
+                                    controller: "Pages",
+                                    protocol: "https",
+                                    values: new { languageCode = "en" }
+                                )"/>
 }
 
 @section BeforeGDSContent

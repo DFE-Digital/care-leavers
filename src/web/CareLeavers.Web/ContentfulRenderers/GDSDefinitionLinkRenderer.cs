@@ -1,6 +1,6 @@
+using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Models.Content;
 using Contentful.Core.Models;
-using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CareLeavers.Web.ContentfulRenderers;
@@ -21,7 +21,7 @@ public class GDSDefinitionLinkRenderer() : IContentRenderer
 
     }
 
-    public async Task<string> RenderAsync(IContent content)
+    public Task<string> RenderAsync(IContent content)
     {
         var tb = new TagBuilder("a");
         tb.AddCssClass("govuk-link");
@@ -48,14 +48,14 @@ public class GDSDefinitionLinkRenderer() : IContentRenderer
             var anchor = TagBuilder.CreateSanitizedId($"definition-{link.Definition.Title}", "-");
             
             // Set link
-            tb.Attributes["href"] = $"/{slug}#{anchor}";
+            tb.Attributes["href"] = $"{slug}#{anchor}";
 
             // Use the title from the link
             tb.InnerHtml.Append(link.Title);
             
         }
 
-        return tb.HasInnerHtml ? tb.ToHtmlString() : string.Empty;
+        return Task.FromResult(tb.HasInnerHtml ? tb.ToHtmlString() : string.Empty);
     }
 
     public int Order { get; set; } = 10;

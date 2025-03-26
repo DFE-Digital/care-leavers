@@ -181,6 +181,7 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
  }
   .govuk-grid-column-two-thirds {
     width: 1200px;
+    padding: 0 15px;
   }
 }
 
@@ -414,4 +415,12 @@ html
 .riddle2-wrapper {
   max-width:100%; width:100%;
   margin: -35px auto 0;
+}
+
+.govuk-grid-column-two-thirds > .govuk-grid-row > .box-ext {
+  margin: 2.5em 15px;
+}
+
+.govuk-phase-banner {
+  border-bottom: none;
 }

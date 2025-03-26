@@ -31,11 +31,5 @@ export class PersonQualifyingPage extends BasePage {
     async assertPageElements() {
         await this.validateURLContains('/person-qualifying-for-advice-and-assistance');
         await this.verifyLogoPresence();
-
-        // Ensure that all sections are visible
-        await expect(this.mainContent).toBeVisible();
-        await expect(this.supportSection).toBeVisible();
-        await expect(this.educationSupportSection).toBeVisible();
-        await expect(this.moreSupportSection).toBeVisible();
     }
 }

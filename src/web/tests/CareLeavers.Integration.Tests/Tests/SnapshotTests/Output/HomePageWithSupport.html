@@ -27,21 +27,29 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Find support for care leavers - Care leavers</title>
 		<link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/assets/images/favicon.svg">
-		<link href="/govuk/all.min.css?v=1zk5-99q-gHitumTgjIgN7iX7dHY_sxfmG9CzkpR58o" rel="stylesheet">
-		<link rel="stylesheet" href="/css/dfefrontend.css">
 		<link rel="stylesheet" href="/css/application.css">
 		<link rel="stylesheet" href="/css/metadata.css">
 		<link rel="stylesheet" href="/css/navigation.css">
 		<link rel="stylesheet" href="/css/cta.css">
-		<meta property="og:site_name" content="Care leavers">
-		<meta property="og:title" content="Find support for care leavers">
 		<meta property="og:type" content="website">
-		<meta property="og:url" content="https://localhost/en/home?language=en">
+		<meta name="twitter:card" content="summary_large_image">
+		<meta property="og:site_name" content="Care leavers">
+		<meta property="twitter:domain" content="localhost">
+		<meta name="twitter:title" content="Find support for care leavers">
+		<meta property="og:title" content="Find support for care leavers">
+		<meta property="og:url" content="https://localhost/en/home">
+		<meta property="twitter:url" content="https://localhost/en/home">
 		<meta property="og:locale" content="en_GB">
-		<link rel="canonical" href="https://localhost/en/home?language=en">
+		<meta property="og:description" content="Leaving care can be a challenging time. Whether you’re still in care or have already left, help is available.">
+		<meta property="twitter:description" content="Leaving care can be a challenging time. Whether you’re still in care or have already left, help is available.">
+		<meta name="description" content="Leaving care can be a challenging time. Whether you’re still in care or have already left, help is available.">
+		<link rel="canonical" href="https://localhost/en/home">
 	</head>
 	<body class="govuk-template__body">
-		<script nonce="mock-nonce">document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script>
+		<script nonce="mock-nonce">
+    document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
+
+		</script>
 		<a b-k59dbireqp="" href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 		<div class="environment-banner">
 			<div class="govuk-body-s">
@@ -67,11 +75,6 @@
 		</div>
 		<header class="dfe-header" role="banner">
 			<div class="dfe-width-container dfe-header__container">
-				<div class="dfe-header__menu">
-					<button type="button" class="dfe-header__menu-toggle" id="menu-toggle" aria-controls="header-navigation" aria-expanded="false">
-						Menu
-					</button>
-				</div>
 				<div class="dfe-header__logo">
 					<a class="dfe-header__link dfe-header__link--service " href="/" aria-label="Care leavers homepage">
 						<img src="/assets/dfe-logo.png" class="dfe-logo" alt="Care leavers homepage">
@@ -84,39 +87,19 @@
 			<div class="dfe-width-container dfe-header__service-name">
 				Care leavers
 			</div>
-			<nav class="dfe-header__navigation" id="header-navigation" role="navigation" aria-label="Primary navigation" aria-labelledby="label-navigation">
-				<div class="dfe-width-container">
-					<p class="dfe-header__navigation-title">
-						<span id="label-navigation">Menu</span>
-						<button class="dfe-header__navigation-close" id="close-menu">
-							<svg class="dfe-icon dfe-icon__close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="27" height="27">
-								<path d="M13.41 12l5.3-5.29a1 1 0 1 0-1.42-1.42L12 10.59l-5.29-5.3a1 1 0 0 0-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l5.29-5.3 5.29 5.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"></path>
-							</svg>
-							<span class="govuk-visually-hidden">Close menu</span>
-						</button>
-					</p>
-					<ul class="dfe-header__navigation-list">
-					</ul>
+			<nav class="govuk-service-navigation" data-module="govuk-service-navigation" id="header-navigation">
+				<div class="govuk-width-container">
+					<div class="govuk-service-navigation__container">
+						<nav aria-label="Menu" class="govuk-service-navigation__wrapper">
+							<button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle" aria-controls="navigation" hidden="">
+								Menu
+							</button>
+							<ul class="govuk-service-navigation__list" id="navigation">
+							</ul>
+						</nav>
+					</div>
 				</div>
 			</nav>
-			<script nonce="mock-nonce">
-    document.addEventListener('DOMContentLoaded', function () {
-        const menuToggle = document.getElementById('menu-toggle');
-        const menuClose = document.getElementById('close-menu');
-        const navigation = document.getElementById('header-navigation');
-
-        menuToggle.addEventListener('click', function () {
-            const isOpen = navigation.classList.toggle('js-show');
-            menuToggle.setAttribute('aria-expanded', isOpen.toString());
-        });
-
-        menuClose.addEventListener('click', function () {
-            navigation.classList.remove('js-show');
-            menuToggle.setAttribute('aria-expanded', 'false');
-        });
-    });
-
-			</script>
 		</header>
 		<section b-k59dbireqp="" class="dfe-page-grey">
 			<div b-k59dbireqp="" class="govuk-width-container" id="main-header-container">
@@ -132,37 +115,34 @@
 		</section>
 		<div b-k59dbireqp="" class="govuk-width-container" id="main-content-container">
 			<main b-k59dbireqp="" class="govuk-main-wrapper" id="main-content" role="main">
-				<div class="govuk-grid-row" data-last-fetched="2025-03-12T10:31:15">
+				<div class="govuk-grid-row" data-last-fetched="2025-03-26T10:21:16">
 					<div class="govuk-grid-column-full">
 						<div class="govuk-grid-row">
-							<section class="dfe-section">
-								<div class="govuk-grid-column-two-thirds">
-									<h2 class="govuk-heading-l" id="Who-is-this-support-for-">Who is this support for?</h2>
-									<p class="govuk-body">You might have the right to leaving care support if you:</p>
-									<ul class="govuk-list govuk-list--bullet">
-										<li>are aged 15 to 24</li>
-										<li>have spent time in care in England</li>
-										<li>
-											<a class="govuk-link" href="/care-terms-explained#definition-Test-Definition">test definition</a>
-										</li>
-									</ul>
-									<p class="govuk-body">This includes:</p>
-									<ul class="govuk-list govuk-list--bullet">
-										<li>foster care</li>
-										<li>residential care (like a children’s home)</li>
-										<li>time in custody (like a young offender institution or secure children’s home)</li>
-										<li>if you came to seek asylum in the UK alone before 18</li>
-									</ul>
-									<p class="govuk-body"></p>
-								</div>
-							</section>
-							<section class="dfe-section">
-								<div class="govuk-grid-column-one-third">
-									<img class="full-width-image" src="//images.ctfassets.net/3y72rykjd1o5/7yIkeMXdrDtuh8tGv7Gd0C/97c31314eeb05236314e9b7859f553e9/image.png" alt="Two young women sat outside at a covered table. One is holding a white mug. Both are in their coats">
-									<p class="govuk-body"></p>
-								</div>
-							</section>
+							<div class="govuk-grid-column-two-thirds">
+								<h2 class="govuk-heading-l" id="Who-is-this-support-for-">Who is this support for?</h2>
+								<p class="govuk-body">You might have the right to leaving care support if you:</p>
+								<ul class="govuk-list govuk-list--bullet govuk-list--spaced">
+									<li>are aged 15 to 24</li>
+									<li>have spent time in care in England</li>
+									<li>
+										<a class="govuk-link" href="care-terms-explained#definition-Test-Definition">test definition</a>
+									</li>
+								</ul>
+								<p class="govuk-body">This includes:</p>
+								<ul class="govuk-list govuk-list--bullet govuk-list--spaced">
+									<li>foster care</li>
+									<li>residential care (like a children’s home)</li>
+									<li>time in custody (like a young offender institution or secure children’s home)</li>
+									<li>if you came to seek asylum in the UK alone before 18</li>
+								</ul>
+								<p class="govuk-body"></p>
+							</div>
+							<div class="govuk-grid-column-one-third">
+								<img class="full-width-image" src="//images.ctfassets.net/3y72rykjd1o5/7yIkeMXdrDtuh8tGv7Gd0C/97c31314eeb05236314e9b7859f553e9/image.png" alt="Two young women sat outside at a covered table. One is holding a white mug. Both are in their coats">
+								<p class="govuk-body"></p>
+							</div>
 						</div>
+						<hr class="govuk-section-break govuk-section-break--m">
 						<h2 class="govuk-heading-l" id="Find-support">Find support</h2>
 						<section class="dfe-section govuk-!-margin-top-5">
 							<div class="dfe-grid-container dfe-grid-container--wider govuk-!-margin-top-5">
@@ -281,6 +261,8 @@
 						</h3>
 						<p class="govuk-body"></p>
 					</div>
+					<div class="govuk-grid-column-full">
+					</div>
 				</div>
 			</main>
 		</div>
@@ -324,10 +306,9 @@
 				</div>
 			</div>
 		</footer>
-		<script src="/govuk/all.min.js?v=RHpXsNmLgFsVb0_A7CLeltntRsu0LVT9kE8cBjem4vY" type="module"></script>
-		<script nonce="mock-nonce" type="module">
-import { initAll } from '/govuk/all.min.js'
-initAll()
+		<script type="module" nonce="mock-nonce">
+    import { initAll } from '/js/govuk-frontend.min.js'
+    initAll()
 
 		</script>
 	</body>

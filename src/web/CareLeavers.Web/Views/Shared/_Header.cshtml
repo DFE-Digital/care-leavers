@@ -44,11 +44,6 @@
 
 <header class="dfe-header" role="banner">
     <div class="dfe-width-container dfe-header__container">
-        <div class="dfe-header__menu">
-            <button type="button" class="dfe-header__menu-toggle" id="menu-toggle" aria-controls="header-navigation" aria-expanded="false">
-                Menu
-            </button>
-        </div>
         <div class="dfe-header__logo">
             <a class="dfe-header__link dfe-header__link--service " href="~/" aria-label="@Model.ContentfulConfiguration.ServiceName homepage">
                 <img src="~/assets/dfe-logo.png" class="dfe-logo" alt="@Model.ContentfulConfiguration.ServiceName homepage">
@@ -62,5 +57,8 @@
     <div class="dfe-width-container dfe-header__service-name">
         @Model.ContentfulConfiguration.ServiceName
     </div>
-    @{ await Html.RenderPartialAsync("Navigation", Model); }
+    @if (!Model.IsError)
+    { 
+        await Html.RenderPartialAsync("Navigation", Model);
+    }
 </header>

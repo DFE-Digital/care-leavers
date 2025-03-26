@@ -20,11 +20,16 @@
                                          action: "CookiePolicy",
                                          controller: "Pages",
                                          protocol: "https",
-                                         values: new { language = languageCode}
+                                         values: new { languageCode }
                                      )"/>
     
     <meta property="og:locale" content="en_GB"/>
-
+    <link rel="canonical" href="@Url.Action(
+                                    action: "CookiePolicy",
+                                    controller: "Pages",
+                                    protocol: "https",
+                                    values: new { languageCode }
+                                )"/>
 }
 
 @section BeforeGDSContent

@@ -163,7 +163,8 @@ if (anyMigrationsHaveApplied)
         },
         Fields = new
         {
-            name = new Dictionary<string, dynamic> {
+            name = new Dictionary<string, dynamic> 
+            {
                 ["en-US"] = "Migration Tracker - DO NOT DELETE"
             },
             migrations = new Dictionary<string, dynamic>

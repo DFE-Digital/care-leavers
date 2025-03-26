@@ -56,12 +56,18 @@ public class ContentfulControllerTests
         // Arrange
         var client = WebFixture.GetClient();
         var wrapper = await File.ReadAllTextAsync(Path.Combine(WebFixture.WrapperBasePath, "RequestWrapper.json"));
-        wrapper = wrapper.Replace("**REPLACE**", string.Empty);
-
+        wrapper = wrapper.Replace("**REPLACE**", @"{
+    ""slug"" : ""home"",
+    ""sys"" : { ""id"" : ""12345"" } 
+  }, {
+    ""slug"" : ""about"",
+    ""sys"" : { ""id"" : ""12346"" } 
+  }");
+        
         WebFixture.AddContent(new ContentfulContent() { Content = wrapper });
         
         // Act
-        var response = await client.GetAsync("/not-found-random-page");
+        var response = await client.GetAsync("/en/not-found-random-page");
         
         // Assert
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));

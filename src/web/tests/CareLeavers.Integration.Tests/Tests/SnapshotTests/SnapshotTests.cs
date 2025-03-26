@@ -58,31 +58,35 @@ public class SnapshotTests
         // Setup our slug for the page content
         foreach (var file in files)
         {
-            
-                  var id = Path.GetFileNameWithoutExtension(file);
-                  var contentType = string.Empty;
+            var id = Path.GetFileNameWithoutExtension(file);
+            var contentType = string.Empty;
 
-                  if (Path.GetFileNameWithoutExtension(file).Contains("_"))
-                  {
-                      id = Path.GetFileNameWithoutExtension(file).Split("_", StringSplitOptions.None).Last();
-                      contentType = Path.GetFileNameWithoutExtension(file).Split("_", StringSplitOptions.None).First();
-                  }
-                  
-                  WebFixture.AddContent(new ContentfulContent()
-                  {
-                      ContentType = contentType,
-                      Id = id,
-                      Slug = contentType == Page.ContentType ? folder : contentType == ContentfulConfigurationEntity.ContentType ? "config" : null,
-                      Content = await FullJson((await File.ReadAllTextAsync(Path.Combine(file))))
-                  });
-                  
+            if (Path.GetFileNameWithoutExtension(file).Contains("_"))
+            {
+                id = Path.GetFileNameWithoutExtension(file).Split("_", StringSplitOptions.None).Last();
+                contentType = Path.GetFileNameWithoutExtension(file).Split("_", StringSplitOptions.None).First();
+            }
 
-            
+            WebFixture.AddContent(new ContentfulContent()
+            {
+                ContentType = contentType,
+                Id = id,
+                Slug = contentType == Page.ContentType ? folder :
+                    contentType == ContentfulConfigurationEntity.ContentType ? "config" : null,
+                Content = await FullJson((await File.ReadAllTextAsync(Path.Combine(file))))
+            });
         }
         
+        WebFixture.AddContent(new ContentfulContent()
+        {
+            ContentType = RedirectionRules.ContentType,
+            Id = "12345",
+            Content = await FullJson("")
+        });
+
         var client = WebFixture.GetClient();
         
-        var response = await client.GetStringAsync("");
+        var response = await client.GetStringAsync($"");
 
         var parser = new HtmlParser();
         var doc = parser.ParseDocument(response);
