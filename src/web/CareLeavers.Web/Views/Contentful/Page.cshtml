@@ -102,11 +102,12 @@
             <gds-contentful-contents document="@Model.MainContent" levels="@Model.ContentsHeadings"/>
         }
         <gds-contentful-rich-text document="@Model.MainContent"></gds-contentful-rich-text>
-        
+    </div>
+    <div class="govuk-grid-column-full">
         <partial name="LastUpdated" model="@Model"/>
         
         <partial name="Shareaholic" model="Model"/>
-    </div>
+        </div>
     @if (Model.Width == PageWidth.TwoThirds)
     {
         <div class="govuk-grid-column-one-third">

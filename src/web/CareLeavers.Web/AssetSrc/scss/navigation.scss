@@ -35,8 +35,7 @@
   }
 
   .govuk-service-navigation__item--active {
-    margin-left: -15px;
-    padding-left: 10px;
+    margin-left: -10px;
     border-left-width: 5px;
   }
 
@@ -44,7 +43,6 @@
     display: none !important;
     flex-direction: column;
     width: 100%;
-    background-color: #ffffff;
     padding: 10px 0;
     border-top: 2px solid #f0f4f5;
     border-bottom: 2px solid #f0f4f5;
