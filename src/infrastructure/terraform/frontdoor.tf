@@ -245,11 +245,18 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       negation_condition = true
       match_values       = ["GB", "ZZ"]
     }
-
+    
     match_condition {
-      match_values       = ["service-unavailable"]
-      match_variable     = "RequestUri"
-      operator           = "Contains"
+      match_values = [
+        "/pages/",
+        "/assets/",
+        "/css/",
+        "/js/",
+        "/sitemap",
+        "/robots.txt"
+      ]
+      match_variable = "RequestUri"
+      operator       = "Contains"
       negation_condition = true
       transforms         = ["Lowercase", "UrlDecode"]
     }
