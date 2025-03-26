@@ -35,5 +35,7 @@ public class ContentfulConfigurationEntity : ContentfulContent
     public Asset? DefaultSeoImage { get; set; }
     
     public Document? TranslationHeader { get; set; }
+    
+    public Document? ServiceUnavailableContent { get; set; }
 
 }
