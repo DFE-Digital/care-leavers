@@ -1,20 +1,77 @@
 @using System.Globalization
 @using CareLeavers.Web.Configuration
 @using CareLeavers.Web.Models.Enums
+@using Joonasw.AspNetCore.SecurityHeaders.Csp
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model CareLeavers.Web.Models.Content.Page
 
 @inject IContentfulConfiguration ContentfulConfiguration
+@inject ICspNonceService CspNonceService
+
 
 @{
     ViewBag.Title = Model.Title;
     Layout = "_Layout";
+    var config = await ContentfulConfiguration.GetConfiguration();
+    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
 
     var pageWidth = Model.Width switch
     {
         PageWidth.TwoThirds => "govuk-grid-column-two-thirds",
         _ => "govuk-grid-column-full"
     };
+}
+@section Head
+{
+    <meta property="og:type" content="website"/>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:site_name" content="@config.ServiceName"/>
+    <meta property="twitter:domain" content="@Url.ActionContext.HttpContext.Request.Host">
+    <meta name="twitter:title" content="@(!string.IsNullOrEmpty(Model.SeoTitle) ? Model.SeoTitle : Model.Title)">
+    <meta property="og:title" content="@(!string.IsNullOrEmpty(Model.SeoTitle) ? Model.SeoTitle : Model.Title)"/>
+    <meta property="og:url" content="@Url.Action(
+                                         action: "GetContent",
+                                         controller: "Contentful",
+                                         protocol: "https",
+                                         values: new { slug = Model.Slug, languageCode }
+                                     )"/>
+    <meta property="twitter:url" content="@Url.Action(
+                                              action: "GetContent",
+                                              controller: "Contentful",
+                                              protocol: "https",
+                                              values: new { slug = Model.Slug, languageCode }
+                                          )">
+
+    @if (Model.SeoImage != null)
+    {
+        <meta property="og:image" content="https:@Model.SeoImage.File.Url"/>
+        <meta property="twitter:image" content="https:@Model.SeoImage.File.Url"/>
+        <meta property="og:image:alt" content="@Model.SeoImage.Description"/>
+        <meta property="twitter:image:alt" content="@Model.SeoImage.Description"/>
+    } 
+    else if (config.DefaultSeoImage != null)
+    {
+        <meta property="og:image" content="https:@config.DefaultSeoImage.File.Url"/>
+        <meta property="twitter:image" content="https:@config.DefaultSeoImage.File.Url"/>
+        <meta property="og:image:alt" content="@config.DefaultSeoImage.Description"/>
+        <meta property="twitter:image:alt" content="@config.DefaultSeoImage.Description"/>
+    }
+    
+    <meta property="og:locale" content="@(languageCode == "en" ? "en_GB" : languageCode)"/>
+    @if (!string.IsNullOrEmpty(Model.SeoDescription))
+    {
+        <meta property="og:description" content="@Model.SeoDescription"/>
+        <meta property="twitter:description" content="@Model.SeoDescription"/>
+        <meta name="description" content="@Model.SeoDescription"/>
+    }
+
+    <link rel="canonical" href="@Url.Action(
+                                    action: "GetContent",
+                                    controller: "Contentful",
+                                    protocol: "https",
+                                    values: new { slug = Model.Slug, languageCode = "en" }
+                                )"/>
+
 }
 
 @section BeforeGDSContent
@@ -45,33 +102,28 @@
             <gds-contentful-contents document="@Model.MainContent" levels="@Model.ContentsHeadings"/>
         }
         <gds-contentful-rich-text document="@Model.MainContent"></gds-contentful-rich-text>
-        @if (Model.Width == PageWidth.FullWidth)
-        {
-            <partial name="ShareThis" model="Model.ShowShareThis"/>
-        }
-        
-        @if (Model.ShowLastUpdated)
-        {
-            <hr/>
-            <partial name="_LastUpdated" model="@Model.Sys"/>
-        }
-        
     </div>
+    <div class="govuk-grid-column-full">
+        <partial name="LastUpdated" model="@Model"/>
+        
+        <partial name="Shareaholic" model="Model"/>
+        </div>
     @if (Model.Width == PageWidth.TwoThirds)
     {
         <div class="govuk-grid-column-one-third">
+            &nbsp;
+        </div>
+        <div class="govuk-grid-column-full">
             @if (Model.SecondaryContent != null)
             {
+                <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
                 <gds-contentful-rich-text document="@Model.SecondaryContent"></gds-contentful-rich-text>
             }
-            <partial name="ShareThis" model="Model.ShowShareThis"/>
         </div>
     }
 </div>
 
-@{
-    var config = await ContentfulConfiguration.GetConfiguration();
-}
+
 @if (Model.ShowFooter && config.Footer != null)
 {
     @section AfterGDSContent
@@ -81,5 +133,28 @@
                 <gds-contentful-rich-text document="@config.Footer"/>
             </div>
         </div>
+    }
+}
+
+@section Scripts
+{
+    @if (Model.ShowShareLinks)
+    {
+        <script asp-add-nonce="true" defer>
+            const printPage  = () => window.print();
+
+            const addPrintButtonEventListener  = () => {
+                const printButton = document.getElementById("print-link");
+
+                if (!printButton) {
+                    return;
+                }
+
+                printButton.addEventListener('click', printPage);
+
+            }
+
+            addPrintButtonEventListener();
+        </script>
     }
 }

@@ -1,8 +1,15 @@
+@using CareLeavers.Web.Contentful
 @model CareLeavers.Web.Models.Content.RichContentBlock
 
+@inject IContentService ContentService
+
+@{
+    var block = await ContentService.Hydrate(Model);
+}
+
 <div class="govuk-grid-row">
-    @foreach (var content in Model.Entries)
-    {
-        <partial name="RichContent/Content" model="@content"/>
-    }
+     @foreach (var content in block?.Entries ?? [])
+     {
+         <partial name="RichContent/Content" model="@content"/>
+     }
 </div>

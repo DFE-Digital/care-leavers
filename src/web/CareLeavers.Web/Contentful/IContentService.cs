@@ -1,15 +1,30 @@
 using CareLeavers.Web.Models.Content;
-using Contentful.Core.Models;
+using CareLeavers.Web.Models.ViewModels;
 
 namespace CareLeavers.Web.Contentful;
 
 public interface IContentService
 {
+    Task<RedirectionRules?> GetRedirectionRules(string fromSlug);
+    
     Task<Page?> GetPage(string slug);
+
+    Task<List<SimplePage>?> GetSiteHierarchy();
     
     Task<ContentfulConfigurationEntity?> GetConfiguration();
 
-    Task<List<string>> GetSiteSlugs();
+    Task<Dictionary<string, string>> GetSiteSlugs();
 
-    Task<StatusChecker?> GetStatusChecker(string id);
+    Task<List<SimplePage>> GetBreadcrumbs(string? slug, bool includeHome = true);
+    
+    Task<RichContentBlock?> Hydrate(RichContentBlock? entity);
+    
+    Task<Grid?> Hydrate(Grid? entity);
+    
+    Task<Banner?> Hydrate(Banner? entity);
+    
+    Task<StatusChecker?> Hydrate(StatusChecker? entity);
+
+    Task<string> GetSlug(string id);
+
 }

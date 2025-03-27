@@ -1,11 +1,16 @@
 using System.Net;
 using System.Xml;
-using CareLeavers.Integration.Tests.TestSupport;
 
 namespace CareLeavers.Integration.Tests.Tests;
 
 public class ContentfulControllerTests
 {
+    [SetUp]
+    public void Setup()
+    {
+        WebFixture.ClearContent();
+    }
+    
     [Test]
     public async Task SitemapIsGenerated()
     {
@@ -14,12 +19,14 @@ public class ContentfulControllerTests
         var wrapper = await File.ReadAllTextAsync(Path.Combine(WebFixture.WrapperBasePath, "RequestWrapper.json"));
 
         wrapper = wrapper.Replace("**REPLACE**", @"{
-    ""slug"" : ""home""
+    ""slug"" : ""home"",
+    ""sys"" : { ""id"" : ""12345"" } 
   }, {
-    ""slug"" : ""about""
+    ""slug"" : ""about"",
+    ""sys"" : { ""id"" : ""12346"" } 
   }");
-        
-        WebFixture.SetContentfulJson(wrapper);
+
+        WebFixture.AddContent(new ContentfulContent() { Content = wrapper });
         
         // Act
         var response = await client.GetAsync("/sitemap.xml");
@@ -33,12 +40,13 @@ public class ContentfulControllerTests
         
         var urls = xml.GetElementsByTagName("loc");
         
-        Assert.That(urls.Count, Is.EqualTo(3));
+        Assert.That(urls.Count, Is.EqualTo(4));
         Assert.Multiple(() =>
         {
-            Assert.That(urls[0]?.InnerText, Is.EqualTo("/home"));
-            Assert.That(urls[1]?.InnerText, Is.EqualTo("/about"));
-            Assert.That(urls[2]?.InnerText, Is.EqualTo("/pages/cookie-policy"));
+            Assert.That(urls[0]?.InnerText, Is.EqualTo("https://localhost/en/home"));
+            Assert.That(urls[1]?.InnerText, Is.EqualTo("https://localhost/en/about"));
+            Assert.That(urls[2]?.InnerText, Is.EqualTo("https://localhost/en/pages/cookie-policy"));
+            Assert.That(urls[3]?.InnerText, Is.EqualTo("https://localhost/en/pages/privacy-policies"));
         });
     }
 
@@ -48,12 +56,18 @@ public class ContentfulControllerTests
         // Arrange
         var client = WebFixture.GetClient();
         var wrapper = await File.ReadAllTextAsync(Path.Combine(WebFixture.WrapperBasePath, "RequestWrapper.json"));
-        wrapper = wrapper.Replace("**REPLACE**", string.Empty);
-
-        WebFixture.SetContentfulJson(wrapper);
+        wrapper = wrapper.Replace("**REPLACE**", @"{
+    ""slug"" : ""home"",
+    ""sys"" : { ""id"" : ""12345"" } 
+  }, {
+    ""slug"" : ""about"",
+    ""sys"" : { ""id"" : ""12346"" } 
+  }");
+        
+        WebFixture.AddContent(new ContentfulContent() { Content = wrapper });
         
         // Act
-        var response = await client.GetAsync("/home");
+        var response = await client.GetAsync("/en/not-found-random-page");
         
         // Assert
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));

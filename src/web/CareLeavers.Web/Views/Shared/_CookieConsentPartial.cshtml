@@ -2,7 +2,8 @@
 @using Microsoft.AspNetCore.Http.Features
 @using Microsoft.Extensions.Options
 
-@inject IContentfulConfiguration ContentfulConfiguration
+@model CareLeavers.Web.Models.ViewModels.ConfigViewModel
+
 @inject IOptions<CookiePolicyOptions> CookiePolicyOptions
 @inject IOptions<ScriptOptions> ScriptOptions
 @inject IWebHostEnvironment WebHostEnvironment
@@ -17,17 +18,16 @@
     var showBanner = consentCookie == null;
     var acceptCookieString = consentFeature?.CreateConsentCookie() ?? string.Empty;
     var rejectCookieString = acceptCookieString.Replace(ops.ConsentCookieValue, "no");
-    var config = await ContentfulConfiguration.GetConfiguration();
 }
 
-@if (showBanner)
+@if (showBanner && Model.Language.Code == "en")
 {
-    <div class="govuk-cookie-banner" data-nosnippet role="region" aria-label="Cookies on @config.ServiceName" id="cookie-container">
+    <div class="govuk-cookie-banner" data-nosnippet role="region" aria-label="Cookies on @Model.ContentfulConfiguration.ServiceName" id="cookie-container">
         <div class="govuk-cookie-banner__message govuk-width-container">
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
                     <h2 class="govuk-cookie-banner__heading govuk-heading-m">
-                        Cookies on @config.ServiceName
+                        Cookies on @Model.ContentfulConfiguration.ServiceName
                     </h2>
                     <div class="govuk-cookie-banner__content">
                         <p class="govuk-body">We use some essential cookies to make this service work.</p>
@@ -42,7 +42,7 @@
                 <button type="button" class="govuk-button" data-module="govuk-button" data-cookie-string="@rejectCookieString" id="reject-cookie">
                     Reject analytics cookies
                 </button>
-                @Html.ActionLink("View cookies", "CookiePolicy", "Pages", null, new { @class = "govuk-link" })
+                @Html.ActionLink("View cookies", "CookiePolicy", "Pages",  new { languageCode = Model.Language }, new { @class = "govuk-link" })
             </div>
         </div>
     </div>
@@ -51,7 +51,7 @@
         (function () {
                 var acceptCookieButton = document.querySelector("#accept-cookie");
                 acceptCookieButton.addEventListener("click", function (event) {
-                @if (WebHostEnvironment.IsEnvironment("Test") && !string.IsNullOrEmpty(scriptConfig.GTM))
+                @if (WebHostEnvironment.IsProduction() && !string.IsNullOrEmpty(scriptConfig.GTM))
                 {
                     <text>
                     gtag('consent', 'update',  {
@@ -74,7 +74,7 @@
             
             var rejectCookieButton = document.querySelector("#reject-cookie");
             rejectCookieButton.addEventListener("click", function (event) {
-                @if (WebHostEnvironment.IsEnvironment("Test") && !string.IsNullOrEmpty(scriptConfig.GTM))
+                @if (WebHostEnvironment.IsProduction() && !string.IsNullOrEmpty(scriptConfig.GTM))
                 {
                     <text>
                     gtag('consent', 'update',  {

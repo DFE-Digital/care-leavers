@@ -20,6 +20,13 @@ variable "contentful_preview_api_key" {
   sensitive   = true
 }
 
+variable "contentful_management_api_key" {
+  description = "Contentful Management API Key"
+  type        = string
+  sensitive   = true
+}
+
+
 variable "contentful_space_id" {
   description = "Contentful Space ID"
   type        = string
@@ -55,4 +62,17 @@ variable "custom_domain" {
 variable "aspnetcore_environment" {
   description = "ASP.NET Core environment"
   type        = string
+}
+
+variable "azure_translation_access_key" {
+  description = "Azure Translation Access Key"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
+variable "azure_frontdoor_scale" {
+  description = "Azure Front Door Scale"
+  type        = string
+  default     = "Standard_AzureFrontDoor"
 }

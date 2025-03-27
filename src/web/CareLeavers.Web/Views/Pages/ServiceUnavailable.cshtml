@@ -1,0 +1,43 @@
+@using CareLeavers.Web.Configuration
+
+@inject IContentfulConfiguration ContentfulConfiguration
+
+@{
+    var config = await ContentfulConfiguration.GetConfiguration();
+
+    ViewBag.Title = $"Sorry, the service is unavailable";
+    Layout = "_Layout";
+}
+
+@section Head
+{
+    <meta name="robots" content="noindex, nofollow"/>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    
+    <link rel="canonical" href="@Url.Action(
+                                    action: "ServiceUnavailable",
+                                    controller: "Pages",
+                                    protocol: "https",
+                                    values: new { languageCode = "en" }
+                                )"/>
+}
+
+@section BeforeGDSContent
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">
+                @ViewBag.Title
+            </h1>
+        </div>
+    </div>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <gds-contentful-rich-text document="@config.ServiceUnavailableContent"></gds-contentful-rich-text>
+    </div>
+</div>
+

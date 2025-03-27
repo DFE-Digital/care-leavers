@@ -1,6 +1,5 @@
 .gem-c-metadata {
   color: #0b0c0c;
-  font-family: "GDS Transport",arial,sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -12,12 +11,6 @@
 @media print {
   .gem-c-metadata {
     color: #000
-  }
-}
-
-@media print {
-  .gem-c-metadata {
-    font-family: sans-serif
   }
 }
 
@@ -42,18 +35,11 @@
 
 .gem-c-metadata a {
   font-weight: bold;
-  font-family: "GDS Transport",arial,sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-decoration: underline;
   text-decoration-thickness: max(1px, .0625rem);
   text-underline-offset: .1578em
-}
-
-@media print {
-  .gem-c-metadata a {
-    font-family: sans-serif
-  }
 }
 
 .gem-c-metadata a:hover {
@@ -205,4 +191,19 @@ html body a:-webkit-any-link {
   .gem-c-metadata a,.gem-c-metadata a:visited {
     color: #000 !important
   }
+}
+
+.gem-c-print-link__button {
+  display: block;
+  border: 1px solid #505a5f;
+  color: #1d70b8;
+  cursor: pointer;
+  margin: 0;
+}
+
+.gem-c-print-link__link, .gem-c-print-link__button {
+  background: url('/assets/icon-print.png') no-repeat 10px 50%;
+  background-size: 16px 18px;
+  padding: 10px 10px 10px 36px;
+  text-decoration: none;
 }

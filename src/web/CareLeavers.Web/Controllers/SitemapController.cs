@@ -1,41 +1,41 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Xml.Linq;
-using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
-using Contentful.Core.Configuration;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using Formatting = Newtonsoft.Json.Formatting;
 
 namespace CareLeavers.Web.Controllers;
 
 public class SitemapController(IContentService contentService) : Controller
 {
-    [Route("/sitemap")]
     [Route("/sitemap.xml")]
-    public async Task<IActionResult> Sitemap([FromServices] IConfiguration configuration)
+    [Route("/sitemap")]
+    public async Task<IActionResult> Sitemap()
     {
         if (!ModelState.IsValid)
         {
             return BadRequest();
         }
 
-        var slugs = await contentService.GetSiteSlugs();
+        // Get all slugs, but add the default locale of "en"
+        var slugs = (await contentService.GetSiteSlugs())
+            .Select(s => Url.Action(
+                "GetContent",
+                "Contentful",
+                protocol: "https",
+                values: new { languageCode = "en", slug = s.Value }))
+            .ToList();
         
         XNamespace ns = "http://www.sitemaps.org/schemas/sitemap/0.9";
         
         // add known .NET pages
-        slugs.AddRange([
-            Url.Action("CookiePolicy", "Pages")!.TrimStart('/'),
-        ]);
+        slugs.Add(Url.Action("CookiePolicy", "Pages", protocol: "https", values: new { languageCode = "en" }));
+        slugs.Add(Url.Action("PrivacyPolicies", "Pages", protocol: "https", values: new { languageCode = "en" }));
 
         var xmlDoc = new XDocument(
             new XDeclaration("1.0", "UTF-8", null),
             new XElement(ns + "urlset",
                 slugs.Select(slug => new XElement(ns + "url",
-                    new XElement(ns + "loc", $"{configuration["BaseUrl"]}/{slug}")
+                    new XElement(ns + "loc", slug)
                 ))
             ));
 

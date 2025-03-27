@@ -1,11 +1,16 @@
+@using CareLeavers.Web.Contentful
 @using CareLeavers.Web.Models.Enums
 @model CareLeavers.Web.Models.Content.Banner
-@{
-    string? link = Model?.Link?.Slug ?? string.Empty;
-    string cssClass = "banner";
-    string bgClass = "split-panel";
+@inject IContentService ContentService
 
-    switch (Model?.Background)
+@{
+    var banner = await ContentService.Hydrate(Model);
+
+    var link = banner?.Link?.Slug;
+    var cssClass = "banner";
+    var bgClass = "split-panel";
+
+    switch (banner?.Background)
     {
         case BackgroundColour.Blue:
             cssClass = "banner banner-blue";
@@ -21,14 +26,14 @@
                 <div class="govuk-grid-row @bgClass">
 
                     <div class="govuk-grid-column-one-half text-column">
-                        <h3 class="govuk-heading-l">@Model?.Title</h3>
-                        <p class="govuk-body">@Model?.Text</p>
+                        <h3 class="govuk-heading-l">@banner?.Title</h3>
+                        <p class="govuk-body">@banner?.Text</p>
                         <p class="govuk-body">
-                            <a href="@link">@Model?.LinkText</a>
+                            <a href="@link" class="govuk-link">@banner?.LinkText</a>
                         </p>
                     </div>
                     <div class="govuk-grid-column-one-half image-column">
-                        <div class="image-container" style="background-image: url('@Model?.Image?.File?.Url');"></div>
+                        <div class="image-container" style="background-image: url('@banner?.Image?.File?.Url');"></div>
                     </div>
                 </div>
             </div>

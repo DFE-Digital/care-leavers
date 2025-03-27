@@ -29,10 +29,10 @@ public class Page : ContentfulContent
     public bool ShowContentsBlock { get; set; } = false;
     
     public HeadingType[] ContentsHeadings { get; set; } = [ ];
+
+    public bool ShowLastUpdated { get; set; } = true;
     
-    public bool ShowLastUpdated { get; set; }
-    
-    public bool ShowShareThis { get; set; }
+    public bool ShowShareLinks { get; set; }
     
     public bool ShowFooter { get; set; }
     

@@ -11,6 +11,11 @@ public static class DistributedCacheExtensions
     public static DistributedCacheEntryOptions DefaultCacheOptions { get; set; } =
         new DistributedCacheEntryOptions()
             .SetAbsoluteExpiration(TimeSpan.FromHours(1));
+
+    public static Task SetAsync(this IDistributedCache cache, string key, byte[] bytes)
+    {
+        return cache.SetAsync(key, bytes, DefaultCacheOptions);
+    }
     
     public static Task SetAsync<T>(this IDistributedCache cache, string key, T value)
     {
@@ -39,6 +44,20 @@ public static class DistributedCacheExtensions
         value = Constants.Serializer.Deserialize<T>(reader);
 
         return true;
+    }
+    
+    public static async Task<T?> GetAsync<T>(this IDistributedCache cache, string key)
+    {
+        var val = await cache.GetAsync(key);
+        if (val == null)
+        {
+            return default;
+        }
+
+        using var stream = new MemoryStream(val);
+        using var reader = new JsonTextReader(new StreamReader(stream));
+
+        return Constants.Serializer.Deserialize<T>(reader);
     }
 
     public static async Task<T?> GetOrSetAsync<T>(

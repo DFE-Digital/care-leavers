@@ -1,3 +1,4 @@
+using CareLeavers.Web.Filters;
 using CareLeavers.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
@@ -5,16 +6,17 @@ using Microsoft.Extensions.Options;
 
 namespace CareLeavers.Web.Controllers;
 
-[Route("/pages")]
 public class PagesController : Controller
 {
-    [HttpGet("privacy-policies")]
+    [HttpGet("{languageCode}/pages/privacy-policies")]
+    [Translation(HardcodedSlug="pages/privacy-policies")]
     public IActionResult PrivacyPolicies()
     {
         return View();
     }
     
-    [HttpGet("cookie-policy")]
+    [HttpGet("{languageCode}/pages/cookie-policy")]
+    [Translation(HardcodedSlug="pages/cookie-policy")]
     public IActionResult CookiePolicy()
     {
         var consent = HttpContext.Features.Get<ITrackingConsentFeature>() ??
@@ -28,7 +30,36 @@ public class PagesController : Controller
         return View(vm);
     }
     
-    [HttpPost("cookie-policy")]
+    [HttpGet("{languageCode}/pages/error")]
+    [HttpPost("{languageCode}/pages/error")]
+    public IActionResult Error(int statusCode)
+    {
+        if (statusCode == 404)
+        {
+            return PageNotFound();
+        }
+        return View();
+    }
+    
+    [HttpGet("{languageCode}/pages/service-unavailable")]
+    [Translation(HardcodedSlug="pages/service-unavailable")]
+    public IActionResult ServiceUnavailable()
+    {
+        return View();
+    }
+    
+    [HttpGet("{languageCode}/pages/page-not-found")]
+    [Translation(HardcodedSlug="pages/page-not-found")]
+    public IActionResult PageNotFound()
+    {
+        Response.StatusCode = StatusCodes.Status404NotFound;
+        var result = View("PageNotFound");
+        result.StatusCode = StatusCodes.Status404NotFound;
+        return result;
+    }
+    
+    [HttpPost("/pages/cookie-policy")]
+    [HttpPost("/en/pages/cookie-policy")]
     public IActionResult PostCookiePolicy(
         [FromForm] CookiePolicyModel cookiePolicyModel,
         [FromServices] IOptions<CookiePolicyOptions> cookiePolicyOptions)

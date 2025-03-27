@@ -6,14 +6,13 @@ using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Contentful.Webhooks;
 using CareLeavers.Web.ContentfulRenderers;
-using CareLeavers.Web.Mocks;
 using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Telemetry;
+using CareLeavers.Web.Translation;
 using Contentful.AspNetCore;
 using Contentful.AspNetCore.MiddleWare;
 using Contentful.Core;
 using Contentful.Core.Models;
-using GovUk.Frontend.AspNetCore;
 using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Caching.Distributed;
@@ -60,12 +59,6 @@ try
     
     #endregion
     
-    #region GOV.UK front end
-    
-    builder.Services.AddGovUkFrontend();
-    
-    #endregion
-    
     #region Setup security and headers
     
     builder.Services.AddCsp(nonceByteAmount: 32);
@@ -90,7 +83,8 @@ try
         options.AllowedHosts = new List<string>
         {
             "*.azurewebsites.net",
-            "*.azurefd.net"
+            "*.azurefd.net",
+            "*.support-for-care-leavers.education.gov.uk"
         };
     });
         
@@ -99,27 +93,8 @@ try
     #region Contentful
     
     builder.Services.AddScoped<IContentService, ContentfulContentService>();
-    if (builder.Configuration.GetValue<bool>("UseMockedContentful"))
-    {
-        var httpClient = new HttpClient(new FakeMessageHandler());
-        var mockedContentfulClient = new ContentfulClient(httpClient, "test", "test", "test");
-        mockedContentfulClient.ContentTypeResolver = new ContentfulEntityResolver();
-        mockedContentfulClient.SerializerSettings.Converters.RemoveAt(0);
-        mockedContentfulClient.SerializerSettings.Converters.Insert(0, new GDSAssetJsonConverter());
-        mockedContentfulClient.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-        mockedContentfulClient.SerializerSettings.ContractResolver = new DefaultContractResolver
-        {
-            NamingStrategy = new CamelCaseNamingStrategy()
-        };
-        
-        builder.Services.AddSingleton<IContentfulClient>(x => mockedContentfulClient);
-        builder.Services.AddScoped<IContentfulConfiguration, MockedContentfulConfiguration>();
-    }
-    else
-    {
-        builder.Services.AddContentful(builder.Configuration);
-        builder.Services.AddScoped<IContentfulConfiguration, ContentfulConfiguration>();
-    }
+    builder.Services.AddContentful(builder.Configuration);
+    builder.Services.AddScoped<IContentfulConfiguration, ContentfulConfiguration>();
     
     builder.Services.AddTransient<HtmlRenderer>(serviceProvider =>
     {
@@ -136,13 +111,17 @@ try
         renderer.AddRenderer(new GDSParagraphRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSHeaderRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSAssetRenderer(renderer.Renderers));
-        renderer.AddRenderer(new GDSGridRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSLinkRenderer(renderer.Renderers));
+        renderer.AddRenderer(new GDSListRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSHorizontalRulerContentRenderer());
+        renderer.AddRenderer(new GDSDefinitionLinkRenderer());
+        renderer.AddRenderer(new GDSSpacerRenderer());
+        renderer.AddRenderer(new GDSGridRenderer(serviceProvider));
         renderer.AddRenderer(new GDSRichContentRenderer(serviceProvider));
-        renderer.AddRenderer(new GDSEntityLinkContentRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSStatusCheckerRenderer(serviceProvider));
         renderer.AddRenderer(new GDSRiddleRenderer(serviceProvider));
         renderer.AddRenderer(new GDSBannerRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSDefinitionRenderer(serviceProvider));
 
         return renderer;
     });
@@ -153,7 +132,19 @@ try
 
     builder.Services.AddOptions<ScriptOptions>().BindConfiguration(ScriptOptions.Name);
     builder.Services.AddOptions<CachingOptions>().BindConfiguration(CachingOptions.Name);
-    
+
+    builder.Services.AddOptions<AzureTranslationOptions>().BindConfiguration(AzureTranslationOptions.Name);
+
+    if (string.IsNullOrEmpty(builder.Configuration.GetValue<string>("AzureTranslation:AccessKey")))
+    {
+        Log.Logger.Information("Azure Translation subscription key not found, translation service will be disabled");
+        builder.Services.AddSingleton<ITranslationService, NoTranslationService>();
+    }
+    else
+    {
+        builder.Services.AddScoped<ITranslationService, AzureTranslationService>();
+    }
+
     #endregion
     
     #region Distributed Caching
@@ -201,20 +192,36 @@ try
     {
         NamingStrategy = new CamelCaseNamingStrategy()
     };
+    contentfulClient.SerializerSettings.MaxDepth = 128;
+    contentfulClient.Serializer.MaxDepth = 128;
 
     Constants.Serializer = contentfulClient.Serializer;
     Constants.SerializerSettings = contentfulClient.SerializerSettings;
 
     app.UseContentfulWebhooks(consumers =>
     {
-        consumers.AddConsumer<Entry<ContentfulContent>>("*", "*", "*",  async entry =>
+        consumers.AddConsumer<Entry<ContentfulContent>>("*", "Entry", "*",  async entry =>
         {
             var webhookConsumer = new PublishContentfulWebhook(
                 app.Services.GetRequiredService<IContentfulClient>(),
-                app.Services.GetRequiredService<IDistributedCache>());
+                app.Services.GetRequiredService<IDistributedCache>(),
+                app.Services.GetRequiredService<IContentfulManagementClient>(),
+                app.Services.GetRequiredService<ILogger<PublishContentfulWebhook>>());
 
             await webhookConsumer.Consume(entry);
             
+            return new { Result = "OK" };
+        });
+
+        consumers.AddConsumer<Asset>("*", "Asset", "*", async asset =>
+        {
+            var webhookConsumer = new PublishAssetWebhook(
+                app.Services.GetRequiredService<IContentfulClient>(),
+                app.Services.GetRequiredService<IDistributedCache>(),
+                app.Services.GetRequiredService<ILogger<PublishAssetWebhook>>());
+
+            await webhookConsumer.Consume(asset);
+
             return new { Result = "OK" };
         });
     });
@@ -223,16 +230,30 @@ try
     
     #region Setup error pages and HSTS
     
+    app.UseStatusCodePagesWithReExecute("/en/pages/error", "?statusCode={0}");
+
+    
     if (!app.Environment.IsDevelopment())
     {
-        // TODO: Setup views for exceptions
-        app.UseExceptionHandler("/Home/Error");
-        
-        // TODO: Setup view for 404 not found
-        
+        // If we're not in development mode, use the error handler page
+        app.UseExceptionHandler("/en/pages/error");
+
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
     }
+    
+    // Redirect 404 responses to the page not found page
+    app.Use(async (context, next) =>
+    {
+        await next();
+
+        if (context.Response is { StatusCode: 404, HasStarted: false })
+        {
+            // Log the error or handle it accordingly
+            context.Request.Path = "/en/pages/page-not-found"; // Redirect to a custom not found page
+            await next();
+        }
+    });
     
     #endregion
 
@@ -275,6 +296,7 @@ try
             .AddNonce();
 
         config.AllowScriptUrls.ForEach(f => x.AllowScripts.From(f));
+        config.AllowHashes.ForEach(f => x.AllowScripts.WithHash(f));
 
         x.AllowStyles
             .FromSelf()
@@ -304,6 +326,11 @@ try
             .ToSelf();
         
         config.AllowConnectUrls.ForEach(f => x.AllowConnections.To(f));
+        
+        if (config.ReportOnly)
+        {
+            x.SetReportOnly();
+        }
 
     });
     

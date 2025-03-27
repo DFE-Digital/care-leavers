@@ -1,0 +1,34 @@
+@using System.Globalization
+@model CareLeavers.Web.Models.Content.Page
+
+@if (Model.ShowLastUpdated)
+{
+    <div class="govuk-grid-row">
+        <div class="metadata-logo-wrapper">
+            <div class="govuk-grid-column-two-thirds metadata-column">
+                <hr class="govuk-section-break govuk-section-break--visible">
+                <div class="gem-c-metadata" data-module="gem-toggle metadata">
+                    <dl class="gem-c-metadata__list">
+                        <dt class="gem-c-metadata__term">From:</dt>
+                        <dd class="gem-c-metadata__definition notranslate">
+                            <a class="govuk-link" href="https://www.gov.uk/government/organisations/department-for-education">Department for Education</a>
+
+                        </dd>
+                        <dt class="gem-c-metadata__term">Published:</dt>
+                        <dd class="gem-c-metadata__definition">@Model.Sys.CreatedAt?.ToString("d MMMM yyyy", DateTimeFormatInfo.InvariantInfo)</dd>
+                        <dt class="gem-c-metadata__term">Last updated:</dt>
+                        <dd class="gem-c-metadata__definition">
+                            @Model.Sys.UpdatedAt?.ToString("d MMMM yyyy", DateTimeFormatInfo.InvariantInfo)
+                        </dd>
+                    </dl>
+                </div>
+                @if (Model.ShowShareLinks)
+                {
+                    <div class="gem-c-print-link govuk-!-display-none-print govuk-!-margin-top-3 govuk-!-margin-bottom-8">
+                        <button class="govuk-link govuk-body-s gem-c-print-link__button" data-module="print-link" id="print-link">Print this page</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

@@ -1,6 +1,6 @@
 ﻿@using CareLeavers.Web.Configuration
-@using GovUk.Frontend.AspNetCore
-@using GovUk.Frontend.AspNetCore.TagHelpers
+@using CareLeavers.Web.Models.ViewModels
+@using CareLeavers.Web.Translation
 @using Joonasw.AspNetCore.SecurityHeaders.Csp
 @using Joonasw.AspNetCore.SecurityHeaders.TagHelpers
 @using Microsoft.AspNetCore.Http.Features
@@ -11,18 +11,33 @@
 @inject ICspNonceService CspNonceService
 @inject IContentfulConfiguration ContentfulConfiguration
 @inject IOptions<ScriptOptions> ScriptOptions
+@inject ITranslationService TranslationService
 
 @{
     var config = await ContentfulConfiguration.GetConfiguration();
     var scriptConfig = ScriptOptions.Value;
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>() ?? throw new NullReferenceException();
+    
+    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
+    if (string.IsNullOrEmpty(languageCode))
+    {
+        languageCode = "en";
+    }
+    
+    var language = await TranslationService.GetLanguage(languageCode);
+    
+    var configViewModel = new ConfigViewModel
+    {
+        ContentfulConfiguration = config,
+        Language = language
+    };
 }
 
 <!DOCTYPE html>
-<html class="govuk-template" lang="en">
+<html class="govuk-template" dir="@language.Direction" lang="@languageCode">
 
 <head>
-    @if (WebHostEnvironment.IsEnvironment("Test") && !string.IsNullOrEmpty(scriptConfig.GTM))
+    @if (WebHostEnvironment.IsProduction() && !string.IsNullOrEmpty(scriptConfig.GTM))
     {
         <script asp-add-nonce="true">
             // Define dataLayer and the gtag function.
@@ -38,7 +53,7 @@
                 'analytics_storage': '@(consentFeature.HasConsent ? "granted" : "denied")',
             });
         </script>
-        
+
         <!-- Google Tag Manager -->
         <script asp-add-nonce="true">
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
@@ -66,23 +81,26 @@
         </script>
         <!-- End Clarity -->
     }
-    <!-- Begin ShareThis -->
-    <script type="text/javascript" asp-add-nonce="true" src="https://platform-api.sharethis.com/js/sharethis.js#property=@scriptConfig.ShareThis&product=inline-share-buttons&source=platform" async="async"></script>
-    <!-- End ShareThis -->
+    <!-- BEGIN SHAREAHOLIC CODE -->
+    <link rel="preload" href="https://cdn.shareaholic.net/assets/pub/shareaholic.js" as="script"/>
+    <meta name="shareaholic:site_id" content="@scriptConfig.ShareaholicSiteId"/>
+    <script asp-add-nonce="true" data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js"></script>
+    <!-- END SHAREAHOLIC CODE -->
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - @config.ServiceName</title>
     <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/assets/images/favicon.svg"/>
-    @Html.GovUkFrontendStyleImports(appendVersion: true)
-    <link rel="stylesheet" href="~/css/dfefrontend.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="stylesheet" href="~/css/application.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="stylesheet" href="~/css/metadata.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="stylesheet" href="~/css/navigation.css" asp-append-version="@scriptConfig.AddCssVersion"/>
-    <link rel="stylesheet" href="~/css/cta.css" asp-append-version="@scriptConfig.AddCssVersion" />
+    <link rel="stylesheet" href="~/css/cta.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    @if (IsSectionDefined("Head")) {
+        @await RenderSectionAsync("Head", required: false)
+    }
 </head>
 
 <body class="govuk-template__body">
-@if (WebHostEnvironment.IsEnvironment("Test") && !string.IsNullOrEmpty(scriptConfig.GTM))
+@if (WebHostEnvironment.IsProduction() && !string.IsNullOrEmpty(scriptConfig.GTM))
 {
     <!-- Google Tag Manager (noscript) -->
     <noscript>
@@ -90,10 +108,13 @@
                 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 }
-@Html.GovUkFrontendJsEnabledScript(CspNonceService.GetNonce())
+<script asp-add-nonce="true">
+    document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
+</script>
+
 <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 @{
-    await Html.RenderPartialAsync("_Header", config);
+    await Html.RenderPartialAsync("_Header", configViewModel);
 }
 
 
@@ -127,11 +148,14 @@
 }
 
 @{
-    await Html.RenderPartialAsync("_Footer", config);
+    await Html.RenderPartialAsync("_Footer", configViewModel);
 }
 
 @await RenderSectionAsync("Scripts", false)
-@Html.GovUkFrontendScriptImports(CspNonceService.GetNonce(), true)
+<script asp-add-nonce="true" type="module">
+    import { initAll } from '/js/govuk-frontend.min.js'
+    initAll()
+</script>
 </body>
 
 </html>

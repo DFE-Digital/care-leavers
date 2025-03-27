@@ -7,7 +7,7 @@ dotenv.config();
 export default defineConfig({
   testDir: './src/tests',
   testMatch: '**/*.spec.ts',
-  timeout: 30 * 1000, // 30 seconds
+  timeout: 10 * 1000, // 10 seconds
   expect: {
     timeout: 5000, // 5 seconds
   },
@@ -27,14 +27,15 @@ export default defineConfig({
       name: 'Chromium',
       use: { browserName: 'chromium' },
     },
-    {
-      name: 'Firefox',
-      use: { browserName: 'firefox' },
-    },
-    {
-      name: 'WebKit',
-      use: { browserName: 'webkit' },
-    },
+    /*Removing this to reduce the number of repetative tests
+     {
+         name: 'Firefox',
+         use: { browserName: 'firefox' },
+     },
+     {
+         name: 'WebKit',
+         use: { browserName: 'webkit' },
+     },*/
     {
       name: 'Mobile Chrome',
       use: {

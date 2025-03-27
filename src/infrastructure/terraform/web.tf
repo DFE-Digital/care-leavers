@@ -3,15 +3,15 @@ locals {
     "ASPNETCORE_ENVIRONMENT"                = var.aspnetcore_environment
     "ContentfulOptions__DeliveryApiKey"     = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-delivery-api-key.versionless_id})"
     "ContentfulOptions__PreviewApiKey"      = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-preview-api-key.versionless_id})"
+    "ContentfulOptions__ManagementApiKey"   = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-management-api-key.versionless_id})"
     "ContentfulOptions__SpaceId"            = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-space-id.versionless_id})"
     "ContentfulOptions__Environment"        = var.contentful_environment
     "ContentfulOptions__UsePreviewApi"      = var.contentful_use_preview_api
-    "BaseUrl"                               = "https://${azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.host_name}"
     "ApplicationInsights__ConnectionString" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.application-insights-connection-string.versionless_id})"
     "Caching__Type"                         = var.caching_type
     "Caching__ConnectionString"             = lower(var.caching_type) == "redis" ? "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-cache-connection-string[0].versionless_id})" : ""
     "Scripts__Clarity"                      = var.scripts_clarity,
-    # "Translation__AzureApiKey"              = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.translation-access-key.versionless_id})"
+    "AzureTranslation__AccessKey"           = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.azure-translation-access-key.versionless_id})"
   }
 }
 

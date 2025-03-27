@@ -1,17 +1,25 @@
+@using CareLeavers.Web.Contentful
 @using CareLeavers.Web.Models.Content
 @using CareLeavers.Web.Models.Enums
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model CareLeavers.Web.Models.Content.Grid
 
+@inject IContentService ContentService
+
 @{
-    switch (Model.GridType)
+    var grid = await ContentService.Hydrate(Model);
+    grid ??= new Grid();
+}
+
+@{
+    switch (grid.GridType)
     {
         case GridType.Cards:
             <section class="dfe-section govuk-!-margin-top-5">
-                @if (Model.Content != null && Model.Content.Any())
+                @if (grid.Content != null && grid.Content.Any())
                 {
                     <div class="dfe-grid-container dfe-grid-container--wider govuk-!-margin-top-5">
-                        @foreach (var content in Model.Content)
+                        @foreach (var content in grid.Content)
                         {
                             var card = (Card)content;
                             <partial model="@card" name="Grid/Card"/>
@@ -23,14 +31,11 @@
 
         case GridType.AlternatingImageAndText:
             <section class="dfe-section alternating-image-text">
-                @if (Model.Content != null && Model.Content.Any())
+                @if (grid.Content != null && grid.Content.Any())
                 {
-                    var position = -1;
-                    foreach (var content in Model.Content)
+                    foreach (var content in grid.Content)
                     {
-                        position++;
                         var card = (Card)content;
-                        card.Position = position;
                         <partial model="@card" name="Grid/AlternatingImageAndText"/>
                     }
                 }
@@ -39,9 +44,9 @@
         
         case GridType.ExternalLinks:
             <section class="dfe-section govuk-!-margin-top-5">
-                @if (Model.Content != null)
+                @if (grid.Content != null)
                 {
-                    @foreach (var content in Model.Content)
+                    @foreach (var content in grid.Content)
                     {
                         var externalAgency = (ExternalAgency)content;
                         <partial model="@externalAgency" name="Grid/ExternalAgency"/>

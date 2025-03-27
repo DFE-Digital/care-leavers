@@ -13,9 +13,11 @@ public class MockContentfulConfiguration : IContentfulConfiguration
             Phase = ContentfulConfigurationEntity.BannerPhase.Beta,
             HomePage = new Page
             {
-                Slug = "home"
+                Slug = "home",
+                Title = "Care Leavers"
             },
             ServiceName = "Care leavers",
+            TranslationEnabled = true,
             Footer = new Document
             {
                 Content =

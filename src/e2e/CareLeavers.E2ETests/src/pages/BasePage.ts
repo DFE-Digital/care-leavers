@@ -6,10 +6,19 @@ export class BasePage {
     //Locator for the Website Title navigation Link
     public readonly WebsiteNameLink: Locator;
 
+    // Locators for the logo link and logo images
+    public logoLink: Locator;
+    public defaultLogo: Locator;
+
     // Locators for cookie banner and buttons
     public readonly cookieBanner: Locator;
     public readonly acceptButton: Locator;
     public readonly rejectButton: Locator;
+
+    // Main Header Sections Locators 
+    public readonly mainHeading: Locator;
+    public readonly firstHeaderParagraph: Locator;
+    public readonly supportHeading: Locator;
 
     //Locators for Navigation Bar
     public readonly navLinkHome: Locator;
@@ -19,22 +28,21 @@ export class BasePage {
     public readonly navLinkHelplines: Locator;
 
     //Locators for Navigation Bar-Mobile Menu
-    public readonly hamburgerMenuIcon: Locator;
+    public readonly menuToggle: Locator;
     public readonly mobileMenuLinks: Locator;
     public readonly mobileMenuContainer: Locator;
-    public readonly closeMenuButton: Locator;
 
     // Locators for social media share buttons
     public readonly shareButtonsContainer: Locator;
     public readonly printShareButton: Locator;
-    
+
     // Locators for Metadata column
     public readonly metadataDefinitions: Locator;
 
     //Locators for helplines-If you need Help at the bottom of the page
     public readonly helplineLink: Locator;
     public readonly ifYouNeedHelpSection: Locator;
-    
+
     //Locators for web page Footers
     public readonly footer: Locator;
     public readonly footerLinks: Locator;
@@ -44,42 +52,51 @@ export class BasePage {
     constructor(page: Page) {
         this.page = page;
         //Locator for the Website Title navigation Link
-        this.WebsiteNameLink = page.locator('a.dfe-header__link--service').nth(1);
+        this.WebsiteNameLink = page.locator('a.dfe-header__link--service');
+
+        //Logo 
+        this.logoLink = page.locator('a.dfe-header__link');
+        this.defaultLogo = page.locator('img.dfe-logo');
 
         // Locators for cookie banner and buttons
         this.cookieBanner = page.locator('.govuk-cookie-banner');
-        this.acceptButton = page.locator('#accept-cookie');   
+        this.acceptButton = page.locator('#accept-cookie');
         this.rejectButton = page.locator('#reject-cookie');
 
+        // Main Header section  
+        this.mainHeading = page.locator('h1');
+        this.supportHeading = page.locator('h1.govuk-heading-xl');
+        let headerSection = page.locator('div#main-header-container')
+        this.firstHeaderParagraph = headerSection.locator('p.govuk-body-l').first();
+
         //Locators for Navigation Bar
-        this.navLinkHome = page.locator('a.dfe-header__navigation-link', { hasText: "Home" });
-        this.navLinkAllSupport = page.locator('a.dfe-header__navigation-link', { hasText: "All support" });
+        this.navLinkHome = page.locator('a.govuk-service-navigation__link', { hasText: "Home" });
+        this.navLinkAllSupport = page.locator('a.govuk-service-navigation__link', { hasText: "All support" });
         //update locators 
         this.navLinkYourRights = page.locator('[role="link"][aria-label="Your rights"]');
         this.navLinkLeavingCareGuides = page.locator('[role="link"][aria-label="Leaving care guides"]');
         this.navLinkHelplines = page.locator('[role="link"][aria-label="Helplines"]');
 
         //Locators for Navigation Bar-Mobile Menu
-        this.hamburgerMenuIcon = page.locator('#menu-toggle');
-        this.mobileMenuContainer = page.locator('#header-navigation');
-        this.mobileMenuLinks = page.locator('.dfe-header__navigation-list a');
-        this.closeMenuButton = page.locator('#close-menu');
+        this.menuToggle = page.locator('.govuk-js-service-navigation-toggle');
+        this.mobileMenuContainer = page.locator('#navigation');
+        this.mobileMenuLinks = page.locator('#navigation a');
 
         // Locators for social media share buttons
-        this.shareButtonsContainer = page.locator('.sharethis-inline-share-buttons');
-        this.printShareButton = page.locator('[data-network="print"]');
+        this.shareButtonsContainer = page.locator('.shareaholic-share-buttons');
+        this.printShareButton = page.locator('#print-link');
 
         // Locators for Metadata definitions
         this.metadataDefinitions = page.locator('.gem-c-metadata__definition');
-        
+
         //Locators for helplines-If you need Help at the bottom of the page
-        this.helplineLink = page.locator('p.govuk-body a.govuk-hyperlink');
-        this.ifYouNeedHelpSection = page.locator('#If-you-need-help-now');
+        this.helplineLink = page.locator('p.govuk-body a.govuk-link[href="helplines"]');
+        this.ifYouNeedHelpSection = page.locator('#Talk-to-someone');
 
         //Locators for web page Footers
         this.footer = page.locator('footer');
         this.footerLinks = page.locator('footer a');
-        this.cookiePolicyLinkInFooter = page.locator('a.govuk-footer__link[href="/pages/cookie-policy"]');
+        this.cookiePolicyLinkInFooter = page.locator('a.govuk-footer__link[href="/en/pages/cookie-policy"]');
         this.licenceLogo = page.locator('svg.govuk-footer__licence-logo');
 
     }
@@ -98,12 +115,13 @@ export class BasePage {
     async waitForPageLoad() {
         await this.page.waitForLoadState('load');
     }
-    
+
     // Cookie banner functionality
     async acceptCookies() {
         await this.acceptButton.click();
         await expect(this.cookieBanner).not.toBeVisible();
     }
+
     async rejectCookies() {
         await expect(this.rejectButton).toBeVisible();
         await this.rejectButton.click();
@@ -118,17 +136,22 @@ export class BasePage {
 
     }
 
+    async verifyLogoPresence() {
+        await expect(this.logoLink).toBeVisible();
+        await expect(this.defaultLogo).toBeVisible();
+    }
+
     // Clear cookies
     async clearCookies(context: BrowserContext) {
         await context.clearCookies();
-        await this.page.reload(); 
-        await this.page.waitForLoadState('load'); 
+        await this.page.reload();
+        await this.page.waitForLoadState('load');
         await expect(this.cookieBanner).toBeVisible();// Ensure the cookie banner appears again after clearing cookies
     }
 
     // Set an expired consent cookie to trigger re-prompt
     async setExpiredConsentCookie(context: BrowserContext) {
-        const baseURL = process.env.BASE_URL || 'http://localhost:7050'; 
+        const baseURL = process.env.BASE_URL || 'http://localhost:7050';
 
         if (!baseURL) {
             throw new Error("BASE_URL is not defined");
@@ -140,12 +163,22 @@ export class BasePage {
                 value: 'expired',
                 domain: new URL(baseURL).hostname, // Extract domain from BASE_URL
                 path: '/',
-                expires: Date.now() / 1000 - 10, // Set to Past time to expire
+                expires: Date.now() / 1000 - 10, // Set to Pastime to expire
                 secure: true,
                 httpOnly: true,
                 sameSite: 'Strict'
             }
         ]);
+    }
+
+    // Generic method to verify PAGE Main heading and its paragraph text
+    async verifyHeading(expectedHeading: string, expectedParagraph: string) {
+        await expect(this.mainHeading).toBeVisible();
+        const actualHeading = await this.mainHeading.innerText();
+        expect(actualHeading.trim()).toContain(expectedHeading.trim());
+        await expect(this.firstHeaderParagraph).toBeVisible();
+        await expect(this.firstHeaderParagraph).toContainText(expectedParagraph.trim());
+        await expect(this.supportHeading).toBeVisible();
     }
 
     // Navigation Bar functionality
@@ -154,7 +187,7 @@ export class BasePage {
         // Check if the menu is visible, if not, click the hamburger menu to open it
         const isMenuVisible = await this.mobileMenuContainer.isVisible();
         if (!isMenuVisible) {
-            await this.hamburgerMenuIcon.click();
+            await this.menuToggle.click();
             await expect(this.mobileMenuContainer).toBeVisible(); // Ensure it becomes visible
         }
     }
@@ -176,30 +209,30 @@ export class BasePage {
         }
         else {
             // Click on the hamburger menu to open the mobile menu
-            await expect(this.hamburgerMenuIcon).toBeVisible();
-            await this.hamburgerMenuIcon.click();
+            await expect(this.menuToggle).toBeVisible();
+            await this.menuToggle.click();
 
             // Wait and verify that the mobile menu is visible
             await expect(this.mobileMenuContainer).toBeVisible();
+            await expect(this.menuToggle).toHaveAttribute("aria-expanded", "true");
 
             // Verify the mobile menu links
             const mobileLinksCount = await this.mobileMenuLinks.count();
             expect(mobileLinksCount).toBeGreaterThan(0);
 
             // Close the mobile menu
-            await expect(this.closeMenuButton).toBeVisible();
-            await this.closeMenuButton.click();
+            await this.menuToggle.click();
 
             // Ensure the menu is closed
             await expect(this.mobileMenuContainer).not.toBeVisible();
 
             // click each link and ensure the menu is visible each time
             const links = [
-                { index: 0, href: '/home' },
-                { index: 1, href: '/all-support' },
-                /*{ index: 2, href: '/status' },
-                { index: 3, href: '/guides-advice' },
-                { index: 4, href: '/helplines' },*/
+                { index: 0, href: '/en/home' },
+                { index: 1, href: '/en/all-support' },
+                /*{ index: 2, href: '/en/status' },
+                { index: 3, href: '/en/guides-advice' },
+                { index: 4, href: '/en/helplines' },*/
             ];
 
             for (const link of links) {
@@ -210,7 +243,53 @@ export class BasePage {
             }
         }
     }
-    
+
+    // Locate breadcrumb items on the page
+    getBreadcrumbItems(): Locator {
+        return this.page.locator('.govuk-breadcrumbs__link');
+    }
+
+    // Get text of a breadcrumb link by index
+    async getBreadcrumbLinkText(index: number): Promise<string> {
+        const breadcrumb = this.getBreadcrumbItems().nth(index);
+        return await breadcrumb.innerText();
+    }
+
+    //Method to check breadcrumbs
+    async checkBreadcrumbs(url: string, expectedBreadcrumbs: string[]) {
+        await this.navigateTo(url);
+        await this.waitForPageLoad();
+
+        const breadcrumbItems = this.getBreadcrumbItems();
+        const breadcrumbCount = await breadcrumbItems.count();
+        if (breadcrumbCount !== expectedBreadcrumbs.length) {
+            throw new Error(`Expected ${expectedBreadcrumbs.length} breadcrumbs, but found ${breadcrumbCount}`);
+        }
+        for (let i = 0; i < breadcrumbCount; i++) {
+
+            const actualText = await this.getBreadcrumbLinkText(i);
+
+            if (actualText.trim().toLowerCase() === 'home') {
+                const link = breadcrumbItems.nth(i);
+                await link.click(); // Click the Home breadcrumb
+                await this.waitForPageLoad();
+                const breadcrumbItemsAfterHome = this.getBreadcrumbItems();
+                const breadcrumbCountAfterHome = await breadcrumbItemsAfterHome.count();
+                if (breadcrumbCountAfterHome !== 0) {
+                    throw new Error("Expected no breadcrumbs on the home page.");
+                }
+                return; // Skip further checks if Home was clicked
+            }
+
+            expect(actualText.trim()).toBe(expectedBreadcrumbs[i]);
+
+            const expectedURL = `/${expectedBreadcrumbs[i].toLowerCase().replace(/\s+/g, '-')}`;
+            const link = breadcrumbItems.nth(i);
+            await link.click();
+            await this.page.waitForURL(expectedURL);
+        }
+    }
+
     //Verify that the Social Media and Share buttons are visible 
     async verifyShareButtonsVisibility() {
         await Promise.all([
@@ -226,17 +305,17 @@ export class BasePage {
             await expect(this.metadataDefinitions.nth(i)).not.toBeEmpty();
         }
     }
-    
+
     //verify footer Links are visible
     async verifyFooterLinks() {
         //Ensure the footer is visible 
         await expect(this.footer).toBeVisible();
-        
+
         // Verify the "Cookie Policy" link(in Footer)
         await expect(this.cookiePolicyLinkInFooter).toBeVisible();
         await expect(this.cookiePolicyLinkInFooter).toContainText('Cookie Policy');
-        await expect(this.cookiePolicyLinkInFooter).toHaveAttribute('href', '/pages/cookie-policy');
-        
+        await expect(this.cookiePolicyLinkInFooter).toHaveAttribute('href', '/en/pages/cookie-policy');
+
         // Verify the footer logo and licence description
         await expect(this.licenceLogo).toBeVisible();
         const licenceDescription = this.footer.locator('.govuk-footer__licence-description');

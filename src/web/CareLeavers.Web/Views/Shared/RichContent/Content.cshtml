@@ -1,5 +1,6 @@
 @using CareLeavers.Web.Models.Enums
 @model CareLeavers.Web.Models.Content.RichContent
+
 @{
     string color = "";
     switch (Model.Background)
@@ -24,12 +25,8 @@
     }
     else
     {
-        <section class="dfe-section">
-
-            <div class="@width">
-                <gds-contentful-rich-text document="@Model.Content"/>
-            </div>
-
-        </section>
+        <div class="@width">
+            <gds-contentful-rich-text document="@Model.Content"/>
+        </div>
     }
 }
