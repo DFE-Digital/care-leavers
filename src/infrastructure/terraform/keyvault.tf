@@ -50,6 +50,14 @@ resource "azurerm_key_vault_secret" "contentful-preview-api-key" {
   depends_on = [azurerm_key_vault_access_policy.github-kv-access]
 }
 
+resource "azurerm_key_vault_secret" "contentful-management-api-key" {
+  key_vault_id = azurerm_key_vault.key-vault.id
+  name         = "contentful-management-api-key"
+  value        = var.contentful_management_api_key
+
+  depends_on = [azurerm_key_vault_access_policy.github-kv-access]
+}
+
 resource "azurerm_key_vault_secret" "contentful-space-id" {
   key_vault_id = azurerm_key_vault.key-vault.id
   name         = "contentful-space-id"
