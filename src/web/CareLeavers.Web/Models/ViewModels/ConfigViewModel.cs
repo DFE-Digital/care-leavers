@@ -10,4 +10,10 @@ public class ConfigViewModel
     public TranslationLanguage Language { get; set; } = new();
 
     public bool IsError { get; set; } = false;
+
+    public bool ShowLanguage { get; set; } = true;
+
+    public bool ShowNavigation { get; set; } = true;
+
+    public bool ShowFooterLinks { get; set; } = true;
 }
