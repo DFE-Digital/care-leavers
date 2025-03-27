@@ -1,4 +1,7 @@
 @media (max-width: 43em) {
+  .dfe-header .dfe-header__service-name{
+    text-align: left;
+  }
   .govuk-service-navigation__container {
     flex-direction: column;
     align-items: start;
