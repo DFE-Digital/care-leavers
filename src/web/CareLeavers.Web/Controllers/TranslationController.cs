@@ -28,4 +28,23 @@ public class TranslationController(
         
         return View(model);
     }
+    
+    [Route("page/{page?}")]
+    public async Task<IActionResult> Page(string? page)
+    {
+        var config = await contentfulConfiguration.GetConfiguration();
+
+        if (!config.TranslationEnabled)
+        {
+            return NotFound();
+        }
+
+        var model = new TranslationViewModel()
+        {
+            Languages = await translationService.GetLanguages(),
+            Page = page
+        };
+        
+        return View("Index", model);
+    }
 }

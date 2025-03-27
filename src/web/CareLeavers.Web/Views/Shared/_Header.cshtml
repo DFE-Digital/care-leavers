@@ -1,4 +1,5 @@
 @using CareLeavers.Web.Configuration
+@using CareLeavers.Web.Controllers
 @using Microsoft.Extensions.Options
 @model CareLeavers.Web.Models.ViewModels.ConfigViewModel
 
@@ -21,13 +22,43 @@
     <div class="govuk-phase-banner">
         @if (Model.ContentfulConfiguration.TranslationEnabled && Model.ShowLanguage)
         {
-            string? currentSlug = ViewContext.RouteData.Values["slug"]?.ToString() ?? Model.ContentfulConfiguration.HomePage?.Slug;   
+            var currentSlug = ViewContext.RouteData.Values["slug"]?.ToString() ?? Model.ContentfulConfiguration.HomePage?.Slug;
+            var currentLanguage = ViewContext.RouteData.Values["languageCode"]?.ToString() ?? "en";
+            var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+            var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
             <p class="translate">
-                @Html.ActionLink(Model.Language.NativeName, 
-                    "Index", 
-                    "Translation",  
-                    new { slug = currentSlug }, 
-                    new { @class = "govuk-link", rel="nofollow" })
+
+                @switch (currentController)
+                {
+                    case "Contentful" when currentLanguage != "en":
+                        @Html.ActionLink(Model.Language.NativeName,
+                            "GetContent",
+                            "Contentful",
+                            new { slug = currentSlug, languageCode = "en" },
+                            new { @class = "govuk-link", rel = "nofollow" })
+                        break;
+                    case "Pages" when currentLanguage != "en":
+                        @Html.ActionLink(Model.Language.NativeName,
+                            currentAction,
+                            "Pages",
+                            new { languageCode = "en" },
+                            new { @class = "govuk-link", rel = "nofollow" })
+                        break;
+                    case "Pages":
+                        @Html.ActionLink(Model.Language.NativeName,
+                            "Page",
+                            "Translation",
+                            new { page = currentAction },
+                            new { @class = "govuk-link", rel = "nofollow" })
+                        break;
+                    default:
+                        @Html.ActionLink(Model.Language.NativeName,
+                            "Index",
+                            "Translation",
+                            new { slug = currentSlug },
+                            new { @class = "govuk-link", rel = "nofollow" })
+                        break;
+                }
             </p>
         }
         <div class="govuk-phase-banner__content">

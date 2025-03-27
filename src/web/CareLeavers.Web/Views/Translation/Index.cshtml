@@ -44,12 +44,24 @@
                 @foreach (var translation in list)
                 {
                     <li>
-                        @Html.ActionLink(
-                            $"{translation.NativeName} ({translation.Name})",
-                            "GetContent",
-                            "Contentful",
-                            new { slug = Model.Slug ?? config.HomePage.Slug,languageCode = translation.Code },
-                            new { @class = "govuk-link", rel = "nofollow" })
+                        @if (!string.IsNullOrEmpty(Model.Page))
+                        {
+                            @Html.ActionLink(
+                                $"{translation.NativeName} ({translation.Name})",
+                                Model.Page,
+                                "Pages",
+                                new { languageCode = translation.Code },
+                                new { @class = "govuk-link", rel = "nofollow" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink(
+                                $"{translation.NativeName} ({translation.Name})",
+                                "GetContent",
+                                "Contentful",
+                                new { slug = Model.Slug ?? config.HomePage.Slug, languageCode = translation.Code },
+                                new { @class = "govuk-link", rel = "nofollow" })
+                        }
                     </li>
                 }
             </ul>

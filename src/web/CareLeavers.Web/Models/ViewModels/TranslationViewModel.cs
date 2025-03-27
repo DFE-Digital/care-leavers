@@ -7,4 +7,6 @@ public class TranslationViewModel
     public IEnumerable<TranslationLanguage> Languages { get; set; } = [];
     
     public string? Slug { get; set; }
+    
+    public string? Page { get; set; }
 }
