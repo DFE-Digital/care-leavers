@@ -10,5 +10,5 @@ public class StatusChecker : ContentfulContent
     
     public List<AnswerEntity>? Answers { get; set; }
     
-    public Page? Page { get; set; }
+    public PageLink? Page { get; set; }
 }

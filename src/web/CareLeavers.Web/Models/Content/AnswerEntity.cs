@@ -8,7 +8,7 @@ public class AnswerEntity : ContentfulContent
     
     public string? Description { get; set; }
     
-    public Page? Target { get; set; }
+    public PageLink? Target { get; set; }
     
     public int Priority { get; set; }
 }

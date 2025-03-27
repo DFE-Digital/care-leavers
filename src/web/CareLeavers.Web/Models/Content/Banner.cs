@@ -15,7 +15,7 @@ public class Banner : ContentfulContent
     
     public string? LinkText { get; set; }
     
-    public Page? Link { get; set; }
+    public PageLink? Link { get; set; }
     
     public BackgroundColour? Background { get; set; }
 

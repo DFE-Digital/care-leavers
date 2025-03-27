@@ -8,6 +8,6 @@ public class DefinitionLink : ContentfulContent
     
     public required Definition Definition { get; set; }
     
-    public required Page Page { get; set; }
+    public required PageLink Page { get; set; }
     
 }

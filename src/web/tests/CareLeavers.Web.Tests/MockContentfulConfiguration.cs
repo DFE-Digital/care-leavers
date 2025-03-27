@@ -10,7 +10,7 @@ public class MockContentfulConfiguration : IContentfulConfiguration
         return Task.FromResult(new ContentfulConfigurationEntity
         {
             Phase = ContentfulConfigurationEntity.BannerPhase.Beta,
-            HomePage = new Page
+            HomePage = new PageLink
             {
                 Slug = "home"
             },

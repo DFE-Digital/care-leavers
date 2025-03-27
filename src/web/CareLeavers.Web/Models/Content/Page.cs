@@ -3,11 +3,9 @@ using Contentful.Core.Models;
 
 namespace CareLeavers.Web.Models.Content;
 
-public class Page : ContentfulContent
+public class Page : PageLink
 {
     public static string ContentType { get; } = "page";
-    
-    public Page? Parent { get; set; }
     
     public string? SeoTitle { get; set; }
     
@@ -18,11 +16,6 @@ public class Page : ContentfulContent
     public PageWidth Width { get; set; }
     
     public PageType? Type { get; set; }
-    
-    public string? Title { get; set; }
-    
-    public string? Slug { get; set; }
-    
     
     public bool ShowBreadcrumb { get; set; } = true;
 

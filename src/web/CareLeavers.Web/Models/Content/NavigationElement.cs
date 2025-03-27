@@ -6,7 +6,7 @@ public class NavigationElement : ContentfulContent
     
     public string Title { get; set; } = string.Empty;
     
-    public Page? Link { get; set; }
+    public PageLink? Link { get; set; }
 
     public string Slug => Link?.Slug ?? string.Empty;
 }

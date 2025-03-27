@@ -18,7 +18,7 @@ public class ContentfulConfigurationEntity : ContentfulContent
 
     public BannerPhase Phase { get; set; } = BannerPhase.Beta;
     
-    public Page? HomePage { get; set; }
+    public PageLink? HomePage { get; set; }
 
     public List<NavigationElement> Navigation { get; set; } = [];
     
