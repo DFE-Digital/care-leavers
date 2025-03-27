@@ -59,7 +59,7 @@
                                 $"{translation.NativeName} ({translation.Name})",
                                 "GetContent",
                                 "Contentful",
-                                new { slug = Model.Slug ?? config.HomePage.Slug, languageCode = translation.Code },
+                                new { slug = Model.Slug ?? config.HomePage?.Slug, languageCode = translation.Code },
                                 new { @class = "govuk-link", rel = "nofollow" })
                         }
                     </li>
