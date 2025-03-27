@@ -287,6 +287,14 @@ section.dfe {
   display: block;
 }
 
+@media print {
+  .box-ext {
+    background-color: #EAF5FF;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
 .box-guide {
   background-color: #EAF5FF;
 }
