@@ -1,5 +1,5 @@
 @using CareLeavers.Web.Configuration
-@model IEnumerable<CareLeavers.Web.Translation.TranslationLanguage>
+@model CareLeavers.Web.Models.ViewModels.TranslationViewModel
 @inject IContentfulConfiguration ContentfulConfiguration
 @{
     ViewBag.Title = "Translate this website";
@@ -27,13 +27,13 @@
 }
 
 @{
-    var count = (double)Model.Count();
+    var count = (double)Model.Languages.Count();
     var columnSize = 1;
     if (count > 0)
     {
         columnSize = (int)Math.Ceiling(count / 3d);
     }
-    var languageLists = Model.Chunk(columnSize);
+    var languageLists = Model.Languages.Chunk(columnSize);
 }
 
 <div class="govuk-grid-row">
@@ -44,12 +44,24 @@
                 @foreach (var translation in list)
                 {
                     <li>
-                        @Html.ActionLink(
-                            $"{translation.NativeName} ({translation.Name})",
-                            "Homepage",
-                            "Contentful",
-                            new { languageCode = translation.Code },
-                            new { @class = "govuk-link", rel = "nofollow" })
+                        @if (!string.IsNullOrEmpty(Model.Page))
+                        {
+                            @Html.ActionLink(
+                                $"{translation.NativeName} ({translation.Name})",
+                                Model.Page,
+                                "Pages",
+                                new { languageCode = translation.Code },
+                                new { @class = "govuk-link", rel = "nofollow" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink(
+                                $"{translation.NativeName} ({translation.Name})",
+                                "GetContent",
+                                "Contentful",
+                                new { slug = Model.Slug ?? config.HomePage?.Slug, languageCode = translation.Code },
+                                new { @class = "govuk-link", rel = "nofollow" })
+                        }
                     </li>
                 }
             </ul>

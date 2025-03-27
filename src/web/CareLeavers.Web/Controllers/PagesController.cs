@@ -30,8 +30,8 @@ public class PagesController : Controller
         return View(vm);
     }
     
-    [HttpGet("{languageCode}/pages/error")]
-    [HttpPost("{languageCode}/pages/error")]
+    [Route("{languageCode}/pages/error")]
+    [Translation(HardcodedSlug="pages/error")]
     public IActionResult Error(int statusCode)
     {
         if (statusCode == 404)
@@ -41,14 +41,14 @@ public class PagesController : Controller
         return View();
     }
     
-    [HttpGet("{languageCode}/pages/service-unavailable")]
+    [Route("{languageCode}/pages/service-unavailable")]
     [Translation(HardcodedSlug="pages/service-unavailable")]
     public IActionResult ServiceUnavailable()
     {
         return View();
     }
     
-    [HttpGet("{languageCode}/pages/page-not-found")]
+    [Route("{languageCode}/pages/page-not-found")]
     [Translation(HardcodedSlug="pages/page-not-found")]
     public IActionResult PageNotFound()
     {
