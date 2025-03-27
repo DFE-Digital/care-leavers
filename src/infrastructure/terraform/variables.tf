@@ -20,6 +20,13 @@ variable "contentful_preview_api_key" {
   sensitive   = true
 }
 
+variable "contentful_management_api_key" {
+  description = "Contentful Management API Key"
+  type        = string
+  sensitive   = true
+}
+
+
 variable "contentful_space_id" {
   description = "Contentful Space ID"
   type        = string

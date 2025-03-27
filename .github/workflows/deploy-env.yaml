@@ -101,6 +101,7 @@ jobs:
           TF_VAR_cip_environment: ${{ vars.CIP_ENVIRONMENT }}
           TF_VAR_contentful_delivery_api_key: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
           TF_VAR_contentful_preview_api_key: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
+          TF_VAR_contentful_management_api_key: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
           TF_VAR_contentful_space_id: ${{ secrets.CONTENTFUL_SPACE_ID }}
           TF_VAR_contentful_environment: ${{ vars.CONTENTFUL_ENVIRONMENT }}
           TF_VAR_contentful_use_preview_api: ${{ vars.CONTENTFUL_PREVIEW }}
