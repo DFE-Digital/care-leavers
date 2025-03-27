@@ -12,17 +12,22 @@
     </div>
 }
 
-@if (ScriptOptions.Value.ShowCookieBanner)
+@if (ScriptOptions.Value.ShowCookieBanner && !Model.IsError)
 {
     <partial name="_CookieConsentPartial" model="@Model"/>
 }
 
 <div class="govuk-width-container">
     <div class="govuk-phase-banner">
-        @if (Model.ContentfulConfiguration.TranslationEnabled)
+        @if (Model.ContentfulConfiguration.TranslationEnabled && Model.ShowLanguage)
         {
+            string? currentSlug = ViewContext.RouteData.Values["slug"]?.ToString() ?? Model.ContentfulConfiguration.HomePage?.Slug;   
             <p class="translate">
-                @Html.ActionLink(Model.Language.NativeName, "Index", "Translation", null, new { @class = "govuk-link", rel="nofollow" })
+                @Html.ActionLink(Model.Language.NativeName, 
+                    "Index", 
+                    "Translation",  
+                    new { slug = currentSlug }, 
+                    new { @class = "govuk-link", rel="nofollow" })
             </p>
         }
         <div class="govuk-phase-banner__content">
@@ -31,10 +36,11 @@
             </strong>
             <span class="govuk-phase-banner__text">
                 This is a new service.
-                @if (!string.IsNullOrEmpty(Model.ContentfulConfiguration.FeedbackText))
+                @if (!string.IsNullOrEmpty(Model.ContentfulConfiguration.FeedbackText) && Model.ShowNavigation)
                 {
                     <text>
-                        Your <a class="govuk-link" href="@Model.ContentfulConfiguration.FeedbackUrl" rel="nofollow">@Model.ContentfulConfiguration.FeedbackText</a> will help us to improve it.
+                        Help us improve it and <a class="govuk-link" href="@Model.ContentfulConfiguration.FeedbackUrl" target="_blank" rel="nofollow">
+                            @Model.ContentfulConfiguration.FeedbackText (opens in new tab)</a>. 
                     </text>
                 }
             </span>
@@ -57,7 +63,7 @@
     <div class="dfe-width-container dfe-header__service-name">
         @Model.ContentfulConfiguration.ServiceName
     </div>
-    @if (!Model.IsError)
+    @if (Model is { IsError: false, ShowNavigation: true })
     { 
         await Html.RenderPartialAsync("Navigation", Model);
     }

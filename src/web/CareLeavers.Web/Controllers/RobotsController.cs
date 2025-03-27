@@ -25,7 +25,8 @@ public class RobotsController (IContentfulConfiguration contentfulConfiguration,
         StringBuilder sb = new StringBuilder();
 
         sb.AppendLine("User-agent: *");
-        sb.AppendLine($"Disallow: {Url.Action("Index", "Translation")}");
+        sb.AppendLine($"Disallow: {Url.Action("Index", "Translation", new { slug = "" })}");
+        sb.AppendLine($"Disallow: {Url.Action("Index", "Translation", new { slug = "" })}/");
         sb.AppendLine($"Disallow: {Url.Action("PageNotFound", "Pages", new { languageCode = "en" })}");
         sb.AppendLine($"Disallow: {Url.Action("Error", "Pages", new { languageCode = "en" })}");
         sb.AppendLine($"Disallow: {Url.Action("ServiceUnavailable", "Pages", new { languageCode = "en" })}");

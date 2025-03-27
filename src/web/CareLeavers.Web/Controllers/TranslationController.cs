@@ -1,4 +1,5 @@
 using CareLeavers.Web.Configuration;
+using CareLeavers.Web.Models.ViewModels;
 using CareLeavers.Web.Translation;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +10,8 @@ public class TranslationController(
     ITranslationService translationService,
     IContentfulConfiguration contentfulConfiguration) : Controller
 {
-    public async Task<IActionResult> Index()
+    [Route("{slug?}")]
+    public async Task<IActionResult> Index(string? slug)
     {
         var config = await contentfulConfiguration.GetConfiguration();
 
@@ -17,9 +19,13 @@ public class TranslationController(
         {
             return NotFound();
         }
+
+        var model = new TranslationViewModel()
+        {
+            Languages = await translationService.GetLanguages(),
+            Slug = slug
+        };
         
-        var translations = await translationService.GetLanguages();
-        
-        return View(translations);
+        return View(model);
     }
 }
