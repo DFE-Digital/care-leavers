@@ -6,7 +6,7 @@
     var config = await ContentfulConfiguration.GetConfiguration();
     var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
 
-    ViewBag.Title = $"Privacy policies: {config.ServiceName} website";
+    ViewBag.Title = "Privacy policies";
     Layout = "_Layout";
 }
 
@@ -19,7 +19,7 @@
                                          action: "PrivacyPolicies",
                                          controller: "Pages",
                                          protocol: "https",
-                                         values: new { languageCode = "en" }
+                                         values: new { languageCode }
                                      )"/>
 
     <meta property="og:locale" content="en_GB"/>
