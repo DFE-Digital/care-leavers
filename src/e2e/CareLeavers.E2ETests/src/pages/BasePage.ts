@@ -311,10 +311,10 @@ export class BasePage {
         //Ensure the footer is visible 
         await expect(this.footer).toBeVisible();
 
-        // Verify the "Cookie Policy" link(in Footer)
+        // Verify the "Cookie policy" link(in Footer)
         await expect(this.cookiePolicyLinkInFooter).toBeVisible();
-        await expect(this.cookiePolicyLinkInFooter).toContainText('Cookie Policy');
-        await expect(this.cookiePolicyLinkInFooter).toHaveAttribute('href', '/en/pages/cookie-policy');
+        await expect(this.cookiePolicyLinkInFooter).toContainText('Cookie policy');
+        await expect(this.cookiePolicyLinkInFooter).toHaveAttribute('href', '/en/cookie-policy');
 
         // Verify the footer logo and licence description
         await expect(this.licenceLogo).toBeVisible();
