@@ -96,7 +96,7 @@ export class BasePage {
         //Locators for web page Footers
         this.footer = page.locator('footer');
         this.footerLinks = page.locator('footer a');
-        this.cookiePolicyLinkInFooter = page.locator('a.govuk-footer__link[href="/en/pages/cookie-policy"]');
+        this.cookiePolicyLinkInFooter = page.locator('a.govuk-footer__link[href="/en/cookie-policy"]');
         this.licenceLogo = page.locator('svg.govuk-footer__licence-logo');
 
     }
@@ -311,10 +311,10 @@ export class BasePage {
         //Ensure the footer is visible 
         await expect(this.footer).toBeVisible();
 
-        // Verify the "Cookie Policy" link(in Footer)
+        // Verify the "Cookie policy" link(in Footer)
         await expect(this.cookiePolicyLinkInFooter).toBeVisible();
-        await expect(this.cookiePolicyLinkInFooter).toContainText('Cookie Policy');
-        await expect(this.cookiePolicyLinkInFooter).toHaveAttribute('href', '/en/pages/cookie-policy');
+        await expect(this.cookiePolicyLinkInFooter).toContainText('Cookie policy');
+        await expect(this.cookiePolicyLinkInFooter).toHaveAttribute('href', '/en/cookie-policy');
 
         // Verify the footer logo and licence description
         await expect(this.licenceLogo).toBeVisible();

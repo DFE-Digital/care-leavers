@@ -4,7 +4,7 @@
 @inject IContentfulConfiguration ContentfulConfiguration
 
 @{
-    ViewBag.Title = "Cookies Policy";
+    ViewBag.Title = "Cookie policy";
     Layout = "_Layout";
 
     var config = await ContentfulConfiguration.GetConfiguration();
@@ -67,7 +67,7 @@
 </p>
 <h2 class="govuk-heading-l">Essential cookies</h2>
 <p class="govuk-body">
-    Essential cookies keep your information secure while you use @config.ServiceName 
+    Essential cookies keep your information secure while you use @(config.ServiceName). 
     These cookies enable core functionality, such as security, network management, and accessibility. 
     We do not require permission to use essential cookies.
 </p>
@@ -192,7 +192,7 @@
     </tbody>
 </table>
 <hr class="govuk-section-break govuk-section-break--l g" />
-@using (Html.BeginForm("PostCookiePolicy", "Pages", FormMethod.Post, new { @class = "govuk-form" }))
+@using (Html.BeginForm("PostCookiePolicy", "Pages", method: FormMethod.Post, htmlAttributes: new { @class = "govuk-form" }, routeValues: new { languageCode }, antiforgery: true ))
 {
     <fieldset class="govuk-fieldset">
         <div class="govuk-form-group">

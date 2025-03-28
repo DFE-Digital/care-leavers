@@ -6,7 +6,7 @@
     var config = await ContentfulConfiguration.GetConfiguration();
     var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
 
-    ViewBag.Title = $"Privacy policies: {config.ServiceName} website";
+    ViewBag.Title = "Privacy policies";
     Layout = "_Layout";
 }
 
@@ -19,7 +19,7 @@
                                          action: "PrivacyPolicies",
                                          controller: "Pages",
                                          protocol: "https",
-                                         values: new { languageCode = "en" }
+                                         values: new { languageCode }
                                      )"/>
 
     <meta property="og:locale" content="en_GB"/>
@@ -43,7 +43,9 @@
 }
 
 <p class="govuk-body">
-    This work is being carried out by the Department for Education (DfE). 
+    This work is being carried out by the Department for Education (DfE).
+</p>
+<p class="govuk-body">
     For the purpose of data protection legislation, the DfE is the data controller for the personal data processed as part of the @config.ServiceName website.
 </p>
 <p class="govuk-body">

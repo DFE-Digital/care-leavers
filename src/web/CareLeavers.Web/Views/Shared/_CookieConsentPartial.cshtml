@@ -18,6 +18,9 @@
     var showBanner = consentCookie == null;
     var acceptCookieString = consentFeature?.CreateConsentCookie() ?? string.Empty;
     var rejectCookieString = acceptCookieString.Replace(ops.ConsentCookieValue, "no");
+    
+    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
+
 }
 
 @if (showBanner && Model.Language.Code == "en")
@@ -42,7 +45,7 @@
                 <button type="button" class="govuk-button" data-module="govuk-button" data-cookie-string="@rejectCookieString" id="reject-cookie">
                     Reject analytics cookies
                 </button>
-                @Html.ActionLink("View cookies", "CookiePolicy", "Pages",  new { languageCode = Model.Language }, new { @class = "govuk-link" })
+                @Html.ActionLink("View cookies", "CookiePolicy", "Pages",  new { languageCode }, new { @class = "govuk-link" })
             </div>
         </div>
     </div>

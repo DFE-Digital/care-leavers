@@ -8,15 +8,15 @@ namespace CareLeavers.Web.Controllers;
 
 public class PagesController : Controller
 {
-    [HttpGet("{languageCode}/pages/privacy-policies")]
-    [Translation(HardcodedSlug="pages/privacy-policies")]
+    [HttpGet("{languageCode}/privacy-policies")]
+    [Translation(HardcodedSlug="privacy-policies")]
     public IActionResult PrivacyPolicies()
     {
         return View();
     }
     
-    [HttpGet("{languageCode}/pages/cookie-policy")]
-    [Translation(HardcodedSlug="pages/cookie-policy")]
+    [HttpGet("{languageCode}/cookie-policy")]
+    [Translation(HardcodedSlug="cookie-policy")]
     public IActionResult CookiePolicy()
     {
         var consent = HttpContext.Features.Get<ITrackingConsentFeature>() ??
@@ -30,8 +30,8 @@ public class PagesController : Controller
         return View(vm);
     }
     
-    [Route("{languageCode}/pages/error")]
-    [Translation(HardcodedSlug="pages/error")]
+    [Route("{languageCode}/error")]
+    [Translation(HardcodedSlug="error")]
     public IActionResult Error(int statusCode)
     {
         if (statusCode == 404)
@@ -41,15 +41,15 @@ public class PagesController : Controller
         return View();
     }
     
-    [Route("{languageCode}/pages/service-unavailable")]
-    [Translation(HardcodedSlug="pages/service-unavailable")]
+    [Route("{languageCode}/service-unavailable")]
+    [Translation(HardcodedSlug="service-unavailable")]
     public IActionResult ServiceUnavailable()
     {
         return View();
     }
     
-    [Route("{languageCode}/pages/page-not-found")]
-    [Translation(HardcodedSlug="pages/page-not-found")]
+    [Route("{languageCode}/page-not-found")]
+    [Translation(HardcodedSlug="page-not-found")]
     public IActionResult PageNotFound()
     {
         Response.StatusCode = StatusCodes.Status404NotFound;
@@ -58,8 +58,7 @@ public class PagesController : Controller
         return result;
     }
     
-    [HttpPost("/pages/cookie-policy")]
-    [HttpPost("/en/pages/cookie-policy")]
+    [HttpPost("/{languageCode}/cookie-policy")]
     public IActionResult PostCookiePolicy(
         [FromForm] CookiePolicyModel cookiePolicyModel,
         [FromServices] IOptions<CookiePolicyOptions> cookiePolicyOptions)

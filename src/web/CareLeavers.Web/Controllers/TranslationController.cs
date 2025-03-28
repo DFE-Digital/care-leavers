@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CareLeavers.Web.Controllers;
 
-[Route("translation")]
+[Route("translate-this-website")]
 public class TranslationController(
     ITranslationService translationService,
     IContentfulConfiguration contentfulConfiguration) : Controller
