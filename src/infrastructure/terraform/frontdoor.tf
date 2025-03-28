@@ -209,7 +209,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
 
     match_condition {
       match_variable = "RequestHeader"
-      selector       = "UserAgent"
+      selector       = "User-Agent"
       operator       = "RegEx"
       transforms     = ["Lowercase", "UrlDecode"]
       match_values   = ["aolbuild|baidu|bingbot|bingpreview|msnbot|duckduckgo|adsbot-google|googlebot|mediapartners-google|teoma|slurp|yandex|yahoo"]
@@ -225,7 +225,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
 
     match_condition {
       match_variable = "RequestHeader"
-      selector       = "UserAgent"
+      selector       = "User-Agent"
       operator       = "RegEx"
       transforms     = ["Lowercase", "UrlDecode"]
       match_values   = ["facebookexternalhit|facebookscraper|twitterbot|meta-externalagent|meta-externalfetcher|microsoftpreview|linkedinbot|pinterest|redditbot|slack|telegrambot|mastadon"]
