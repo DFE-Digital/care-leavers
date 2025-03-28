@@ -58,7 +58,6 @@ public class PagesController : Controller
         return result;
     }
     
-    [HttpPost("/cookie-policy")]
     [HttpPost("/{languageCode}/cookie-policy")]
     public IActionResult PostCookiePolicy(
         [FromForm] CookiePolicyModel cookiePolicyModel,

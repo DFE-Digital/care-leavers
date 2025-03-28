@@ -192,7 +192,7 @@
     </tbody>
 </table>
 <hr class="govuk-section-break govuk-section-break--l g" />
-@using (Html.BeginForm("PostCookiePolicy", "Pages", FormMethod.Post, new { @class = "govuk-form" }))
+@using (Html.BeginForm("PostCookiePolicy", "Pages", method: FormMethod.Post, htmlAttributes: new { @class = "govuk-form" }, routeValues: new { languageCode }, antiforgery: true ))
 {
     <fieldset class="govuk-fieldset">
         <div class="govuk-form-group">
