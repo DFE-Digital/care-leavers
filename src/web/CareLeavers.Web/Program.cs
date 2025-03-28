@@ -188,9 +188,13 @@ try
     contentfulClient.SerializerSettings.Converters.Insert(0, new GDSAssetJsonConverter());
     contentfulClient.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     contentfulClient.SerializerSettings.Formatting = Formatting.Indented;
+    contentfulClient.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+    contentfulClient.SerializerSettings.TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple;
+    contentfulClient.SerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
     contentfulClient.SerializerSettings.ContractResolver = new DefaultContractResolver
     {
         NamingStrategy = new CamelCaseNamingStrategy()
+        
     };
     contentfulClient.SerializerSettings.MaxDepth = 128;
     contentfulClient.Serializer.MaxDepth = 128;
@@ -228,7 +232,7 @@ try
 
     #endregion
     
-    #region Setup error pages and HSTS
+    #region Setup error pages
     
     app.UseStatusCodePagesWithReExecute("/en/pages/error", "?statusCode={0}");
 
@@ -237,9 +241,6 @@ try
     {
         // If we're not in development mode, use the error handler page
         app.UseExceptionHandler("/en/pages/error");
-
-        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-        app.UseHsts();
     }
     
     // Redirect 404 responses to the page not found page
