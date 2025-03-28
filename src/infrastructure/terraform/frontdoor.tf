@@ -165,7 +165,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   tags                = local.common_tags
   mode                = "Prevention"
   sku_name            = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name
-  redirect_url        = "https://${var.custom_domain}/en/pages/service-unavailable"
+  redirect_url        = "https://${var.custom_domain}/en/service-unavailable"
 
   dynamic "managed_rule" {
     for_each = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name == "Premium_AzureFrontDoor" ? [0] : []
@@ -248,7 +248,11 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
 
     match_condition {
       match_values = [
-        "/pages/",
+        "/error",
+        "/service-unavailable",
+        "/page-not-found",
+        "/cookie-policy",
+        "/privacy-policies",
         "/assets/",
         "/css/",
         "/js/",

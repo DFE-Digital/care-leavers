@@ -176,6 +176,10 @@ try
     
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddHealthChecks();
+    builder.Services.AddResponseCompression(options =>
+    {
+        options.EnableForHttps = true;
+    });
     
     #endregion
     
@@ -234,13 +238,13 @@ try
     
     #region Setup error pages
     
-    app.UseStatusCodePagesWithReExecute("/en/pages/error", "?statusCode={0}");
+    app.UseStatusCodePagesWithReExecute("/en/error", "?statusCode={0}");
 
     
     if (!app.Environment.IsDevelopment())
     {
         // If we're not in development mode, use the error handler page
-        app.UseExceptionHandler("/en/pages/error");
+        app.UseExceptionHandler("/en/error");
     }
     
     // Redirect 404 responses to the page not found page
@@ -251,7 +255,7 @@ try
         if (context.Response is { StatusCode: 404, HasStarted: false })
         {
             // Log the error or handle it accordingly
-            context.Request.Path = "/en/pages/page-not-found"; // Redirect to a custom not found page
+            context.Request.Path = "/en/page-not-found"; // Redirect to a custom not found page
             await next();
         }
     });
@@ -262,7 +266,17 @@ try
     
     app.UseSerilogRequestLogging();
     app.UseHttpsRedirection();
-    app.UseStaticFiles();
+    
+    var cacheMaxAgeOneWeek = (60 * 60 * 24 * 7).ToString();
+    app.UseStaticFiles(new StaticFileOptions()
+    {
+        OnPrepareResponse = ctx =>
+        {
+            ctx.Context.Response.Headers.Append(
+                "Cache-Control", $"public, max-age={cacheMaxAgeOneWeek}");
+        }
+    });
+    app.UseResponseCompression();
     app.UseRouting();
     app.UseAuthorization();
     app.MapHealthChecks("/health");
