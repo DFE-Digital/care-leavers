@@ -96,7 +96,7 @@ export class BasePage {
         //Locators for web page Footers
         this.footer = page.locator('footer');
         this.footerLinks = page.locator('footer a');
-        this.cookiePolicyLinkInFooter = page.locator('a.govuk-footer__link[href="/en/pages/cookie-policy"]');
+        this.cookiePolicyLinkInFooter = page.locator('a.govuk-footer__link[href="/en/cookie-policy"]');
         this.licenceLogo = page.locator('svg.govuk-footer__licence-logo');
 
     }
