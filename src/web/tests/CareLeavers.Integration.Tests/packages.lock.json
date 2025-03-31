@@ -154,11 +154,11 @@
       },
       "Joonasw.AspNetCore.SecurityHeaders": {
         "type": "Transitive",
-        "resolved": "5.0.0",
-        "contentHash": "e2qDJIM5mISS/4+Chz9zPtD8VitI2dSPBdtL28KDFtBx0Icl0mD+fv9FbspASFTX/fZj7Vx3p67iUFyX7SSePw==",
+        "resolved": "6.0.0",
+        "contentHash": "tuiKMG/YEMXzDC5Wpi6/HMPC2nUW9OgNZ0w5iPckd0Y9RI8zZ5i4eicN554P//lBn9Ht2pRLwK7NdTk1BAeqew==",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "7.0.0",
-          "Microsoft.Extensions.Options": "7.0.1"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2",
+          "Microsoft.Extensions.Options": "8.0.2"
         }
       },
       "Microsoft.ApplicationInsights": {
@@ -2325,7 +2325,7 @@
           "Azure.AI.Translation.Text": "[1.0.0, )",
           "Azure.Monitor.OpenTelemetry.AspNetCore": "[1.2.0, )",
           "HtmlAgilityPack": "[1.12.0, )",
-          "Joonasw.AspNetCore.SecurityHeaders": "[5.0.0, )",
+          "Joonasw.AspNetCore.SecurityHeaders": "[6.0.0, )",
           "Microsoft.Extensions.Caching.StackExchangeRedis": "[8.0.14, )",
           "Serilog": "[4.2.0, )",
           "Serilog.AspNetCore": "[8.0.3, )",
