@@ -5,7 +5,6 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.Extensions.Options
 
-@inject ICspNonceService CspNonceService
 @inject IOptions<ScriptOptions> ScriptOptions
 
 @{
@@ -29,11 +28,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Support for care leavers</title>
     <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/assets/images/favicon.svg"/>
-    <link rel="stylesheet" href="~/css/govuk-frontend.min.css" asp-append-version="@scriptConfig.AddCssVersion">
-    <link rel="stylesheet" href="~/css/dfefrontend.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="stylesheet" href="~/css/application.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="stylesheet" href="~/css/metadata.css" asp-append-version="@scriptConfig.AddCssVersion"/>
-    <link rel="stylesheet" href="~/css/navigation.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="stylesheet" href="~/css/cta.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     @if (IsSectionDefined("Head")) {
         @await RenderSectionAsync("Head", required: false)

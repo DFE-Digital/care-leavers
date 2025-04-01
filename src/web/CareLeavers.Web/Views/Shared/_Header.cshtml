@@ -1,5 +1,4 @@
 @using CareLeavers.Web.Configuration
-@using CareLeavers.Web.Controllers
 @using Microsoft.Extensions.Options
 @model CareLeavers.Web.Models.ViewModels.ConfigViewModel
 
@@ -91,11 +90,13 @@
             
         </div>
     </div>
-    <div class="dfe-width-container dfe-header__service-name">
-        @Model.ContentfulConfiguration.ServiceName
-    </div>
     @if (Model is { IsError: false, ShowNavigation: true })
     { 
         await Html.RenderPartialAsync("Navigation", Model);
+    }
+    else
+    {
+        await Html.RenderPartialAsync("ServiceName", Model.ContentfulConfiguration.ServiceName);
+
     }
 </header>
