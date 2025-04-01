@@ -29,7 +29,6 @@
 		<link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/assets/images/favicon.svg">
 		<link rel="stylesheet" href="/css/application.css">
 		<link rel="stylesheet" href="/css/metadata.css">
-		<link rel="stylesheet" href="/css/navigation.css">
 		<link rel="stylesheet" href="/css/cta.css">
 		<meta property="og:type" content="website">
 		<meta name="twitter:card" content="summary_large_image">
@@ -50,7 +49,7 @@
     document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
 
 		</script>
-		<a b-k59dbireqp="" href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
+		<a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 		<div class="environment-banner">
 			<div class="govuk-body-s">
 				<strong>ATTENTION!</strong>
@@ -81,28 +80,28 @@
 						<img src="/assets/dfe-logo-alt.png" class="dfe-logo-hover" alt="Care leavers homepage">
 					</a>
 				</div>
-				<div class="dfe-header__content" id="content-header">
-				</div>
 			</div>
-			<div class="dfe-width-container dfe-header__service-name">
-				Care leavers
-			</div>
-			<nav class="govuk-service-navigation" data-module="govuk-service-navigation" id="header-navigation">
-				<div class="govuk-width-container">
-					<div class="govuk-service-navigation__container">
-						<nav aria-label="Menu" class="govuk-service-navigation__wrapper">
-							<button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle" aria-controls="navigation" hidden="">
-								Menu
-							</button>
-							<ul class="govuk-service-navigation__list" id="navigation">
-							</ul>
-						</nav>
-					</div>
-				</div>
-			</nav>
 		</header>
-		<section b-k59dbireqp="" class="dfe-page-grey">
-			<div b-k59dbireqp="" class="govuk-width-container" id="main-header-container">
+		<section aria-label="Service information" class="govuk-service-navigation" data-module="govuk-service-navigation">
+			<div class="govuk-width-container">
+				<div class="govuk-service-navigation__container">
+					<span class="govuk-service-navigation__service-name">
+						<a href="/" class="govuk-service-navigation__link">
+							Care leavers
+						</a>
+					</span>
+					<nav aria-label="Menu" class="govuk-service-navigation__wrapper">
+						<button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle" aria-controls="navigation" hidden="">
+							Menu
+						</button>
+						<ul class="govuk-service-navigation__list" id="navigation">
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</section>
+		<section class="dfe-page-grey">
+			<div class="govuk-width-container" id="main-header-container">
 				<div class="govuk-grid-row">
 					<div class="govuk-grid-column-two-thirds">
 						<h1 class="govuk-heading-xl">
@@ -113,8 +112,8 @@
 				</div>
 			</div>
 		</section>
-		<div b-k59dbireqp="" class="govuk-width-container" id="main-content-container">
-			<main b-k59dbireqp="" class="govuk-main-wrapper" id="main-content" role="main">
+		<div class="govuk-width-container" id="main-content-container">
+			<main class="govuk-main-wrapper" id="main-content" role="main">
 				<div class="govuk-grid-row" data-last-fetched="2025-03-26T10:21:16">
 					<div class="govuk-grid-column-full">
 						<div class="govuk-grid-row">
@@ -266,8 +265,8 @@
 				</div>
 			</main>
 		</div>
-		<section b-k59dbireqp="" class="dfe-page-grey">
-			<div b-k59dbireqp="" class="govuk-width-container">
+		<section class="dfe-page-grey">
+			<div class="govuk-width-container">
 				<div class="govuk-grid-row">
 					<div class="govuk-grid-column-two-thirds">
 						<p class="govuk-body">Care leavers</p>
@@ -283,6 +282,9 @@
 						<ul class="govuk-footer__inline-list">
 							<li class="govuk-footer__inline-list-item">
 								<a class="govuk-footer__link" href="/en/cookie-policy">Cookie policy</a>
+							</li>
+							<li class="govuk-footer__inline-list-item">
+								<a class="govuk-footer__link" href="/en/accessibility-statement">Accessibility statement</a>
 							</li>
 							<li class="govuk-footer__inline-list-item">
 								<a class="govuk-footer__link" href="/en/privacy-policies">Privacy policies</a>
