@@ -70,7 +70,7 @@ export class BasePage {
         this.firstHeaderParagraph = headerSection.locator('p.govuk-body-l').first();
 
         //Locators for Navigation Bar
-        this.navLinkHome = page.locator('a.govuk-service-navigation__link', { hasText: "Home" });
+        this.navLinkHome = page.locator('a.govuk-service-navigation__link', { hasText: "Support for care leavers" });
         this.navLinkAllSupport = page.locator('a.govuk-service-navigation__link', { hasText: "All support" });
         //update locators 
         this.navLinkYourRights = page.locator('[role="link"][aria-label="Your rights"]');
@@ -196,7 +196,7 @@ export class BasePage {
     async verifyNavigation(isDesktop: boolean) {
         if (isDesktop) {
             // Verify desktop navigation is visible
-            await expect(this.page.locator('#header-navigation')).toBeVisible();
+            await expect(this.page.locator('#navigation')).toBeVisible();
 
             const navLinks = [this.navLinkHome, this.navLinkAllSupport /* add other nav links here */];
             for (const link of navLinks) {
@@ -228,11 +228,8 @@ export class BasePage {
 
             // click each link and ensure the menu is visible each time
             const links = [
-                { index: 0, href: '/en/home' },
-                { index: 1, href: '/en/all-support' },
-                /*{ index: 2, href: '/en/status' },
-                { index: 3, href: '/en/guides-advice' },
-                { index: 4, href: '/en/helplines' },*/
+                { index: 0, href: '/en/all-support' },
+                { index: 1, href: '/en/your-rights' }
             ];
 
             for (const link of links) {
