@@ -1,5 +1,4 @@
 @using CareLeavers.Web.Configuration
-@using CareLeavers.Web.Controllers
 @using Microsoft.Extensions.Options
 @model CareLeavers.Web.Models.ViewModels.ConfigViewModel
 
@@ -87,15 +86,14 @@
                 <img src="~/assets/dfe-logo-alt.png" class="dfe-logo-hover" alt="@Model.ContentfulConfiguration.ServiceName homepage">
             </a>
         </div>
-        <div class="dfe-header__content" id="content-header">
-            
-        </div>
     </div>
-    <div class="dfe-width-container dfe-header__service-name">
-        @Model.ContentfulConfiguration.ServiceName
-    </div>
-    @if (Model is { IsError: false, ShowNavigation: true })
-    { 
-        await Html.RenderPartialAsync("Navigation", Model);
-    }
 </header>
+@if (Model is { IsError: false, ShowNavigation: true })
+{ 
+    await Html.RenderPartialAsync("Navigation", Model);
+}
+else
+{
+    await Html.RenderPartialAsync("ServiceName", Model.ContentfulConfiguration.ServiceName);
+
+}

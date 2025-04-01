@@ -8,17 +8,21 @@
     var breadcrumbs = await ContentService.GetBreadcrumbs(currentPage, false);
 }
 
-
-<nav class="govuk-service-navigation" data-module="govuk-service-navigation" id="header-navigation">
+<section aria-label="Service information" class="govuk-service-navigation"
+         data-module="govuk-service-navigation">
     <div class="govuk-width-container">
         <div class="govuk-service-navigation__container">
+            <span class="govuk-service-navigation__service-name">
+                <a href="/" class="govuk-service-navigation__link">
+                    @Model.ContentfulConfiguration.ServiceName
+                </a>
+            </span>
             <nav aria-label="Menu" class="govuk-service-navigation__wrapper">
-                <button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle"
-                        aria-controls="navigation" hidden>
+                <button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle" aria-controls="navigation" hidden>
                     Menu
                 </button>
                 <ul class="govuk-service-navigation__list" id="navigation">
-                    @foreach(var link in Model.ContentfulConfiguration.Navigation)
+                    @foreach (var link in Model.ContentfulConfiguration.Navigation)
                     {
                         if (link.Slug == currentPage || breadcrumbs.Exists(b => b.Slug == link.Slug))
                         {
@@ -41,4 +45,4 @@
             </nav>
         </div>
     </div>
-</nav>
+</section>

@@ -58,6 +58,14 @@ public class PagesController : Controller
         return result;
     }
     
+    [Route("{languageCode}/accessibility-statement")]
+    [Translation(HardcodedSlug="accessibility-statement")]
+    public IActionResult AccessibilityStatement()
+    {
+        return View();
+    }
+    
+    
     [HttpPost("/{languageCode}/cookie-policy")]
     public IActionResult PostCookiePolicy(
         [FromForm] CookiePolicyModel cookiePolicyModel,

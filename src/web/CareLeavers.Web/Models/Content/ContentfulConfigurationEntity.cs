@@ -37,5 +37,7 @@ public class ContentfulConfigurationEntity : ContentfulContent
     public Document? TranslationHeader { get; set; }
     
     public Document? ServiceUnavailableContent { get; set; }
+    
+    public Document? AccessibilityStatement { get; set; }
 
 }
