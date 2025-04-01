@@ -254,9 +254,46 @@ try
 
         if (context.Response is { StatusCode: 404, HasStarted: false })
         {
-            // Log the error or handle it accordingly
-            context.Request.Path = "/en/page-not-found"; // Redirect to a custom not found page
-            await next();
+            if (context.Request.Path.Value != null && context.Request.Path.Value.Contains('.'))
+            {
+                // No point running the friendly 404 page if we're only looking for static files
+                switch (context.Request.Path.Value.Substring(context.Request.Path.Value.LastIndexOf('.')).ToLower())
+                {
+                    // Images
+                    case ".gif":
+                    case ".jpg":
+                    case ".png":
+                    case ".ico":
+                    case ".svg":
+                    // HTML
+                    case ".htm":
+                    case ".html":
+                    // CSS
+                    case ".css":
+                    // Javascript
+                    case ".js":
+                    // Other
+                    case ".map":
+                    case ".manifest":
+                    case ".txt":
+                        // Return a simple response    
+                        context.Response.Clear();
+                        context.Response.StatusCode = StatusCodes.Status404NotFound;
+                        await context.Response.WriteAsync("Not Found");
+                        return;
+                    default:
+                        // Redirect to the not found page
+                        context.Request.Path = "/en/page-not-found";
+                        await next();
+                        break;
+                }
+            }
+            else
+            {
+                // Redirect to the not found page
+                context.Request.Path = "/en/page-not-found";
+                await next();
+            }
         }
     });
     

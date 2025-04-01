@@ -1,11 +1,9 @@
 ﻿@using CareLeavers.Web.Configuration
 @using CareLeavers.Web.Models.Content
 @using CareLeavers.Web.Models.ViewModels
-@using Joonasw.AspNetCore.SecurityHeaders.Csp
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.Extensions.Options
 
-@inject ICspNonceService CspNonceService
 @inject IOptions<ScriptOptions> ScriptOptions
 
 @{
@@ -27,10 +25,14 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - Support for care leavers</title>
-    <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/assets/images/favicon.svg"/>
-    <link rel="stylesheet" href="~/css/govuk-frontend.min.css" asp-append-version="@scriptConfig.AddCssVersion">
-    <link rel="stylesheet" href="~/css/dfefrontend.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <title>@ViewData["Title"]</title>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="mask-icon" href="/assets/images/govuk-icon-mask.svg" color="#0b0c0c" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/govuk-icon-180.png" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <meta name="apple-mobile-web-app-title" content="Support for care leavers" />
+    
     <link rel="stylesheet" href="~/css/application.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="stylesheet" href="~/css/metadata.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="stylesheet" href="~/css/navigation.css" asp-append-version="@scriptConfig.AddCssVersion"/>
