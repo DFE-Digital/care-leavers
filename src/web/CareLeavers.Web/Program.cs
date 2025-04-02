@@ -14,6 +14,7 @@ using Contentful.AspNetCore.MiddleWare;
 using Contentful.Core;
 using Contentful.Core.Models;
 using Joonasw.AspNetCore.SecurityHeaders;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
@@ -63,13 +64,6 @@ try
     #region Setup security and headers
     
     builder.Services.AddCsp(nonceByteAmount: 32);
-    builder.Services.AddHsts(options =>
-    {
-        options.MaxAge = FromDays(365);
-        options.IncludeSubDomains = true;
-        options.Preload = true;
-    });
-
     builder.Services.Configure<CookiePolicyOptions>(options =>
     {
         options.CheckConsentNeeded = _ => true;
@@ -88,7 +82,23 @@ try
             "*.support-for-care-leavers.education.gov.uk"
         };
     });
-        
+
+    builder.Services.AddCookiePolicy(co =>
+    {
+        co.Secure = CookieSecurePolicy.Always;
+        co.HttpOnly = HttpOnlyPolicy.Always;
+        co.MinimumSameSitePolicy = SameSiteMode.Lax;
+    });
+    
+    #endregion
+    
+    #region Compression
+    
+    builder.Services.AddResponseCompression(options =>
+    {
+        options.EnableForHttps = true;
+    });
+    
     #endregion
     
     #region Contentful
@@ -177,14 +187,83 @@ try
     
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddHealthChecks();
-    builder.Services.AddResponseCompression(options =>
-    {
-        options.EnableForHttps = true;
-    });
     
     #endregion
     
     var app = builder.Build();
+    
+    #region Security, Compression, and Headers
+
+    // HSTS
+    app.UseStrictTransportSecurity(new HstsOptions(FromDays(365), true, true));
+
+    // Security Headers
+    app.Use(async (context, next) =>
+    {
+        context.Response.Headers.Append("X-Frame-Options", "DENY");
+        context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+        context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+        await next();
+    });
+    
+    // Cookie Security
+    app.UseCookiePolicy();
+    
+    // Content Security Policy
+    app.UseCsp(x =>
+    {
+        x.ByDefaultAllow.FromNowhere();
+
+        var config = app.Configuration.GetSection("Csp").Get<CspConfiguration>() ?? new CspConfiguration();
+
+        x.AllowScripts
+            .FromSelf()
+            .AddNonce();
+
+        config.AllowScriptUrls.ForEach(f => x.AllowScripts.From(f));
+        config.AllowHashes.ForEach(f => x.AllowScripts.WithHash(f));
+
+        x.AllowStyles
+            .FromSelf()
+            .AllowUnsafeInline();
+
+        config.AllowStyleUrls.ForEach(f => x.AllowStyles.From(f));
+
+        x.AllowFonts
+            .FromSelf()
+            .From("data:");
+
+        config.AllowFontUrls.ForEach(f => x.AllowFonts.From(f));
+        
+        x.AllowFraming.FromSelf(); // Block framing on other sites, equivalent to X-Frame-Options: DENY
+        config.AllowFrameUrls.ForEach(f => x.AllowFraming.From(f));
+        config.AllowFrameUrls.ForEach(f => x.AllowFrames.From(f));
+
+        x.AllowFormActions.ToSelf();
+
+        x.AllowImages
+            .FromSelf()
+            .From("data:");
+        
+        config.AllowImageUrls.ForEach(f => x.AllowImages.From(f));
+
+        x.AllowConnections
+            .ToSelf();
+        
+        config.AllowConnectUrls.ForEach(f => x.AllowConnections.To(f));
+        
+        if (config.ReportOnly)
+        {
+            x.SetReportOnly();
+        }
+
+    });
+
+    app.UseResponseCompression();
+    app.UseHttpsRedirection();
+    app.UseForwardedHeaders();
+
+    #endregion
     
     #region Contentful Setup
 
@@ -300,18 +379,8 @@ try
     
     #endregion
 
-    #region Default setup, logging, HTTPS, static files, routing etc
-    
-    app.UseSerilogRequestLogging();
-    app.UseHttpsRedirection();
-    
-    // Enforce HSTS
-    if (!app.Environment.IsDevelopment())
-    {
-        app.UseHsts();
-    }
+    #region Static files, routing, health checks, and default route
 
-    app.UseResponseCompression();
     app.UseStaticFiles(new StaticFileOptions()
     {
         OnPrepareResponse = ctx =>
@@ -321,77 +390,11 @@ try
         }
     });
     app.UseRouting();
-    app.UseAuthorization();
     app.MapHealthChecks("/health");
     app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Contentful}/{action=Homepage}");
 
-    #endregion
-    
-    #region Security and Cross-Site-Scripting protection
-
-    app.UseCookiePolicy();
-    app.UseForwardedHeaders();
-    
-    // add headers
-    app.Use(async (context, next) =>
-    {
-        context.Response.Headers.Append("X-Frame-Options", "DENY");
-        context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
-        context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
-        await next();
-    });
-    
-    app.UseCsp(x =>
-    {
-        x.ByDefaultAllow.FromNowhere();
-
-        var config = app.Configuration.GetSection("Csp").Get<CspConfiguration>() ?? new CspConfiguration();
-
-        x.AllowScripts
-            .FromSelf()
-            .AddNonce();
-
-        config.AllowScriptUrls.ForEach(f => x.AllowScripts.From(f));
-        config.AllowHashes.ForEach(f => x.AllowScripts.WithHash(f));
-
-        x.AllowStyles
-            .FromSelf()
-            .AllowUnsafeInline();
-
-        config.AllowStyleUrls.ForEach(f => x.AllowStyles.From(f));
-
-        x.AllowFonts
-            .FromSelf()
-            .From("data:");
-
-        config.AllowFontUrls.ForEach(f => x.AllowFonts.From(f));
-        
-        x.AllowFraming.FromSelf(); // Block framing on other sites, equivalent to X-Frame-Options: DENY
-        config.AllowFrameUrls.ForEach(f => x.AllowFraming.From(f));
-        config.AllowFrameUrls.ForEach(f => x.AllowFrames.From(f));
-
-        x.AllowFormActions.ToSelf();
-
-        x.AllowImages
-            .FromSelf()
-            .From("data:");
-        
-        config.AllowImageUrls.ForEach(f => x.AllowImages.From(f));
-
-        x.AllowConnections
-            .ToSelf();
-        
-        config.AllowConnectUrls.ForEach(f => x.AllowConnections.To(f));
-        
-        if (config.ReportOnly)
-        {
-            x.SetReportOnly();
-        }
-
-    });
-    
     #endregion
 
     await app.RunAsync();
