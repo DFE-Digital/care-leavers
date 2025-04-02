@@ -17,10 +17,15 @@ public class RouteTelemetryProcessor(IHttpContextAccessor httpContextAccessor) :
         
         var routeData = httpContext.GetRouteData();
         routeData.Values.TryGetValue("slug", out var slug);
+        routeData.Values.TryGetValue("languageCode", out var languageCode);
         
-        if (slug != null)
+        if (slug != null && languageCode != null)
         {
-            activity.SetTag("http.route", $"/{slug}");
+            activity.SetTag("http.route", $"{languageCode}/{slug}");
+        } 
+        else if (slug != null)
+        {
+            activity.SetTag("http.route", $"en/{slug}");
         }
         
         base.OnEnd(activity);
