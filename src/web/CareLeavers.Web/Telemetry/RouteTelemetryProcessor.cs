@@ -21,11 +21,11 @@ public class RouteTelemetryProcessor(IHttpContextAccessor httpContextAccessor) :
         
         if (slug != null && languageCode != null)
         {
-            activity.SetTag("http.route", $"{languageCode}/{slug}");
+            activity.SetTag("http.route", $"/{languageCode}/{slug}");
         } 
         else if (slug != null)
         {
-            activity.SetTag("http.route", $"en/{slug}");
+            activity.SetTag("http.route", $"/en/{slug}");
         }
         
         base.OnEnd(activity);
