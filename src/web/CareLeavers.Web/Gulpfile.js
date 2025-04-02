@@ -42,6 +42,7 @@ gulp.task('dfe-assets', function() {
 gulp.task("sass", function () {
     return gulp.src(paths.src + '/scss/**/*.scss')
         .pipe(sass({
+            style: 'compressed',
             includePaths: 'node_modules'
         }))
         .pipe(gulp.dest(paths.dist + '/css'))

@@ -1,0 +1,51 @@
+@media print {
+  body {
+    width: 100%;
+  }
+  .dfe-header,
+  .govuk-cookie-banner,
+  .govuk-footer__inline-list,
+  .card-image,
+  .full-width-image
+  {
+    display: none !important;
+  }
+  .dfe-page-grey {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .dfe-heading-xl {
+    padding-bottom: 10px;
+  }
+  .govuk-main-wrapper {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .govuk-footer__meta {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .govuk-footer {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .dfe-grid-container
+  {
+    margin-bottom: 0;
+  }
+  .govuk-grid-column-two-thirds {
+    width: 1200px;
+    padding: 0 15px;
+  }
+  
+  .gem-c-metadata {
+    break-inside: avoid;
+    color: #000 !important;
+    background: none;
+    margin-bottom: 5mm;
+  }
+
+  .gem-c-metadata a,.gem-c-metadata a:visited {
+    color: #000 !important
+  }
+}

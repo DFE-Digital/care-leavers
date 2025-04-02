@@ -148,46 +148,7 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
 }
 
 
-@media print {
-  body {
-    width: 100%;
-  }
-  .dfe-header,
-  .govuk-cookie-banner,
-  .govuk-footer__inline-list,
-  .card-image,
-  .full-width-image
-  {
-    display: none !important;
-  }
-  .dfe-page-grey {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-  .dfe-heading-xl {
-    padding-bottom: 10px;
-  }
-  .govuk-main-wrapper {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-  .govuk-footer__meta {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-  .govuk-footer {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-  .dfe-grid-container
- {
-    margin-bottom: 0;
- }
-  .govuk-grid-column-two-thirds {
-    width: 1200px;
-    padding: 0 15px;
-  }
-}
+
 
 @media (max-width: 768px) {
   .split-panel {
@@ -409,13 +370,6 @@ html
   margin-bottom: 30px;
 }
 
-.dfe-header .dfe-header__service-name {
-  text-align: right;
-  @include dfe-font(22);
-  font-weight: 800;
-}
-
-
 .riddle2-wrapper {
   max-width:100%; width:100%;
   margin: -35px auto 0;
@@ -427,4 +381,222 @@ html
 
 .govuk-phase-banner {
   border-bottom: none;
+}
+
+/* Call to Action */
+
+.status-launch {
+  display: block;
+  width: 99%;
+  border: 1px #003a6a solid;
+  background-color: #f3f2f1;
+  margin: 0;
+  padding: 0;
+  margin-bottom:30px;
+}
+.header-side {
+  background-color: #003a6a;
+  padding: 15px;
+}
+.header-side h2 {
+  color: white;
+}
+.header-side h2 a {
+  color: white;
+  text-decoration: none;
+}
+.header-side h2 a:hover {
+  color: white;
+  text-decoration: underline;
+}
+.body-side {
+  padding: 15px;
+}
+ 
+/* Metadata */
+.gem-c-metadata {
+  color: #0b0c0c;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.25;
+  margin-bottom: 15px
+}
+
+
+
+@media(min-width: 40.0625em) {
+  .gem-c-metadata {
+    margin-bottom:40px
+  }
+}
+
+.gem-c-metadata::after {
+  content: "";
+  display: block;
+  clear: both
+}
+
+.gem-c-metadata a {
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-decoration: underline;
+  text-decoration-thickness: max(1px, .0625rem);
+  text-underline-offset: .1578em
+}
+
+.gem-c-metadata a:hover {
+  text-decoration-thickness: max(3px, .1875rem, .12em);
+  -webkit-text-decoration-skip-ink: none;
+  text-decoration-skip-ink: none;
+  -webkit-text-decoration-skip: none;
+  text-decoration-skip: none
+}
+
+.gem-c-metadata a:focus {
+  outline: 3px solid rgba(0,0,0,0);
+  color: #0b0c0c;
+  background-color: #fd0;
+  box-shadow: 0 -2px #fd0,0 4px #0b0c0c;
+  text-decoration: none;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone
+}
+
+.gem-c-metadata a:link {
+  color: #1d70b8
+}
+
+.gem-c-metadata a:visited {
+  color: #4c2c92
+}
+
+.gem-c-metadata a:hover {
+  color: #003078
+}
+
+.gem-c-metadata a:active {
+  color: #0b0c0c
+}
+
+.gem-c-metadata a:focus {
+  color: #0b0c0c
+}
+
+.gem-c-metadata .gem-c-metadata__definition-link {
+  font-weight: normal
+}
+
+.gem-c-metadata.direction-rtl {
+  direction: rtl;
+  text-align: start
+}
+
+.gem-c-metadata--inverse {
+  color: #fff
+}
+
+.gem-c-metadata--inverse a:link,.gem-c-metadata--inverse a:visited {
+  color: #fff
+}
+
+.gem-c-metadata--inverse a:hover,.gem-c-metadata--inverse a:active {
+  color: rgba(255,255,255,.99)
+}
+
+.gem-c-metadata--inverse a:focus {
+  color: #0b0c0c
+}
+
+.gem-c-metadata--inverse-padded {
+  padding: 10px
+}
+
+.gem-c-metadata--inverse-padded .gem-c-metadata__list {
+  margin: 10px
+}
+
+@media(min-width: 40.0625em) {
+  .gem-c-metadata--inverse-padded .gem-c-metadata__list {
+    margin:15px
+  }
+}
+
+.gem-c-metadata__term,.gem-c-metadata__definition {
+  line-height: 1.4
+}
+
+.gem-c-metadata__term {
+  margin-top: .5em
+}
+
+@media(min-width: 40.0625em) {
+  .gem-c-metadata__term {
+    box-sizing:border-box;
+    float: left;
+    clear: left;
+    padding-right: 5px;
+    margin-top: 0
+  }
+}
+
+.gem-c-metadata.direction-rtl .gem-c-metadata__term {
+  float: right;
+  clear: right
+}
+
+@media(min-width: 40.0625em) {
+  .gem-c-metadata.direction-rtl .gem-c-metadata__term {
+    padding-left:5px;
+    padding-right: 0
+  }
+}
+
+.gem-c-metadata__definition {
+  margin: 0
+}
+
+@media(min-width: 40.0625em) {
+  .gem-c-metadata__definition:not(:last-of-type) {
+    margin-bottom:5px
+  }
+}
+
+.gem-c-metadata.direction-rtl .gem-c-metadata__definition {
+  float: right
+}
+
+.gem-c-metadata__toggle-wrap {
+  display: none
+}
+
+.govuk-frontend-supported .gem-c-metadata__toggle-wrap {
+  display: block
+}
+
+.govuk-frontend-supported .gem-c-metadata__toggle-items.js-hidden {
+  display: none
+}
+
+
+.gem-c-print-link__button {
+  display: block;
+  border: 1px solid #505a5f;
+  color: #1d70b8;
+  cursor: pointer;
+  margin: 0;
+}
+
+.gem-c-print-link__link, .gem-c-print-link__button {
+  background: url('/assets/icon-print.png') no-repeat 10px 50%;
+  background-size: 16px 18px;
+  padding: 10px 10px 10px 36px;
+  text-decoration: none;
+}
+
+// Heading padding fix
+.dfe-header {
+  padding-bottom: 1rem;
 }

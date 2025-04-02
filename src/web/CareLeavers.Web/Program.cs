@@ -20,6 +20,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OpenTelemetry.Trace;
 using Serilog;
+using static System.TimeSpan;
 using DistributedCacheExtensions = CareLeavers.Web.Caching.DistributedCacheExtensions;
 
 Log.Logger = new LoggerConfiguration()
@@ -64,7 +65,7 @@ try
     builder.Services.AddCsp(nonceByteAmount: 32);
     builder.Services.AddHsts(options =>
     {
-        options.MaxAge = TimeSpan.FromDays(365);
+        options.MaxAge = FromDays(365);
         options.IncludeSubDomains = true;
         options.Preload = true;
     });
@@ -168,7 +169,7 @@ try
     }
 
     DistributedCacheExtensions.DefaultCacheOptions.SetAbsoluteExpiration(
-        cachingOptions?.Duration ?? TimeSpan.FromDays(30));
+        cachingOptions?.Duration ?? FromDays(30));
     
     #endregion
     
@@ -304,13 +305,12 @@ try
     app.UseSerilogRequestLogging();
     app.UseHttpsRedirection();
     
-    var cacheMaxAgeOneWeek = (60 * 60 * 24 * 7).ToString();
     app.UseStaticFiles(new StaticFileOptions()
     {
         OnPrepareResponse = ctx =>
         {
             ctx.Context.Response.Headers.Append(
-                "Cache-Control", $"public, max-age={cacheMaxAgeOneWeek}");
+                "Cache-Control", $"public, max-age={FromDays(31).TotalSeconds}");
         }
     });
     app.UseResponseCompression();
