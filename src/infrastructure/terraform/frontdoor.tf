@@ -247,23 +247,11 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
     }
 
     match_condition {
-      match_values = [
-        "/error",
-        "/service-unavailable",
-        "/accessibility-statement",
-        "/page-not-found",
-        "/cookie-policy",
-        "/privacy-policies",
-        "/assets/",
-        "/css/",
-        "/js/",
-        "/sitemap",
-        "/robots.txt"
-      ]
       match_variable     = "RequestUri"
-      operator           = "Contains"
+      operator           = "RegEx"
       negation_condition = true
       transforms         = ["Lowercase", "UrlDecode"]
+      match_values       = ["\\/(robots\\.txt|error|service-unavailable|accessibility-statement|page-not-found|cookie-policy|privacy-policies|assets\\/|css\\/|js\\/|sitemap)"]
     }
   }
 }
