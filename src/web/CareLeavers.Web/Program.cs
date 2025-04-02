@@ -79,8 +79,7 @@ try
         {
             "*.azurewebsites.net",
             "*.azurefd.net",
-            "*.support-for-care-leavers.education.gov.uk",
-            "*.karaokestu.co.uk"
+            "*.support-for-care-leavers.education.gov.uk"
         };
     });
 
