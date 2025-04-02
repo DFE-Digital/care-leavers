@@ -304,7 +304,8 @@ try
     
     app.UseSerilogRequestLogging();
     app.UseHttpsRedirection();
-    
+    app.UseResponseCompression();
+
     app.UseStaticFiles(new StaticFileOptions()
     {
         OnPrepareResponse = ctx =>
@@ -313,7 +314,6 @@ try
                 "Cache-Control", $"public, max-age={FromDays(31).TotalSeconds}");
         }
     });
-    app.UseResponseCompression();
     app.UseRouting();
     app.UseAuthorization();
     app.MapHealthChecks("/health");
