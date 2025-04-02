@@ -68,6 +68,8 @@ try
     {
         options.CheckConsentNeeded = _ => true;
         options.MinimumSameSitePolicy = SameSiteMode.Strict;
+        options.Secure = CookieSecurePolicy.Always;
+        options.HttpOnly = HttpOnlyPolicy.Always;
     });
     
     builder.Services.Configure<ForwardedHeadersOptions>(options =>
@@ -81,13 +83,6 @@ try
             "*.azurefd.net",
             "*.support-for-care-leavers.education.gov.uk"
         };
-    });
-
-    builder.Services.AddCookiePolicy(co =>
-    {
-        co.Secure = CookieSecurePolicy.Always;
-        co.HttpOnly = HttpOnlyPolicy.Always;
-        co.MinimumSameSitePolicy = SameSiteMode.Lax;
     });
     
     #endregion

@@ -47,7 +47,7 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group.id
   cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.frontdoor-web-origin.id]
-  cdn_frontdoor_rule_set_ids    = [azurerm_cdn_frontdoor_rule_set.security_redirects.id]
+  cdn_frontdoor_rule_set_ids    = [azurerm_cdn_frontdoor_rule_set.security_redirects.id, azurerm_cdn_frontdoor_rule_set.security_headers.id]
   enabled                       = true
 
   forwarding_protocol    = "MatchRequest"
@@ -56,7 +56,7 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   supported_protocols    = ["Http", "Https"]
 
   cdn_frontdoor_custom_domain_ids = var.custom_domain != "" ? [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id] : null
-  link_to_default_domain          = true
+  link_to_default_domain          = false
 }
 
 resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy" {
@@ -84,6 +84,34 @@ resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy"
     }
   }
 }
+
+resource "azurerm_cdn_frontdoor_rule_set" "security_headers" {
+  name                     = "${var.environment_prefix}SecurityHeaders"
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
+}
+
+resource "azurerm_cdn_frontdoor_rule" "security_headers_rule" {
+  depends_on = [azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group, azurerm_cdn_frontdoor_origin.frontdoor-web-origin]
+
+  name                      = "securityHeaders"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.security_headers.id
+  order                     = 0
+  behavior_on_match         = "Continue"
+
+  actions {
+    response_header_action {
+      header_action = "Overwrite"
+      header_name   = "Strict-Transport-Security"
+      value         = "max-age=31536000; includeSubDomains; preload"
+    }
+    response_header_action {
+      header_action = "Overwrite"
+      header_name   = "X-Content-Type-Options"
+      value         = "nosniff"
+    }
+  }
+}
+
 
 resource "azurerm_cdn_frontdoor_rule_set" "security_redirects" {
   name                     = "${var.environment_prefix}SecurityRedirects"
