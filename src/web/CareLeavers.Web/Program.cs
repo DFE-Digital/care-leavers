@@ -304,8 +304,14 @@ try
     
     app.UseSerilogRequestLogging();
     app.UseHttpsRedirection();
-    app.UseResponseCompression();
+    
+    // Enforce HSTS
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseHsts();
+    }
 
+    app.UseResponseCompression();
     app.UseStaticFiles(new StaticFileOptions()
     {
         OnPrepareResponse = ctx =>
