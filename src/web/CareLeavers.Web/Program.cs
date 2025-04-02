@@ -381,7 +381,14 @@ try
 
     #region Static files, routing, health checks, and default route
 
-    app.UseStaticFiles();
+    app.UseStaticFiles(new StaticFileOptions()
+    {
+        OnPrepareResponse = ctx =>
+        {
+            ctx.Context.Response.Headers.Append(
+                "Cache-Control", $"public, max-age={FromDays(31).TotalSeconds}");
+        }
+    });
     app.UseRouting();
     app.MapHealthChecks("/health");
     app.MapControllerRoute(
