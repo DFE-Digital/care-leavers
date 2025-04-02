@@ -86,8 +86,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/govuk-icon-180.png" asp-append-version="@scriptConfig.AddCssVersion"/>
     <meta name="apple-mobile-web-app-title" content="@config.ServiceName" />
     <link rel="stylesheet" href="~/css/application.css" asp-append-version="@scriptConfig.AddCssVersion"/>
-    <link rel="stylesheet" href="~/css/metadata.css" asp-append-version="@scriptConfig.AddCssVersion"/>
-    <link rel="stylesheet" href="~/css/cta.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="stylesheet" href="~/css/print.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     @if (IsSectionDefined("Head")) {
         @await RenderSectionAsync("Head", required: false)
     }
@@ -150,6 +149,7 @@
     import { initAll } from '/js/govuk-frontend.min.js'
     initAll()
 </script>
+<script asp-add-nonce="true" src="/js/dfefrontend.min.js"></script>
 </body>
 
 </html>
