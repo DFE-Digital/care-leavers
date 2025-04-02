@@ -250,6 +250,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       match_values = [
         "/error",
         "/service-unavailable",
+        "/accessibility-statement",
         "/page-not-found",
         "/cookie-policy",
         "/privacy-policies",
