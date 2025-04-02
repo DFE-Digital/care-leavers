@@ -29,7 +29,32 @@ public class RouteTelemetryProcessorTests
         processor.OnEnd(activity);
 
         // Assert
-        Assert.That(activity.Tags.Single(x => x.Key == "http.route").Value, Is.EqualTo("/test-slug"));
+        Assert.That(activity.Tags.Single(x => x.Key == "http.route").Value, Is.EqualTo("/en/test-slug"));
+    }
+    
+    [Test]
+    public void WhenSlugAndLanguageIsInPathThenIsReplacedFromRouteData()
+    {
+        // Arrange
+        var httpContextAccessor = Substitute.For<IHttpContextAccessor>();
+        var httpContext = new DefaultHttpContext();
+        var routeData = new RouteValueDictionary
+        {
+            { "slug", "test-slug" },
+            { "languageCode", "pl" }
+        };
+        //routeData.Values.Add("slug", "test-slug");
+        httpContext.Request.RouteValues = routeData;
+        httpContextAccessor.HttpContext.Returns(httpContext);
+        
+        var processor = new RouteTelemetryProcessor(httpContextAccessor);
+        var activity = new Activity("test");
+
+        // Act
+        processor.OnEnd(activity);
+
+        // Assert
+        Assert.That(activity.Tags.Single(x => x.Key == "http.route").Value, Is.EqualTo("/pl/test-slug"));
     }
     
     [Test]
