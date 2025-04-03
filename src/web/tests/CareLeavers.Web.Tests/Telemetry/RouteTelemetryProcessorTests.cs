@@ -43,7 +43,6 @@ public class RouteTelemetryProcessorTests
             { "slug", "test-slug" },
             { "languageCode", "pl" }
         };
-        //routeData.Values.Add("slug", "test-slug");
         httpContext.Request.RouteValues = routeData;
         httpContextAccessor.HttpContext.Returns(httpContext);
         

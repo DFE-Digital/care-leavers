@@ -69,7 +69,8 @@ try
         options.CheckConsentNeeded = _ => true;
         options.MinimumSameSitePolicy = SameSiteMode.Strict;
         options.Secure = CookieSecurePolicy.Always;
-        options.HttpOnly = HttpOnlyPolicy.Always;
+        options.ConsentCookie.IsEssential = true;
+        options.HttpOnly = HttpOnlyPolicy.None;
     });
     
     builder.Services.Configure<ForwardedHeadersOptions>(options =>
