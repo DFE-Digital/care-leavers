@@ -22,24 +22,24 @@ ZAP by [Checkmarx](https://checkmarx.com/).
 | Backup File Disclosure | Medium | 11 |
 | CSP: style-src unsafe-inline | Medium | 12 |
 | Proxy Disclosure | Medium | 21 |
-| Sub Resource Integrity Attribute Missing | Medium | 11 |
+| Sub Resource Integrity Attribute Missing | Medium | 12 |
 | Cross-Domain JavaScript Source File Inclusion | Low | 10 |
-| Insufficient Site Isolation Against Spectre Vulnerability | Low | 9 |
+| Insufficient Site Isolation Against Spectre Vulnerability | Low | 11 |
 | Permissions Policy Header Not Set | Low | 9 |
 | Private IP Disclosure | Low | 1 |
 | Timestamp Disclosure - Unix | Low | 1 |
 | Base64 Disclosure | Informational | 12 |
-| Cookie Slack Detector | Informational | 39 |
+| Cookie Slack Detector | Informational | 8 |
 | GET for POST | Informational | 1 |
 | Non-Storable Content | Informational | 5 |
 | Re-examine Cache-control Directives | Informational | 9 |
-| Sec-Fetch-Dest Header is Missing | Informational | 3 |
-| Sec-Fetch-Mode Header is Missing | Informational | 3 |
-| Sec-Fetch-Site Header is Missing | Informational | 3 |
-| Sec-Fetch-User Header is Missing | Informational | 3 |
-| Session Management Response Identified | Informational | 1 |
-| Storable and Cacheable Content | Informational | 5 |
-| User Agent Fuzzer | Informational | 570 |
+| Sec-Fetch-Dest Header is Missing | Informational | 4 |
+| Sec-Fetch-Mode Header is Missing | Informational | 4 |
+| Sec-Fetch-Site Header is Missing | Informational | 4 |
+| Sec-Fetch-User Header is Missing | Informational | 4 |
+| Session Management Response Identified | Informational | 2 |
+| Storable and Cacheable Content | Informational | 6 |
+| User Agent Fuzzer | Informational | 562 |
 | User Controllable HTML Element Attribute (Potential XSS) | Informational | 3 |
 
 
@@ -59,18 +59,6 @@ ZAP by [Checkmarx](https://checkmarx.com/).
 
 A backup of the file was disclosed by the web server.
 
-* URL: https://staging.support-for-care-leavers.education.gov.uk/Copy%2520of%2520en/cookie-policy
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: `https://staging.support-for-care-leavers.education.gov.uk/Copy%20of%20en/cookie-policy`
-  * Evidence: ``
-  * Other Info: `A backup of [https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy] is available at [https://staging.support-for-care-leavers.education.gov.uk/Copy%20of%20en/cookie-policy]`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/enbackup/cookie-policy
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: `https://staging.support-for-care-leavers.education.gov.uk/enbackup/cookie-policy`
-  * Evidence: ``
-  * Other Info: `A backup of [https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy] is available at [https://staging.support-for-care-leavers.education.gov.uk/enbackup/cookie-policy]`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/translate-this-website/accessibility-statement-page%2520-%2520Copy
   * Method: `GET`
   * Parameter: ``
@@ -107,6 +95,18 @@ A backup of the file was disclosed by the web server.
   * Attack: `https://staging.support-for-care-leavers.education.gov.uk/translate-this-website/accessibility-statement-page.old`
   * Evidence: ``
   * Other Info: `A backup of [https://staging.support-for-care-leavers.education.gov.uk/translate-this-website/accessibility-statement-page] is available at [https://staging.support-for-care-leavers.education.gov.uk/translate-this-website/accessibility-statement-page.old]`
+* URL: https://staging.support-for-care-leavers.education.gov.uk/translate-this-website/accessibility-statement-page.swp
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: `https://staging.support-for-care-leavers.education.gov.uk/translate-this-website/accessibility-statement-page.swp`
+  * Evidence: ``
+  * Other Info: `A backup of [https://staging.support-for-care-leavers.education.gov.uk/translate-this-website/accessibility-statement-page] is available at [https://staging.support-for-care-leavers.education.gov.uk/translate-this-website/accessibility-statement-page.swp]`
+* URL: https://staging.support-for-care-leavers.education.gov.uk/translate-this-website/accessibility-statement-page.zip
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: `https://staging.support-for-care-leavers.education.gov.uk/translate-this-website/accessibility-statement-page.zip`
+  * Evidence: ``
+  * Other Info: `A backup of [https://staging.support-for-care-leavers.education.gov.uk/translate-this-website/accessibility-statement-page] is available at [https://staging.support-for-care-leavers.education.gov.uk/translate-this-website/accessibility-statement-page.zip]`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/translate-this-website/accessibility-statement-page.~bk
   * Method: `GET`
   * Parameter: ``
@@ -160,73 +160,73 @@ Content Security Policy (CSP) is an added layer of security that helps to detect
   * Method: `GET`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-E/H4y8tSwnHJvqjmHFHGo4sMybGy5DVIs8raAABbh4I=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-CDtRCPy+98bAeqLIaHQ4/ajTwf3Qd6/fCwYyjcVztGc=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/accessibility-statement-page
   * Method: `GET`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-l/P65nKiIAAQrDT/x8VsnCCe2TRPPEnbzM5o+1ihL/Q=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-IelorFoepqRjAzh7ZpzYi9v5fyldhNOjaR3PPSfii2A=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `GET`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-acFlfUSkt9/S6jj3x0zlxWC5Ohb4d0SWNZpJxB3HOk0=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-uNL2WMfhd1iQsi0KsvYjApbI5UiXKr10Qq/iR82FvPM=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/error
   * Method: `GET`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-ujABO9Bv4JSA1SR8CjSFKOtpqXtrnQQoyj96u0U5UT8=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-qKlzbGSPeIvctJfnbw/aGo1dSjFQamYz2GYSq6JTcKY=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/page-not-found
   * Method: `GET`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-C17km0Qpi8RFiueaH8/v3Gi5bRdwXKruH54fnr0zpLI=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-oxN7UZ20EEqwq+zyl+1G0Oo/hbgO7xybaErZqW0yyxI=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/privacy-policies
   * Method: `GET`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-hmiIgbqpuN/rn7MV1QaD60uWtxhfg8y3zorhBvb76Nk=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-ABCb8LMH0NYDHUvsVxr+2/Jp7R2MHETdXL9E8qU8tac=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/service-unavailable
   * Method: `GET`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-Rsp+Q4CsTHSv/pBxSt+B48FXjF517/ioQjE5o8PzMig=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-bEehUJatJFW9yT9Svn/UufMxySRD81O+rrhU+9N8NOk=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/service-unavailable
   * Method: `GET`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-YUvI3OH4g4cqGzYfdn7keqvOF3TACnVqnUdOPtsAAFk=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-vrAQpiMde47vUasgTPpR2ftMURd+rWLiHHLdSTUrg7k=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-73UWKP2tJsGtEpFRZiKiKUggAzQ8lHKnBvTYnzhei0E=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-+VytHjBq6ft4OmsDxs4yH20begLvg/SUUxQEoidbMuU=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-MtMNNTrGJZw+NyMj3Hlbp/UqQ3LV4eWtR51UoWHYX5o=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-3hMfK9AOQHFTfWihoVsCXnPvvSvrwstEf/YbUraZZc8=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-rVaE3D5Ob3NeQgXpMFoFDEbM1qaJeJXeGNMM7ZsHHCM=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-We2LrRKoq3C/FIARQQFBPorY/BRKmRCVJcZoFtcaNzM=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-yyf4QVaCdVk83Iy9aMiFwYZrvPQQeNbF+TZVi7DXWak=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-whBXeChEDRvpGzGiCiwdUWn9AcCc/VM4QPwu33pVblE=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 
 Instances: 12
@@ -386,13 +386,12 @@ The following web/application server has been identified:
 The following web/application server has been identified:
 - Unknown
 `
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
+* URL: https://staging.support-for-care-leavers.education.gov.uk/en/eligible-child
   * Method: `GET`
   * Parameter: ``
   * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
   * Evidence: ``
   * Other Info: `Using the TRACE, OPTIONS, and TRACK methods, the following proxy servers have been identified between ZAP and the application/web server:
-- Unknown
 - Unknown
 The following web/application server has been identified:
 - Unknown
@@ -403,6 +402,7 @@ The following web/application server has been identified:
   * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
   * Evidence: ``
   * Other Info: `Using the TRACE, OPTIONS, and TRACK methods, the following proxy servers have been identified between ZAP and the application/web server:
+- Unknown
 - Unknown
 The following web/application server has been identified:
 - Unknown
@@ -435,6 +435,7 @@ The following web/application server has been identified:
   * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
   * Evidence: ``
   * Other Info: `Using the TRACE, OPTIONS, and TRACK methods, the following proxy servers have been identified between ZAP and the application/web server:
+- Unknown
 - Unknown
 The following web/application server has been identified:
 - Unknown
@@ -538,7 +539,7 @@ The integrity attribute is missing on a script or link tag served by an external
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="E/H4y8tSwnHJvqjmHFHGo4sMybGy5DVIs8raAABbh4I="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="CDtRCPy&#x2B;98bAeqLIaHQ4/ajTwf3Qd6/fCwYyjcVztGc="></script>`
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `GET`
@@ -550,7 +551,7 @@ The integrity attribute is missing on a script or link tag served by an external
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="acFlfUSkt9/S6jj3x0zlxWC5Ohb4d0SWNZpJxB3HOk0="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="uNL2WMfhd1iQsi0KsvYjApbI5UiXKr10Qq/iR82FvPM="></script>`
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/page-not-found
   * Method: `GET`
@@ -562,7 +563,7 @@ The integrity attribute is missing on a script or link tag served by an external
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="C17km0Qpi8RFiueaH8/v3Gi5bRdwXKruH54fnr0zpLI="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="oxN7UZ20EEqwq&#x2B;zyl&#x2B;1G0Oo/hbgO7xybaErZqW0yyxI="></script>`
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/privacy-policies
   * Method: `GET`
@@ -574,7 +575,7 @@ The integrity attribute is missing on a script or link tag served by an external
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="hmiIgbqpuN/rn7MV1QaD60uWtxhfg8y3zorhBvb76Nk="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="ABCb8LMH0NYDHUvsVxr&#x2B;2/Jp7R2MHETdXL9E8qU8tac="></script>`
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
@@ -586,16 +587,22 @@ The integrity attribute is missing on a script or link tag served by an external
   * Method: `POST`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="MtMNNTrGJZw&#x2B;NyMj3Hlbp/UqQ3LV4eWtR51UoWHYX5o="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="&#x2B;VytHjBq6ft4OmsDxs4yH20begLvg/SUUxQEoidbMuU="></script>`
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="yyf4QVaCdVk83Iy9aMiFwYZrvPQQeNbF&#x2B;TZVi7DXWak="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="3hMfK9AOQHFTfWihoVsCXnPvvSvrwstEf/YbUraZZc8="></script>`
+  * Other Info: ``
+* URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
+  * Method: `POST`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="whBXeChEDRvpGzGiCiwdUWn9AcCc/VM4QPwu33pVblE="></script>`
   * Other Info: ``
 
-Instances: 11
+Instances: 12
 
 ### Solution
 
@@ -628,61 +635,61 @@ The page includes one or more script files from a third-party domain.
   * Method: `GET`
   * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="E/H4y8tSwnHJvqjmHFHGo4sMybGy5DVIs8raAABbh4I="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="CDtRCPy&#x2B;98bAeqLIaHQ4/ajTwf3Qd6/fCwYyjcVztGc="></script>`
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/accessibility-statement-page
   * Method: `GET`
   * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="l/P65nKiIAAQrDT/x8VsnCCe2TRPPEnbzM5o&#x2B;1ihL/Q="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="IelorFoepqRjAzh7ZpzYi9v5fyldhNOjaR3PPSfii2A="></script>`
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `GET`
   * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="acFlfUSkt9/S6jj3x0zlxWC5Ohb4d0SWNZpJxB3HOk0="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="uNL2WMfhd1iQsi0KsvYjApbI5UiXKr10Qq/iR82FvPM="></script>`
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/page-not-found
   * Method: `GET`
   * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="C17km0Qpi8RFiueaH8/v3Gi5bRdwXKruH54fnr0zpLI="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="oxN7UZ20EEqwq&#x2B;zyl&#x2B;1G0Oo/hbgO7xybaErZqW0yyxI="></script>`
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/privacy-policies
   * Method: `GET`
   * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="hmiIgbqpuN/rn7MV1QaD60uWtxhfg8y3zorhBvb76Nk="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="ABCb8LMH0NYDHUvsVxr&#x2B;2/Jp7R2MHETdXL9E8qU8tac="></script>`
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/translate-this-website/accessibility-statement-page
   * Method: `GET`
   * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="eKf//9ue0sfo1gB0yqev35omJkVVhOK0/yKfnlzSg2w="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="fuyFnCvynuDL/9L3yJq4F5DpRYevadoseBFGZJFC3vA="></script>`
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="73UWKP2tJsGtEpFRZiKiKUggAzQ8lHKnBvTYnzhei0E="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="&#x2B;VytHjBq6ft4OmsDxs4yH20begLvg/SUUxQEoidbMuU="></script>`
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="MtMNNTrGJZw&#x2B;NyMj3Hlbp/UqQ3LV4eWtR51UoWHYX5o="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="3hMfK9AOQHFTfWihoVsCXnPvvSvrwstEf/YbUraZZc8="></script>`
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="rVaE3D5Ob3NeQgXpMFoFDEbM1qaJeJXeGNMM7ZsHHCM="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="We2LrRKoq3C/FIARQQFBPorY/BRKmRCVJcZoFtcaNzM="></script>`
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="yyf4QVaCdVk83Iy9aMiFwYZrvPQQeNbF&#x2B;TZVi7DXWak="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="whBXeChEDRvpGzGiCiwdUWn9AcCc/VM4QPwu33pVblE="></script>`
   * Other Info: ``
 
 Instances: 10
@@ -712,7 +719,7 @@ Ensure JavaScript source files are loaded from only trusted sources, and the sou
 
 Cross-Origin-Resource-Policy header is an opt-in header designed to counter side-channels attacks like Spectre. Resource should be specifically set as shareable amongst different origins.
 
-* URL: https://staging.support-for-care-leavers.education.gov.uk/assets/images/favicon.svg%3Fv=BY_XOpoc_9SAi-Nt7O42KebBXEsOb2Fu1GnBttHVEcU
+* URL: https://staging.support-for-care-leavers.education.gov.uk/assets/images/govuk-icon-180.png%3Fv=SA-cZsEiik4F8BmKKh_vfU3kYC-4oe6ZUbvxokSh-QM
   * Method: `GET`
   * Parameter: `Cross-Origin-Resource-Policy`
   * Attack: ``
@@ -724,7 +731,19 @@ Cross-Origin-Resource-Policy header is an opt-in header designed to counter side
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
+* URL: https://staging.support-for-care-leavers.education.gov.uk/css/print.css%3Fv=qGMYIg8zPLpHlU6WziUggN6hsNAo2-XrDoeK-_ztkOA
+  * Method: `GET`
+  * Parameter: `Cross-Origin-Resource-Policy`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/service-unavailable
+  * Method: `GET`
+  * Parameter: `Cross-Origin-Resource-Policy`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://staging.support-for-care-leavers.education.gov.uk/js/dfefrontend.min.js
   * Method: `GET`
   * Parameter: `Cross-Origin-Resource-Policy`
   * Attack: ``
@@ -767,7 +786,7 @@ Cross-Origin-Resource-Policy header is an opt-in header designed to counter side
   * Evidence: ``
   * Other Info: ``
 
-Instances: 9
+Instances: 11
 
 ### Solution
 
@@ -964,21 +983,20 @@ Base64 encoded data was disclosed by the application/web server. Note: in the in
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `E/H4y8tSwnHJvqjmHFHGo4sMybGy5DVIs8raAABbh4I=`
-  * Other Info: `����R�qɾ��Qƣ�ɱ��5H���  [��`
+  * Evidence: `98bAeqLIaHQ4/ajTwf3Qd6/fCwYyjcVztGc=`
+  * Other Info: `���z��ht8������w��2��s�g`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/accessibility-statement-page
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `l/P65nKiIAAQrDT/x8VsnCCe2TRPPEnbzM5o`
-  * Other Info: `����r�  �4���l� ��4O<I���h`
+  * Evidence: `IelorFoepqRjAzh7ZpzYi9v5fyldhNOjaR3PPSfii2A=`
+  * Other Info: `!�h�Z��c8{f�؋��)]�ӣi�='�``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `CfDJ8NVHRbWMHiJBs9kdGgtuDuA4oVAvteQDDZqDwMesYzWSrsDXgeKzo3epRFTU8dNMqF4NYZY5LgoB1uiETlL07wGnkcn-cbDVMfxo-8OJdyMtDaCaZ_P-JvQAeT3WaFCCj99peu4ys-CidP8-Cc6RDYU`
-  * Other Info: `	����GE��"A��n�8�P/�����Ǭc5���ׁⳣw�DT���L�^a�9.
-��NR������q��1�h�Éw#-��g��&� y=�hP���iz�2��t�>	Α�`
+  * Evidence: `CfDJ8NVHRbWMHiJBs9kdGgtuDuDR3zvFxL3Ax7RHnzspm16WY9FsqS61FyMA7mksktRbBd2-YIz4zGIXvObfTqoaC34co6qCdvvFIAkyPDbhLhkFJq2Ty15_c9v7j97wRlq5XLYyW9A08zKpkGneZyMzNgY`
+  * Other Info: `	����GE��"A��n���;�Ľ�ǴG�;)�^�c�l�.�# �i,��[ݾ`���b���N�~���v�� 	2<6�.&���^s�����FZ�\�2[�4�2��i�g#36`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/error
   * Method: `GET`
   * Parameter: ``
@@ -989,14 +1007,14 @@ Base64 encoded data was disclosed by the application/web server. Note: in the in
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `C17km0Qpi8RFiueaH8/v3Gi5bRdwXKruH54fnr0zpLI=`
-  * Other Info: `^�D)��E�����h�mp\�����3��`
+  * Evidence: `BY_XOpoc_9SAi-Nt7O42KebBXEsOb2Fu1GnBttHVEcU`
+  * Other Info: `��:��Ԁ��m��6)��\Koan�i�����`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/privacy-policies
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `hmiIgbqpuN/rn7MV1QaD60uWtxhfg8y3zorhBvb76Nk=`
-  * Other Info: `�h������럳���K��_�̷Ί�����`
+  * Evidence: `BY_XOpoc_9SAi-Nt7O42KebBXEsOb2Fu1GnBttHVEcU`
+  * Other Info: `��:��Ԁ��m��6)��\Koan�i�����`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/service-unavailable
   * Method: `GET`
   * Parameter: ``
@@ -1007,33 +1025,33 @@ Base64 encoded data was disclosed by the application/web server. Note: in the in
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `YUvI3OH4g4cqGzYfdn7keqvOF3TACnVqnUdOPtsAAFk=`
-  * Other Info: `aK������*6v~�z��t�
-uj�GN>�  Y`
+  * Evidence: `bEehUJatJFW9yT9Svn/UufMxySRD81O`
+  * Other Info: `lG�P��$U��?R�Թ�1�$C�S`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `NyMj3Hlbp/UqQ3LV4eWtR51UoWHYX5o=`
-  * Other Info: `7##�y[��*Cr���G�T�a�_�`
+  * Evidence: `BY_XOpoc_9SAi-Nt7O42KebBXEsOb2Fu1GnBttHVEcU`
+  * Other Info: `��:��Ԁ��m��6)��\Koan�i�����`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `yyf4QVaCdVk83Iy9aMiFwYZrvPQQeNbF`
-  * Other Info: `�'�AV�uY<܌�hȅ��k��x��`
+  * Evidence: `We2LrRKoq3C/FIARQQFBPorY/BRKmRCVJcZoFtcaNzM=`
+  * Other Info: `Y틭��p��AA>���J��%�h�73`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `73UWKP2tJsGtEpFRZiKiKUggAzQ8lHKnBvTYnzhei0E=`
-  * Other Info: `�u(��&���Qf"�)H 4<�r��؟8^�A`
+  * Evidence: `whBXeChEDRvpGzGiCiwdUWn9AcCc/VM4QPwu33pVblE=`
+  * Other Info: `�Wx(D�1�
+,Qi����S8@�.�zUnQ`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `rVaE3D5Ob3NeQgXpMFoFDEbM1qaJeJXeGNMM7ZsHHCM=`
-  * Other Info: `�V��>Nos^B�0ZF�֦�x����#`
+  * Evidence: `3hMfK9AOQHFTfWihoVsCXnPvvSvrwstEf/YbUraZZc8=`
+  * Other Info: `�+�@qS}h��[^s�+���D�R��e�`
 
 Instances: 12
 
@@ -1064,288 +1082,6 @@ Manually confirm that the Base64 data does not leak sensitive information, and t
 
 Repeated GET requests: drop a different cookie each time, followed by normal request with all cookies to stabilize session, compare responses against original baseline GET. This can reveal areas where cookie based authentication/attributes are not actually enforced.
 
-* URL: https://staging.support-for-care-leavers.education.gov.uk/assets/dfe-logo-alt.png
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/assets/dfe-logo.png
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/css/print.css%3Fv=qGMYIg8zPLpHlU6WziUggN6hsNAo2-XrDoeK-_ztkOA
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/accessibility-statement
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Dropping this cookie appears to have invalidated the session: [.AspNetCore.Antiforgery.VyLW6ORzMgk] A follow-on request with all original cookies still had a different response than the original request.
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/accessibility-statement-page
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Dropping this cookie appears to have invalidated the session: [.AspNetCore.Antiforgery.VyLW6ORzMgk] A follow-on request with all original cookies still had a different response than the original request.
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/all-support
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/care-terms-explained
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Dropping this cookie appears to have invalidated the session: [.AspNetCore.Antiforgery.VyLW6ORzMgk] A follow-on request with all original cookies still had a different response than the original request.
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/education-and-training
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/eligible-child
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/former-relevant-child
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/health-and-wellbeing
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/help-with-education-and-training-costs
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/helplines
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/higher-education-bursary
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/home
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/housing-and-accommodation
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/leaving-care-allowance
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/leaving-care-guides
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/local-offer-for-care-leavers
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/money-and-benefits
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/pathway-plan
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/person-qualifying-for-advice-and-assistance
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/personal-adviser
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/privacy-policies
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/relevant-child
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/unaccompanied-asylum-seeking-young-people
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/what-happens-when-you-leave-care
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/work-and-employment
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/your-rights
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/js
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
-* URL: https://staging.support-for-care-leavers.education.gov.uk/js/dfefrontend.min.js
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
-`
 * URL: https://staging.support-for-care-leavers.education.gov.uk/translate-this-website/accessibility-statement-page
   * Method: `GET`
   * Parameter: ``
@@ -1407,8 +1143,15 @@ These cookies did NOT affect the response: .AspNet.Consent,.AspNetCore.Antiforge
 These cookies affected the response: 
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
+* URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
+  * Method: `POST`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Dropping this cookie appears to have invalidated the session: [.AspNet.Consent] A follow-on request with all original cookies still had a different response than the original request.
+`
 
-Instances: 39
+Instances: 8
 
 ### Solution
 
@@ -1441,7 +1184,7 @@ A request that was originally observed as a POST was also accepted as a GET. Thi
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `GET https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy?AcceptCookies=True&__RequestVerificationToken=CfDJ8NVHRbWMHiJBs9kdGgtuDuDdqBLKeLv44g6G0bR-Jjaq64pZcK_YXQgHjmm4kwkMhQAT6a6ElcgDOVt-KdiXKMOoG5LjVRwiLaZGqNlzgMjpyioGwrmwsxEnrjQ9Jlk1tdNVvzAkwQIKxiycVCllkbU HTTP/1.1`
+  * Evidence: `GET https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy?AcceptCookies=True&__RequestVerificationToken=CfDJ8NVHRbWMHiJBs9kdGgtuDuBb-aRHxEppV_NoyQLYmYwt0iA60y4hUFgpCDuN8pHizVYiGU_009RgLpll_sCsgpGQ4WVdCWODxbvL9EHaCf9X7lhlW-_sVI-88kD3410Z46h9zwsOq4Z54RA808axg78 HTTP/1.1`
   * Other Info: ``
 
 Instances: 1
@@ -1642,6 +1385,12 @@ Specifies how and where the data would be used. For instance, if the value is au
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
+* URL: https://staging.support-for-care-leavers.education.gov.uk/en
+  * Method: `GET`
+  * Parameter: `Sec-Fetch-Dest`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/service-unavailable
   * Method: `GET`
   * Parameter: `Sec-Fetch-Dest`
@@ -1649,7 +1398,7 @@ Specifies how and where the data would be used. For instance, if the value is au
   * Evidence: ``
   * Other Info: ``
 
-Instances: 3
+Instances: 4
 
 ### Solution
 
@@ -1690,6 +1439,12 @@ Allows to differentiate between requests for navigating between HTML pages and r
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
+* URL: https://staging.support-for-care-leavers.education.gov.uk/en
+  * Method: `GET`
+  * Parameter: `Sec-Fetch-Mode`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/service-unavailable
   * Method: `GET`
   * Parameter: `Sec-Fetch-Mode`
@@ -1697,7 +1452,7 @@ Allows to differentiate between requests for navigating between HTML pages and r
   * Evidence: ``
   * Other Info: ``
 
-Instances: 3
+Instances: 4
 
 ### Solution
 
@@ -1738,6 +1493,12 @@ Specifies the relationship between request initiator's origin and target's origi
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
+* URL: https://staging.support-for-care-leavers.education.gov.uk/en
+  * Method: `GET`
+  * Parameter: `Sec-Fetch-Site`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/service-unavailable
   * Method: `GET`
   * Parameter: `Sec-Fetch-Site`
@@ -1745,7 +1506,7 @@ Specifies the relationship between request initiator's origin and target's origi
   * Evidence: ``
   * Other Info: ``
 
-Instances: 3
+Instances: 4
 
 ### Solution
 
@@ -1786,6 +1547,12 @@ Specifies if a navigation request was initiated by a user.
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
+* URL: https://staging.support-for-care-leavers.education.gov.uk/en
+  * Method: `GET`
+  * Parameter: `Sec-Fetch-User`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/service-unavailable
   * Method: `GET`
   * Parameter: `Sec-Fetch-User`
@@ -1793,7 +1560,7 @@ Specifies if a navigation request was initiated by a user.
   * Evidence: ``
   * Other Info: ``
 
-Instances: 3
+Instances: 4
 
 ### Solution
 
@@ -1826,11 +1593,18 @@ The given response has been identified as containing a session management token.
   * Method: `GET`
   * Parameter: `.AspNetCore.Antiforgery.VyLW6ORzMgk`
   * Attack: ``
-  * Evidence: `CfDJ8NVHRbWMHiJBs9kdGgtuDuA4oVAvteQDDZqDwMesYzWSrsDXgeKzo3epRFTU8dNMqF4NYZY5LgoB1uiETlL07wGnkcn-cbDVMfxo-8OJdyMtDaCaZ_P-JvQAeT3WaFCCj99peu4ys-CidP8-Cc6RDYU`
+  * Evidence: `CfDJ8NVHRbWMHiJBs9kdGgtuDuDR3zvFxL3Ax7RHnzspm16WY9FsqS61FyMA7mksktRbBd2-YIz4zGIXvObfTqoaC34co6qCdvvFIAkyPDbhLhkFJq2Ty15_c9v7j97wRlq5XLYyW9A08zKpkGneZyMzNgY`
+  * Other Info: `
+cookie:.AspNetCore.Antiforgery.VyLW6ORzMgk`
+* URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
+  * Method: `GET`
+  * Parameter: `.AspNetCore.Antiforgery.VyLW6ORzMgk`
+  * Attack: ``
+  * Evidence: `CfDJ8NVHRbWMHiJBs9kdGgtuDuDR3zvFxL3Ax7RHnzspm16WY9FsqS61FyMA7mksktRbBd2-YIz4zGIXvObfTqoaC34co6qCdvvFIAkyPDbhLhkFJq2Ty15_c9v7j97wRlq5XLYyW9A08zKpkGneZyMzNgY`
   * Other Info: `
 cookie:.AspNetCore.Antiforgery.VyLW6ORzMgk`
 
-Instances: 1
+Instances: 2
 
 ### Solution
 
@@ -1855,13 +1629,19 @@ This is an informational alert rather than a vulnerability and so there is nothi
 
 The response contents are storable by caching components such as proxy servers, and may be retrieved directly from the cache, rather than from the origin server by the caching servers, in response to similar requests from other users. If the response data is sensitive, personal or user-specific, this may result in sensitive information being leaked. In some cases, this may even result in a user gaining complete control of the session of another user, depending on the configuration of the caching components in use in their environment. This is primarily an issue where "shared" caching servers such as "proxy" caches are configured on the local network. This configuration is typically found in corporate or educational environments, for instance.
 
-* URL: https://staging.support-for-care-leavers.education.gov.uk/assets/images/favicon.svg%3Fv=BY_XOpoc_9SAi-Nt7O42KebBXEsOb2Fu1GnBttHVEcU
+* URL: https://staging.support-for-care-leavers.education.gov.uk/assets/images/govuk-icon-180.png%3Fv=SA-cZsEiik4F8BmKKh_vfU3kYC-4oe6ZUbvxokSh-QM
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: `max-age=2678400`
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/assets/images/govuk-icon-mask.svg%3Fv=N0Z3XZRPHy7GhBSmbzJ0FMxChzQ6CsBnL3LwjbH9xHQ
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `max-age=2678400`
+  * Other Info: ``
+* URL: https://staging.support-for-care-leavers.education.gov.uk/css/print.css%3Fv=qGMYIg8zPLpHlU6WziUggN6hsNAo2-XrDoeK-_ztkOA
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -1886,7 +1666,7 @@ The response contents are storable by caching components such as proxy servers, 
   * Evidence: ``
   * Other Info: `In the absence of an explicitly specified caching lifetime directive in the response, a liberal lifetime heuristic of 1 year was assumed. This is permitted by rfc7234.`
 
-Instances: 5
+Instances: 6
 
 ### Solution
 
@@ -2641,78 +2421,6 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
   * Attack: `msnbot/1.1 (+http://search.msn.com/msnbot.htm)`
   * Evidence: ``
   * Other Info: ``
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `GET`
-  * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)`
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `GET`
-  * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)`
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `GET`
-  * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `GET`
-  * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/5.0 (Windows NT 10.0; Trident/7.0; rv:11.0) like Gecko`
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `GET`
-  * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3739.0 Safari/537.36 Edg/75.0.109.0`
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `GET`
-  * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36`
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `GET`
-  * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/91.0`
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `GET`
-  * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)`
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `GET`
-  * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)`
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `GET`
-  * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/5.0 (iPhone; CPU iPhone OS 8_0_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4`
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `GET`
-  * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16`
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://staging.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `GET`
-  * Parameter: `Header User-Agent`
-  * Attack: `msnbot/1.1 (+http://search.msn.com/msnbot.htm)`
-  * Evidence: ``
-  * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/en/education-and-training
   * Method: `GET`
   * Parameter: `Header User-Agent`
@@ -4594,6 +4302,18 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
 * URL: https://staging.support-for-care-leavers.education.gov.uk/robots.txt
   * Method: `GET`
   * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://staging.support-for-care-leavers.education.gov.uk/robots.txt
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://staging.support-for-care-leavers.education.gov.uk/robots.txt
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
   * Attack: `Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16`
   * Evidence: ``
   * Other Info: ``
@@ -4606,13 +4326,13 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
 * URL: https://staging.support-for-care-leavers.education.gov.uk/sitemap.xml
   * Method: `GET`
   * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
+  * Attack: `Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)`
   * Evidence: ``
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/sitemap.xml
   * Method: `GET`
   * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/5.0 (Windows NT 10.0; Trident/7.0; rv:11.0) like Gecko`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36`
   * Evidence: ``
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/sitemap.xml
@@ -4624,7 +4344,13 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
 * URL: https://staging.support-for-care-leavers.education.gov.uk/sitemap.xml
   * Method: `GET`
   * Parameter: `Header User-Agent`
-  * Attack: `Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)`
+  * Attack: `Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://staging.support-for-care-leavers.education.gov.uk/sitemap.xml
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16`
   * Evidence: ``
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/translate-this-website
@@ -4901,6 +4627,12 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
   * Method: `GET`
   * Parameter: `Header User-Agent`
   * Attack: `Mozilla/5.0 (iPhone; CPU iPhone OS 8_0_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://staging.support-for-care-leavers.education.gov.uk/translate-this-website/page
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16`
   * Evidence: ``
   * Other Info: ``
 * URL: https://staging.support-for-care-leavers.education.gov.uk/translate-this-website/page
@@ -5342,7 +5074,7 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
   * Evidence: ``
   * Other Info: ``
 
-Instances: 570
+Instances: 562
 
 ### Solution
 
