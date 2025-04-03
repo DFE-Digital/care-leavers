@@ -12,7 +12,7 @@ on:
           - 'Test'
           - 'Staging'
           - 'Production'
-
+run-name: Deploy to ${{ github.event.inputs.environment }}
 jobs:
   package:
     name: 'Package Web in Docker'
@@ -44,7 +44,7 @@ jobs:
         run: docker push ghcr.io/${{ env.REPO }}:${{ github.sha }}
 
   deploy_environment:
-    name: 'Deploy Environment'
+    name: Deploying site to ${{ github.event.inputs.environment }}
     runs-on: ubuntu-latest
     needs: [package]
     permissions:
@@ -130,6 +130,9 @@ jobs:
 
       - name: Swap slot to production
         run: az webapp deployment slot swap --name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-app-service --resource-group s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-rg --slot staging --target-slot production
+
+      - name: Delete staging slot
+        run: az webapp deployment slot delete --name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-app-service --resource-group s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-rg --slot staging
 
       - name: Flush Redis Cache
         if: ${{ vars.CACHING_TYPE == 'Redis' }}
