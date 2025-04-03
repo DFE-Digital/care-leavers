@@ -9,7 +9,7 @@ ZAP by [Checkmarx](https://checkmarx.com/).
 | --- | --- |
 | High | 0 |
 | Medium | 3 |
-| Low | 9 |
+| Low | 5 |
 | Informational | 14 |
 
 
@@ -19,31 +19,27 @@ ZAP by [Checkmarx](https://checkmarx.com/).
 
 | Name | Risk Level | Number of Instances |
 | --- | --- | --- |
-| CSP: style-src unsafe-inline | Medium | 10 |
-| Proxy Disclosure | Medium | 16 |
-| Sub Resource Integrity Attribute Missing | Medium | 10 |
-| Cookie No HttpOnly Flag | Low | 1 |
-| Cookie Without Secure Flag | Low | 2 |
-| Cross-Domain JavaScript Source File Inclusion | Low | 7 |
-| Insufficient Site Isolation Against Spectre Vulnerability | Low | 9 |
-| Permissions Policy Header Not Set | Low | 6 |
+| CSP: style-src unsafe-inline | Medium | 11 |
+| Proxy Disclosure | Medium | 18 |
+| Sub Resource Integrity Attribute Missing | Medium | 11 |
+| Cross-Domain JavaScript Source File Inclusion | Low | 8 |
+| Insufficient Site Isolation Against Spectre Vulnerability | Low | 11 |
+| Permissions Policy Header Not Set | Low | 8 |
 | Private IP Disclosure | Low | 1 |
-| Strict-Transport-Security Header Not Set | Low | 11 |
-| Timestamp Disclosure - Unix | Low | 2 |
-| X-Content-Type-Options Header Missing | Low | 9 |
-| Base64 Disclosure | Informational | 10 |
-| Cookie Slack Detector | Informational | 188 |
+| Timestamp Disclosure - Unix | Low | 1 |
+| Base64 Disclosure | Informational | 8 |
+| Cookie Slack Detector | Informational | 284 |
 | GET for POST | Informational | 1 |
-| Modern Web Application | Informational | 5 |
-| Non-Storable Content | Informational | 8 |
-| Re-examine Cache-control Directives | Informational | 6 |
-| Sec-Fetch-Dest Header is Missing | Informational | 4 |
-| Sec-Fetch-Mode Header is Missing | Informational | 4 |
-| Sec-Fetch-Site Header is Missing | Informational | 4 |
-| Sec-Fetch-User Header is Missing | Informational | 4 |
+| Modern Web Application | Informational | 6 |
+| Non-Storable Content | Informational | 6 |
+| Re-examine Cache-control Directives | Informational | 7 |
+| Sec-Fetch-Dest Header is Missing | Informational | 2 |
+| Sec-Fetch-Mode Header is Missing | Informational | 2 |
+| Sec-Fetch-Site Header is Missing | Informational | 2 |
+| Sec-Fetch-User Header is Missing | Informational | 2 |
 | Session Management Response Identified | Informational | 1 |
-| Storable and Cacheable Content | Informational | 3 |
-| User Agent Fuzzer | Informational | 3660 |
+| Storable and Cacheable Content | Informational | 4 |
+| User Agent Fuzzer | Informational | 3708 |
 | User Controllable HTML Element Attribute (Potential XSS) | Informational | 3 |
 
 
@@ -63,68 +59,74 @@ ZAP by [Checkmarx](https://checkmarx.com/).
 
 Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks. Including (but not limited to) Cross Site Scripting (XSS), and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.
 
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: `Content-Security-Policy`
+  * Attack: ``
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-zpIyziCo+OP/o1XKq+/X9lNiOI66gg+G65/dstZ9mSo=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Other Info: `style-src includes unsafe-inline.`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `GET`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-u69DMkqeVsahg16/T23ZKZC3zPBlvZ6KyRFs6mMhDaw=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-UfHZaEl8JSF/27wfET3A1AtVNzuSnuh3XJnrDDTCYSE=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/error
   * Method: `GET`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-GBVL3QGAEOLcn9mfkui9nKa4VZ8QgExSE6sNVY7OO1I=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-rKDyVgRemPdegYMAlnC0D6FVxEj1Sikbyu2VWrF1sM0=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/page-not-found
   * Method: `GET`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-XbOuK0gVazMfEekt0yt+n3QAPr6/uA+PFnZN+coqFLc=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-fo5uJfORNM9Jjw/4Oxvs4ELfttFf7o0poDtAfPika48=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/privacy-policies
   * Method: `GET`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-LYr09kcapd3wuD79KCd6Snj6LUJHgvebODON/ZMANdM=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-Q7EKE8cwcMBtEKHII9XlEzXW/2X6zs/QSuu6+SKd9Dk=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/service-unavailable
   * Method: `GET`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-mWYc7s07no8Q0Dn0XxOTRrkI4IyPQ8bw6M6xha394Ls=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-4MIFTrtINoK7acMmbJZOjpqYY0pP8l1F+4yc/ERDjgk=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/service-unavailable
   * Method: `GET`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-uW3+F9my84aK3OPOVlp30QpS7dCqlOWo+ksGfNAC3k4=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-Kie52aHm9kLdCwNFeUoRL2i1PpyW0QpEyef6XhYRmGA=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-2CvgOA6c4nOT4lEhnn4xK5UHMGlkDioenSqG8QCPVvs=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-7f9EsNcKXClfSSsXs3CmAu/Xz+Vl5rx6ZyRnHnvAit0=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-2jMv0+wN/qZyHiUKDIGkzfiwiTYNnOs39tajsqtBbCc=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-QJdFcNz+btv0n0lFowbHe2LSFCYj+XCBskVK8Qqwyp4=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-BFwqpOLZUaqP5Yfk8oC9vaMReQ5TqFFO5yw42mKOAp8=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-RdCDt7s0ez0YcJhpJH+kcCrLX4k8s92IB+c7zjKOmCs=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: `Content-Security-Policy`
   * Attack: ``
-  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-ZiDvev2ZTPQLjAngOvKA/3HjaZcr3kl69TrNVKrBS14=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
+  * Evidence: `default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'nonce-v0AqdZQ1+23osER4L/NSYC0TojfhRGkP6MjjiN1dwS8=';style-src 'self' cdn.openshareweb.com rsms.me 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com;font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com;frame-src *.googletagmanager.com app.contentful.com *.riddle.com`
   * Other Info: `style-src includes unsafe-inline.`
 
-Instances: 10
+Instances: 11
 
 ### Solution
 
@@ -193,7 +195,7 @@ The following web/application server has been identified:
 The following web/application server has been identified:
 - Unknown
 `
-* URL: https://www.support-for-care-leavers.education.gov.uk/assets/images/favicon.svg
+* URL: https://www.support-for-care-leavers.education.gov.uk/assets/images/favicon.ico%3Fv=04PFFEabSV4DnYUjW2dFPt0SP9F8-oEwjaac26G8bsI
   * Method: `GET`
   * Parameter: ``
   * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
@@ -204,7 +206,7 @@ The following web/application server has been identified:
 The following web/application server has been identified:
 - Unknown
 `
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/application.css%3Fv=xPCBnk438N5Gg846S-P_K-guk8F0uXyLZnKopfKJ7OU
+* URL: https://www.support-for-care-leavers.education.gov.uk/assets/images/favicon.svg%3Fv=BY_XOpoc_9SAi-Nt7O42KebBXEsOb2Fu1GnBttHVEcU
   * Method: `GET`
   * Parameter: ``
   * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
@@ -215,7 +217,7 @@ The following web/application server has been identified:
 The following web/application server has been identified:
 - Unknown
 `
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/cta.css%3Fv=xclHjduLeoknWVTbhPL4tVIADjz_wSmD4_i8rB9OLak
+* URL: https://www.support-for-care-leavers.education.gov.uk/assets/images/govuk-icon-180.png%3Fv=SA-cZsEiik4F8BmKKh_vfU3kYC-4oe6ZUbvxokSh-QM
   * Method: `GET`
   * Parameter: ``
   * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
@@ -226,7 +228,7 @@ The following web/application server has been identified:
 The following web/application server has been identified:
 - Unknown
 `
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/dfefrontend.css%3Fv=WGvq-LWGl1pJq4gg3aT3WY8ZfNc8VC9IO17Do-VNQhE
+* URL: https://www.support-for-care-leavers.education.gov.uk/assets/images/govuk-icon-mask.svg%3Fv=N0Z3XZRPHy7GhBSmbzJ0FMxChzQ6CsBnL3LwjbH9xHQ
   * Method: `GET`
   * Parameter: ``
   * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
@@ -237,7 +239,7 @@ The following web/application server has been identified:
 The following web/application server has been identified:
 - Unknown
 `
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/govuk-frontend.min.css%3Fv=WlR_fSXs01SJL6S8kXXKCKaDOKfHtUvZ_Pc9jL946rI
+* URL: https://www.support-for-care-leavers.education.gov.uk/css/application.css%3Fv=Bl5QJlZQVMxI_TNMPxVjaXzPxiu6UJBQ8ZoBnq5Sc90
   * Method: `GET`
   * Parameter: ``
   * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
@@ -248,7 +250,7 @@ The following web/application server has been identified:
 The following web/application server has been identified:
 - Unknown
 `
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/metadata.css%3Fv=z2mvWSTcqG9lxknEUjSiqQwFdY4Qy8-TTZQc2IaK3s4
+* URL: https://www.support-for-care-leavers.education.gov.uk/css/print.css%3Fv=qGMYIg8zPLpHlU6WziUggN6hsNAo2-XrDoeK-_ztkOA
   * Method: `GET`
   * Parameter: ``
   * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
@@ -259,7 +261,18 @@ The following web/application server has been identified:
 The following web/application server has been identified:
 - Unknown
 `
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/navigation.css%3Fv=kZuwNiZoxCJNPNXB3yNeuPVBR87iCmjjduJ7MrYw9dc
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
+  * Evidence: ``
+  * Other Info: `Using the TRACE, OPTIONS, and TRACK methods, the following proxy servers have been identified between ZAP and the application/web server:
+- Unknown
+- Unknown
+The following web/application server has been identified:
+- Unknown
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `GET`
   * Parameter: ``
   * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
@@ -314,6 +327,17 @@ The following web/application server has been identified:
 The following web/application server has been identified:
 - Unknown
 `
+* URL: https://www.support-for-care-leavers.education.gov.uk/js/dfefrontend.min.js
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
+  * Evidence: ``
+  * Other Info: `Using the TRACE, OPTIONS, and TRACK methods, the following proxy servers have been identified between ZAP and the application/web server:
+- Unknown
+- Unknown
+The following web/application server has been identified:
+- Unknown
+`
 * URL: https://www.support-for-care-leavers.education.gov.uk/robots.txt
   * Method: `GET`
   * Parameter: ``
@@ -337,7 +361,7 @@ The following web/application server has been identified:
 - Unknown
 `
 
-Instances: 16
+Instances: 18
 
 ### Solution
 
@@ -370,6 +394,18 @@ Configure all proxies, application servers, and web servers to prevent disclosur
 
 The integrity attribute is missing on a script or link tag served by an external server. The integrity tag prevents an attacker who have gained access to this server from injecting a malicious content.
 
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `<link rel="preload" href="https://cdn.shareaholic.net/assets/pub/shareaholic.js" as="script"/>`
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="zpIyziCo&#x2B;OP/o1XKq&#x2B;/X9lNiOI66gg&#x2B;G65/dstZ9mSo="></script>`
+  * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `GET`
   * Parameter: ``
@@ -380,7 +416,7 @@ The integrity attribute is missing on a script or link tag served by an external
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="u69DMkqeVsahg16/T23ZKZC3zPBlvZ6KyRFs6mMhDaw="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="UfHZaEl8JSF/27wfET3A1AtVNzuSnuh3XJnrDDTCYSE="></script>`
   * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/page-not-found
   * Method: `GET`
@@ -392,7 +428,7 @@ The integrity attribute is missing on a script or link tag served by an external
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="XbOuK0gVazMfEekt0yt&#x2B;n3QAPr6/uA&#x2B;PFnZN&#x2B;coqFLc="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="fo5uJfORNM9Jjw/4Oxvs4ELfttFf7o0poDtAfPika48="></script>`
   * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/privacy-policies
   * Method: `GET`
@@ -404,7 +440,7 @@ The integrity attribute is missing on a script or link tag served by an external
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="LYr09kcapd3wuD79KCd6Snj6LUJHgvebODON/ZMANdM="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="Q7EKE8cwcMBtEKHII9XlEzXW/2X6zs/QSuu6&#x2B;SKd9Dk="></script>`
   * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
@@ -416,22 +452,16 @@ The integrity attribute is missing on a script or link tag served by an external
   * Method: `POST`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="2CvgOA6c4nOT4lEhnn4xK5UHMGlkDioenSqG8QCPVvs="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="7f9EsNcKXClfSSsXs3CmAu/Xz&#x2B;Vl5rx6ZyRnHnvAit0="></script>`
   * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="2jMv0&#x2B;wN/qZyHiUKDIGkzfiwiTYNnOs39tajsqtBbCc="></script>`
-  * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `POST`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="ZiDvev2ZTPQLjAngOvKA/3HjaZcr3kl69TrNVKrBS14="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="QJdFcNz&#x2B;btv0n0lFowbHe2LSFCYj&#x2B;XCBskVK8Qqwyp4="></script>`
   * Other Info: ``
 
-Instances: 10
+Instances: 11
 
 ### Solution
 
@@ -450,84 +480,6 @@ Provide a valid integrity attribute to the tag.
 
 #### Source ID: 3
 
-### [ Cookie No HttpOnly Flag ](https://www.zaproxy.org/docs/alerts/10010/)
-
-
-
-##### Low (Medium)
-
-### Description
-
-A cookie has been set without the HttpOnly flag, which means that the cookie can be accessed by JavaScript. If a malicious script can be run on this page then the cookie will be accessible and can be transmitted to another site. If this is a session cookie then session hijacking may be possible.
-
-* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `POST`
-  * Parameter: `.AspNet.Consent`
-  * Attack: ``
-  * Evidence: `Set-Cookie: .AspNet.Consent`
-  * Other Info: ``
-
-Instances: 1
-
-### Solution
-
-Ensure that the HttpOnly flag is set for all cookies.
-
-### Reference
-
-
-* [ https://owasp.org/www-community/HttpOnly ](https://owasp.org/www-community/HttpOnly)
-
-
-#### CWE Id: [ 1004 ](https://cwe.mitre.org/data/definitions/1004.html)
-
-
-#### WASC Id: 13
-
-#### Source ID: 3
-
-### [ Cookie Without Secure Flag ](https://www.zaproxy.org/docs/alerts/10011/)
-
-
-
-##### Low (Medium)
-
-### Description
-
-A cookie has been set without the secure flag, which means that the cookie can be accessed via unencrypted connections.
-
-* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `GET`
-  * Parameter: `.AspNetCore.Antiforgery.VyLW6ORzMgk`
-  * Attack: ``
-  * Evidence: `Set-Cookie: .AspNetCore.Antiforgery.VyLW6ORzMgk`
-  * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `POST`
-  * Parameter: `.AspNet.Consent`
-  * Attack: ``
-  * Evidence: `Set-Cookie: .AspNet.Consent`
-  * Other Info: ``
-
-Instances: 2
-
-### Solution
-
-Whenever a cookie contains sensitive information or is a session token, then it should always be passed using an encrypted channel. Ensure that the secure flag is set for cookies containing such sensitive information.
-
-### Reference
-
-
-* [ https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes.html ](https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes.html)
-
-
-#### CWE Id: [ 614 ](https://cwe.mitre.org/data/definitions/614.html)
-
-
-#### WASC Id: 13
-
-#### Source ID: 3
-
 ### [ Cross-Domain JavaScript Source File Inclusion ](https://www.zaproxy.org/docs/alerts/10017/)
 
 
@@ -538,50 +490,56 @@ Whenever a cookie contains sensitive information or is a session token, then it 
 
 The page includes one or more script files from a third-party domain.
 
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
+  * Attack: ``
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="zpIyziCo&#x2B;OP/o1XKq&#x2B;/X9lNiOI66gg&#x2B;G65/dstZ9mSo="></script>`
+  * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `GET`
   * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="u69DMkqeVsahg16/T23ZKZC3zPBlvZ6KyRFs6mMhDaw="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="UfHZaEl8JSF/27wfET3A1AtVNzuSnuh3XJnrDDTCYSE="></script>`
   * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/page-not-found
   * Method: `GET`
   * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="XbOuK0gVazMfEekt0yt&#x2B;n3QAPr6/uA&#x2B;PFnZN&#x2B;coqFLc="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="fo5uJfORNM9Jjw/4Oxvs4ELfttFf7o0poDtAfPika48="></script>`
   * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/privacy-policies
   * Method: `GET`
   * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="LYr09kcapd3wuD79KCd6Snj6LUJHgvebODON/ZMANdM="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="Q7EKE8cwcMBtEKHII9XlEzXW/2X6zs/QSuu6&#x2B;SKd9Dk="></script>`
   * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="2CvgOA6c4nOT4lEhnn4xK5UHMGlkDioenSqG8QCPVvs="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="7f9EsNcKXClfSSsXs3CmAu/Xz&#x2B;Vl5rx6ZyRnHnvAit0="></script>`
   * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="2jMv0&#x2B;wN/qZyHiUKDIGkzfiwiTYNnOs39tajsqtBbCc="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="QJdFcNz&#x2B;btv0n0lFowbHe2LSFCYj&#x2B;XCBskVK8Qqwyp4="></script>`
   * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="BFwqpOLZUaqP5Yfk8oC9vaMReQ5TqFFO5yw42mKOAp8="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="RdCDt7s0ez0YcJhpJH&#x2B;kcCrLX4k8s92IB&#x2B;c7zjKOmCs="></script>`
   * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: `https://cdn.shareaholic.net/assets/pub/shareaholic.js`
   * Attack: ``
-  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="ZiDvev2ZTPQLjAngOvKA/3HjaZcr3kl69TrNVKrBS14="></script>`
+  * Evidence: `<script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="v0AqdZQ1&#x2B;23osER4L/NSYC0TojfhRGkP6MjjiN1dwS8="></script>`
   * Other Info: ``
 
-Instances: 7
+Instances: 8
 
 ### Solution
 
@@ -608,13 +566,13 @@ Ensure JavaScript source files are loaded from only trusted sources, and the sou
 
 Cross-Origin-Resource-Policy header is an opt-in header designed to counter side-channels attacks like Spectre. Resource should be specifically set as shareable amongst different origins.
 
-* URL: https://www.support-for-care-leavers.education.gov.uk/assets/dfe-logo-alt.png
+* URL: https://www.support-for-care-leavers.education.gov.uk/assets/images/govuk-icon-mask.svg%3Fv=N0Z3XZRPHy7GhBSmbzJ0FMxChzQ6CsBnL3LwjbH9xHQ
   * Method: `GET`
   * Parameter: `Cross-Origin-Resource-Policy`
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/assets/images/favicon.svg
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/error
   * Method: `GET`
   * Parameter: `Cross-Origin-Resource-Policy`
   * Attack: ``
@@ -638,6 +596,12 @@ Cross-Origin-Resource-Policy header is an opt-in header designed to counter side
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/error
+  * Method: `GET`
+  * Parameter: `Cross-Origin-Embedder-Policy`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/service-unavailable
   * Method: `GET`
   * Parameter: `Cross-Origin-Embedder-Policy`
@@ -647,6 +611,12 @@ Cross-Origin-Resource-Policy header is an opt-in header designed to counter side
 * URL: https://www.support-for-care-leavers.education.gov.uk/sitemap.xml
   * Method: `GET`
   * Parameter: `Cross-Origin-Embedder-Policy`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/error
+  * Method: `GET`
+  * Parameter: `Cross-Origin-Opener-Policy`
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
@@ -663,7 +633,7 @@ Cross-Origin-Resource-Policy header is an opt-in header designed to counter side
   * Evidence: ``
   * Other Info: ``
 
-Instances: 9
+Instances: 11
 
 ### Solution
 
@@ -695,6 +665,12 @@ If possible, ensure that the end user uses a standards-compliant and modern web 
 
 Permissions Policy Header is an added layer of security that helps to restrict from unauthorized access or usage of browser/client features by web resources. This policy ensures the user privacy by limiting or specifying the features of the browsers can be used by the web resources. Permissions Policy provides a set of standard HTTP headers that allow website owners to limit which features of browsers can be used by the page such as camera, microphone, location, full screen etc.
 
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `GET`
   * Parameter: ``
@@ -725,6 +701,12 @@ Permissions Policy Header is an added layer of security that helps to restrict f
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/js/dfefrontend.min.js
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: ``
@@ -732,7 +714,7 @@ Permissions Policy Header is an added layer of security that helps to restrict f
   * Evidence: ``
   * Other Info: ``
 
-Instances: 6
+Instances: 8
 
 ### Solution
 
@@ -765,7 +747,7 @@ Ensure that your web server, application server, load balancer, etc. is configur
 
 A private IP (such as 10.x.x.x, 172.x.x.x, 192.168.x.x) or an Amazon EC2 private hostname (for example, ip-10-0-56-78) has been found in the HTTP response body. This information might be helpful for further attacks targeting internal systems.
 
-* URL: https://www.support-for-care-leavers.education.gov.uk/assets/images/favicon.svg
+* URL: https://www.support-for-care-leavers.education.gov.uk/assets/images/favicon.svg%3Fv=BY_XOpoc_9SAi-Nt7O42KebBXEsOb2Fu1GnBttHVEcU
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -792,106 +774,6 @@ Remove the private IP address from the HTTP response body. For comments, use JSP
 
 #### Source ID: 3
 
-### [ Strict-Transport-Security Header Not Set ](https://www.zaproxy.org/docs/alerts/10035/)
-
-
-
-##### Low (High)
-
-### Description
-
-HTTP Strict Transport Security (HSTS) is a web security policy mechanism whereby a web server declares that complying user agents (such as a web browser) are to interact with it using only secure HTTPS connections (i.e. HTTP layered over TLS/SSL). HSTS is an IETF standards track protocol and is specified in RFC 6797.
-
-* URL: https://www.support-for-care-leavers.education.gov.uk/assets/dfe-logo-alt.png
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/assets/images/favicon.svg
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/cta.css%3Fv=xclHjduLeoknWVTbhPL4tVIADjz_wSmD4_i8rB9OLak
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/metadata.css%3Fv=z2mvWSTcqG9lxknEUjSiqQwFdY4Qy8-TTZQc2IaK3s4
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/navigation.css%3Fv=kZuwNiZoxCJNPNXB3yNeuPVBR87iCmjjduJ7MrYw9dc
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/en/error
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/en/page-not-found
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/en/privacy-policies
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/en/service-unavailable
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/robots.txt
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/sitemap.xml
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
-
-Instances: 11
-
-### Solution
-
-Ensure that your web server, application server, load balancer, etc. is configured to enforce Strict-Transport-Security.
-
-### Reference
-
-
-* [ https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Strict_Transport_Security_Cheat_Sheet.html ](https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Strict_Transport_Security_Cheat_Sheet.html)
-* [ https://owasp.org/www-community/Security_Headers ](https://owasp.org/www-community/Security_Headers)
-* [ https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security ](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security)
-* [ https://caniuse.com/stricttransportsecurity ](https://caniuse.com/stricttransportsecurity)
-* [ https://datatracker.ietf.org/doc/html/rfc6797 ](https://datatracker.ietf.org/doc/html/rfc6797)
-
-
-#### CWE Id: [ 319 ](https://cwe.mitre.org/data/definitions/319.html)
-
-
-#### WASC Id: 15
-
-#### Source ID: 3
-
 ### [ Timestamp Disclosure - Unix ](https://www.zaproxy.org/docs/alerts/10096/)
 
 
@@ -902,20 +784,14 @@ Ensure that your web server, application server, load balancer, etc. is configur
 
 A timestamp was disclosed by the application/web server. - Unix
 
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/application.css%3Fv=xPCBnk438N5Gg846S-P_K-guk8F0uXyLZnKopfKJ7OU
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `1428571429`
-  * Other Info: `1428571429, which evaluates to: 2015-04-09 09:23:49.`
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/govuk-frontend.min.css%3Fv=WlR_fSXs01SJL6S8kXXKCKaDOKfHtUvZ_Pc9jL946rI
+* URL: https://www.support-for-care-leavers.education.gov.uk/css/application.css%3Fv=Bl5QJlZQVMxI_TNMPxVjaXzPxiu6UJBQ8ZoBnq5Sc90
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: `1428571429`
   * Other Info: `1428571429, which evaluates to: 2015-04-09 09:23:49.`
 
-Instances: 2
+Instances: 1
 
 ### Solution
 
@@ -934,101 +810,6 @@ Manually confirm that the timestamp data is not sensitive, and that the data can
 
 #### Source ID: 3
 
-### [ X-Content-Type-Options Header Missing ](https://www.zaproxy.org/docs/alerts/10021/)
-
-
-
-##### Low (Medium)
-
-### Description
-
-The Anti-MIME-Sniffing header X-Content-Type-Options was not set to 'nosniff'. This allows older versions of Internet Explorer and Chrome to perform MIME-sniffing on the response body, potentially causing the response body to be interpreted and displayed as a content type other than the declared content type. Current (early 2014) and legacy versions of Firefox will use the declared content type (if one is set), rather than performing MIME-sniffing.
-
-* URL: https://www.support-for-care-leavers.education.gov.uk/assets/dfe-logo-alt.png
-  * Method: `GET`
-  * Parameter: `x-content-type-options`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
-At "High" threshold this scan rule will not alert on client or server error responses.`
-* URL: https://www.support-for-care-leavers.education.gov.uk/assets/dfe-logo.png
-  * Method: `GET`
-  * Parameter: `x-content-type-options`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
-At "High" threshold this scan rule will not alert on client or server error responses.`
-* URL: https://www.support-for-care-leavers.education.gov.uk/assets/images/favicon.svg
-  * Method: `GET`
-  * Parameter: `x-content-type-options`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
-At "High" threshold this scan rule will not alert on client or server error responses.`
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/application.css%3Fv=xPCBnk438N5Gg846S-P_K-guk8F0uXyLZnKopfKJ7OU
-  * Method: `GET`
-  * Parameter: `x-content-type-options`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
-At "High" threshold this scan rule will not alert on client or server error responses.`
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/cta.css%3Fv=xclHjduLeoknWVTbhPL4tVIADjz_wSmD4_i8rB9OLak
-  * Method: `GET`
-  * Parameter: `x-content-type-options`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
-At "High" threshold this scan rule will not alert on client or server error responses.`
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/dfefrontend.css%3Fv=WGvq-LWGl1pJq4gg3aT3WY8ZfNc8VC9IO17Do-VNQhE
-  * Method: `GET`
-  * Parameter: `x-content-type-options`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
-At "High" threshold this scan rule will not alert on client or server error responses.`
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/govuk-frontend.min.css%3Fv=WlR_fSXs01SJL6S8kXXKCKaDOKfHtUvZ_Pc9jL946rI
-  * Method: `GET`
-  * Parameter: `x-content-type-options`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
-At "High" threshold this scan rule will not alert on client or server error responses.`
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/metadata.css%3Fv=z2mvWSTcqG9lxknEUjSiqQwFdY4Qy8-TTZQc2IaK3s4
-  * Method: `GET`
-  * Parameter: `x-content-type-options`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
-At "High" threshold this scan rule will not alert on client or server error responses.`
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/navigation.css%3Fv=kZuwNiZoxCJNPNXB3yNeuPVBR87iCmjjduJ7MrYw9dc
-  * Method: `GET`
-  * Parameter: `x-content-type-options`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
-At "High" threshold this scan rule will not alert on client or server error responses.`
-
-Instances: 9
-
-### Solution
-
-Ensure that the application/web server sets the Content-Type header appropriately, and that it sets the X-Content-Type-Options header to 'nosniff' for all web pages.
-If possible, ensure that the end user uses a standards-compliant and modern web browser that does not perform MIME-sniffing at all, or that can be directed by the web application/web server to not perform MIME-sniffing.
-
-### Reference
-
-
-* [ https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/compatibility/gg622941(v=vs.85) ](https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/compatibility/gg622941(v=vs.85))
-* [ https://owasp.org/www-community/Security_Headers ](https://owasp.org/www-community/Security_Headers)
-
-
-#### CWE Id: [ 693 ](https://cwe.mitre.org/data/definitions/693.html)
-
-
-#### WASC Id: 15
-
-#### Source ID: 3
-
 ### [ Base64 Disclosure ](https://www.zaproxy.org/docs/alerts/10094/)
 
 
@@ -1039,69 +820,58 @@ If possible, ensure that the end user uses a standards-compliant and modern web 
 
 Base64 encoded data was disclosed by the application/web server. Note: in the interests of performance not all base64 strings in the response were analyzed individually, the entire response should be looked at by the analyst/security team/developer(s).
 
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `BY_XOpoc_9SAi-Nt7O42KebBXEsOb2Fu1GnBttHVEcU`
+  * Other Info: `��:��Ԁ��m��6)��\Koan�i�����`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `CfDJ8Kr1sJvyjLxEncV200iiUqVkSY2Svkguvd3NEe-dNlgvGTvpvtAJAnsduWaL_oLxVj6CZH343_1n4b2JhQHAMVMnAUoRUCLRVUD11rf89ZM4YvLpE3KiOh1f7WkH5HTKf2ETyf1giQreByrulvkFK-Y`
-  * Other Info: `	�������D��v�H�R�dI���H.����6X/;��	{�f����V>�d}���gὉ��1S'JP"�U@�ַ���8b��r�:_�i�t�a��`�
-�*��+�`
+  * Evidence: `CfDJ8BFtDe23yUNEl4xbSaUuy5Xvi3rDMM92jBYeJxfcrPXLpsjwPYG8k45ScV7y-5SMT8iPIWP2soCmFwEMQKojgdCiP4RCQXxBop_K_lNjBc6twwQTiRlrs6HN3q_KtjaeSbyHWz-JIK6k8TOlErtEVi8`
+  * Other Info: `	���m��CD��[I�.˕�z�0�v�'ܬ�˦��=����Rq^����Oȏ!c����@�#�Т?�BA|A����Scέ��k���ޯʶ6�I��[?� ���3��DV/`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/error
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `WlR_fSXs01SJL6S8kXXKCKaDOKfHtUvZ_Pc9jL946rI`
-  * Other Info: `ZT}%��T�/���u���8�ǵK���=��x�`
+  * Evidence: `BY_XOpoc_9SAi-Nt7O42KebBXEsOb2Fu1GnBttHVEcU`
+  * Other Info: `��:��Ԁ��m��6)��\Koan�i�����`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/page-not-found
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `xPCBnk438N5Gg846S-P_K-guk8F0uXyLZnKopfKJ7OU`
-  * Other Info: `����N7��F��:K��+�.��t�|�fr�����`
+  * Evidence: `fo5uJfORNM9Jjw/4Oxvs4ELfttFf7o0poDtAfPika48=`
+  * Other Info: `~�n%�4�I��;��B߶�_�)�;@|��k�`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/privacy-policies
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `LYr09kcapd3wuD79KCd6Snj6LUJHgvebODON/ZMANdM=`
-  * Other Info: `-���G���>�('zJx�-BG���83��� 5�`
+  * Evidence: `Q7EKE8cwcMBtEKHII9XlEzXW/2X6zs/QSuu6`
+  * Other Info: `C�
+�0p�m��#��5��e����J�`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/service-unavailable
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `mWYc7s07no8Q0Dn0XxOTRrkI4IyPQ8bw6M6xha394Ls=`
-  * Other Info: `�f��;���9�_�F����C���α����`
+  * Evidence: `Kie52aHm9kLdCwNFeUoRL2i1PpyW0QpEyef6XhYRmGA=`
+  * Other Info: `*'�١��B�EyJ/h�>���
+D���^�``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/service-unavailable
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `xPCBnk438N5Gg846S-P_K-guk8F0uXyLZnKopfKJ7OU`
-  * Other Info: `����N7��F��:K��+�.��t�|�fr�����`
+  * Evidence: `4MIFTrtINoK7acMmbJZOjpqYY0pP8l1F`
+  * Other Info: `��N�H6��i�&l�N���cJO�]E`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `POST`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `BFwqpOLZUaqP5Yfk8oC9vaMReQ5TqFFO5yw42mKOAp8=`
-  * Other Info: `\*���Q����򀽽�yS�QN�,8�b��`
-* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `POST`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `ZiDvev2ZTPQLjAngOvKA/3HjaZcr3kl69TrNVKrBS14=`
-  * Other Info: `f �z��L��	�:��q�i�+�Iz�:�T��K^`
-* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `POST`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `2CvgOA6c4nOT4lEhnn4xK5UHMGlkDioenSqG8QCPVvs=`
-  * Other Info: `�+�8��s��Q!�~1+�0id*�*�� �V�`
-* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
-  * Method: `POST`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `xPCBnk438N5Gg846S-P_K-guk8F0uXyLZnKopfKJ7OU`
-  * Other Info: `����N7��F��:K��+�.��t�|�fr�����`
+  * Evidence: `BY_XOpoc_9SAi-Nt7O42KebBXEsOb2Fu1GnBttHVEcU`
+  * Other Info: `��:��Ԁ��m��6)��\Koan�i�����`
 
-Instances: 10
+Instances: 8
 
 ### Solution
 
@@ -1130,6 +900,87 @@ Manually confirm that the Base64 data does not leak sensitive information, and t
 
 Repeated GET requests: drop a different cookie each time, followed by normal request with all cookies to stabilize session, compare responses against original baseline GET. This can reveal areas where cookie based authentication/attributes are not actually enforced.
 
+* URL: https://www.support-for-care-leavers.education.gov.uk/assets/dfe-logo-alt.png
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/ba
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/ba/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/bg
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/bg/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/bho
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/bho/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/bn
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/bn/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
 * URL: https://www.support-for-care-leavers.education.gov.uk/bo
   * Method: `GET`
   * Parameter: ``
@@ -1148,7 +999,7 @@ These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 These cookies affected the response: 
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/dfefrontend.css%3Fv=WGvq-LWGl1pJq4gg3aT3WY8ZfNc8VC9IO17Do-VNQhE
+* URL: https://www.support-for-care-leavers.education.gov.uk/brx
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -1157,7 +1008,61 @@ These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 These cookies affected the response: 
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
-* URL: https://www.support-for-care-leavers.education.gov.uk/css/govuk-frontend.min.css%3Fv=WlR_fSXs01SJL6S8kXXKCKaDOKfHtUvZ_Pc9jL946rI
+* URL: https://www.support-for-care-leavers.education.gov.uk/brx/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/bs
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/bs/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/ca
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/ca/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/cs
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/cs/
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -1184,6 +1089,60 @@ These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 These cookies affected the response: 
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
+* URL: https://www.support-for-care-leavers.education.gov.uk/da
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/da/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/de
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/de/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/doi
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/doi/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
 * URL: https://www.support-for-care-leavers.education.gov.uk/dsb
   * Method: `GET`
   * Parameter: ``
@@ -1194,6 +1153,270 @@ These cookies affected the response:
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
 * URL: https://www.support-for-care-leavers.education.gov.uk/dsb/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/dv
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/dv/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/el
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/el/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Dropping this cookie appears to have invalidated the session: [.AspNetCore.Antiforgery.VyLW6ORzMgk] A follow-on request with all original cookies still had a different response than the original request.
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/all-support
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/care-terms-explained
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Dropping this cookie appears to have invalidated the session: [.AspNetCore.Antiforgery.VyLW6ORzMgk] A follow-on request with all original cookies still had a different response than the original request.
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/education-and-training
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/eligible-child
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/former-relevant-child
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/health-and-wellbeing
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/help-with-education-and-training-costs
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/helplines
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/higher-education-bursary
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/home
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/housing-and-accommodation
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/leaving-care-allowance
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/leaving-care-guides
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/local-offer-for-care-leavers
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/money-and-benefits
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/pathway-plan
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/person-qualifying-for-advice-and-assistance
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/personal-adviser
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/privacy-policies
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Dropping this cookie appears to have invalidated the session: [.AspNetCore.Antiforgery.VyLW6ORzMgk] A follow-on request with all original cookies still had a different response than the original request.
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/relevant-child
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/unaccompanied-asylum-seeking-young-people
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/what-happens-when-you-leave-care
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/work-and-employment
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/your-rights
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -1220,6 +1443,42 @@ These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 These cookies affected the response: 
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
+* URL: https://www.support-for-care-leavers.education.gov.uk/et
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/et/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/eu
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/eu/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
 * URL: https://www.support-for-care-leavers.education.gov.uk/fa
   * Method: `GET`
   * Parameter: ``
@@ -1230,6 +1489,114 @@ These cookies affected the response:
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
 * URL: https://www.support-for-care-leavers.education.gov.uk/fa/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/fi
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/fi/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/fil
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/fil/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/fj
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/fj/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/fo
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/fo/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/fr
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/fr-CA
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/fr-CA/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/fr/
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -1256,6 +1623,24 @@ These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 These cookies affected the response: 
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
+* URL: https://www.support-for-care-leavers.education.gov.uk/gl
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/gl/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
 * URL: https://www.support-for-care-leavers.education.gov.uk/gom
   * Method: `GET`
   * Parameter: ``
@@ -1266,6 +1651,42 @@ These cookies affected the response:
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
 * URL: https://www.support-for-care-leavers.education.gov.uk/gom/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/gu
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/gu/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/ha
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/ha/
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -1310,6 +1731,42 @@ These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 These cookies affected the response: 
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
+* URL: https://www.support-for-care-leavers.education.gov.uk/hne
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/hne/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/hr
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/hr/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
 * URL: https://www.support-for-care-leavers.education.gov.uk/hsb
   * Method: `GET`
   * Parameter: ``
@@ -1320,6 +1777,24 @@ These cookies affected the response:
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
 * URL: https://www.support-for-care-leavers.education.gov.uk/hsb/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/ht
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/ht/
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -1482,6 +1957,24 @@ These cookies affected the response:
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
 * URL: https://www.support-for-care-leavers.education.gov.uk/ja/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/ka
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/ka/
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -1688,6 +2181,24 @@ These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 These cookies affected the response: 
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
+* URL: https://www.support-for-care-leavers.education.gov.uk/lug
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/lug/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
 * URL: https://www.support-for-care-leavers.education.gov.uk/lv
   * Method: `GET`
   * Parameter: ``
@@ -1698,6 +2209,24 @@ These cookies affected the response:
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
 * URL: https://www.support-for-care-leavers.education.gov.uk/lv/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/lzh
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/lzh/
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -1976,6 +2505,24 @@ These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 These cookies affected the response: 
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
+* URL: https://www.support-for-care-leavers.education.gov.uk/nl
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/nl/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
 * URL: https://www.support-for-care-leavers.education.gov.uk/nso
   * Method: `GET`
   * Parameter: ``
@@ -2076,6 +2623,24 @@ These cookies affected the response:
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
 * URL: https://www.support-for-care-leavers.education.gov.uk/pl/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/prs
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/prs/
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -2579,6 +3144,15 @@ These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 These cookies affected the response: 
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
+* URL: https://www.support-for-care-leavers.education.gov.uk/translate-this-website/page/AccessibilityStatement
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNet.Consent,.AspNetCore.Antiforgery.VyLW6ORzMgk
+`
 * URL: https://www.support-for-care-leavers.education.gov.uk/translate-this-website/page/CookiePolicy
   * Method: `GET`
   * Parameter: ``
@@ -2795,6 +3369,60 @@ These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 These cookies affected the response: 
 These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
+* URL: https://www.support-for-care-leavers.education.gov.uk/yue
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/yue/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/zh-Hans
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/zh-Hans/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/zh-Hant
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
+* URL: https://www.support-for-care-leavers.education.gov.uk/zh-Hant/
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
+`
 * URL: https://www.support-for-care-leavers.education.gov.uk/zu
   * Method: `GET`
   * Parameter: ``
@@ -2818,10 +3446,12 @@ These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
   * Parameter: ``
   * Attack: ``
   * Evidence: ``
-  * Other Info: `Dropping this cookie appears to have invalidated the session: [.AspNet.Consent] A follow-on request with all original cookies still had a different response than the original request.
+  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: .AspNet.Consent
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk
 `
 
-Instances: 188
+Instances: 284
 
 ### Solution
 
@@ -2854,7 +3484,7 @@ A request that was originally observed as a POST was also accepted as a GET. Thi
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `GET https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy?AcceptCookies=True&__RequestVerificationToken=CfDJ8Kr1sJvyjLxEncV200iiUqVOHq-kp1Y1Z8lQrGLankiCoXm3MV6vsV3kHGsgAKsjADnV9mJbrf7w_1srgXfuyTlIaWdx6IEWdTFh6pyhTwxXhtyqvQLR6Z5vpZZpti8CFY63yczu6IN210f4zjvUztQ HTTP/1.1`
+  * Evidence: `GET https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy?AcceptCookies=True&__RequestVerificationToken=CfDJ8BFtDe23yUNEl4xbSaUuy5XJAyvU3kg4-bqMFaM3P-JRBAuQrNcT0wumUT1ZboYk-7AalNRjf66XyB2eaJfTJ5Wwr1mjHav8SDCvJ15iBp6WQs2QtETyHpvAhagKMG_doXD6K9NXm-lX5aOaC4HL44A HTTP/1.1`
   * Other Info: ``
 
 Instances: 1
@@ -2884,28 +3514,36 @@ Ensure that only POST is accepted where POST is expected.
 
 The application appears to be a modern web application. If you need to explore it automatically then the Ajax Spider may well be more effective than the standard one.
 
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `<noscript>
+        <iframe title="GTM" src="https://www.googletagmanager.com/ns.html?id=GTM-M2CBTMTD"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>`
+  * Other Info: `A noScript tag has been found, which is an indication that the application works differently with JavaScript enabled compared to when it is not.`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<noscript b-k59dbireqp>
-        <iframe b-k59dbireqp title="GTM" src="https://www.googletagmanager.com/ns.html?id=GTM-M2CBTMTD"
+  * Evidence: `<noscript>
+        <iframe title="GTM" src="https://www.googletagmanager.com/ns.html?id=GTM-M2CBTMTD"
                 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>`
   * Other Info: `A noScript tag has been found, which is an indication that the application works differently with JavaScript enabled compared to when it is not.`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/page-not-found
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<noscript b-k59dbireqp>
-        <iframe b-k59dbireqp title="GTM" src="https://www.googletagmanager.com/ns.html?id=GTM-M2CBTMTD"
+  * Evidence: `<noscript>
+        <iframe title="GTM" src="https://www.googletagmanager.com/ns.html?id=GTM-M2CBTMTD"
                 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>`
   * Other Info: `A noScript tag has been found, which is an indication that the application works differently with JavaScript enabled compared to when it is not.`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/privacy-policies
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<noscript b-k59dbireqp>
-        <iframe b-k59dbireqp title="GTM" src="https://www.googletagmanager.com/ns.html?id=GTM-M2CBTMTD"
+  * Evidence: `<noscript>
+        <iframe title="GTM" src="https://www.googletagmanager.com/ns.html?id=GTM-M2CBTMTD"
                 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>`
   * Other Info: `A noScript tag has been found, which is an indication that the application works differently with JavaScript enabled compared to when it is not.`
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/service-unavailable
@@ -2920,12 +3558,12 @@ The application appears to be a modern web application. If you need to explore i
   * Method: `POST`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<noscript b-k59dbireqp>
-        <iframe b-k59dbireqp title="GTM" src="https://www.googletagmanager.com/ns.html?id=GTM-M2CBTMTD"
+  * Evidence: `<noscript>
+        <iframe title="GTM" src="https://www.googletagmanager.com/ns.html?id=GTM-M2CBTMTD"
                 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>`
   * Other Info: `A noScript tag has been found, which is an indication that the application works differently with JavaScript enabled compared to when it is not.`
 
-Instances: 5
+Instances: 6
 
 ### Solution
 
@@ -2966,19 +3604,7 @@ The response contents are not storable by caching components such as proxy serve
   * Attack: ``
   * Evidence: `302`
   * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/am/
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `302`
-  * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `302`
-  * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/sq/
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -2997,7 +3623,7 @@ The response contents are not storable by caching components such as proxy serve
   * Evidence: `302`
   * Other Info: ``
 
-Instances: 8
+Instances: 6
 
 ### Solution
 
@@ -3039,6 +3665,12 @@ It must have a status code that is defined as cacheable by default (200, 203, 20
 
 The cache-control header has not been set properly or is missing, allowing the browser and proxies to cache content. For static assets like css, js, or image files this might be intended, however, the resources should be reviewed to ensure that no sensitive content will be cached.
 
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: `cache-control`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `GET`
   * Parameter: `cache-control`
@@ -3076,7 +3708,7 @@ The cache-control header has not been set properly or is missing, allowing the b
   * Evidence: ``
   * Other Info: ``
 
-Instances: 6
+Instances: 7
 
 ### Solution
 
@@ -3107,19 +3739,7 @@ For secure content, ensure the cache-control HTTP header is set with "no-cache, 
 
 Specifies how and where the data would be used. For instance, if the value is audio, then the requested resource must be audio data and not any other type of resource.
 
-* URL: https://www.support-for-care-leavers.education.gov.uk
-  * Method: `GET`
-  * Parameter: `Sec-Fetch-Dest`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/
-  * Method: `GET`
-  * Parameter: `Sec-Fetch-Dest`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/en
   * Method: `GET`
   * Parameter: `Sec-Fetch-Dest`
   * Attack: ``
@@ -3132,7 +3752,7 @@ Specifies how and where the data would be used. For instance, if the value is au
   * Evidence: ``
   * Other Info: ``
 
-Instances: 4
+Instances: 2
 
 ### Solution
 
@@ -3161,19 +3781,7 @@ Ensure that Sec-Fetch-Dest header is included in request headers.
 
 Allows to differentiate between requests for navigating between HTML pages and requests for loading resources like images, audio etc.
 
-* URL: https://www.support-for-care-leavers.education.gov.uk
-  * Method: `GET`
-  * Parameter: `Sec-Fetch-Mode`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/
-  * Method: `GET`
-  * Parameter: `Sec-Fetch-Mode`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/en
   * Method: `GET`
   * Parameter: `Sec-Fetch-Mode`
   * Attack: ``
@@ -3186,7 +3794,7 @@ Allows to differentiate between requests for navigating between HTML pages and r
   * Evidence: ``
   * Other Info: ``
 
-Instances: 4
+Instances: 2
 
 ### Solution
 
@@ -3215,19 +3823,7 @@ Ensure that Sec-Fetch-Mode header is included in request headers.
 
 Specifies the relationship between request initiator's origin and target's origin.
 
-* URL: https://www.support-for-care-leavers.education.gov.uk
-  * Method: `GET`
-  * Parameter: `Sec-Fetch-Site`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/
-  * Method: `GET`
-  * Parameter: `Sec-Fetch-Site`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/en
   * Method: `GET`
   * Parameter: `Sec-Fetch-Site`
   * Attack: ``
@@ -3240,7 +3836,7 @@ Specifies the relationship between request initiator's origin and target's origi
   * Evidence: ``
   * Other Info: ``
 
-Instances: 4
+Instances: 2
 
 ### Solution
 
@@ -3269,19 +3865,7 @@ Ensure that Sec-Fetch-Site header is included in request headers.
 
 Specifies if a navigation request was initiated by a user.
 
-* URL: https://www.support-for-care-leavers.education.gov.uk
-  * Method: `GET`
-  * Parameter: `Sec-Fetch-User`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/
-  * Method: `GET`
-  * Parameter: `Sec-Fetch-User`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
-* URL: https://www.support-for-care-leavers.education.gov.uk/en
   * Method: `GET`
   * Parameter: `Sec-Fetch-User`
   * Attack: ``
@@ -3294,7 +3878,7 @@ Specifies if a navigation request was initiated by a user.
   * Evidence: ``
   * Other Info: ``
 
-Instances: 4
+Instances: 2
 
 ### Solution
 
@@ -3317,7 +3901,7 @@ Ensure that Sec-Fetch-User header is included in user initiated requests.
 
 
 
-##### Informational (High)
+##### Informational (Medium)
 
 ### Description
 
@@ -3327,7 +3911,7 @@ The given response has been identified as containing a session management token.
   * Method: `GET`
   * Parameter: `.AspNetCore.Antiforgery.VyLW6ORzMgk`
   * Attack: ``
-  * Evidence: `CfDJ8Kr1sJvyjLxEncV200iiUqVkSY2Svkguvd3NEe-dNlgvGTvpvtAJAnsduWaL_oLxVj6CZH343_1n4b2JhQHAMVMnAUoRUCLRVUD11rf89ZM4YvLpE3KiOh1f7WkH5HTKf2ETyf1giQreByrulvkFK-Y`
+  * Evidence: `CfDJ8BFtDe23yUNEl4xbSaUuy5Xvi3rDMM92jBYeJxfcrPXLpsjwPYG8k45ScV7y-5SMT8iPIWP2soCmFwEMQKojgdCiP4RCQXxBop_K_lNjBc6twwQTiRlrs6HN3q_KtjaeSbyHWz-JIK6k8TOlErtEVi8`
   * Other Info: `
 cookie:.AspNetCore.Antiforgery.VyLW6ORzMgk`
 
@@ -3356,6 +3940,12 @@ This is an informational alert rather than a vulnerability and so there is nothi
 
 The response contents are storable by caching components such as proxy servers, and may be retrieved directly from the cache, rather than from the origin server by the caching servers, in response to similar requests from other users. If the response data is sensitive, personal or user-specific, this may result in sensitive information being leaked. In some cases, this may even result in a user gaining complete control of the session of another user, depending on the configuration of the caching components in use in their environment. This is primarily an issue where "shared" caching servers such as "proxy" caches are configured on the local network. This configuration is typically found in corporate or educational environments, for instance.
 
+* URL: https://www.support-for-care-leavers.education.gov.uk/assets/images/govuk-icon-mask.svg%3Fv=N0Z3XZRPHy7GhBSmbzJ0FMxChzQ6CsBnL3LwjbH9xHQ
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `max-age=2678400`
+  * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/service-unavailable
   * Method: `GET`
   * Parameter: ``
@@ -3375,7 +3965,7 @@ The response contents are storable by caching components such as proxy servers, 
   * Evidence: ``
   * Other Info: `In the absence of an explicitly specified caching lifetime directive in the response, a liberal lifetime heuristic of 1 year was assumed. This is permitted by rfc7234.`
 
-Instances: 3
+Instances: 4
 
 ### Solution
 
@@ -6866,6 +7456,78 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
   * Attack: `msnbot/1.1 (+http://search.msn.com/msnbot.htm)`
   * Evidence: ``
   * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Trident/7.0; rv:11.0) like Gecko`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3739.0 Safari/537.36 Edg/75.0.109.0`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/91.0`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (iPhone; CPU iPhone OS 8_0_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/accessibility-statement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `msnbot/1.1 (+http://search.msn.com/msnbot.htm)`
+  * Evidence: ``
+  * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/all-support
   * Method: `GET`
   * Parameter: `Header User-Agent`
@@ -7005,6 +7667,78 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
   * Evidence: ``
   * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/en/care-terms-explained
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `msnbot/1.1 (+http://search.msn.com/msnbot.htm)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Trident/7.0; rv:11.0) like Gecko`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3739.0 Safari/537.36 Edg/75.0.109.0`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/91.0`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (iPhone; CPU iPhone OS 8_0_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/en/cookie-policy
   * Method: `GET`
   * Parameter: `Header User-Agent`
   * Attack: `msnbot/1.1 (+http://search.msn.com/msnbot.htm)`
@@ -13269,6 +14003,78 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
   * Evidence: ``
   * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/ja/
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `msnbot/1.1 (+http://search.msn.com/msnbot.htm)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/js
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/js
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/js
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/js
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Trident/7.0; rv:11.0) like Gecko`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/js
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3739.0 Safari/537.36 Edg/75.0.109.0`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/js
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/js
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/91.0`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/js
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/js
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/js
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (iPhone; CPU iPhone OS 8_0_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/js
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/js
   * Method: `GET`
   * Parameter: `Header User-Agent`
   * Attack: `msnbot/1.1 (+http://search.msn.com/msnbot.htm)`
@@ -22989,6 +23795,78 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
   * Evidence: ``
   * Other Info: ``
 * URL: https://www.support-for-care-leavers.education.gov.uk/translate-this-website/page
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `msnbot/1.1 (+http://search.msn.com/msnbot.htm)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/translate-this-website/page/AccessibilityStatement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/translate-this-website/page/AccessibilityStatement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/translate-this-website/page/AccessibilityStatement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/translate-this-website/page/AccessibilityStatement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Trident/7.0; rv:11.0) like Gecko`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/translate-this-website/page/AccessibilityStatement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3739.0 Safari/537.36 Edg/75.0.109.0`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/translate-this-website/page/AccessibilityStatement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/translate-this-website/page/AccessibilityStatement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/91.0`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/translate-this-website/page/AccessibilityStatement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/translate-this-website/page/AccessibilityStatement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/translate-this-website/page/AccessibilityStatement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (iPhone; CPU iPhone OS 8_0_2 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/translate-this-website/page/AccessibilityStatement
+  * Method: `GET`
+  * Parameter: `Header User-Agent`
+  * Attack: `Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16`
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://www.support-for-care-leavers.education.gov.uk/translate-this-website/page/AccessibilityStatement
   * Method: `GET`
   * Parameter: `Header User-Agent`
   * Attack: `msnbot/1.1 (+http://search.msn.com/msnbot.htm)`
@@ -25371,7 +26249,7 @@ Check for differences in response based on fuzzed User Agent (eg. mobile sites, 
   * Evidence: ``
   * Other Info: ``
 
-Instances: 3660
+Instances: 3708
 
 ### Solution
 
