@@ -12,6 +12,8 @@ on:
           - 'Test'
           - 'Staging'
           - 'Production'
+
+run-name: Running ZAP scan against ${{ github.event.inputs.environment }}
 jobs:
   zap_scan:
     name: 'Run Zap Scan'
@@ -37,8 +39,7 @@ jobs:
           FRONTDOOR_URL=$(az afd custom-domain list -g s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-rg --profile-name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-fd-profile | jq -r '.[0].hostName')
           echo "FRONTDOOR_URL=$FRONTDOOR_URL" >>${GITHUB_ENV}
 
-      - name: ZAP Scan
-        run-name: 'Running ZAP scan against https://${{ env.FRONTDOOR_URL }}'
+      - name: 'Running ZAP scan against https://${{ env.FRONTDOOR_URL }}'
         uses: zaproxy/action-full-scan@v0.12.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
