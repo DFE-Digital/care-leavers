@@ -45,7 +45,7 @@ jobs:
 
   deploy_environment:
     name: Deploy Environment
-    run-name: Deploy site to ${{ github.event.inputs.environment }}
+    run-name: Deploying site to ${{ github.event.inputs.environment }}
     runs-on: ubuntu-latest
     needs: [package]
     permissions:
