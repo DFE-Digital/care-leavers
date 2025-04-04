@@ -28,7 +28,14 @@ public class RouteTelemetryProcessor(IHttpContextAccessor httpContextAccessor) :
             if (slug != null)
             {
                 route += $"/{slug}";
-            } 
+            } else if (!string.IsNullOrEmpty(httpContext.Request.Path.Value))
+            {
+                var paths = httpContext.Request.Path.Value.Split('/');
+                if (paths.LastOrDefault() != null)
+                {
+                    route += $"/{paths.Last()}";
+                }
+            }
             activity.SetTag("http.route", route);
         }
 
