@@ -1,18 +1,9 @@
-$govuk-font-family: 'Inter', sans-serif; // Override govuk font
-* {
-  font-family: $govuk-font-family !important; // Override all fonts to match
-}
-
 @media print {
   
   @page {
     size: A4;
     margin: 35px 0;
-
-    @top-center{
-      content:element(SiteHeader);
-    }
-
+    
     @bottom-right{
       content: "Page " counter(page);
       margin-right: 1rem;
@@ -22,10 +13,6 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
   
   @page:first {
     margin: 0 0 35px;
-  }
-  
-  .dfe-header {
-    position:running(SiteHeader);
   }
   
   body {
@@ -128,6 +115,16 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
     break-inside: avoid;
   }
 
+  .hf-card {
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .govuk-heading-m {
+    margin-bottom: 0.75rem;
+  }
+  
   #secondary-content {
     display: none;
   }
@@ -149,30 +146,5 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
   .govuk-breadcrumbs {
     display: none;
   }
-
-  /*
-  header {
-    top: 0;
-    position: fixed;
-    width: 100%;
-  }
-  .govuk-service-navigation {
-    position: fixed;
-    top: 114px;
-    width: 100%;
-  }
-  
-  #main-content-header {
-    position: fixed;
-    width: 100%;
-    top: 176px;
-  }
-  
-  #main-content-container {
-    margin-top: 300px
-    
-  }
-  */
-  
   
 }
