@@ -22,6 +22,15 @@ public class ContentfulController(IContentService contentService, ITranslationSe
         var config = await contentfulConfiguration.GetConfiguration();
         return RedirectToAction("GetContent", new { slug = config.HomePage?.Slug, languageCode });
     }
+    
+    [Route("/en")]
+    [Route("/en/en")]
+    public async Task<IActionResult> NoSlug(
+        [FromServices] IContentfulConfiguration contentfulConfiguration)
+    {
+        var config = await contentfulConfiguration.GetConfiguration();
+        return RedirectToAction("GetContent", new { slug = config.HomePage?.Slug, languageCode = "en" });
+    }
 
     [Route("/json/{**slug}")]
     [ExcludeFromCodeCoverage(Justification = "Development only")]
