@@ -35,6 +35,7 @@ public class GDSContentfulContentsTagHelper : TagHelper
         output.TagName = "";
 
         TagBuilder contents = new TagBuilder("nav");
+        contents.GenerateId("main-content-contents", "");
         TagBuilder list = new TagBuilder("ul");
         list.AddCssClass("govuk-list");
         

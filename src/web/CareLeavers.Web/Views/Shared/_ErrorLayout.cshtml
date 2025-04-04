@@ -57,7 +57,7 @@
 @if (IsSectionDefined("BeforeGDSContent"))
 
 {
-    <section class="dfe-page-grey">
+    <section class="dfe-page-grey" id="main-content-header">
         <div class="govuk-width-container" id="main-header-container">
             @await RenderSectionAsync("BeforeGDSContent", required: false)
         </div>
@@ -72,7 +72,7 @@
 </div>
 @if (IsSectionDefined("AfterGDSContent"))
 {
-    <section class="dfe-page-grey">
+    <section class="dfe-page-grey" id="main-content-footer">
         <div class="govuk-width-container">
             @await RenderSectionAsync("AfterGDSContent")
         </div>

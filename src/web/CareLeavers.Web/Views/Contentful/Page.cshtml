@@ -92,7 +92,7 @@
 }
 
 <div class="govuk-grid-row" data-last-fetched="@Model.Fetched.ToString("s", CultureInfo.InvariantCulture)">
-    <div class="@pageWidth">
+    <div class="@pageWidth" id="primary-content">
         @if (Model.Type.HasValue)
         {
             <span class="govuk-caption-m">@Model.Type</span>
@@ -107,13 +107,13 @@
         <partial name="LastUpdated" model="@Model"/>
         
         <partial name="Shareaholic" model="Model"/>
-        </div>
+    </div>
     @if (Model.Width == PageWidth.TwoThirds)
     {
         <div class="govuk-grid-column-one-third">
             &nbsp;
         </div>
-        <div class="govuk-grid-column-full">
+        <div class="govuk-grid-column-full" id="secondary-content">
             @if (Model.SecondaryContent != null)
             {
                 <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
