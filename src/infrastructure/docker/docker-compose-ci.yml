@@ -1,7 +1,7 @@
 name: 'care-leavers'
 services:
   care-leavers-web:
-    image: ghcr.io/${TAG}:e2e
+    image: ghcr.io/care-leavers-web:e2e
     ports:
       - "7050:8080"
     environment:
@@ -9,8 +9,8 @@ services:
       - Caching__Type=Memory
       - ContentfulOptions__DeliveryApiKey=${CONTENTFUL_DELIVERY_API_KEY}
       - ContentfulOptions__PreviewApiKey=${CONTENTFUL_PREVIEW_API_KEY}
-      - ContentfulOptions__SpaceId= ${CONTENTFUL_SPACE_ID}
+      - ContentfulOptions__SpaceId=${CONTENTFUL_SPACE_ID}
       - ContentfulOptions__Environment=e2e
       - ASPNETCORE_URLS=https://+:8080
       - ASPNETCORE_Kestrel__Certificates__Default__Password=e2e
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/aspnetapp.pfx
