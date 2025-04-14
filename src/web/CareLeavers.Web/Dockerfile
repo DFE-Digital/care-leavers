@@ -24,6 +24,7 @@ RUN dotnet build "CareLeavers.Web.csproj" -c "$BUILD_CONFIGURATION" -o /app/buil
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "CareLeavers.Web.csproj" -c "$BUILD_CONFIGURATION" -o /app/publish /p:UseAppHost=false
+RUN mkdir /app/https
 RUN dotnet dev-certs https -ep /app/https/aspnetapp.pfx -p e2e
 
 FROM alpine:latest as security_provider
