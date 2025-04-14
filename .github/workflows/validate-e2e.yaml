@@ -23,13 +23,30 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
+          
+      - name: Lowercase the repo name and username
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
 
-      - name: Run Docker Compose
+      - name: Build Web Docker Image
+        run: |
+          docker build . -t ghcr.io/${{ env.REPO }}:e2e -f web/CareLeavers.Web/Dockerfile
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push Web Docker Image
+        run: docker push ghcr.io/${{ env.REPO }}:e2e
+
+      - name: Run Docker Image
         working-directory: ./src
         env:
           CONTENTFUL_DELIVERY_API_KEY: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
           CONTENTFUL_PREVIEW_API_KEY: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
           CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
+          TAG: ghcr.io/${{ env.REPO }}:e2e
         run: docker compose -f infrastructure/docker/docker-compose-ci.yml up -d
 
       - name: Install dependencies

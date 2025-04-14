@@ -1,9 +1,7 @@
 name: 'care-leavers'
 services:
   care-leavers-web:
-    build:
-      context: ../../
-      dockerfile: web/CareLeavers.Web/Dockerfile
+    image: ${TAG}
     ports:
       - "7050:8080"
     environment:
