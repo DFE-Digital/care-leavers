@@ -15,15 +15,20 @@ on:
       - '.github/workflows/validate-web.yaml'
 
 jobs:
-  test:
+  
+  package:
+    name: 'Package E2E Docker'
     runs-on: ubuntu-latest
-    name: Run Playwright Tests
+    defaults:
+      run:
+        working-directory: ./src
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          
+
       - name: Lowercase the repo name and username
         run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
 
@@ -39,8 +44,20 @@ jobs:
 
       - name: Push Web Docker Image
         run: docker push ghcr.io/${{ env.REPO }}:e2e
+  
+  test:
+    runs-on: ubuntu-latest
+    name: Run Playwright Tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Lowercase the repo name and username
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
 
-      - name: Run Docker Image
+      - name: Run E2E Docker Image
         working-directory: ./src
         env:
           CONTENTFUL_DELIVERY_API_KEY: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
