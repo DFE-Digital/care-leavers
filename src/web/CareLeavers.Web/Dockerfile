@@ -27,11 +27,14 @@ RUN dotnet publish "CareLeavers.Web.csproj" -c "$BUILD_CONFIGURATION" -o /app/pu
 
 FROM alpine:latest as security_provider
 RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
+RUN dotnet dev-certs https -ep /https/aspnetapp.pfx -p e2e
+
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 COPY --from=node /src/wwwroot/ wwwroot
 COPY --from=security_provider /etc/passwd /etc/passwd
+COPY --from=security_provider /https /https
 USER nonroot
 ENTRYPOINT ["dotnet", "CareLeavers.Web.dll"]
