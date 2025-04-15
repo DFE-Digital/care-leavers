@@ -4,5 +4,7 @@ services:
     build:
       context: ../../
       dockerfile: web/CareLeavers.Web/Dockerfile
+      tags:
+        - care-leavers-web:dev
     ports:
       - "7050:8080"

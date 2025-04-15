@@ -19,7 +19,8 @@ export default defineConfig({
         trace: 'on-first-retry',
         screenshot: 'only-on-failure',
         video: 'retain-on-failure',
-        baseURL: 'http://localhost:7050/',
+        baseURL: 'https://localhost:7050/',
+        ignoreHTTPSErrors: true
     },
     projects: [
         {
