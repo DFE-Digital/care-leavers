@@ -20,5 +20,5 @@ WORKDIR /app
 COPY --from=build /app/out .
 COPY --from=node /src/wwwroot ./wwwroot
 COPY --from=security_provider /etc/passwd /etc/passwd
-# USER nonroot
+USER nonroot
 ENTRYPOINT ["dotnet", "CareLeavers.Web.dll"]
