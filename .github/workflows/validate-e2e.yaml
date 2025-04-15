@@ -32,7 +32,7 @@ jobs:
       - name: Build Web Docker Image
         id: build
         working-directory: ./src
-        run: docker build . -t ghcr.io/${{ env.REPO }}:e2e -f web/CareLeavers.Web/Dockerfile
+        run: docker build . -t care-leavers-web:e2e -f web/CareLeavers.Web/Dockerfile
         
       - name: Run E2E Docker Image
         id: run
