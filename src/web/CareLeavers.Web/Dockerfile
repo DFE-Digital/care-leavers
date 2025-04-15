@@ -24,3 +24,5 @@ COPY --from=node /src/wwwroot ./wwwroot
 USER nonroot
 COPY --chmod=0755 --chown=nonroot --from=build /app/https .
 ENTRYPOINT ["dotnet", "CareLeavers.Web.dll"]
+EXPOSE 8080
+EXPOSE 8081
