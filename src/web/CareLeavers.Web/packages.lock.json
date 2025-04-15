@@ -62,9 +62,9 @@
       },
       "Microsoft.Extensions.Caching.StackExchangeRedis": {
         "type": "Direct",
-        "requested": "[8.0.14, )",
-        "resolved": "8.0.14",
-        "contentHash": "SWdxLb0WsCGJtmCFD3neN/J+n8sdbiAYg9X843/XHqX7oShyttTVGdUfidDBBVy97CXHMaEGqc9kDrv6IHq2bQ==",
+        "requested": "[8.0.15, )",
+        "resolved": "8.0.15",
+        "contentHash": "/N7aTIXXkKJ8LLSREG0rfejU9ZF3wn13WRWz7RfIMpfl1UKrClVEqFLuj2dgknyvGkPEm3OANB3Ocrz7EC8bHQ==",
         "dependencies": {
           "Microsoft.Extensions.Caching.Abstractions": "8.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
