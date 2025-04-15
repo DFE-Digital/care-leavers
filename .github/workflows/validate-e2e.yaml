@@ -7,12 +7,14 @@ on:
       - 'src/web/**'
       - 'src/e2e/CareLeavers.E2ETests/**'
       - '.github/workflows/validate-web.yaml'
+      - '.github/workflows/validate-e2e.yaml'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'src/web/**'
       - 'src/e2e/CareLeavers.E2ETests/**'
       - '.github/workflows/validate-web.yaml'
+      - '.github/workflows/validate-e2e.yaml'
 
 jobs:
   test:
@@ -23,8 +25,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
+                
+      - name: Lowercase the repo name and username
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
 
-      - name: Run Docker Compose
+      - name: Build Web Docker Image
+        id: build
+        working-directory: ./src
+        run: docker build . -t care-leavers-web:e2e -f web/CareLeavers.Web/Dockerfile
+        
+      - name: Run E2E Docker Image
+        id: run
+        if: steps.build.outcome == 'success'
         working-directory: ./src
         env:
           CONTENTFUL_DELIVERY_API_KEY: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
@@ -41,6 +53,7 @@ jobs:
         run: yarn playwright install --with-deps
 
       - name: Run Playwright Tests
+        if: steps.run.outcome == 'success'
         working-directory: ./src/e2e/CareLeavers.E2ETests
         run: yarn playwright test -c playwright-ci.config.ts
 
