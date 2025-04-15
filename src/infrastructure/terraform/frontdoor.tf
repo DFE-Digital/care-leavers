@@ -204,7 +204,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
 
       /* Get into Teaching may set this snapchat cookie at the .education.gov.uk level, which contains a suspicious but safe body */
       exclusion {
-        match_Variable = "RequestCookieNames"
+        match_variable = "RequestCookieNames"
         operator       = "Equals"
         selector       = "_ScCbts"
       }
