@@ -17,10 +17,16 @@ using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OpenTelemetry.Trace;
 using Serilog;
+using StackExchange.Redis;
+using ZiggyCreatures.Caching.Fusion;
+using ZiggyCreatures.Caching.Fusion.Backplane.StackExchangeRedis;
+using ZiggyCreatures.Caching.Fusion.Serialization.NewtonsoftJson;
 using static System.TimeSpan;
 using DistributedCacheExtensions = CareLeavers.Web.Caching.DistributedCacheExtensions;
 
@@ -158,20 +164,64 @@ try
     
     var cachingOptions = builder.Configuration.GetSection(CachingOptions.Name).Get<CachingOptions>();
 
+    builder.Services.AddFusionCacheNewtonsoftJsonSerializer(new JsonSerializerSettings()
+    {
+        Converters = [new GDSAssetJsonConverter()],
+        ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+        Formatting = Formatting.None,
+        NullValueHandling = NullValueHandling.Ignore,
+        TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
+        TypeNameHandling = TypeNameHandling.Auto,
+        ContractResolver = new DefaultContractResolver
+        {
+            NamingStrategy = new CamelCaseNamingStrategy()
+        },
+        MaxDepth = 128
+    });
+    
+
     if (cachingOptions?.Type == "Memory")
     {
         builder.Services.AddDistributedMemoryCache();
+        builder.Services.AddFusionCacheMemoryBackplane();
+        builder.Services.AddFusionCache()
+            .WithRegisteredSerializer()
+            .WithDefaultEntryOptions(new FusionCacheEntryOptions()
+            {
+                Duration = cachingOptions?.Duration ?? FromDays(30),
+                SkipBackplaneNotifications = true
+            });
     }
     else if (cachingOptions?.Type == "Redis")
     {
-        builder.Services.AddStackExchangeRedisCache(x =>
+        builder.Services.AddStackExchangeRedisCache(options =>
         {
-            x.Configuration = cachingOptions.ConnectionString;
+            options.Configuration = cachingOptions.ConnectionString;
         });
+        
+        builder.Services.AddFusionCache()
+            .WithOptions(opt =>
+            {
+                opt.CacheKeyPrefix = "";
+            })
+            .WithRegisteredSerializer()
+            .WithRegisteredDistributedCache()
+            .WithStackExchangeRedisBackplane(x => x.Configuration = cachingOptions.ConnectionString )
+            .WithDefaultEntryOptions(new FusionCacheEntryOptions()
+            {
+                Duration = cachingOptions?.Duration ?? FromDays(1),
+                DistributedCacheDuration = cachingOptions?.Duration ?? FromDays(30)
+            });
     }
     else
     {
-        builder.Services.AddSingleton<IDistributedCache, CacheDisabledDistributedCache>();
+        builder.Services.AddFusionCache()
+            .WithoutDistributedCache()
+            .WithoutBackplane()
+            .WithDefaultEntryOptions(new FusionCacheEntryOptions()
+            {
+                Duration = Zero
+            });
     }
 
     DistributedCacheExtensions.DefaultCacheOptions.SetAbsoluteExpiration(

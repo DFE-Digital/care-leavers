@@ -1,33 +1,32 @@
-using CareLeavers.Web.Caching;
 using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Models.ViewModels;
 using Contentful.Core;
 using Contentful.Core.Search;
-using Microsoft.Extensions.Caching.Distributed;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace CareLeavers.Web.Contentful;
 
 public class ContentfulContentService : IContentService
 {
-    private readonly IDistributedCache _distributedCache;
     private readonly IContentfulClient _contentfulClient;
+    private readonly IFusionCache _fusionCache;
 
-    public ContentfulContentService(IDistributedCache distributedCache, IContentfulClient contentfulClient)
+    public ContentfulContentService(IContentfulClient contentfulClient, IFusionCache fusionCache)
     {
-        _distributedCache = distributedCache;
         _contentfulClient = contentfulClient;
+        _fusionCache = fusionCache;
         _contentfulClient.ContentTypeResolver = new ContentfulEntityResolver();
     }
     
-    public Task<RedirectionRules?> GetRedirectionRules(string fromSlug)
+    public async Task<RedirectionRules?> GetRedirectionRules(string fromSlug)
     {
-        return _distributedCache.GetOrSetAsync("content:redirections", async () =>
+        return await _fusionCache.GetOrSetAsync("content:redirections", async token =>
         {
             var rules = new QueryBuilder<RedirectionRules>()
                 .ContentTypeIs(RedirectionRules.ContentType)
                 .Limit(1);
 
-            var ruleEntries = await _contentfulClient.GetEntries(rules);
+            var ruleEntries = await _contentfulClient.GetEntries(rules, token);
 
             return ruleEntries.FirstOrDefault();
         });
@@ -35,7 +34,7 @@ public class ContentfulContentService : IContentService
     
     public async Task<Page?> GetPage(string slug)
     {
-        var page = await _distributedCache.GetOrSetAsync($"content:{slug}", async () =>
+        var page = await _fusionCache.GetOrSetAsync($"content:{slug}", async token =>
         {
             var pages = new QueryBuilder<Page>()
                 .ContentTypeIs(Page.ContentType)
@@ -43,7 +42,7 @@ public class ContentfulContentService : IContentService
                 .Include(2)
                 .Limit(1);
 
-            var pageEntries = await _contentfulClient.GetEntries(pages);
+            var pageEntries = await _contentfulClient.GetEntries(pages, token);
             return pageEntries.FirstOrDefault();
         });
 
@@ -55,7 +54,7 @@ public class ContentfulContentService : IContentService
 
         if (page != null)
         {
-            await _distributedCache.GetOrSetAsync(page.Sys.Id, () => Task.FromResult(page));
+            await _fusionCache.GetOrSetAsync(page.Sys.Id, () => Task.FromResult(page));
         }
 
         return page;
@@ -88,7 +87,7 @@ public class ContentfulContentService : IContentService
 
         if (hierarchy != null)
         {
-            var currentPage = hierarchy.Find(p => p.Slug == slug);;
+            var currentPage = hierarchy.Find(p => p.Slug == slug);
             if (currentPage == null)
             {
                 return breadcrumbs;
@@ -123,12 +122,12 @@ public class ContentfulContentService : IContentService
         return breadcrumbs;
     }
 
-    public Task<StatusChecker?> Hydrate(StatusChecker? statusChecker)
+    public async Task<StatusChecker?> Hydrate(StatusChecker? statusChecker)
     {
         var id = statusChecker?.Sys.Id;
 
         if (id != null)
-            return _distributedCache.GetOrSetAsync(id, async () =>
+            return await _fusionCache.GetOrSetAsync(id, async token =>
             {
                 var query = new QueryBuilder<StatusChecker>()
                     .ContentTypeIs(StatusChecker.ContentType)
@@ -136,18 +135,18 @@ public class ContentfulContentService : IContentService
                     .Include(2)
                     .Limit(1);
 
-                return (await _contentfulClient.GetEntries(query)).FirstOrDefault();
+                return (await _contentfulClient.GetEntries(query, token)).FirstOrDefault();
             });
 
-        return Task.FromResult(statusChecker);
+        return statusChecker;
     }
     
-    public Task<Grid?> Hydrate(Grid? grid)
+    public async Task<Grid?> Hydrate(Grid? grid)
     {
         var id = grid?.Sys.Id;
 
         if (id != null)
-            return _distributedCache.GetOrSetAsync(id, async () =>
+            return await _fusionCache.GetOrSetAsync(id, async token =>
             {
                 var query = new QueryBuilder<Grid>()
                     .ContentTypeIs(Grid.ContentType)
@@ -155,18 +154,18 @@ public class ContentfulContentService : IContentService
                     .Include(2)
                     .Limit(1);
 
-                return (await _contentfulClient.GetEntries(query)).FirstOrDefault();
+                return (await _contentfulClient.GetEntries(query, token)).FirstOrDefault();
             });
 
-        return Task.FromResult(grid);
+        return grid;
     }
     
-    public Task<Banner?> Hydrate(Banner? banner)
+    public async Task<Banner?> Hydrate(Banner? banner)
     {
         var id = banner?.Sys.Id;
 
         if (id != null)
-            return _distributedCache.GetOrSetAsync(id, async () =>
+            return await _fusionCache.GetOrSetAsync(id, async token =>
             {
                 var query = new QueryBuilder<Banner>()
                     .ContentTypeIs(Banner.ContentType)
@@ -174,10 +173,10 @@ public class ContentfulContentService : IContentService
                     .Include(2)
                     .Limit(1);
 
-                return (await _contentfulClient.GetEntries(query)).FirstOrDefault();
+                return (await _contentfulClient.GetEntries(query, token)).FirstOrDefault();
             });
 
-        return Task.FromResult(banner);
+        return banner;
     }
 
     public async Task<string> GetSlug(string id)
@@ -186,12 +185,12 @@ public class ContentfulContentService : IContentService
         return slugs[id];
     }
 
-    public Task<RichContentBlock?> Hydrate(RichContentBlock? richContentBlock)
+    public async Task<RichContentBlock?> Hydrate(RichContentBlock? richContentBlock)
     {
         var id = richContentBlock?.Sys.Id;
 
         if (richContentBlock != null)
-            return _distributedCache.GetOrSetAsync(richContentBlock.Sys.Id, async () =>
+            return await _fusionCache.GetOrSetAsync(richContentBlock.Sys.Id, async token =>
             {
                 var query = new QueryBuilder<RichContentBlock>()
                     .ContentTypeIs(RichContentBlock.ContentType)
@@ -199,22 +198,22 @@ public class ContentfulContentService : IContentService
                     .Include(3)
                     .Limit(1);
 
-                return (await _contentfulClient.GetEntries(query)).FirstOrDefault();
+                return (await _contentfulClient.GetEntries(query, token)).FirstOrDefault();
             });
 
-        return Task.FromResult(richContentBlock);
+        return richContentBlock;
     }
 
-    public Task<ContentfulConfigurationEntity?> GetConfiguration()
+    public async Task<ContentfulConfigurationEntity?> GetConfiguration()
     {
-        return _distributedCache.GetOrSetAsync("content:configuration", async () =>
+        return await _fusionCache.GetOrSetAsync("content:configuration", async token =>
         {
             var config = new QueryBuilder<ContentfulConfigurationEntity>()
                 .ContentTypeIs(ContentfulConfigurationEntity.ContentType)
                 .Include(2)
                 .Limit(1);
 
-            var configEntries = await _contentfulClient.GetEntries(config);
+            var configEntries = await _contentfulClient.GetEntries(config, token);
 
             return configEntries.FirstOrDefault();
         });
@@ -222,30 +221,30 @@ public class ContentfulContentService : IContentService
 
     public async Task<Dictionary<string, string>> GetSiteSlugs()
     {
-        return await _distributedCache.GetOrSetAsync("content:sitemap", async () =>
+        return await _fusionCache.GetOrSetAsync("content:sitemap", async token =>
         {
             var pages = new QueryBuilder<Page>()
                 .Include(0)
                 .ContentTypeIs(Page.ContentType);
 
-            var pageEntries = await _contentfulClient.GetEntries(pages);
+            var pageEntries = await _contentfulClient.GetEntries(pages, token);
 
             return pageEntries
                 .Where(x => x.Sys.Id != null && x.Slug != null)
-                .Select(x => new KeyValuePair<string, string>(x.Sys.Id, x.Slug ?? string.Empty))
+                .Select(x => new KeyValuePair<string, string>(x.Sys.Id, x?.Slug ?? string.Empty))
                 .ToDictionary();
         }) ?? [];
     }
 
-    public Task<List<SimplePage>?> GetSiteHierarchy()
+    public async Task<List<SimplePage>?> GetSiteHierarchy()
     {
-        return _distributedCache.GetOrSetAsync("content:hierarchy", async () =>
+        return await _fusionCache.GetOrSetAsync("content:hierarchy", async token =>
         {
             var pages = new QueryBuilder<Page>()
                 .Include(0)
                 .ContentTypeIs(Page.ContentType);
 
-            var pageEntries = await _contentfulClient.GetEntries(pages);
+            var pageEntries = await _contentfulClient.GetEntries(pages, token);
             var slugs = await GetSiteSlugs();
             
             return pageEntries
