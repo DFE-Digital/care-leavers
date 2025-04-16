@@ -5,6 +5,7 @@ using CareLeavers.Web.Translation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Distributed;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace CareLeavers.Web.Filters;
 
@@ -22,7 +23,7 @@ public class TranslationAttribute : ActionFilterAttribute
         _memoryStream = null;
         _originalBodyStream = null;
 
-        var distributedCache = context.HttpContext.RequestServices.GetRequiredService<IDistributedCache>();
+        var fusionCache = context.HttpContext.RequestServices.GetRequiredService<IFusionCache>();
         var translationService = context.HttpContext.RequestServices.GetRequiredService<ITranslationService>();
         var contentfulConfiguration = context.HttpContext.RequestServices.GetRequiredService<IContentfulConfiguration>();
         var config = await contentfulConfiguration.GetConfiguration();
@@ -50,13 +51,13 @@ public class TranslationAttribute : ActionFilterAttribute
             return;
         }
 
-        var cachedResponse = await distributedCache.GetAsync($"content:{slug}:language:{languageCode}");
+        var cachedResponse = await fusionCache.TryGetAsync<byte[]?>($"content:{slug}:language:{languageCode}");
 
-        if (cachedResponse != null)
+        if (cachedResponse is { HasValue: true, Value: not null })
         {
             context.Result = new ContentResult
             {
-                Content = Encoding.UTF8.GetString(cachedResponse),
+                Content = Encoding.UTF8.GetString(cachedResponse.Value),
                 ContentType = "text/html"
             };
 
@@ -79,7 +80,8 @@ public class TranslationAttribute : ActionFilterAttribute
         var translationService = context.HttpContext.RequestServices.GetRequiredService<ITranslationService>();
         var contentfulConfiguration = context.HttpContext.RequestServices.GetRequiredService<IContentfulConfiguration>();
         var config = await contentfulConfiguration.GetConfiguration();
-        
+        var fusionCache = context.HttpContext.RequestServices.GetRequiredService<IFusionCache>();
+
         var slug = HardcodedSlug ?? context.RouteData.Values["slug"]?.ToString();
         var languageCode = context.RouteData.Values["languageCode"]?.ToString();
         var languages = new List<string>();
@@ -101,7 +103,6 @@ public class TranslationAttribute : ActionFilterAttribute
             return;
         }
 
-        var distributedCache = context.HttpContext.RequestServices.GetRequiredService<IDistributedCache>();
 
         _memoryStream.Seek(0, SeekOrigin.Begin);
 
@@ -120,18 +121,8 @@ public class TranslationAttribute : ActionFilterAttribute
 
         context.HttpContext.Response.Body = _originalBodyStream!;
         await context.HttpContext.Response.Body!.WriteAsync(_memoryStream.ToArray());
-
-        if (!distributedCache.TryGetValue($"content:{slug}:languages", out HashSet<string>? translations))
-        {
-            translations = [];
-        }
-
-        translations ??= [];
-
-        translations.Add(languageCode);
-
+        
         _memoryStream.Seek(0, SeekOrigin.Begin);
-        await distributedCache.SetAsync($"content:{slug}:languages", translations);
-        await distributedCache.SetAsync($"content:{slug}:language:{languageCode}", _memoryStream.ToArray());
+        await fusionCache.SetAsync($"content:{slug}:language:{languageCode}", _memoryStream.ToArray(), tags: [slug]);
     }
 }

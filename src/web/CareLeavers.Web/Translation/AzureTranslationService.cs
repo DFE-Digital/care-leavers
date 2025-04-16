@@ -1,32 +1,21 @@
 using Azure;
 using Azure.AI.Translation.Text;
-using CareLeavers.Web.Caching;
 using CareLeavers.Web.Configuration;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace CareLeavers.Web.Translation;
 
-public class AzureTranslationService : ITranslationService
+public class AzureTranslationService(
+    IOptions<AzureTranslationOptions> options,
+    IFusionCache fusionCache,
+    IContentfulConfiguration contentfulConfiguration)
+    : ITranslationService
 {
-    private readonly TextTranslationClient _azureTranslationClient;
-    private readonly IDistributedCache _distributedCache;
-    private readonly IContentfulConfiguration _contentfulConfiguration;
-    
-    public AzureTranslationService(
-        IOptions<AzureTranslationOptions> options, 
-        IDistributedCache distributedCache, 
-        IContentfulConfiguration contentfulConfiguration)
-    {
-        _azureTranslationClient =
-            new TextTranslationClient(
-                new AzureKeyCredential(options.Value.AccessKey), 
-                new Uri(options.Value.Endpoint),
-                options.Value.Region);
-        
-        _distributedCache = distributedCache;
-        _contentfulConfiguration = contentfulConfiguration;
-    }
+    private readonly TextTranslationClient _azureTranslationClient = new(
+        new AzureKeyCredential(options.Value.AccessKey), 
+        new Uri(options.Value.Endpoint),
+        options.Value.Region);
 
     public async Task<string?> TranslateHtml(string html, string toLanguage)
     {
@@ -56,11 +45,11 @@ public class AzureTranslationService : ITranslationService
 
     public async Task<IEnumerable<TranslationLanguage>> GetLanguages()
     {
-        return await _distributedCache.GetOrSetAsync("translation:supported-languages", async () =>
+        return await fusionCache.GetOrSetAsync("translation:supported-languages", async token =>
         {
-            var config = await _contentfulConfiguration.GetConfiguration();
+            var config = await contentfulConfiguration.GetConfiguration();
             
-            var languages = await _azureTranslationClient.GetSupportedLanguagesAsync();
+            var languages = await _azureTranslationClient.GetSupportedLanguagesAsync(cancellationToken: token);
             
             return languages.Value.Translation
                 .Where(x => !config.ExcludeFromTranslation.Contains(x.Key))
@@ -73,6 +62,6 @@ public class AzureTranslationService : ITranslationService
                 })
                 .OrderBy(l => l.Name)
                 .ToList();
-        }) ?? [];
+        });
     }
 }

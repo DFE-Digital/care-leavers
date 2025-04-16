@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace CareLeavers.Integration.Tests.TestSupport;
 
@@ -28,6 +29,7 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
                     d.ServiceType == typeof(IContentfulClient) ||
                     d.ServiceType == typeof(ICspNonceService) ||
                     d.ServiceType == typeof(IDistributedCache) ||
+                    d.ServiceType == typeof(IFusionCache) ||
                     d.ServiceType == typeof(IOptions<ScriptOptions>) ||
                     d.ServiceType == typeof(IContentfulConfiguration))
                 .ToList();
@@ -48,6 +50,13 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
             
             services.AddSingleton<IDistributedCache, CacheDisabledDistributedCache>();
 
+            services.AddFusionCache()
+                .WithDefaultEntryOptions(o =>
+                {
+                    o.SkipMemoryCacheWrite = true;
+                    o.SkipDistributedCacheWrite = true;
+                });
+            
             services.AddSingleton<ICspNonceService, MockCspNonceService>();
 
             services.AddScoped<IOptions<ScriptOptions>>(x => Options.Create(new ScriptOptions

@@ -54,7 +54,7 @@ public class ContentfulContentService : IContentService
 
         if (page != null)
         {
-            await _fusionCache.GetOrSetAsync(page.Sys.Id, () => Task.FromResult(page));
+            await _fusionCache.SetAsync(page.Sys.Id, page);
         }
 
         return page;
@@ -259,4 +259,6 @@ public class ContentfulContentService : IContentService
                 .ToList();
         });
     }
+    
+    
 }

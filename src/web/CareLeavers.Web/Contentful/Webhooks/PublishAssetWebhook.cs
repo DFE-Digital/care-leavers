@@ -4,12 +4,13 @@ using Contentful.Core;
 using Contentful.Core.Models;
 using Contentful.Core.Search;
 using Microsoft.Extensions.Caching.Distributed;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace CareLeavers.Web.Contentful.Webhooks;
 
 public class PublishAssetWebhook(
     IContentfulClient contentfulClient,
-    IDistributedCache distributedCache,
+    IFusionCache fusionCache,
     ILogger<PublishAssetWebhook> logger)
 {
     private HashSet<string> _idsScanned = [];
@@ -38,24 +39,15 @@ public class PublishAssetWebhook(
 
         foreach (var pageEntry in pageEntries)
         {
-            await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
-                
-            if (distributedCache.TryGetValue($"content:{pageEntry.Slug}:languages", out HashSet<string>? translations))
-            {
-                foreach (var translation in translations ?? [])
-                {
-                    await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:language:{translation}");
-                }
-                    
-                await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:languages");
-            }
+            await fusionCache.RemoveAsync($"content:{pageEntry.Slug}");
+            if (pageEntry.Slug != null) await fusionCache.RemoveByTagAsync(pageEntry.Slug);
         }
         
         // Now wipe all direct IDs that have been cached
         foreach (var id in _idsScanned)
         {
             logger.LogInformation("Removing content item directly from cache with Id: {Id}", id);
-            await distributedCache.RemoveAsync(id);
+            await fusionCache.RemoveAsync(id);
         }
     }
     
