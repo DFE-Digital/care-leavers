@@ -19,13 +19,27 @@
 
 <div class="govuk-width-container">
     <div class="govuk-phase-banner">
-        @if (Model.ContentfulConfiguration.TranslationEnabled && Model.ShowLanguage)
+        <div class="govuk-phase-banner__content">
+            <strong class="govuk-phase-banner__content__tag govuk-tag">
+                @Model.ContentfulConfiguration.Phase.ToString()
+            </strong>
+            <span class="govuk-phase-banner__text">
+                This is a new service.
+                @if (!string.IsNullOrEmpty(Model.ContentfulConfiguration.FeedbackText) && Model.ShowNavigation)
+                {
+                    <text>
+                        Help us improve it and <a class="govuk-link" href="@Model.ContentfulConfiguration.FeedbackUrl" target="_blank" rel="nofollow">
+                            @Model.ContentfulConfiguration.FeedbackText (opens in new tab)</a>. 
+                    </text>
+                }
+            </span>
+            @if (Model.ContentfulConfiguration.TranslationEnabled && Model.ShowLanguage)
         {
             var currentSlug = ViewContext.RouteData.Values["slug"]?.ToString() ?? Model.ContentfulConfiguration.HomePage?.Slug;
             var currentLanguage = ViewContext.RouteData.Values["languageCode"]?.ToString() ?? "en";
             var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
             var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
-            <p class="translate">
+            <div class="translate">
 
                 @switch (currentController)
                 {
@@ -58,22 +72,8 @@
                             new { @class = "govuk-link", rel = "nofollow" })
                         break;
                 }
-            </p>
+            </div>
         }
-        <div class="govuk-phase-banner__content">
-            <strong class="govuk-phase-banner__content__tag govuk-tag">
-                @Model.ContentfulConfiguration.Phase.ToString()
-            </strong>
-            <span class="govuk-phase-banner__text">
-                This is a new service.
-                @if (!string.IsNullOrEmpty(Model.ContentfulConfiguration.FeedbackText) && Model.ShowNavigation)
-                {
-                    <text>
-                        Help us improve it and <a class="govuk-link" href="@Model.ContentfulConfiguration.FeedbackUrl" target="_blank" rel="nofollow">
-                            @Model.ContentfulConfiguration.FeedbackText (opens in new tab)</a>. 
-                    </text>
-                }
-            </span>
         </div>
     </div>
 </div>
