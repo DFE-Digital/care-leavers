@@ -1,10 +1,8 @@
 using System.Text;
-using CareLeavers.Web.Caching;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Translation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Caching.Distributed;
 using ZiggyCreatures.Caching.Fusion;
 
 namespace CareLeavers.Web.Filters;
