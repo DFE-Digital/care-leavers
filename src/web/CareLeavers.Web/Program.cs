@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using CareLeavers.Web;
-using CareLeavers.Web.Caching;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Contentful.Webhooks;
@@ -16,13 +15,13 @@ using Contentful.Core.Models;
 using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using Serilog;
+using ZiggyCreatures.Caching.Fusion;
 using static System.TimeSpan;
-using DistributedCacheExtensions = CareLeavers.Web.Caching.DistributedCacheExtensions;
 
 Log.Logger = new LoggerConfiguration()
     .ConfigureLogging(Environment.GetEnvironmentVariable("ApplicationInsights__ConnectionString"))
@@ -45,12 +44,16 @@ try
     if (!string.IsNullOrEmpty(appInsightsConnectionString))
     {
         builder.Services.AddOpenTelemetry()
-            .WithTracing(x =>
-            {
-                x.AddAspNetCoreInstrumentation();
-                x.AddProcessor<RouteTelemetryProcessor>();
-            })
-            .UseAzureMonitor(x => x.ConnectionString = appInsightsConnectionString);
+            .WithTracing(tracing => tracing
+                .AddAspNetCoreInstrumentation()
+                .AddProcessor<RouteTelemetryProcessor>()
+                .AddFusionCacheInstrumentation()
+            )
+            .WithMetrics(metrics => metrics
+                .AddAspNetCoreInstrumentation()
+                .AddFusionCacheInstrumentation()
+                )
+            .UseAzureMonitor(monitor => monitor.ConnectionString = appInsightsConnectionString);
     }
 
     #endregion
@@ -158,24 +161,65 @@ try
     
     var cachingOptions = builder.Configuration.GetSection(CachingOptions.Name).Get<CachingOptions>();
 
-    if (cachingOptions?.Type == "Memory")
+    builder.Services.AddFusionCacheNewtonsoftJsonSerializer(new JsonSerializerSettings()
     {
-        builder.Services.AddDistributedMemoryCache();
-    }
-    else if (cachingOptions?.Type == "Redis")
-    {
-        builder.Services.AddStackExchangeRedisCache(x =>
+        Converters = [new GDSAssetJsonConverter()],
+        ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+        Formatting = Formatting.None,
+        NullValueHandling = NullValueHandling.Ignore,
+        TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
+        TypeNameHandling = TypeNameHandling.Auto,
+        ContractResolver = new DefaultContractResolver
         {
-            x.Configuration = cachingOptions.ConnectionString;
-        });
-    }
-    else
-    {
-        builder.Services.AddSingleton<IDistributedCache, CacheDisabledDistributedCache>();
-    }
+            NamingStrategy = new CamelCaseNamingStrategy()
+        },
+        MaxDepth = 128
+    });
+    
 
-    DistributedCacheExtensions.DefaultCacheOptions.SetAbsoluteExpiration(
-        cachingOptions?.Duration ?? FromDays(30));
+    switch (cachingOptions?.Type)
+    {
+        case "Memory":
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddFusionCacheMemoryBackplane();
+            builder.Services.AddFusionCache()
+                .WithRegisteredSerializer()
+                .WithDefaultEntryOptions(new FusionCacheEntryOptions()
+                {
+                    Duration = cachingOptions?.Duration ?? FromDays(30),
+                    SkipBackplaneNotifications = true
+                });
+            break;
+        case "Redis":
+            builder.Services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = cachingOptions.ConnectionString;
+            });
+        
+            builder.Services.AddFusionCache()
+                .WithOptions(opt =>
+                {
+                    opt.CacheKeyPrefix = "";
+                })
+                .WithRegisteredSerializer()
+                .WithRegisteredDistributedCache()
+                .WithStackExchangeRedisBackplane(x => x.Configuration = cachingOptions.ConnectionString )
+                .WithDefaultEntryOptions(new FusionCacheEntryOptions()
+                {
+                    Duration = cachingOptions?.Duration ?? FromDays(30),
+                    DistributedCacheDuration = cachingOptions?.Duration ?? FromDays(30)
+                });
+            break;
+        default:
+            builder.Services.AddFusionCache()
+                .WithoutDistributedCache()
+                .WithoutBackplane()
+                .WithDefaultEntryOptions(new FusionCacheEntryOptions()
+                {
+                    Duration = Zero
+                });
+            break;
+    }
     
     #endregion
     
@@ -288,7 +332,7 @@ try
         {
             var webhookConsumer = new PublishContentfulWebhook(
                 app.Services.GetRequiredService<IContentfulClient>(),
-                app.Services.GetRequiredService<IDistributedCache>(),
+                app.Services.GetRequiredService<IFusionCache>(),
                 app.Services.GetRequiredService<IContentfulManagementClient>(),
                 app.Services.GetRequiredService<ILogger<PublishContentfulWebhook>>());
 
@@ -301,7 +345,7 @@ try
         {
             var webhookConsumer = new PublishAssetWebhook(
                 app.Services.GetRequiredService<IContentfulClient>(),
-                app.Services.GetRequiredService<IDistributedCache>(),
+                app.Services.GetRequiredService<IFusionCache>(),
                 app.Services.GetRequiredService<ILogger<PublishAssetWebhook>>());
 
             await webhookConsumer.Consume(asset);

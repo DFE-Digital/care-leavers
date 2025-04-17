@@ -1,15 +1,14 @@
-using CareLeavers.Web.Caching;
 using CareLeavers.Web.Models.Content;
 using Contentful.Core;
 using Contentful.Core.Models;
 using Contentful.Core.Search;
-using Microsoft.Extensions.Caching.Distributed;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace CareLeavers.Web.Contentful.Webhooks;
 
 public class PublishContentfulWebhook(
     IContentfulClient contentfulClient,
-    IDistributedCache distributedCache,
+    IFusionCache fusionCache,
     IContentfulManagementClient contentfulManagementClient,
     ILogger<PublishContentfulWebhook> logger)
 {
@@ -30,7 +29,7 @@ public class PublishContentfulWebhook(
             logger.LogInformation("Redirection rules entry updated, purging redirections cache");
             try
             {
-                await distributedCache.RemoveAsync("content:redirections");
+                await fusionCache.RemoveAsync("content:redirections");
             }
             catch (Exception ex)
             {
@@ -50,43 +49,21 @@ public class PublishContentfulWebhook(
 
             try
             {
-                await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
+                await fusionCache.RemoveAsync($"content:{pageEntry.Slug}");
+                if (pageEntry.Slug != null) await fusionCache.RemoveByTagAsync(pageEntry.Slug);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Unable to purge page with slug {slug}", pageEntry.Slug);
             }
             
-            if (distributedCache.TryGetValue($"content:{pageEntry.Slug}:languages", out HashSet<string>? translations))
-            {
-                foreach (var translation in translations ?? [])
-                {
-                    try
-                    {
-                        await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:language:{translation}");
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, "Unable to purge language list for page {slug}", pageEntry.Slug);
-                    }
-                }
+            var pageById = await fusionCache.TryGetAsync<Page>(pageEntry.Sys.Id);
 
-                try
-                {
-                    await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:languages");
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, "Unable to purge languages for page {slug}", pageEntry.Slug);
-                }
-            }
-            
-            var pageById = await distributedCache.GetAsync<Page>(pageEntry.Sys.Id);
-
-            if (pageById != null && pageEntry.Slug != null && pageById.Slug != pageEntry.Slug)
+            if (pageById.HasValue && pageEntry.Slug != null && pageById.Value.Slug != pageEntry.Slug)
             {
-                logger.LogInformation("Slug changed from {OldSlug} to {NewSlug}", pageById.Slug, pageEntry.Slug);
-                await distributedCache.RemoveAsync($"content:{pageById.Slug}");
+                logger.LogInformation("Slug changed from {OldSlug} to {NewSlug}", pageById.Value.Slug, pageEntry.Slug);
+                await fusionCache.RemoveAsync($"content:{pageById.Value.Slug}");
+                if (pageById.Value.Slug != null) await fusionCache.RemoveByTagAsync(pageById.Value.Slug);
 
                 var redirectionContent = await contentfulClient.GetEntries(
                     new QueryBuilder<RedirectionRules>()
@@ -101,8 +78,11 @@ public class PublishContentfulWebhook(
                     }
                 };
 
-                redirectionRules.Rules[pageById.Slug!] = pageEntry.Slug;
-                redirectionRules.Rules.Remove(pageEntry.Slug);
+                if (pageById.Value.Slug != null)
+                {
+                    redirectionRules.Rules[pageById.Value.Slug] = pageEntry.Slug;
+                    redirectionRules.Rules.Remove(pageEntry.Slug);
+                }
 
                 var updatedEntryResp = await contentfulManagementClient.CreateOrUpdateEntry(new Entry<dynamic>
                 {
@@ -135,7 +115,7 @@ public class PublishContentfulWebhook(
             logger.LogInformation("Configuration entry updated, purging configuration cache");
             try
             {
-                await distributedCache.RemoveAsync("content:configuration");
+                await fusionCache.RemoveAsync("content:configuration");
             }
             catch (Exception ex)
             {
@@ -154,35 +134,12 @@ public class PublishContentfulWebhook(
             {
                 try
                 {
-                    await distributedCache.RemoveAsync($"content:{pageEntry.Slug}");
+                    await fusionCache.RemoveAsync($"content:{pageEntry.Slug}");
+                    if (pageEntry.Slug != null) await fusionCache.RemoveByTagAsync(pageEntry.Slug);
                 }
                 catch (Exception ex)
                 {
                     logger.LogError(ex, "Unable to purge page with slug {slug}", pageEntry.Slug);
-                }
-
-                if (distributedCache.TryGetValue($"content:{pageEntry.Slug}:languages", out HashSet<string>? translations))
-                {
-                    foreach (var translation in translations ?? [])
-                    {
-                        try
-                        {
-                            await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:language:{translation}");
-                        }
-                        catch (Exception ex)
-                        {
-                            logger.LogError(ex, "Unable to purge translation list for page with slug {slug}", pageEntry.Slug);
-                        }
-                    }
-
-                    try
-                    {
-                        await distributedCache.RemoveAsync($"content:{pageEntry.Slug}:languages");
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, "Unable to purge translations for page with slug {slug}", pageEntry.Slug);
-                    }
                 }
             }
         }
@@ -193,7 +150,7 @@ public class PublishContentfulWebhook(
             logger.LogInformation("Removing content item directly from cache with Id: {Id}", id);
             try
             {
-                await distributedCache.RemoveAsync(id);
+                await fusionCache.RemoveAsync(id);
             }
             catch (Exception ex)
             {
@@ -203,12 +160,12 @@ public class PublishContentfulWebhook(
 
         try
         {
-            await distributedCache.RemoveAsync("content:sitemap");
-            await distributedCache.RemoveAsync("content:hierarchy");
+            await fusionCache.RemoveAsync("content:sitemap");
+            await fusionCache.RemoveAsync("content:hierarchy");
         } 
         catch (Exception ex)
         {
-            logger.LogError(ex, "Unable to sitemap and hierarchy", []);
+            logger.LogError(ex, "Unable to clear sitemap and hierarchy");
         }
     }
     
