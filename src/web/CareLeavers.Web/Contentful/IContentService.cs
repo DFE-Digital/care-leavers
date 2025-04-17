@@ -17,14 +17,8 @@ public interface IContentService
 
     Task<List<SimplePage>> GetBreadcrumbs(string? slug, bool includeHome = true);
     
-    Task<RichContentBlock?> Hydrate(RichContentBlock? entity);
+    Task<T> Hydrate<T>(T entity);
     
-    Task<Grid?> Hydrate(Grid? entity);
-    
-    Task<Banner?> Hydrate(Banner? entity);
-    
-    Task<StatusChecker?> Hydrate(StatusChecker? entity);
-
     Task<string> GetSlug(string id);
 
 }

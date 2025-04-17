@@ -121,87 +121,54 @@ public class ContentfulContentService : IContentService
         breadcrumbs.Reverse();
         return breadcrumbs;
     }
-
-    public async Task<StatusChecker?> Hydrate(StatusChecker? statusChecker)
-    {
-        var id = statusChecker?.Sys.Id;
-
-        if (id != null)
-            return await _fusionCache.GetOrSetAsync(id, async token =>
-            {
-                var query = new QueryBuilder<StatusChecker>()
-                    .ContentTypeIs(StatusChecker.ContentType)
-                    .FieldEquals("sys.id", id)
-                    .Include(2)
-                    .Limit(1);
-
-                return (await _contentfulClient.GetEntries(query, token)).FirstOrDefault();
-            });
-
-        return statusChecker;
-    }
     
-    public async Task<Grid?> Hydrate(Grid? grid)
-    {
-        var id = grid?.Sys.Id;
-
-        if (id != null)
-            return await _fusionCache.GetOrSetAsync(id, async token =>
-            {
-                var query = new QueryBuilder<Grid>()
-                    .ContentTypeIs(Grid.ContentType)
-                    .FieldEquals("sys.id", id)
-                    .Include(2)
-                    .Limit(1);
-
-                return (await _contentfulClient.GetEntries(query, token)).FirstOrDefault();
-            });
-
-        return grid;
-    }
-    
-    public async Task<Banner?> Hydrate(Banner? banner)
-    {
-        var id = banner?.Sys.Id;
-
-        if (id != null)
-            return await _fusionCache.GetOrSetAsync(id, async token =>
-            {
-                var query = new QueryBuilder<Banner>()
-                    .ContentTypeIs(Banner.ContentType)
-                    .FieldEquals("sys.id", id)
-                    .Include(2)
-                    .Limit(1);
-
-                return (await _contentfulClient.GetEntries(query, token)).FirstOrDefault();
-            });
-
-        return banner;
-    }
-
     public async Task<string> GetSlug(string id)
     {
         var slugs = await GetSiteSlugs();
         return slugs[id];
     }
 
-    public async Task<RichContentBlock?> Hydrate(RichContentBlock? richContentBlock)
+    public async Task<T> Hydrate<T>(T content)
     {
-        var id = richContentBlock?.Sys.Id;
-
-        if (richContentBlock != null)
-            return await _fusionCache.GetOrSetAsync(richContentBlock.Sys.Id, async token =>
+        string? id = null;
+        string? contentType = null;
+        var levels = 2;
+        switch (content)
+        {
+            case Grid grid:
+                id = grid?.Sys.Id;
+                contentType = Grid.ContentType;
+                break;
+            case RichContentBlock block:
+                id = block?.Sys.Id;
+                contentType = RichContentBlock.ContentType;
+                levels = 3;
+                break;
+            case Banner banner:
+                id = banner?.Sys.Id;
+                contentType = Banner.ContentType;
+                break;
+            case StatusChecker checker:
+                id = checker?.Sys.Id;
+                contentType = StatusChecker.ContentType;
+                break;
+            default:
+                return content;
+        }
+        
+        if (id != null)
+            content = await _fusionCache.GetOrSetAsync(id, async token =>
             {
-                var query = new QueryBuilder<RichContentBlock>()
-                    .ContentTypeIs(RichContentBlock.ContentType)
+                var query = new QueryBuilder<T>()
+                    .ContentTypeIs(contentType)
                     .FieldEquals("sys.id", id)
-                    .Include(3)
+                    .Include(levels)
                     .Limit(1);
 
                 return (await _contentfulClient.GetEntries(query, token)).FirstOrDefault();
-            });
+            }) ?? content;
 
-        return richContentBlock;
+        return content;
     }
 
     public async Task<ContentfulConfigurationEntity?> GetConfiguration()

@@ -88,16 +88,22 @@ public class ContentfulController(IContentService contentService, ITranslationSe
         
         if (contentType == Grid.ContentType)
         {
-            returnObject = await contentService.Hydrate(new Grid() { Sys = new SystemProperties() { Id = id } });
+            returnObject = new Grid() { Sys = new SystemProperties() { Id = id } };
         } 
         else if (contentType == RichContentBlock.ContentType)
         {
-            returnObject = await contentService.Hydrate(new RichContentBlock() { Sys = new SystemProperties() { Id = id } });
+            returnObject = new RichContentBlock() { Sys = new SystemProperties() { Id = id } };
         }
         else if (contentType == Banner.ContentType)
         {
-            returnObject = await contentService.Hydrate(new Banner() { Sys = new SystemProperties() { Id = id } });
+            returnObject = new Banner() { Sys = new SystemProperties() { Id = id } };
         }
+        else if (contentType == StatusChecker.ContentType)
+        {
+            returnObject = new StatusChecker() { Sys = new SystemProperties() { Id = id } };
+        }
+
+        returnObject = await contentService.Hydrate(returnObject);
 
         return Content(JsonConvert.SerializeObject(returnObject, Constants.SerializerSettings), "application/json");
     }
