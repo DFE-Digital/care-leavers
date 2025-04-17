@@ -57,7 +57,7 @@ export class HomePage extends BasePage {
 
     async verifyPhaseBanner() {
         await expect(this.phaseBanner).toBeVisible();
-        await expect(this.phaseBanner.locator('p.translate > a')).toHaveText("en");
+        await expect(this.phaseBanner.locator('.translate > a')).toHaveText("en");
         await expect(this.phaseBanner.locator('.govuk-phase-banner__content__tag')).toHaveText("Beta");
         await expect(this.phaseBanner.locator('.govuk-phase-banner__text')).toContainText("This is a new service.");
     }

@@ -146,5 +146,28 @@
   .govuk-breadcrumbs {
     display: none;
   }
+
+  .gem-c-contents-list__title {
+    color: #000;
+    line-height: 1.5
+  }
+
+  .gem-c-contents-list__list,.gem-c-contents-list__nested-list {
+    color: #000
+  }
+
+  .gem-c-contents-list__list,.gem-c-contents-list__nested-list {
+    font-size: 14pt;
+    line-height: 1.2
+  }
+
+  .gem-c-contents-list__list,.gem-c-contents-list__nested-list {
+    padding-left: 0;
+    margin-left: 0
+  }
+
+  .gem-c-contents-list__list-item--numbered,.gem-c-contents-list__list-item--parent {
+    list-style-type: none
+  }
   
 }

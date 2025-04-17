@@ -10,8 +10,8 @@ export class PathwayPlanPage extends BasePage {
     constructor(page: Page) {
         super(page);
         this.mainContent = page.locator('.govuk-grid-column-two-thirds').nth(1); // Main content section
-        this.contentsSection = page.locator('nav h2.govuk-heading-s'); // Contents heading
-        this.sectionLinks = page.locator('nav ul.govuk-list li a'); 
+        this.contentsSection = page.locator('#main-content-contents h2'); // Contents heading
+        this.sectionLinks = page.locator('#main-content-contents ol li a'); 
         this.pageSections = page.locator('section.dfe-section h2, section.dfe-section h3'); // Major sections inside the page
     }
 
@@ -28,7 +28,7 @@ export class PathwayPlanPage extends BasePage {
 
         // Ensure the main content wrapper is visible
         await expect(this.mainContent).toBeVisible();
-        await expect(this.contentsSection).toHaveText('Contents');
+        await expect(this.contentsSection).toHaveText('On this page');
 
         // Verify the contents section has links
         const linkCount = await this.sectionLinks.count();
