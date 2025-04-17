@@ -24,7 +24,7 @@ export class HelplinesPage extends BasePage {
         this.mainHeading = page.locator('h1.govuk-heading-xl');
         
         this.mainContent = page.locator('.govuk-grid-column-two-thirds').nth(1);
-        this.tableOfContents = page.locator('nav .govuk-list');
+        this.tableOfContents = page.locator('#main-content-contents ol');
 
         // Section locators
         this.someoneToTalkToSection = page.locator('section.dfe-section:nth-of-type(1)');

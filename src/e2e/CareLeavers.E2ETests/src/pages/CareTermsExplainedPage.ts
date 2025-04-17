@@ -12,7 +12,7 @@ export class CareTermsExplainedPage extends BasePage {
     constructor(page: Page) {
         super(page);
         this.mainContent = page.locator('#main-content'); // Main content wrapper
-        this.tableOfContents = page.locator('nav .govuk-list'); // TOC section
+        this.tableOfContents = page.locator('#main-content-contents ol'); // TOC section
 
         // Store all sections in an object 
         this.sections = {

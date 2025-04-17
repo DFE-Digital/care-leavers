@@ -15,7 +15,7 @@ export class YourRightsPage extends BasePage {
     constructor(page: Page) {
         super(page);
         this.mainContent = page.locator('#main-content'); // Main content wrapper
-        this.tableOfContents = page.locator('nav .govuk-list');
+        this.tableOfContents = page.locator('#main-content-contents ol');
 
 
         this.careLeaverStatusSection = page.locator('#What-is-a--care-leaver-status--');
