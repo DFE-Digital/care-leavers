@@ -66,7 +66,7 @@ public class GDSContentfulContentsTagHelper : TagHelper
 
         if (list.HasInnerHtml)
         {
-            contents.InnerHtml.AppendHtml("<h2 class=\"govuk-heading-s gem-c-contents-list__title\">On this page</h2>");
+            contents.InnerHtml.AppendHtml("<h2 class=\"govuk-heading-m gem-c-contents-list__title\">On this page</h2>");
             contents.InnerHtml.AppendHtml(list);
         }
         output.Content.SetHtmlContent(contents);
