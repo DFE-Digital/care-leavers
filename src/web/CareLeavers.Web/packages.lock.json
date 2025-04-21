@@ -184,12 +184,12 @@
       },
       "ZiggyCreatures.FusionCache.OpenTelemetry": {
         "type": "Direct",
-        "requested": "[2.1.0, )",
-        "resolved": "2.1.0",
-        "contentHash": "2jOCHiKrRXCRsO1H9/LlWdgew4jLsKzM23wAYBgOczT+6UqLMT6xBzm+xtS2oGBens7biunl5vWYrQjZv1/YWA==",
+        "requested": "[2.2.0, )",
+        "resolved": "2.2.0",
+        "contentHash": "8oMWL2szGK28o42FbswGg8iESegW9jTPLpCWQWtcZLoUn76uBjt7IGGFOOdQAmRQuQCrjS6PCoIaegoHnqqQ3Q==",
         "dependencies": {
-          "OpenTelemetry.Api": "1.10.0",
-          "ZiggyCreatures.FusionCache": "2.1.0"
+          "OpenTelemetry.Api": "1.11.2",
+          "ZiggyCreatures.FusionCache": "2.2.0"
         }
       },
       "ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson": {
@@ -2093,8 +2093,8 @@
       },
       "ZiggyCreatures.FusionCache": {
         "type": "Transitive",
-        "resolved": "2.1.0",
-        "contentHash": "dlaO86jRZxggegGw/memJC5QSkZ7+o+RJFv/ZxhikAiYgnO12Nu3x62RX3LdyADd/pz6h4eAwTrZCrtaW33sgw==",
+        "resolved": "2.2.0",
+        "contentHash": "5Ku9YfyR98uj9tmgnCgyWbv7vySupd6iGDG4W07mfKpEMLITHjVO3avjZSMJNZXmCYOMqHRnbZ3xvBDziAUdoA==",
         "dependencies": {
           "Microsoft.Extensions.Caching.Memory": "9.0.0"
         }
