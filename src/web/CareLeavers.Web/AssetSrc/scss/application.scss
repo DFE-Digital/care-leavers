@@ -54,7 +54,12 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
 }
 
 #main-content-header h1 {
-  @include govuk-responsive-margin(8, "bottom");
+  @include govuk-responsive-margin(6, "top");
+  @include govuk-responsive-margin(6, "bottom");
+}
+
+#main-content-header:has(.govuk-breadcrumbs) h1 {
+  @include govuk-responsive-margin(6, "top");
 }
 
 .dfe-page-grey .govuk-body-l {
@@ -62,9 +67,7 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
 }
 
 .govuk-breadcrumbs {
-  margin-top: 0;
-  @include govuk-responsive-margin(9, "bottom");
-  
+  margin: 0;
 }
 
 .full-width-image {
@@ -295,6 +298,8 @@ html
   @include govuk-responsive-margin(6, "bottom");
   margin-inline: min(-1*var(--m),var(--w)/2 - 50cqw);
 }
+
+.banner a { font-weight: bold; }
 
 .banner-blue {
   background-color: #EAF5FF;
@@ -577,7 +582,7 @@ html
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
-  @include govuk-font-size($size: 19);
+  @include govuk-font-size($size: 24);
   @include govuk-responsive-margin(2, "bottom");
 }
 
