@@ -656,11 +656,12 @@ html
 }
 
 .gem-c-contents-list__title {
-  margin: 0;
   color: #0b0c0c;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 1.5
+  line-height: 1.5;
+  @include govuk-font-size($size: 19);
+  @include govuk-responsive-margin(2, "bottom");
 }
 
 .gem-c-contents-list__list,.gem-c-contents-list__nested-list {
@@ -668,11 +669,8 @@ html
   padding: 0;
   list-style-type: none;
   color: #0b0c0c;
-  font-family: "GDS Transport",arial,sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: 400;
-  font-size: 1rem;
   line-height: 1.25
 }
 
@@ -697,17 +695,23 @@ html
   list-style-type: none
 }
 
+.gem-c-contents-list__list-item--dashed {
+  position: relative;
+  padding: 0 govuk-spacing(5);
+}
+
 @media(min-width: 40.0625em) {
   .gem-c-contents-list__list-item {
     padding-top:7.5px
   }
+
+  .gem-c-contents-list__list-item--dashed {
+    position: relative;
+    padding: 0 govuk-spacing(6);
+  }
 }
 
-.gem-c-contents-list__list-item--dashed {
-  position: relative;
-  padding-left: 25px;
-  padding-right: 25px
-}
+
 
 .gem-c-contents-list__list-item--dashed .gem-c-contents-list__list-item-dash::before {
   content: "—";
