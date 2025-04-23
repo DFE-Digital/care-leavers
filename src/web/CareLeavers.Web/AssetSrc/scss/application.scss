@@ -53,6 +53,10 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
   @include govuk-responsive-padding(6, "bottom");
 }
 
+#main-content-header h1 {
+  @include govuk-responsive-margin(8, "bottom");
+}
+
 .dfe-page-grey .govuk-body-l {
   margin: 0;
 }
@@ -84,7 +88,7 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
 }
 
 .split-panel .govuk-grid-column-one-half.text-column {
-  padding: 50px;
+  @include govuk-responsive-padding(8);
 }
 
 .split-panel .image-container {
@@ -99,7 +103,7 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 20px;
+  @include govuk-responsive-padding(4);
 }
 
 
@@ -264,23 +268,6 @@ section.dfe {
   background-color: #fff;
 }
 
-.split-panel .govuk-grid-column-one-half.image-column {
-  padding: 0;
-  position: relative;
-}
-
-.split-panel .govuk-grid-column-one-half.text-column {
-  padding: 50px;
-}
-
-.split-panel .image-container {
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  min-height: 300px;
-}
-
 @media (min-width: 40.0625em) {
   .dfe-grid-container {
     display: grid;
@@ -303,9 +290,9 @@ html
 }
 
 .banner {
-  padding-top: 40px;
-  padding-bottom: 30px;
-  margin-bottom: 30px;
+  @include govuk-responsive-padding(7, "top");
+  @include govuk-responsive-padding(6, "bottom");
+  @include govuk-responsive-margin(6, "bottom");
   margin-inline: min(-1*var(--m),var(--w)/2 - 50cqw);
 }
 
@@ -322,7 +309,7 @@ html
 }
 
 .alternating-image-text {
-  margin-bottom: 30px;
+  @include govuk-responsive-margin(6, "bottom");
 }
 
 .riddle2-wrapper {
@@ -347,7 +334,7 @@ html
   background-color: #f3f2f1;
   margin: 0;
   padding: 0;
-  margin-bottom:30px;
+  @include govuk-responsive-margin(6, "bottom");
 }
 .header-side {
   background-color: #003a6a;
