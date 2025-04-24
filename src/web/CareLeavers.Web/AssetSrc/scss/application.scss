@@ -53,90 +53,27 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
   @include govuk-responsive-padding(6, "bottom");
 }
 
+#main-content-header h1 {
+  @include govuk-responsive-margin(6, "top");
+  @include govuk-responsive-margin(6, "bottom");
+}
+
+#main-content-header:has(.govuk-breadcrumbs) h1 {
+  @include govuk-responsive-margin(6, "top");
+}
+
 .dfe-page-grey .govuk-body-l {
   margin: 0;
 }
 
 .govuk-breadcrumbs {
-  margin-top: 0;
-  @include govuk-responsive-margin(9, "bottom");
-  
+  margin: 0;
 }
 
 .full-width-image {
   max-width: 100%;
 }
 
-.hf-card-container {
-  background-color: #f3f2f1;
-  border-bottom: 3px solid #003a69;
-}
-
-.hf-card a {
-  text-decoration: none;
-}
-
-
-.hf-card a .hf-card-details p {
-  color: #0b0c0c;
-}
-
-.hf-card a .hf-card-details h2,
-.hf-card a h3 {
-  color: #155388;
-}
-
-.hf-card:focus-within a .hf-card-container,
-.hf-card a:hover .hf-card-container {
-  background-color: #003a69;
-}
-
-.hf-card:focus-within {
-  @include govuk-focused-text;
-}
-
-.hf-card:focus-within a .hf-card-container .hf-card-details p,
-.hf-card:focus-within a .hf-card-container .cat-card-details p,
-.hf-card a:hover .hf-card-container .hf-card-details p,
-.hf-card a:hover .hf-card-container .hf-card-details h2,
-.hf-card a:hover .hf-card-container .hf-card-details h3,
-.hf-card a:hover .hf-card-container .cat-card-details p,
-.hf-card a:hover .hf-card-container .cat-card-details h2,
-.hf-card a:hover .hf-card-container .cat-card-details h3 {
-  color: #ffffff;
-}
-
-.hf-card:focus-within a .hf-card-container .hf-card-details h2,
-.hf-card:focus-within a .hf-card-container .hf-card-details h3,
-.hf-card:focus-within a .hf-card-container .cat-card-details h2,
-.hf-card:focus-within a .hf-card-container .cat-card-details h3
-{
-  @include govuk-focused-text;
-  display: inline-block;
-}
-
-.hf-card-details {
-  padding: 30px;
-  min-height: 190px;
-}
-
-@media (max-width: 40.0525em) {
-  .hf-card-details {
-    padding: 25px;
-    min-height: 170px;
-  }
-}
-.cat-card-details {
-  padding: 30px;
-  min-height: 160px;
-}
-
-@media (max-width: 40.0525em) {
-  .cat-card-details {
-    padding: 25px;
-    min-height: 10px;
-  }
-}
 .split-panel {
   width: 100%;
   display: flex;
@@ -154,7 +91,7 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
 }
 
 .split-panel .govuk-grid-column-one-half.text-column {
-  padding: 50px;
+  @include govuk-responsive-padding(8);
 }
 
 .split-panel .image-container {
@@ -169,7 +106,7 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 20px;
+  @include govuk-responsive-padding(4);
 }
 
 
@@ -334,23 +271,6 @@ section.dfe {
   background-color: #fff;
 }
 
-.split-panel .govuk-grid-column-one-half.image-column {
-  padding: 0;
-  position: relative;
-}
-
-.split-panel .govuk-grid-column-one-half.text-column {
-  padding: 50px;
-}
-
-.split-panel .image-container {
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  min-height: 300px;
-}
-
 @media (min-width: 40.0625em) {
   .dfe-grid-container {
     display: grid;
@@ -373,11 +293,13 @@ html
 }
 
 .banner {
-  padding-top: 40px;
-  padding-bottom: 30px;
-  margin-bottom: 30px;
+  @include govuk-responsive-padding(7, "top");
+  @include govuk-responsive-padding(6, "bottom");
+  @include govuk-responsive-margin(6, "bottom");
   margin-inline: min(-1*var(--m),var(--w)/2 - 50cqw);
 }
+
+.banner a { font-weight: bold; }
 
 .banner-blue {
   background-color: #EAF5FF;
@@ -392,7 +314,7 @@ html
 }
 
 .alternating-image-text {
-  margin-bottom: 30px;
+  @include govuk-responsive-margin(6, "bottom");
 }
 
 .riddle2-wrapper {
@@ -417,7 +339,7 @@ html
   background-color: #f3f2f1;
   margin: 0;
   padding: 0;
-  margin-bottom:30px;
+  @include govuk-responsive-margin(6, "bottom");
 }
 .header-side {
   background-color: #003a6a;
@@ -656,11 +578,12 @@ html
 }
 
 .gem-c-contents-list__title {
-  margin: 0;
   color: #0b0c0c;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 1.5
+  line-height: 1.5;
+  @include govuk-font-size($size: 24);
+  @include govuk-responsive-margin(2, "bottom");
 }
 
 .gem-c-contents-list__list,.gem-c-contents-list__nested-list {
@@ -668,11 +591,8 @@ html
   padding: 0;
   list-style-type: none;
   color: #0b0c0c;
-  font-family: "GDS Transport",arial,sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: 400;
-  font-size: 1rem;
   line-height: 1.25
 }
 
@@ -697,17 +617,23 @@ html
   list-style-type: none
 }
 
+.gem-c-contents-list__list-item--dashed {
+  position: relative;
+  padding: 0 govuk-spacing(5);
+}
+
 @media(min-width: 40.0625em) {
   .gem-c-contents-list__list-item {
     padding-top:7.5px
   }
+
+  .gem-c-contents-list__list-item--dashed {
+    position: relative;
+    padding: 0 govuk-spacing(6);
+  }
 }
 
-.gem-c-contents-list__list-item--dashed {
-  position: relative;
-  padding-left: 25px;
-  padding-right: 25px
-}
+
 
 .gem-c-contents-list__list-item--dashed .gem-c-contents-list__list-item-dash::before {
   content: "—";

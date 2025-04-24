@@ -38,7 +38,7 @@ export class HomePage extends BasePage {
         this.guidesSection = page.locator('section.dfe-section.alternating-image-text');
 
         // Generic locator for all cards on the home page
-        this.supportCards = page.locator('.hf-card-container');
+        this.supportCards = page.locator('.dfe-card-container');
         
         // Locator for the "Know what support you can get" section
         this.supportLink = this.knowWhatSupportSection.locator('a.govuk-link');

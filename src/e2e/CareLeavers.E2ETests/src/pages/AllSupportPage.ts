@@ -10,7 +10,7 @@ export class AllSupportPage extends BasePage {
     constructor(page: Page) {
         super(page);
         this.mainContent = page.locator('#main-content');
-        this.supportCards = page.locator('.hf-card-container'); // Support cards
+        this.supportCards = page.locator('.dfe-card-container'); // Support cards
 
         // "Know what support you can get" Section
         this.knowWhatSupportSection = page.locator('.govuk-grid-column-one-half.text-column');
