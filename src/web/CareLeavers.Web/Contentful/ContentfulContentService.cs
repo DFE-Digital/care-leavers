@@ -59,6 +59,34 @@ public class ContentfulContentService : IContentService
 
         return page;
     }
+    
+    public async Task<PrintableBooklet?> GetPrintableBooklet(string slug)
+    {
+        var booklet = await _fusionCache.GetOrSetAsync($"booklet:{slug}", async token =>
+        {
+            var pages = new QueryBuilder<PrintableBooklet>()
+                .ContentTypeIs(PrintableBooklet.ContentType)
+                .FieldEquals(c => c.Slug, slug)
+                .Include(3)
+                .Limit(1);
+
+            var pageEntries = await _contentfulClient.GetEntries(pages, token);
+            return pageEntries.FirstOrDefault();
+        });
+
+        // If we get a page, but the slug doesn't match (used in tests), return null so we trigger our 404s
+        if (booklet?.Slug != null && !(booklet.Slug).Equals(slug, StringComparison.InvariantCultureIgnoreCase))
+        {
+            booklet = null;
+        }
+
+        if (booklet != null)
+        {
+            await _fusionCache.SetAsync(booklet.Sys.Id, booklet);
+        }
+
+        return booklet;
+    }
 
     public async Task<List<SimplePage>> GetBreadcrumbs(string? slug, bool includeHome = true)
     {

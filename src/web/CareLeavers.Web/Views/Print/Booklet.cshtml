@@ -1,0 +1,100 @@
+@using System.Globalization
+@using CareLeavers.Web.Configuration
+@using CareLeavers.Web.Models.Enums
+@using Joonasw.AspNetCore.SecurityHeaders.Csp
+@model CareLeavers.Web.Models.Content.PrintableBooklet
+@inject IContentfulConfiguration ContentfulConfiguration
+
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "_PrintLayout";
+    var config = await ContentfulConfiguration.GetConfiguration();
+    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
+}
+
+@section Head
+{
+    <meta name="robots" content="noindex, nofollow"/>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    
+    <link rel="canonical" href="@Url.Action(
+                                    action: "GetPrintableBooklet",
+                                    controller: "Contentful",
+                                    protocol: "https",
+                                    values: new { slug = Model.Slug, languageCode = "en" }
+                                )"/>
+
+}
+
+@{
+    await Html.RenderPartialAsync("_Header", configViewModel);
+}
+
+
+<div class="govuk-grid-row" data-last-fetched="@Model.Fetched.ToString("s", CultureInfo.InvariantCulture)">
+    <div class="@pageWidth" id="primary-content">
+        @if (Model.Type.HasValue)
+        {
+            <span class="govuk-caption-m">@Model.Type</span>
+        }
+        @if (Model.ShowContentsBlock)
+        {
+            <gds-contentful-contents document="@Model.MainContent" levels="@Model.ContentsHeadings"/>
+        }
+        <gds-contentful-rich-text document="@Model.MainContent"></gds-contentful-rich-text>
+    </div>
+    <div class="govuk-grid-column-full">
+        <partial name="LastUpdated" model="@Model"/>
+        
+        <partial name="Shareaholic" model="Model"/>
+    </div>
+    @if (Model.Width == PageWidth.TwoThirds)
+    {
+        <div class="govuk-grid-column-one-third"></div>
+        <div class="govuk-grid-column-full" id="secondary-content">
+            @if (Model.SecondaryContent != null)
+            {
+                <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                <gds-contentful-rich-text document="@Model.SecondaryContent"></gds-contentful-rich-text>
+            }
+        </div>
+    }
+</div>
+
+
+@if (Model.ShowFooter && config.Footer != null)
+{
+    @section AfterGDSContent
+    {
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <gds-contentful-rich-text document="@config.Footer"/>
+            </div>
+        </div>
+    }
+}
+
+@section Scripts
+{
+    @if (Model.ShowShareLinks)
+    {
+        <script asp-add-nonce="true" defer>
+            const printPage  = () => window.print();
+
+            const addPrintButtonEventListener  = () => {
+                const printButton = document.getElementById("print-link");
+
+                if (!printButton) {
+                    return;
+                }
+
+                printButton.addEventListener('click', printPage);
+
+            }
+
+            addPrintButtonEventListener();
+        </script>
+    }
+}
