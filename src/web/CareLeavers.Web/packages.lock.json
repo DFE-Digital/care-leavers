@@ -194,12 +194,12 @@
       },
       "ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson": {
         "type": "Direct",
-        "requested": "[2.1.0, )",
-        "resolved": "2.1.0",
-        "contentHash": "cfc3hrQ4VhyK3iuIlwCMd3MhVD3jE4a6s3FvqUHyryo0k4JXuHcjxd0lUVbKpkDBJpWFrCG/kIIE2H1zU4k3DA==",
+        "requested": "[2.2.0, )",
+        "resolved": "2.2.0",
+        "contentHash": "CLYye7+V0Ufl0Tnhw3H06O2CP+/mHYtiSubO2w+8M8X9lRJKRhsLr5kVxRv10cvhfZrI7SSR4MCX60TffouGFQ==",
         "dependencies": {
           "Newtonsoft.Json": "13.0.3",
-          "ZiggyCreatures.FusionCache": "2.1.0"
+          "ZiggyCreatures.FusionCache": "2.2.0"
         }
       },
       "Azure.Monitor.OpenTelemetry.Exporter": {
