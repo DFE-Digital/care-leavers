@@ -165,11 +165,11 @@
       },
       "ZiggyCreatures.FusionCache.Backplane.Memory": {
         "type": "Direct",
-        "requested": "[2.1.0, )",
-        "resolved": "2.1.0",
-        "contentHash": "Di5t0HFI3hqRe3AWAeY3DedU850YoJwkKHm9Q6dirNxYB+mfskLLw10y06+n4WL8+p/+C8/LLlJTzE1kvzfY3g==",
+        "requested": "[2.2.0, )",
+        "resolved": "2.2.0",
+        "contentHash": "zj9ftPgLFUVyp669PguGN54w4EKowViDpifTekt/uqk2MdteiJWCnsZ/pbTlqGZ0fSsfNl6kmbmDIoHGdLM0dw==",
         "dependencies": {
-          "ZiggyCreatures.FusionCache": "2.1.0"
+          "ZiggyCreatures.FusionCache": "2.2.0"
         }
       },
       "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis": {
@@ -2093,8 +2093,8 @@
       },
       "ZiggyCreatures.FusionCache": {
         "type": "Transitive",
-        "resolved": "2.1.0",
-        "contentHash": "dlaO86jRZxggegGw/memJC5QSkZ7+o+RJFv/ZxhikAiYgnO12Nu3x62RX3LdyADd/pz6h4eAwTrZCrtaW33sgw==",
+        "resolved": "2.2.0",
+        "contentHash": "5Ku9YfyR98uj9tmgnCgyWbv7vySupd6iGDG4W07mfKpEMLITHjVO3avjZSMJNZXmCYOMqHRnbZ3xvBDziAUdoA==",
         "dependencies": {
           "Microsoft.Extensions.Caching.Memory": "9.0.0"
         }
