@@ -38,19 +38,21 @@
     display: none;
   }
 
+  
   .dfe-page-grey {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
   }
 
   .govuk-heading-xl {
-    margin-bottom: 0.75rem;
-    font-size: 28pt;
+    margin-bottom: 1rem !important;
+    margin-top: 0 !important;
+    font-size: 28pt !important;
   }
 
   .govuk-body-l {
-    margin-bottom: 0.37rem;
-    font-size: 16pt;
+    margin-bottom: 0.37rem !important;
+    font-size: 16pt !important;
   }
 
   // Hide full width images
@@ -59,8 +61,8 @@
   }
 
   .govuk-main-wrapper {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
   }
 
   #main-content-footer {
@@ -109,7 +111,7 @@
     background-color: inherit;
   }
 
-  .dfe-section.dfe.box-ext {
+  p, ul, ol {
     -webkit-column-break-inside: avoid;
     page-break-inside: avoid;
     break-inside: avoid;
