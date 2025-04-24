@@ -4,14 +4,14 @@
     var link = Model.Link?.Slug ?? string.Empty;
 }
 
-<div class="hf-card">
-    <a href="@link" class="govuk-link">
-        <div class="hf-card-container">
-            <contentful-image asset="@Model.Image" class="full-width-image card-image" alt="" role="presentation"></contentful-image>
-            <div class="cat-card-details">
-                <h3 class="govuk-heading-m">@Model.Title</h3>
-                <p class="govuk-body">@Model.Text</p>
-            </div>
+<div class="dfe-card">
+        <contentful-image asset="@Model.Image" class="full-width-image card-image" alt="" role="presentation"></contentful-image>
+        <div class="dfe-card-container">
+            <h3 class="govuk-heading-m">
+                <a href="@link" class="govuk-link govuk-link--no-visited-state dfe-card-link--header">
+                    @Model.Title
+                </a>
+            </h3>
+            <p class="govuk-body">@Model.Text</p>
         </div>
-    </a>
 </div>

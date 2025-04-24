@@ -19,7 +19,7 @@
         <PackageReference Include="Azure.AI.Translation.Text" Version="1.0.0" />
         <PackageReference Include="Azure.Core" Version="1.45.0" />
         <PackageReference Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.2.0" />
-        <PackageReference Include="contentful.aspnetcore" Version="8.3.0" />
+        <PackageReference Include="contentful.aspnetcore" Version="8.3.2" />
         <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
         <PackageReference Include="Joonasw.AspNetCore.SecurityHeaders" Version="6.0.0" />
         <PackageReference Include="Microsoft.ApplicationInsights" Version="2.23.0" />
@@ -31,10 +31,10 @@
         <PackageReference Include="Serilog" Version="4.2.0" />
         <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
         <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
-        <PackageReference Include="ZiggyCreatures.FusionCache.Backplane.Memory" Version="2.1.0" />
+        <PackageReference Include="ZiggyCreatures.FusionCache.Backplane.Memory" Version="2.2.0" />
         <PackageReference Include="ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis" Version="2.1.0" />
-        <PackageReference Include="ZiggyCreatures.FusionCache.OpenTelemetry" Version="2.1.0" />
-        <PackageReference Include="ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson" Version="2.1.0" />
+        <PackageReference Include="ZiggyCreatures.FusionCache.OpenTelemetry" Version="2.2.0" />
+        <PackageReference Include="ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson" Version="2.2.0" />
     </ItemGroup>
 
 </Project>

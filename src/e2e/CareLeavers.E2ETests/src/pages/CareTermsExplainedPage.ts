@@ -28,7 +28,7 @@ export class CareTermsExplainedPage extends BasePage {
         this.helpfulLinks = [
             page.locator('a[href="housing-and-accommodation"]'),
             page.locator('a[href="money-and-benefits"]'),
-            page.locator('div.hf-card:nth-child(3) a[href="all-support"]')
+            page.locator('div.dfe-card:nth-child(3) a[href="all-support"]')
         ];
     }
 
@@ -60,7 +60,7 @@ export class CareTermsExplainedPage extends BasePage {
         // Ensure all helpful links are visible and contain appropriate text
         for (const link of this.helpfulLinks) {
             await expect(link).toBeVisible();
-            const linkText = await link.locator('h3').innerText();
+            const linkText = await link.innerText();
             expect(linkText).not.toBe('');
         }
     }

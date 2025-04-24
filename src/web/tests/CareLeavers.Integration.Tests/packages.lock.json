@@ -119,8 +119,8 @@
       },
       "contentful.aspnetcore": {
         "type": "Transitive",
-        "resolved": "8.3.0",
-        "contentHash": "ou9tMtvFTV6X1/G0wjhiAUfLoEDU0rdb5jW9PDBADTjnycRVaurr+NZK+iVHtASQrs7WB15Z3HtRItg2DwV6Og==",
+        "resolved": "8.3.2",
+        "contentHash": "mkbuTafbToo6fYMJQS+trt60Dk6elMvyVYpRoOo4IPEBSWehhAVnXiphE+4SXzXn/FfvVQlGh3Sxi275NPvRLA==",
         "dependencies": {
           "Microsoft.AspNetCore.Http": "2.2.2",
           "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
@@ -131,13 +131,13 @@
           "Microsoft.Extensions.Http": "6.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "6.0.0",
           "System.Net.Http": "4.3.4",
-          "contentful.csharp": "8.3.0"
+          "contentful.csharp": "8.3.2"
         }
       },
       "contentful.csharp": {
         "type": "Transitive",
-        "resolved": "8.3.0",
-        "contentHash": "aArmWXoAooDNkTsEST211QjNAHgWgvSRrhMrwnS9iKoMEMMHIiPD+9XtmhqtSAGzo/MrfuDsAcukMeTglsmMLA==",
+        "resolved": "8.3.2",
+        "contentHash": "q3WfKrpg4LIFDLqBxbGGzltxRVhFji5mDPW+BWFaCAjFelR/Y7Dxe1L4sKQOGOuWaz89NrAu0rd86yqIqPORcw==",
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
           "Newtonsoft.Json": "13.0.1"
@@ -2322,18 +2322,18 @@
       },
       "ZiggyCreatures.FusionCache": {
         "type": "Transitive",
-        "resolved": "2.1.0",
-        "contentHash": "dlaO86jRZxggegGw/memJC5QSkZ7+o+RJFv/ZxhikAiYgnO12Nu3x62RX3LdyADd/pz6h4eAwTrZCrtaW33sgw==",
+        "resolved": "2.2.0",
+        "contentHash": "5Ku9YfyR98uj9tmgnCgyWbv7vySupd6iGDG4W07mfKpEMLITHjVO3avjZSMJNZXmCYOMqHRnbZ3xvBDziAUdoA==",
         "dependencies": {
           "Microsoft.Extensions.Caching.Memory": "9.0.0"
         }
       },
       "ZiggyCreatures.FusionCache.Backplane.Memory": {
         "type": "Transitive",
-        "resolved": "2.1.0",
-        "contentHash": "Di5t0HFI3hqRe3AWAeY3DedU850YoJwkKHm9Q6dirNxYB+mfskLLw10y06+n4WL8+p/+C8/LLlJTzE1kvzfY3g==",
+        "resolved": "2.2.0",
+        "contentHash": "zj9ftPgLFUVyp669PguGN54w4EKowViDpifTekt/uqk2MdteiJWCnsZ/pbTlqGZ0fSsfNl6kmbmDIoHGdLM0dw==",
         "dependencies": {
-          "ZiggyCreatures.FusionCache": "2.1.0"
+          "ZiggyCreatures.FusionCache": "2.2.0"
         }
       },
       "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis": {
@@ -2347,20 +2347,20 @@
       },
       "ZiggyCreatures.FusionCache.OpenTelemetry": {
         "type": "Transitive",
-        "resolved": "2.1.0",
-        "contentHash": "2jOCHiKrRXCRsO1H9/LlWdgew4jLsKzM23wAYBgOczT+6UqLMT6xBzm+xtS2oGBens7biunl5vWYrQjZv1/YWA==",
+        "resolved": "2.2.0",
+        "contentHash": "8oMWL2szGK28o42FbswGg8iESegW9jTPLpCWQWtcZLoUn76uBjt7IGGFOOdQAmRQuQCrjS6PCoIaegoHnqqQ3Q==",
         "dependencies": {
-          "OpenTelemetry.Api": "1.10.0",
-          "ZiggyCreatures.FusionCache": "2.1.0"
+          "OpenTelemetry.Api": "1.11.2",
+          "ZiggyCreatures.FusionCache": "2.2.0"
         }
       },
       "ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson": {
         "type": "Transitive",
-        "resolved": "2.1.0",
-        "contentHash": "cfc3hrQ4VhyK3iuIlwCMd3MhVD3jE4a6s3FvqUHyryo0k4JXuHcjxd0lUVbKpkDBJpWFrCG/kIIE2H1zU4k3DA==",
+        "resolved": "2.2.0",
+        "contentHash": "CLYye7+V0Ufl0Tnhw3H06O2CP+/mHYtiSubO2w+8M8X9lRJKRhsLr5kVxRv10cvhfZrI7SSR4MCX60TffouGFQ==",
         "dependencies": {
           "Newtonsoft.Json": "13.0.3",
-          "ZiggyCreatures.FusionCache": "2.1.0"
+          "ZiggyCreatures.FusionCache": "2.2.0"
         }
       },
       "careleavers.web": {
@@ -2380,11 +2380,11 @@
           "Serilog": "[4.2.0, )",
           "Serilog.AspNetCore": "[9.0.0, )",
           "Serilog.Sinks.ApplicationInsights": "[4.0.0, )",
-          "ZiggyCreatures.FusionCache.Backplane.Memory": "[2.1.0, )",
+          "ZiggyCreatures.FusionCache.Backplane.Memory": "[2.2.0, )",
           "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis": "[2.1.0, )",
-          "ZiggyCreatures.FusionCache.OpenTelemetry": "[2.1.0, )",
-          "ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson": "[2.1.0, )",
-          "contentful.aspnetcore": "[8.3.0, )"
+          "ZiggyCreatures.FusionCache.OpenTelemetry": "[2.2.0, )",
+          "ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson": "[2.2.0, )",
+          "contentful.aspnetcore": "[8.3.2, )"
         }
       }
     }
