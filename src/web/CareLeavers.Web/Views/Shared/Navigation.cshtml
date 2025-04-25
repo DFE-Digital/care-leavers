@@ -4,6 +4,7 @@
 
 @{
     string currentPage = ViewContext.RouteData.Values["slug"]?.ToString() ?? string.Empty;
+    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
     var breadcrumbs = await ContentService.GetBreadcrumbs(currentPage, false);
 }
 
@@ -12,7 +13,7 @@
     <div class="govuk-width-container">
         <div class="govuk-service-navigation__container">
             <span class="govuk-service-navigation__service-name">
-                <a href="/" class="govuk-service-navigation__link">
+                <a href="@Url.ActionLink("GetContent", "Contentful", values: new { slug = Model.ContentfulConfiguration.HomePage?.Slug, languageCode})" class="govuk-service-navigation__link">
                     @Model.ContentfulConfiguration.ServiceName
                 </a>
             </span>

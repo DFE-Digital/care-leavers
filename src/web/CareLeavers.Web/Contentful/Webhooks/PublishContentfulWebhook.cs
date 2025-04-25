@@ -122,6 +122,24 @@ public class PublishContentfulWebhook(
                 logger.LogError(ex, "Unable to purge configuration");
             }
         }
+        else if (entry.SystemProperties.ContentType.SystemProperties.Id == PrintableCollection.ContentType)
+        {
+            var collection = await contentfulClient.GetEntry<PrintableCollection>(entry.SystemProperties.Id);
+            logger.LogInformation("The following collection will be purged: {identifier}", collection.Identifier);
+
+            try
+            {
+                await fusionCache.RemoveAsync($"collection:{collection.Identifier}");
+                await fusionCache.RemoveByTagAsync(collection.Identifier);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Unable to purge collection with identifier {identifier}", collection.Identifier);
+            }
+            
+            await fusionCache.RemoveAsync(collection.Sys.Id);
+            
+        }
         else
         {
             var pageEntries = new List<Page>();

@@ -3,6 +3,8 @@
 
 @if (Model.ShowLastUpdated)
 {
+    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
+
     <div class="govuk-grid-row" id="last-updated">
         <div class="metadata-logo-wrapper">
             <div class="govuk-grid-column-two-thirds metadata-column">
@@ -12,8 +14,15 @@
                         <dt class="gem-c-metadata__term">From:</dt>
                         <dd class="gem-c-metadata__definition notranslate">
                             <a class="govuk-link" href="https://www.gov.uk/government/organisations/department-for-education">Department for Education</a>
-
                         </dd>
+                        <dt class="gem-c-metadata__term print-only">Page:</dt>
+                        <dd class="gem-c-metadata__definition print-only">@Model.Title</dd>
+                        <dt class="gem-c-metadata__term print-only">URL:</dt>
+                        <dd class="gem-c-metadata__definition print-only">@Url.Action(
+                                                                                            action: "GetContent",
+                                                                                            controller: "Contentful",
+                                                                                            protocol: "https",
+                                                                                            values: new { slug = Model.Slug, languageCode })</dd>
                         <dt class="gem-c-metadata__term">Published:</dt>
                         <dd class="gem-c-metadata__definition">@Model.Sys.CreatedAt?.ToString("d MMMM yyyy", DateTimeFormatInfo.InvariantInfo)</dd>
                         <dt class="gem-c-metadata__term">Last updated:</dt>

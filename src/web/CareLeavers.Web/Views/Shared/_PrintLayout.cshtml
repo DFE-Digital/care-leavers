@@ -29,7 +29,10 @@
     var configViewModel = new ConfigViewModel
     {
         ContentfulConfiguration = config,
-        Language = language
+        Language = language,
+        ShowNavigation = false,
+        ShowFooterLinks = false,
+        ShowLanguage = false
     };
 }
 
@@ -97,7 +100,7 @@
     <meta name="apple-mobile-web-app-title" content="@config.ServiceName" />
     
     <link rel="stylesheet" href="~/css/application.css" asp-append-version="@scriptConfig.AddCssVersion"/>
-    <link rel="stylesheet" href="~/css/booklet.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="stylesheet" href="~/css/collection.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     @if (IsSectionDefined("Head")) {
         @await RenderSectionAsync("Head", required: false)
     }
@@ -116,42 +119,37 @@
     document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
 </script>
 
-<a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
+<header class="dfe-width-container dfe-header__container" id="collection-header">
+    <div class="dfe-header__logo">
+        <a class="dfe-header__link dfe-header__link--service " href="~/" aria-label="@configViewModel.ContentfulConfiguration.ServiceName homepage">
+            <img src="~/assets/dfe-logo.png" class="dfe-logo" alt="@configViewModel.ContentfulConfiguration.ServiceName homepage">
+            <img src="~/assets/dfe-logo-alt.png" class="dfe-logo-hover" alt="@configViewModel.ContentfulConfiguration.ServiceName homepage">
+        </a>
+    </div>
+    <partial model="configViewModel.ContentfulConfiguration.ServiceName" name="ServiceName"></partial>
+</header>
 
-
-
-@await RenderSectionAsync("BeforeContent", required: false)
-
-
-
-@if (IsSectionDefined("BeforeGDSContent"))
-
-{
-    <section class="dfe-page-grey" id="main-content-header">
-        <div class="govuk-width-container" id="main-header-container">
-            @await RenderSectionAsync("BeforeGDSContent", required: false)
-        </div>
-    </section>
-}
-
-<div class="govuk-width-container @ViewBag.ContainerClasses" id="main-content-container">
-    @await RenderSectionAsync("BeforeContent", required: false)
-    <main class="govuk-main-wrapper @ViewBag.MainClasses" id="main-content" role="main" lang="@ViewBag.MainLang">
+<table>
+    <thead>
+    <tr>
+        <th>
+            <div class="header-space">&nbsp;
+            </div>
+        </th>
+    </tr>
+    </thead>
+    <tbody class="govuk-width-container @ViewBag.ContainerClasses" id="main-content-container">
         @RenderBody()
-    </main>
-</div>
-@if (IsSectionDefined("AfterGDSContent"))
-{
-    <section class="dfe-page-grey" id="main-content-footer">
-        <div class="govuk-width-container">
-            @await RenderSectionAsync("AfterGDSContent")
-        </div>
-    </section>
-}
-
-@{
-    await Html.RenderPartialAsync("_Footer", configViewModel);
-}
+    </tbody>
+    @if (IsSectionDefined("Footer"))
+    {
+        <tfoot class="dfe-page-grey">
+            <tr class="govuk-width-container">
+                @await RenderSectionAsync("Footer")
+            </tr>
+        </tfoot>
+    }
+</table>
 
 @await RenderSectionAsync("Scripts", false)
 <script asp-add-nonce="true" type="module">

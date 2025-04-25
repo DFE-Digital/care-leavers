@@ -1,132 +1,24 @@
-using System.Diagnostics.CodeAnalysis;
+using System.Net.Http.Headers;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
-using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Filters;
 using CareLeavers.Web.Translation;
-using Contentful.Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Options;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace CareLeavers.Web.Controllers;
 
-[Route("/")]
-public class ContentfulController(IContentService contentService, ITranslationService translationService) : Controller
+public class PrintController(IContentService contentService, ITranslationService translationService, IOptions<PdfGenerationOptions> pdfOptions, IFusionCache fusionCache) : Controller
 {
-    [Route("/")]
-    public async Task<IActionResult> Homepage(
-        [FromServices] IContentfulConfiguration contentfulConfiguration,
-        [FromQuery] string? languageCode = null)
-    {
-        languageCode ??= "en";
-        var config = await contentfulConfiguration.GetConfiguration();
-        return RedirectToAction("GetContent", new { slug = config.HomePage?.Slug, languageCode });
-    }
-    
-    [Route("/en")]
-    [Route("/en/en")]
-    public async Task<IActionResult> NoSlug(
-        [FromServices] IContentfulConfiguration contentfulConfiguration)
-    {
-        var config = await contentfulConfiguration.GetConfiguration();
-        return RedirectToAction("GetContent", new { slug = config.HomePage?.Slug, languageCode = "en" });
-    }
-
-    [Route("/json/{**slug}")]
-    [ExcludeFromCodeCoverage(Justification = "Development only")]
-    public async Task<IActionResult> GetContentAsJson(string slug, [FromServices] IWebHostEnvironment environment)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
-
-        if (!environment.IsDevelopment())
-        {
-            return NotFound();
-        }
-
-        var page = await contentService.GetPage(slug);
-
-        return Content(JsonConvert.SerializeObject(page, Constants.SerializerSettings), "application/json");
-    }
-
-    [Route("/json/configuration")]
-    [ExcludeFromCodeCoverage(Justification = "Development only")]
-    public async Task<IActionResult> GetConfigurationAsJson([FromServices] IWebHostEnvironment environment)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
-
-        if (!environment.IsDevelopment())
-        {
-            return NotFound();
-        }
-
-        var configuration = await contentService.GetConfiguration();
-
-        return Content(JsonConvert.SerializeObject(configuration, Constants.SerializerSettings), "application/json");
-    }
-    
-    [Route("/json/{contentType}/{id}")]
-    [ExcludeFromCodeCoverage(Justification = "Development only")]
-    public async Task<IActionResult> GetContentAsJson(string contentType, string id, [FromServices] IWebHostEnvironment environment)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
-
-        if (!environment.IsDevelopment())
-        {
-            return NotFound();
-        }
-
-        var returnObject = new object();
-        
-        if (contentType == Grid.ContentType)
-        {
-            returnObject = new Grid() { Sys = new SystemProperties() { Id = id } };
-        } 
-        else if (contentType == RichContentBlock.ContentType)
-        {
-            returnObject = new RichContentBlock() { Sys = new SystemProperties() { Id = id } };
-        }
-        else if (contentType == Banner.ContentType)
-        {
-            returnObject = new Banner() { Sys = new SystemProperties() { Id = id } };
-        }
-        else if (contentType == StatusChecker.ContentType)
-        {
-            returnObject = new StatusChecker() { Sys = new SystemProperties() { Id = id } };
-        }
-
-        returnObject = await contentService.Hydrate(returnObject);
-
-        return Content(JsonConvert.SerializeObject(returnObject, Constants.SerializerSettings), "application/json");
-    }
-    
-    [Route("/print/{slug}")]
-    [Route("/{languageCode}/print/{slug}")]
+    [Route("/print/{identifier}")]
+    [Route("/print/{languageCode}/{identifier}")]
     [Translation]
-    public async Task<IActionResult> GetPrintableBooklet(string slug, string languageCode)
+    public async Task<IActionResult> GetPrintableCollection(string identifier, string languageCode)
     {
         if (string.IsNullOrEmpty(languageCode))
         {
-            return RedirectToAction("GetPrintableBooklet", new { slug, languageCode = "en" });
-        }
-    }
-    
-    [Route("/{slug}")]
-    [Route("/{languageCode}/{slug}")]
-    [Translation]
-    public async Task<IActionResult> GetContent(string slug, string? languageCode)
-    {
-        if (string.IsNullOrEmpty(languageCode))
-        {
-            return RedirectToAction("GetContent", new { slug, languageCode = "en" });
+            return RedirectToAction("GetPrintableCollection", new { identifier, languageCode = "en" });
         }
 
         var config = await contentService.GetConfiguration();
@@ -135,12 +27,7 @@ public class ContentfulController(IContentService contentService, ITranslationSe
         {
             return NotFound();
         }
-
-        var redirectionRule = await contentService.GetRedirectionRules(slug);
-        if (redirectionRule?.Rules != null && redirectionRule.Rules.TryGetValue(slug, out var destinationSlug))
-        {
-            return RedirectToAction("GetContent", new { slug = destinationSlug, languageCode });
-        }
+        
 
         var languages = new List<string>();
         if (config is { TranslationEnabled: true })
@@ -154,16 +41,81 @@ public class ContentfulController(IContentService contentService, ITranslationSe
         
         if (!languages.Contains(languageCode))
         {
-            return RedirectToAction("GetContent", new { slug, languageCode = "en" });
+            return RedirectToAction("GetPrintableCollection", new { identifier, languageCode = "en" });
         }
         
-        var page = await contentService.GetPage(slug);
+        var collection = await contentService.GetPrintableCollection(identifier);
 
-        if (page == null)
+        if (collection == null)
         {
             return NotFound();
         }
+        
+        return View("Collection", collection);
+    }
 
-        return View("Page", page);
+    [Route("/pdf/{languageCode}/{identifier}")]
+    public async Task<IActionResult> DownloadPdf(string identifier, string languageCode)
+    {
+
+
+        var collection = await contentService.GetPrintableCollection(identifier);
+        if (collection == null)
+            return NotFound();
+
+        var tags = collection.Content.Select(p => p.Slug!).AsEnumerable();
+
+        try
+        {
+            var pdf = await fusionCache.GetOrSetAsync<byte[]>($"pdf:{identifier}:{languageCode}", async token =>
+            {
+                var config = await contentService.GetConfiguration();
+
+                var url = Url.ActionLink("GetPrintableCollection", "Print", new { identifier, languageCode });
+
+                if (config == null)
+                    return [];
+
+                var client = new HttpClient();
+                var request = new HttpRequestMessage();
+
+                request.Method = HttpMethod.Post;
+                request.RequestUri = new Uri("https://api.pdfendpoint.com/v1/convert");
+                request.Headers.Authorization =
+                    AuthenticationHeaderValue.Parse($"Bearer {pdfOptions.Value.ApiKey}");
+                request.Content =
+                    new StringContent($$"""
+                                        {
+                                            "url": "{{url}}",
+                                            "sandbox": "{{(pdfOptions.Value.Sandbox ? "true" : "false")}}", 
+                                            "delivery_mode": "inline", 
+                                            "title": "{{collection.Title}}", 
+                                            "author": "{{config.ServiceName}}",
+                                            "print_media": "true",
+                                            "user_agent": "PDF Renderer - twitterbot"
+                                        }
+                                        """);
+
+                request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
+
+                using var response = await client.SendAsync(request, token);
+                response.EnsureSuccessStatusCode();
+
+                return await response.Content.ReadAsByteArrayAsync(token);
+            }, tags: tags);
+
+            if (pdf.Length > 0)
+            {
+                return File(pdf, contentType: "application/pdf", fileDownloadName: $"{identifier}.pdf");
+            }
+        }
+        catch (HttpRequestException)
+        {
+            // If we can't generate our printable PDF, redirect to the print page instead
+            return RedirectToAction("GetPrintableCollection", new { identifier, languageCode });
+        }
+
+        return NotFound();
+
     }
 }

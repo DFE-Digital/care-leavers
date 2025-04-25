@@ -119,8 +119,8 @@
       },
       "contentful.aspnetcore": {
         "type": "Transitive",
-        "resolved": "8.3.2",
-        "contentHash": "mkbuTafbToo6fYMJQS+trt60Dk6elMvyVYpRoOo4IPEBSWehhAVnXiphE+4SXzXn/FfvVQlGh3Sxi275NPvRLA==",
+        "resolved": "8.4.0",
+        "contentHash": "P1GjzbKTQoN4DKclp4Sfd8NjcykV/HG/B2dlwGZW65IHhadfu+AUnvxNZZpv1jKp+7oZUmgG6j57Aw4/nWqnaA==",
         "dependencies": {
           "Microsoft.AspNetCore.Http": "2.2.2",
           "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
@@ -131,13 +131,13 @@
           "Microsoft.Extensions.Http": "6.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "6.0.0",
           "System.Net.Http": "4.3.4",
-          "contentful.csharp": "8.3.2"
+          "contentful.csharp": "8.4.0"
         }
       },
       "contentful.csharp": {
         "type": "Transitive",
-        "resolved": "8.3.2",
-        "contentHash": "q3WfKrpg4LIFDLqBxbGGzltxRVhFji5mDPW+BWFaCAjFelR/Y7Dxe1L4sKQOGOuWaz89NrAu0rd86yqIqPORcw==",
+        "resolved": "8.4.0",
+        "contentHash": "JbEJ1JcmEIn7QhkO1e4clIc/YDVSbgR+2NUnba+R3Fq7wdpe5B7MwwwxCKQoYVwDeXo4cce2T/k7SP+Ylhu2eg==",
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
           "Newtonsoft.Json": "13.0.1"
@@ -1368,8 +1368,8 @@
       },
       "StackExchange.Redis": {
         "type": "Transitive",
-        "resolved": "2.8.22",
-        "contentHash": "GRA97f4cHYxBI/fKOfgs3GyKklc5is6YKM2yWbkiCZGR/JKsXIo0sRJSSeJabriJAZkKFthM0rXnULFfSbs0KA==",
+        "resolved": "2.8.31",
+        "contentHash": "RCHVQa9Zke8k0oBgJn1Yl6BuYy8i6kv+sdMObiH60nOwD6QvWAjxdDwOm+LO78E8WsGiPqgOuItkz98fPS6haQ==",
         "dependencies": {
           "Microsoft.Extensions.Logging.Abstractions": "6.0.0",
           "Pipelines.Sockets.Unofficial": "2.2.8"
@@ -2338,11 +2338,11 @@
       },
       "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis": {
         "type": "Transitive",
-        "resolved": "2.1.0",
-        "contentHash": "O6+lea9lwM3xveads2heux4zFDTLR57fCNpE+fZyVm/UXPkKgnP53mPq6sYIhr+ggp6aZvtKMSnSV3mALJ4A3g==",
+        "resolved": "2.2.0",
+        "contentHash": "PMnAXCZG5+VfRi9o0QupvSO307qntTDbc2t+4Oo112C/f2WrCPJn5F9SUtkmOiBXctXwojLN33GSTmdE5RkiRQ==",
         "dependencies": {
-          "StackExchange.Redis": "2.8.22",
-          "ZiggyCreatures.FusionCache": "2.1.0"
+          "StackExchange.Redis": "2.8.31",
+          "ZiggyCreatures.FusionCache": "2.2.0"
         }
       },
       "ZiggyCreatures.FusionCache.OpenTelemetry": {
@@ -2381,10 +2381,10 @@
           "Serilog.AspNetCore": "[9.0.0, )",
           "Serilog.Sinks.ApplicationInsights": "[4.0.0, )",
           "ZiggyCreatures.FusionCache.Backplane.Memory": "[2.2.0, )",
-          "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis": "[2.1.0, )",
+          "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis": "[2.2.0, )",
           "ZiggyCreatures.FusionCache.OpenTelemetry": "[2.2.0, )",
           "ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson": "[2.2.0, )",
-          "contentful.aspnetcore": "[8.3.2, )"
+          "contentful.aspnetcore": "[8.4.0, )"
         }
       }
     }

@@ -1,0 +1,159 @@
+@using System.Globalization
+@using CareLeavers.Web.Configuration
+@using CareLeavers.Web.Models.ViewModels
+@using CareLeavers.Web.Translation
+@using Joonasw.AspNetCore.SecurityHeaders.Csp
+@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.Extensions.Options
+@model CareLeavers.Web.Models.Content.PrintableCollection
+@inject IWebHostEnvironment WebHostEnvironment
+@inject ICspNonceService CspNonceService
+@inject IContentfulConfiguration ContentfulConfiguration
+@inject IOptions<ScriptOptions> ScriptOptions
+@inject ITranslationService TranslationService
+
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "";
+
+    var config = await ContentfulConfiguration.GetConfiguration();
+    var scriptConfig = ScriptOptions.Value;
+    var consentFeature = Context.Features.Get<ITrackingConsentFeature>() ?? throw new NullReferenceException();
+    
+    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
+    if (string.IsNullOrEmpty(languageCode))
+    {
+        languageCode = "en";
+    }
+    
+    var language = await TranslationService.GetLanguage(languageCode);
+    
+    var configViewModel = new ConfigViewModel
+    {
+        ContentfulConfiguration = config,
+        Language = language,
+        ShowNavigation = false,
+        ShowFooterLinks = false,
+        ShowLanguage = false
+    };
+}
+
+<!DOCTYPE html>
+<html 
+    class="govuk-template" 
+    dir="@language.Direction" 
+    lang="@languageCode">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"]</title>
+    <style asp-add-nonce="true">
+        :root {
+            --generated: '@DateTime.Today.ToString("d MMMM yyyy", DateTimeFormatInfo.InvariantInfo)' ;
+            --siteurl: '@Url.ActionLink("GetContent", "Contentful", values: new { slug = config.HomePage?.Slug, languageCode})';
+        }
+    </style>
+    <link rel="stylesheet" href="~/css/application.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="stylesheet" href="~/css/collection.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <meta name="robots" content="noindex, nofollow"/>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    
+    <link rel="canonical" href="@Url.Action(
+                                    action: "GetPrintableCollection",
+                                    controller: "Print",
+                                    protocol: "https",
+                                    values: new { identifier = Model.Identifier, languageCode = "en" }
+                                )"/>
+
+</head>
+
+<body class="govuk-template__body">
+<div id="collection-header">
+    <header class="dfe-header" role="banner">
+        <div class="dfe-width-container dfe-header__container">
+            <div class="dfe-header__logo">
+                <a class="dfe-header__link dfe-header__link--service " href="~/@languageCode/@configViewModel.ContentfulConfiguration.HomePage?.Slug" aria-label="@configViewModel.ContentfulConfiguration.ServiceName homepage">
+                    <img src="~/assets/dfe-logo.png" class="dfe-logo" alt="@configViewModel.ContentfulConfiguration.ServiceName homepage">
+                    <img src="~/assets/dfe-logo-alt.png" class="dfe-logo-hover" alt="@configViewModel.ContentfulConfiguration.ServiceName homepage">
+                </a>
+            </div>
+        </div>
+    </header>
+    <partial model="configViewModel.ContentfulConfiguration.ServiceName" name="ServiceName"></partial>
+</div>
+<table>
+    <thead>
+    <tr>
+        <td>
+            <div id="collection-header-space">&nbsp;</div>
+        </td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td class="collection-page-content first-page">
+            <div class="govuk-width-container">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-two-thirds">
+                        <h2 class="govuk-heading-xl print-collection-title">@Model.Title</h2>
+                        <div class="print-collection-summary">
+                            <gds-contentful-rich-text document="Model.Summary" larger-text="true"></gds-contentful-rich-text>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+    @foreach (var collectionPage in Model.Content)
+    {
+        <tr>
+            <th class="dfe-page-grey collection-page-header">
+                <div class="govuk-width-container collection-page-header-container">
+                    <div class="govuk-grid-row">
+                        <div class="govuk-grid-column-two-thirds">
+                            <h1 class="govuk-heading-xl">
+                                @collectionPage.Title
+                            </h1>
+            
+                            @if (collectionPage.Header != null)
+                            {
+                                <gds-contentful-rich-text document="@collectionPage.Header" larger-text="true"></gds-contentful-rich-text>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </th>
+        </tr>
+        <tr>
+            <td class="collection-page-content">
+                <div class="govuk-width-container collection-page-content-container">
+                    <main class="govuk-main-wrapper">
+                        <div class="govuk-grid-row">
+                            <div class="govuk-grid-column-full">
+                                @if (collectionPage.ShowContentsBlock)
+                                {
+                                    <gds-contentful-contents document="@collectionPage.MainContent" levels="@collectionPage.ContentsHeadings"/>
+                                }
+                                <gds-contentful-rich-text document="@collectionPage.MainContent"></gds-contentful-rich-text>
+                            </div>
+                            
+                        </div>
+                        @{
+                            collectionPage.ShowShareLinks = false;
+                            collectionPage.ShowLastUpdated = true;
+                        }
+                        <partial name="LastUpdated" model="@collectionPage"/>
+                    </main>
+                </div>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+</body>
+
+</html>
+

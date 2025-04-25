@@ -10,23 +10,125 @@ using Newtonsoft.Json;
 
 namespace CareLeavers.Web.Controllers;
 
-public class PrintController(IContentService contentService, ITranslationService translationService) : Controller
+[Route("/")]
+public class ContentfulController(IContentService contentService, ITranslationService translationService) : Controller
 {
-    [Route("/print/{slug}")]
-    [Route("/{languageCode}/print/{slug}")]
+    [Route("/")]
+    public async Task<IActionResult> Homepage(
+        [FromServices] IContentfulConfiguration contentfulConfiguration,
+        [FromQuery] string? languageCode = null)
+    {
+        languageCode ??= "en";
+        var config = await contentfulConfiguration.GetConfiguration();
+        return RedirectToAction("GetContent", new { slug = config.HomePage?.Slug, languageCode });
+    }
+    
+    [Route("/en")]
+    [Route("/en/en")]
+    public async Task<IActionResult> NoSlug(
+        [FromServices] IContentfulConfiguration contentfulConfiguration)
+    {
+        var config = await contentfulConfiguration.GetConfiguration();
+        return RedirectToAction("GetContent", new { slug = config.HomePage?.Slug, languageCode = "en" });
+    }
+
+    [Route("/json/{**slug}")]
+    [ExcludeFromCodeCoverage(Justification = "Development only")]
+    public async Task<IActionResult> GetContentAsJson(string slug, [FromServices] IWebHostEnvironment environment)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        if (!environment.IsDevelopment())
+        {
+            return NotFound();
+        }
+
+        var page = await contentService.GetPage(slug);
+
+        return Content(JsonConvert.SerializeObject(page, Constants.SerializerSettings), "application/json");
+    }
+
+    [Route("/json/configuration")]
+    [ExcludeFromCodeCoverage(Justification = "Development only")]
+    public async Task<IActionResult> GetConfigurationAsJson([FromServices] IWebHostEnvironment environment)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        if (!environment.IsDevelopment())
+        {
+            return NotFound();
+        }
+
+        var configuration = await contentService.GetConfiguration();
+
+        return Content(JsonConvert.SerializeObject(configuration, Constants.SerializerSettings), "application/json");
+    }
+    
+    [Route("/json/{contentType}/{id}")]
+    [ExcludeFromCodeCoverage(Justification = "Development only")]
+    public async Task<IActionResult> GetContentAsJson(string contentType, string id, [FromServices] IWebHostEnvironment environment)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        if (!environment.IsDevelopment())
+        {
+            return NotFound();
+        }
+
+        var returnObject = new object();
+        
+        if (contentType == Grid.ContentType)
+        {
+            returnObject = new Grid() { Sys = new SystemProperties() { Id = id } };
+        } 
+        else if (contentType == RichContentBlock.ContentType)
+        {
+            returnObject = new RichContentBlock() { Sys = new SystemProperties() { Id = id } };
+        }
+        else if (contentType == Banner.ContentType)
+        {
+            returnObject = new Banner() { Sys = new SystemProperties() { Id = id } };
+        }
+        else if (contentType == StatusChecker.ContentType)
+        {
+            returnObject = new StatusChecker() { Sys = new SystemProperties() { Id = id } };
+        }
+
+        returnObject = await contentService.Hydrate(returnObject);
+
+        return Content(JsonConvert.SerializeObject(returnObject, Constants.SerializerSettings), "application/json");
+    }
+
+    [Route("/{slug}")]
+    [Route("/{languageCode}/{slug}")]
     [Translation]
-    public async Task<IActionResult> GetPrintableBooklet(string slug, string languageCode)
+    public async Task<IActionResult> GetContent(string slug, string? languageCode)
     {
         if (string.IsNullOrEmpty(languageCode))
         {
-            return RedirectToAction("GetPrintableBooklet", new { slug, languageCode = "en" });
+            return RedirectToAction("GetContent", new { slug, languageCode = "en" });
         }
-    
+
         var config = await contentService.GetConfiguration();
 
         if (config == null)
         {
             return NotFound();
+        }
+
+        var redirectionRule = await contentService.GetRedirectionRules(slug);
+        if (redirectionRule?.Rules != null && redirectionRule.Rules.TryGetValue(slug, out var destinationSlug))
+        {
+            return RedirectToAction("GetContent", new { slug = destinationSlug, languageCode });
         }
 
         var languages = new List<string>();
@@ -41,16 +143,18 @@ public class PrintController(IContentService contentService, ITranslationService
         
         if (!languages.Contains(languageCode))
         {
-            return RedirectToAction("GetPrintableBooklet", new { slug, languageCode = "en" });
+            return RedirectToAction("GetContent", new { slug, languageCode = "en" });
         }
         
-        var booklet = await contentService.GetPrintableBooklet(slug);
+        var page = await contentService.GetPage(slug);
 
-        if (booklet == null)
+        if (page == null)
         {
             return NotFound();
         }
-
-        return View("Booklet", booklet);
+        
+        return View("Page", page);
     }
+    
+    
 }
