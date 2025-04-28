@@ -111,6 +111,8 @@ jobs:
           TF_VAR_azure_translation_access_key: ${{ secrets.AZURE_TRANSLATION_ACCESS_KEY }}
           TF_VAR_aspnetcore_environment: ${{ github.event.inputs.environment }}
           TF_VAR_azure_frontdoor_scale: ${{ vars.AZURE_FRONTDOOR_SCALE }}
+          TF_VAR_pdf_generation_api_key: ${{ secrets.PDF_GENERATION_API_KEY }}
+          TF_VAR_pdf_generation_use_sandbox: ${{ vars.PDF_GENERATION_USE_SANDBOX }}
 
       - name: 'Terraform Apply'
         id: terraform_apply
