@@ -4,6 +4,7 @@
 @inject IHttpContextAccessor HttpContextAccessor;
 @{
     var link = "";
+    var rel = "";
     var languageCode = HttpContextAccessor.HttpContext?.Request.RouteValues["languageCode"]?.ToString();
 
     switch (Model.Link)
@@ -15,6 +16,7 @@
         case PrintableCollection pc:
             var identifier = pc.Identifier ?? string.Empty;
             link = LinkGenerator.GetPathByAction("DownloadPdf", "Print", values: new { identifier, languageCode });
+            rel = "nofollow";
 
             break;
 
@@ -30,7 +32,7 @@
                 {
                     <span class="govuk-caption-l">@Model.Types.FirstOrDefault()</span>
                 }
-                <h3 class="govuk-heading-l"><a href="@link" class="govuk-link">@Model.Title</a></h3>
+                <h3 class="govuk-heading-l"><a href="@link" rel="@rel" class="govuk-link">@Model.Title</a></h3>
                 <p class="govuk-body">@Model.Text</p>
                 <p class="govuk-!-margin-bottom-0">
                 </p>

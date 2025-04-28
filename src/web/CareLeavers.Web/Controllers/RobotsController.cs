@@ -35,6 +35,9 @@ public class RobotsController (IContentfulConfiguration contentfulConfiguration,
         {
             sb.AppendLine($"Disallow: /{language.Code}/");
         }
+
+        sb.AppendLine($"Disallow: /pdf/");
+        sb.AppendLine($"Disallow: /print/");
         
         sb.AppendLine("Allow: /");
         sb.AppendLine();
