@@ -1,5 +1,6 @@
 using System.Text;
 using CareLeavers.Web.Configuration;
+using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Translation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -28,6 +29,7 @@ public class TranslationAttribute : ActionFilterAttribute
 
         var slug = HardcodedSlug ?? context.RouteData.Values["slug"]?.ToString();
         var languageCode = context.RouteData.Values["languageCode"]?.ToString();
+        var identifier = context.RouteData.Values["identifier"]?.ToString();
         var languages = new List<string>();
         if (config.TranslationEnabled)
         {
@@ -38,7 +40,7 @@ public class TranslationAttribute : ActionFilterAttribute
             languages.Add("en");
         }
         
-        if (slug == null || 
+        if ((slug == null && identifier == null) || 
             !config.TranslationEnabled ||
             string.IsNullOrEmpty(languageCode) || 
             languageCode == "en" ||
@@ -49,7 +51,16 @@ public class TranslationAttribute : ActionFilterAttribute
             return;
         }
 
-        var cachedResponse = await fusionCache.TryGetAsync<byte[]?>($"content:{slug}:language:{languageCode}");
+        MaybeValue<byte[]?> cachedResponse = MaybeValue<byte[]?>.None;
+
+        if (slug != null)
+        {
+            cachedResponse = await fusionCache.TryGetAsync<byte[]?>($"content:{slug}:language:{languageCode}");
+        } 
+        else if (identifier != null)
+        {
+            cachedResponse = await fusionCache.TryGetAsync<byte[]?>($"collection:{identifier}:language:{languageCode}");
+        }
 
         if (cachedResponse is { HasValue: true, Value: not null })
         {
@@ -81,6 +92,7 @@ public class TranslationAttribute : ActionFilterAttribute
         var fusionCache = context.HttpContext.RequestServices.GetRequiredService<IFusionCache>();
 
         var slug = HardcodedSlug ?? context.RouteData.Values["slug"]?.ToString();
+        var identifier = context.RouteData.Values["identifier"]?.ToString();
         var languageCode = context.RouteData.Values["languageCode"]?.ToString();
         var languages = new List<string>();
         if (config.TranslationEnabled)
@@ -92,7 +104,7 @@ public class TranslationAttribute : ActionFilterAttribute
             languages.Add("en");
         }
 
-        if (slug == null || 
+        if ((slug == null && identifier == null) || 
             string.IsNullOrEmpty(languageCode) || 
             _memoryStream == null || 
             _originalBodyStream == null || 
@@ -121,6 +133,24 @@ public class TranslationAttribute : ActionFilterAttribute
         await context.HttpContext.Response.Body!.WriteAsync(_memoryStream.ToArray());
         
         _memoryStream.Seek(0, SeekOrigin.Begin);
-        await fusionCache.SetAsync($"content:{slug}:language:{languageCode}", _memoryStream.ToArray(), tags: [slug]);
+
+        if (slug != null)
+        {
+            await fusionCache.SetAsync($"content:{slug}:language:{languageCode}", _memoryStream.ToArray(),
+                tags: [slug]);
+        } 
+        else if (identifier != null)
+        {
+            var collection = await fusionCache.TryGetAsync<PrintableCollection>($"collection:{identifier}");
+            List<string>? tags = [];
+            if (collection is { HasValue: true, Value: not null })
+            {
+                tags = collection.Value.Content.Select(p => p.Slug!).ToList();
+            }
+            tags.Add(identifier);
+            
+            await fusionCache.SetAsync($"collection:{identifier}:language:{languageCode}", _memoryStream.ToArray(),
+                tags: tags);
+        }
     }
 }

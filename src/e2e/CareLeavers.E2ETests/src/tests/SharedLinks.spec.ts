@@ -70,7 +70,7 @@ test.describe('Shared Website Functionalities', () => {
                 // Navigate to page & check that helpline links are visible
                 await basePage.navigateTo(path);
                 await expect(basePage.ifYouNeedHelpSection).toBeVisible();
-                await expect(basePage.helplineLink).toHaveAttribute('href', 'helplines');
+                await expect(basePage.helplineLink).toHaveAttribute('href', '/en/helplines');
                 await expect(basePage.helplineLink).toBeVisible();
             });
         });

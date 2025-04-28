@@ -1,0 +1,162 @@
+﻿@using CareLeavers.Web.Configuration
+@using CareLeavers.Web.Models.ViewModels
+@using CareLeavers.Web.Translation
+@using Joonasw.AspNetCore.SecurityHeaders.Csp
+@using Joonasw.AspNetCore.SecurityHeaders.TagHelpers
+@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Options
+
+@inject IWebHostEnvironment WebHostEnvironment
+@inject ICspNonceService CspNonceService
+@inject IContentfulConfiguration ContentfulConfiguration
+@inject IOptions<ScriptOptions> ScriptOptions
+@inject ITranslationService TranslationService
+
+@{
+    var config = await ContentfulConfiguration.GetConfiguration();
+    var scriptConfig = ScriptOptions.Value;
+    var consentFeature = Context.Features.Get<ITrackingConsentFeature>() ?? throw new NullReferenceException();
+    
+    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
+    if (string.IsNullOrEmpty(languageCode))
+    {
+        languageCode = "en";
+    }
+    
+    var language = await TranslationService.GetLanguage(languageCode);
+    
+    var configViewModel = new ConfigViewModel
+    {
+        ContentfulConfiguration = config,
+        Language = language,
+        ShowNavigation = false,
+        ShowFooterLinks = false,
+        ShowLanguage = false
+    };
+}
+
+<!DOCTYPE html>
+<html class="govuk-template" dir="@language.Direction" lang="@languageCode">
+
+<head>
+    @if (WebHostEnvironment.IsProduction() && !string.IsNullOrEmpty(scriptConfig.GTM))
+    {
+        <script asp-add-nonce="true">
+            // Define dataLayer and the gtag function.
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+        
+            // Set default consent to 'denied' as a placeholder
+            // Determine actual values based on your own requirements
+            gtag('consent', 'default', {
+                'ad_storage': 'denied',
+                'ad_user_data': 'denied',
+                'ad_personalization': 'denied',
+                'analytics_storage': '@(consentFeature.HasConsent ? "granted" : "denied")',
+            });
+        </script>
+
+        <!-- Google Tag Manager -->
+        <script asp-add-nonce="true">
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+                var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
+                j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+                j.setAttribute('nonce','@CspNonceService.GetNonce()');
+                f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','@scriptConfig.GTM');</script>
+        <!-- End Google Tag Manager -->
+    }
+    @if (!string.IsNullOrEmpty(scriptConfig.Clarity))
+    {
+        <!-- Clarity -->
+        <script type="text/javascript" asp-add-nonce="true">
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; 
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "@scriptConfig.Clarity");
+
+            (function () {
+                window.clarity('consent', @(consentFeature.CanTrack.ToString().ToLower()));
+            }());
+        </script>
+        <!-- End Clarity -->
+    }
+    <!-- BEGIN SHAREAHOLIC CODE -->
+    <link rel="preload" href="https://cdn.shareaholic.net/assets/pub/shareaholic.js" as="script"/>
+    <meta name="shareaholic:site_id" content="@scriptConfig.ShareaholicSiteId"/>
+    <script asp-add-nonce="true" data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js"></script>
+    <!-- END SHAREAHOLIC CODE -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"]</title>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="mask-icon" href="/assets/images/govuk-icon-mask.svg" color="#0b0c0c" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/govuk-icon-180.png" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <meta name="apple-mobile-web-app-title" content="@config.ServiceName" />
+    
+    <link rel="stylesheet" href="~/css/application.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="stylesheet" href="~/css/collection.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    @if (IsSectionDefined("Head")) {
+        @await RenderSectionAsync("Head", required: false)
+    }
+</head>
+
+<body class="govuk-template__body">
+@if (WebHostEnvironment.IsProduction() && !string.IsNullOrEmpty(scriptConfig.GTM))
+{
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe title="GTM" src="https://www.googletagmanager.com/ns.html?id=@scriptConfig.GTM"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+}
+<script asp-add-nonce="true">
+    document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
+</script>
+
+<header class="dfe-width-container dfe-header__container" id="collection-header">
+    <div class="dfe-header__logo">
+        <a class="dfe-header__link dfe-header__link--service " href="~/" aria-label="@configViewModel.ContentfulConfiguration.ServiceName homepage">
+            <img src="~/assets/dfe-logo.png" class="dfe-logo" alt="@configViewModel.ContentfulConfiguration.ServiceName homepage">
+            <img src="~/assets/dfe-logo-alt.png" class="dfe-logo-hover" alt="@configViewModel.ContentfulConfiguration.ServiceName homepage">
+        </a>
+    </div>
+    <partial model="configViewModel.ContentfulConfiguration.ServiceName" name="ServiceName"></partial>
+</header>
+
+<table>
+    <thead>
+    <tr>
+        <th>
+            <div class="header-space">&nbsp;
+            </div>
+        </th>
+    </tr>
+    </thead>
+    <tbody class="govuk-width-container @ViewBag.ContainerClasses" id="main-content-container">
+        @RenderBody()
+    </tbody>
+    @if (IsSectionDefined("Footer"))
+    {
+        <tfoot class="dfe-page-grey">
+            <tr class="govuk-width-container">
+                @await RenderSectionAsync("Footer")
+            </tr>
+        </tfoot>
+    }
+</table>
+
+@await RenderSectionAsync("Scripts", false)
+<script asp-add-nonce="true" type="module">
+    import { initAll } from '/js/govuk-frontend.min.js'
+    initAll()
+</script>
+<script asp-add-nonce="true" src="/js/dfefrontend.min.js"></script>
+</body>
+
+</html>

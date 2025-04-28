@@ -10,15 +10,15 @@ export class MoneyAndBenefitsPage extends BasePage {
         super(page);
         this.mainContent = page.locator('#main-content');
         this.pageSections = page.locator('h2, h3, h4'); // Select all major sections
-        this.checkStatusLink = page.locator('a[href="your-rights"]'); // "Check your care leaver status" link
+        this.checkStatusLink = page.locator('a[href="/en/your-rights"]').nth(1); // "Check your care leaver status" link
     }
 
     async openMoneyAndBenefitsPage() {
-        await this.navigateTo('/money-and-benefits');
+        await this.navigateTo('/en/money-and-benefits');
     }
 
     async assertPageElements() {
-        await this.validateURLContains('/money-and-benefits');
+        await this.validateURLContains('/en/money-and-benefits');
         await this.verifyLogoPresence();
         await this.verifyHeading("Money and benefits", "Help with money and benefits");
 
@@ -35,6 +35,6 @@ export class MoneyAndBenefitsPage extends BasePage {
 
         // Check "Check your care leaver status" link is present
         await expect(this.checkStatusLink).toBeVisible();
-        await expect(this.checkStatusLink).toHaveAttribute('href', 'your-rights');
+        await expect(this.checkStatusLink).toHaveAttribute('href', '/en/your-rights');
     }
 }

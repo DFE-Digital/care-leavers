@@ -18,12 +18,12 @@ export class AllSupportPage extends BasePage {
     }
 
     async openAllSupportPage() {
-        await this.navigateTo('/all-support');
+        await this.navigateTo('/en/all-support');
         await this.waitForPageLoad();
     }
 
     async assertPageElements() {
-        await this.validateURLContains('/all-support');
+        await this.validateURLContains('/en/all-support');
         await this.verifyLogoPresence();
         await this.verifyHeading(
             "All support",
@@ -51,13 +51,13 @@ export class AllSupportPage extends BasePage {
             await cardLocator.first().click();
             await expect(this.page).toHaveURL(new RegExp(card.url));
             await this.page.goBack();
-            await this.validateURLContains('/all-support');
+            await this.validateURLContains('/en/all-support');
         }
     }
 
     async verifyKnowWhatSupportSection() {
         await expect(this.knowWhatSupportSection).toBeVisible();
         await expect(this.knowWhatSupportLink).toBeVisible();
-        await expect(this.knowWhatSupportLink).toHaveAttribute('href', expect.stringContaining('/your-rights'));
+        await expect(this.knowWhatSupportLink).toHaveAttribute('href', expect.stringContaining('/en/your-rights'));
     }
 }

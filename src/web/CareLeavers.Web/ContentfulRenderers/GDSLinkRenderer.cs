@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CareLeavers.Web.ContentfulRenderers;
 
-public class GDSLinkRenderer(ContentRendererCollection rendererCollection) : IContentRenderer
+public class GDSLinkRenderer(ContentRendererCollection rendererCollection, IServiceProvider serviceProvider) : IContentRenderer
 {
     public bool SupportsContent(IContent content)
     {
@@ -51,19 +51,57 @@ public class GDSLinkRenderer(ContentRendererCollection rendererCollection) : ICo
         {
 
             var link = (content as EntryStructure);
-
-            switch (link?.Data.Target)
+            
+            if (link != null)
             {
-                case Page p:
-                    tb.Attributes["href"] = p.Slug;
-                    foreach (var subContent in link.Content)
-                    {
-                        var renderer = rendererCollection.GetRendererForContent(subContent);
-                        tb.InnerHtml.AppendHtml(await renderer.RenderAsync(subContent));
-                    }
-
-                    break;
+                foreach (var subContent in link.Content)
+                {
+                    var renderer = rendererCollection.GetRendererForContent(subContent);
+                    tb.InnerHtml.AppendHtml(await renderer.RenderAsync(subContent));
+                }
             }
+            
+            var httpContextAccessor = serviceProvider.GetService<IHttpContextAccessor>();
+            var httpContext = httpContextAccessor?.HttpContext;
+            var helper = serviceProvider.GetService<LinkGenerator>();
+            
+            if (httpContext != null && helper != null)
+            {
+                var routeData = httpContext.GetRouteData();
+                routeData.Values.TryGetValue("languageCode", out var languageCode);
+                if (languageCode == null)
+                {
+                    languageCode = "en";
+                }
+
+                switch (link?.Data.Target)
+                {
+                    case Page p:
+                        tb.Attributes["href"] = helper.GetPathByAction("GetContent", "Contentful",
+                            values: new { slug = p.Slug, languageCode });
+                        break;
+
+                    case PrintableCollection pc:
+                        tb.Attributes["href"] = helper.GetPathByAction("DownloadPdf", "Print",
+                            values: new { identifier = pc.Identifier, languageCode });
+                        break;
+                }
+            }
+            else
+            {
+                switch (link?.Data.Target)
+                {
+                    case Page p:
+                        tb.Attributes["href"] = p.Slug;
+                        break;
+
+                    case PrintableCollection pc:
+                        tb.Attributes["href"] = $"/pdf/{pc.Identifier}";
+                        break;
+                }
+            }
+
+            
         }
 
         return tb.HasInnerHtml ? tb.ToHtmlString() : string.Empty;

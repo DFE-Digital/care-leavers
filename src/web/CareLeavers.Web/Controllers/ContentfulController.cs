@@ -152,7 +152,9 @@ public class ContentfulController(IContentService contentService, ITranslationSe
         {
             return NotFound();
         }
-
+        
         return View("Page", page);
     }
+    
+    
 }

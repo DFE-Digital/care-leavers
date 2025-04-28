@@ -5,6 +5,10 @@
 @inject IWebHostEnvironment WebHostEnvironment
 @inject IOptions<ScriptOptions> ScriptOptions
 
+@{
+    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
+}
+
 @if (!WebHostEnvironment.IsProduction())
 {
     <div class="environment-banner">
@@ -81,7 +85,7 @@
 <header class="dfe-header" role="banner">
     <div class="dfe-width-container dfe-header__container">
         <div class="dfe-header__logo">
-            <a class="dfe-header__link dfe-header__link--service " href="~/" aria-label="@Model.ContentfulConfiguration.ServiceName homepage">
+            <a class="dfe-header__link dfe-header__link--service " href="@Url.ActionLink("GetContent", "Contentful", values: new { slug = Model.ContentfulConfiguration.HomePage?.Slug, languageCode})" aria-label="@Model.ContentfulConfiguration.ServiceName homepage">
                 <img src="~/assets/dfe-logo.png" class="dfe-logo" alt="@Model.ContentfulConfiguration.ServiceName homepage">
                 <img src="~/assets/dfe-logo-alt.png" class="dfe-logo-hover" alt="@Model.ContentfulConfiguration.ServiceName homepage">
             </a>

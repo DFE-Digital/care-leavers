@@ -3,6 +3,8 @@
 @inject IContentService ContentService
 
 @{
+    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
+    
     if (!Model.ShowBreadcrumb)
     {
         return;
@@ -17,7 +19,7 @@
         @foreach (var breadcrumb in breadcrumbs)
         {
             <li class="govuk-breadcrumbs__list-item">
-                @Html.ActionLink(breadcrumb.Title, "GetContent", "Contentful", new { slug = breadcrumb.Slug }, new { @class = "govuk-breadcrumbs__link" })
+                @Html.ActionLink(breadcrumb.Title, "GetContent", "Contentful", new { slug = breadcrumb.Slug, languageCode }, new { @class = "govuk-breadcrumbs__link" })
             </li>
         }
     </ol>

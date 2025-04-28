@@ -90,7 +90,7 @@ export class BasePage {
         this.metadataDefinitions = page.locator('.gem-c-metadata__definition');
 
         //Locators for helplines-If you need Help at the bottom of the page
-        this.helplineLink = page.locator('p.govuk-body a.govuk-link[href="helplines"]');
+        this.helplineLink = page.locator('p.govuk-body a.govuk-link[href="/en/helplines"]');
         this.ifYouNeedHelpSection = page.locator('#Talk-to-someone');
 
         //Locators for web page Footers

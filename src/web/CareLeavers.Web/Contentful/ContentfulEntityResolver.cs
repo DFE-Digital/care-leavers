@@ -19,7 +19,8 @@ public class ContentfulEntityResolver : IContentTypeResolver
         { Banner.ContentType, typeof(Banner) },
         { DefinitionLink.ContentType, typeof(DefinitionLink) },
         { Definition.ContentType, typeof(Definition) },
-        { Spacer.ContentType, typeof(Spacer) }
+        { Spacer.ContentType, typeof(Spacer) },
+        { PrintableCollection.ContentType, typeof(PrintableCollection) }
     };
     
     public Type? Resolve(string contentTypeId)

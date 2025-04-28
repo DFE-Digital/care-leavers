@@ -12,8 +12,8 @@ export class LeavingCareGuidesPage extends BasePage {
         super(page);
         this.mainContent = page.locator('#main-content'); // Main content wrapper
         this.guideSection = page.locator('.dfe-section.alternating-image-text'); 
-        this.firstGuide = page.locator('a[href="what-happens-when-you-leave-care"]'); 
-        this.secondGuide = page.locator('a[href="care-terms-explained"]'); 
+        this.firstGuide = page.locator('a[href="/en/what-happens-when-you-leave-care"]'); 
+        this.secondGuide = page.locator('a[href="/en/care-terms-explained"]'); 
     }
 
     async openLeavingCareGuidesPage() {

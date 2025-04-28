@@ -12,8 +12,10 @@ public class Card : ContentfulContent
     
     public Asset? Image { get; set; }
     
-    public Page? Link { get; set; }
+    public ContentfulContent? Link { get; set; }
 
     public List<string> Types { get; set; } = new();
+    
+    public string? Metadata { get; set; }
 
 }

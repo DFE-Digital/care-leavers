@@ -1,7 +1,24 @@
+@using CareLeavers.Web.Models.Content
 @model CareLeavers.Web.Models.Content.Card
-
+@inject LinkGenerator LinkGenerator
+@inject IHttpContextAccessor HttpContextAccessor;
 @{
-    var link = Model.Link?.Slug ?? string.Empty;
+    var link = "";
+    var languageCode = HttpContextAccessor.HttpContext?.Request.RouteValues["languageCode"]?.ToString();
+
+    switch (Model.Link)
+    {
+        case Page p:
+            var slug = p.Slug ?? string.Empty;
+            link = LinkGenerator.GetPathByAction("GetContent", "Contentful", values: new { slug, languageCode });
+            break;
+        case PrintableCollection pc:
+            var identifier = pc.Identifier ?? string.Empty;
+            link = LinkGenerator.GetPathByAction("DownloadPdf", "Print", values: new { identifier, languageCode });
+
+            break;
+
+    }
 
     <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-5">
         <div class="govuk-grid-row split-panel" style="background: #f3f2f1; vertical-align: text-top;">

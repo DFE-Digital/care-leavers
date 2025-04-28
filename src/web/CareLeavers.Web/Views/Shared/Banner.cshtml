@@ -2,11 +2,15 @@
 @using CareLeavers.Web.Models.Enums
 @model CareLeavers.Web.Models.Content.Banner
 @inject IContentService ContentService
+@inject LinkGenerator LinkGenerator
+@inject IHttpContextAccessor HttpContextAccessor;
 
 @{
     var banner = await ContentService.Hydrate(Model);
-
-    var link = banner?.Link?.Slug;
+    var languageCode = HttpContextAccessor.HttpContext?.Request.RouteValues["languageCode"]?.ToString();
+    var slug = banner?.Link?.Slug;
+    var link = LinkGenerator.GetPathByAction("GetContent", "Contentful", new { slug, languageCode });
+    
     var cssClass = "banner";
     var bgClass = "split-panel";
 

@@ -59,6 +59,48 @@ public class ContentfulContentService : IContentService
 
         return page;
     }
+    
+    public async Task<PrintableCollection?> GetPrintableCollection(string identifier)
+    {
+        var printableCollection = await _fusionCache.GetOrSetAsync($"collection:{identifier}", async token =>
+        {
+            var collection = new QueryBuilder<PrintableCollection>()
+                .ContentTypeIs(PrintableCollection.ContentType)
+                .FieldEquals(c => c.Identifier, identifier)
+                .Include(1)
+                .Limit(1);
+
+            var entries = await _contentfulClient.GetEntries(collection, token);
+            
+            var result = entries.FirstOrDefault();
+            if (result != null)
+            {
+                for (var i = 0; i < result.Content.Count; i++)
+                {
+                    var page = result.Content[i];
+                    if (page.Slug == null) continue;
+
+                    var hydratedPage = await GetPage(page.Slug);
+                    if (hydratedPage != null) result.Content[i] = hydratedPage;
+                }
+            }
+
+            return result;
+        });
+
+        // If we get a page, but the slug doesn't match (used in tests), return null so we trigger our 404s
+        if (printableCollection?.Identifier != null && !(printableCollection.Identifier).Equals(identifier, StringComparison.InvariantCultureIgnoreCase))
+        {
+            printableCollection = null;
+        }
+
+        if (printableCollection != null)
+        {
+            await _fusionCache.SetAsync(printableCollection.Sys.Id, printableCollection);
+        }
+
+        return printableCollection;
+    }
 
     public async Task<List<SimplePage>> GetBreadcrumbs(string? slug, bool includeHome = true)
     {

@@ -21,4 +21,6 @@ public interface IContentService
     
     Task<string> GetSlug(string id);
 
+    Task<PrintableCollection?> GetPrintableCollection(string identifier);
+
 }

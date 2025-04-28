@@ -10,15 +10,15 @@ export class WorkAndEmploymentPage extends BasePage {
         super(page);
         this.mainContent = page.locator('#main-content');
         this.pageSections = page.locator('h2, h3, h4'); // Select all major sections (h2, h3, h4)
-        this.checkStatusLink = page.locator('a[href="your-rights"]'); // "Check your care leaver status" link
+        this.checkStatusLink = page.locator('a[href="/en/your-rights"]').nth(1); // "Check your care leaver status" link
     }
 
     async openWorkAndEmploymentPage() {
-        await this.navigateTo('/work-and-employment');
+        await this.navigateTo('/en/work-and-employment');
     }
 
     async assertPageElements() {
-        await this.validateURLContains('/work-and-employment');
+        await this.validateURLContains('/en/work-and-employment');
         await this.verifyLogoPresence();
         await this.verifyHeading("Work and employment", "work");
 
@@ -35,6 +35,6 @@ export class WorkAndEmploymentPage extends BasePage {
 
         // Check "Check your care leaver status" link is present
         await expect(this.checkStatusLink).toBeVisible();
-        await expect(this.checkStatusLink).toHaveAttribute('href', 'your-rights');
+        await expect(this.checkStatusLink).toHaveAttribute('href', '/en/your-rights');
     }
 }
