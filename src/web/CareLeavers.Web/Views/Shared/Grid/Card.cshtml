@@ -34,5 +34,9 @@
             </a>
         </h3>
         <p class="govuk-body">@Model.Text</p>
+        @if (!string.IsNullOrEmpty(Model.Metadata))
+        {
+            <p class="govuk-body-s">@Model.Metadata</p>
+        }
     </div>
 </div>
