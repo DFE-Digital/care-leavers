@@ -1,17 +1,38 @@
+@using CareLeavers.Web.Models.Content
 @model CareLeavers.Web.Models.Content.Card
-
+@inject LinkGenerator LinkGenerator
+@inject IHttpContextAccessor HttpContextAccessor;
 @{
-    var link = Model.Link?.Slug ?? string.Empty;
+    var link = "";
+    var languageCode = HttpContextAccessor.HttpContext?.Request.RouteValues["languageCode"]?.ToString();
+
+    switch (Model.Link)
+    {
+        case Page p:
+            var slug = p.Slug ?? string.Empty;
+            link = LinkGenerator.GetPathByAction("GetContent", "Contentful", values: new { slug, languageCode });
+            break;
+        case PrintableCollection pc:
+            var identifier = pc.Identifier ?? string.Empty;
+            link = LinkGenerator.GetPathByAction("DownloadPdf", "Print", values: new { identifier, languageCode });
+
+            break;
+        
+    }
+    
 }
 
 <div class="dfe-card">
+    @if (Model.Image != null)
+    {
         <contentful-image asset="@Model.Image" class="full-width-image card-image" alt="" role="presentation"></contentful-image>
-        <div class="dfe-card-container">
-            <h3 class="govuk-heading-m">
-                <a href="@link" class="govuk-link govuk-link--no-visited-state dfe-card-link--header">
-                    @Model.Title
-                </a>
-            </h3>
-            <p class="govuk-body">@Model.Text</p>
-        </div>
+    }
+    <div class="dfe-card-container">
+        <h3 class="govuk-heading-m">
+            <a href="@link" class="govuk-link govuk-link--no-visited-state dfe-card-link--header">
+                @Model.Title
+            </a>
+        </h3>
+        <p class="govuk-body">@Model.Text</p>
+    </div>
 </div>
