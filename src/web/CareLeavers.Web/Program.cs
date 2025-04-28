@@ -117,21 +117,27 @@ try
             }
         });
 
-        // Add custom renderers
+        // Add custom renderers with no renderers or DI
+        renderer.AddRenderer(new GDSHorizontalRulerContentRenderer());
+        renderer.AddRenderer(new GDSSpacerRenderer());
+        
+        // Add custom renderers, passing renderer collection
         renderer.AddRenderer(new GDSParagraphRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSHeaderRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSAssetRenderer(renderer.Renderers));
-        renderer.AddRenderer(new GDSLinkRenderer(renderer.Renderers));
         renderer.AddRenderer(new GDSListRenderer(renderer.Renderers));
-        renderer.AddRenderer(new GDSHorizontalRulerContentRenderer());
-        renderer.AddRenderer(new GDSDefinitionLinkRenderer());
-        renderer.AddRenderer(new GDSSpacerRenderer());
+        
+        // Add custom renderers with DI
+        renderer.AddRenderer(new GDSDefinitionLinkRenderer(serviceProvider));
         renderer.AddRenderer(new GDSGridRenderer(serviceProvider));
         renderer.AddRenderer(new GDSRichContentRenderer(serviceProvider));
         renderer.AddRenderer(new GDSStatusCheckerRenderer(serviceProvider));
         renderer.AddRenderer(new GDSRiddleRenderer(serviceProvider));
         renderer.AddRenderer(new GDSBannerRenderer(serviceProvider));
         renderer.AddRenderer(new GDSDefinitionRenderer(serviceProvider));
+        
+        // Add custom renderers with renderers and DI
+        renderer.AddRenderer(new GDSLinkRenderer(renderer.Renderers, serviceProvider));
 
         return renderer;
     });
