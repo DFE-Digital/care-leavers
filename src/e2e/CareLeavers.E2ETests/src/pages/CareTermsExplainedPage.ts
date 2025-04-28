@@ -26,20 +26,20 @@ export class CareTermsExplainedPage extends BasePage {
         // Locators for the Helpful Links section
         this.helpfulLinksSection = page.locator('#Helpful-links');
         this.helpfulLinks = [
-            page.locator('a[href="housing-and-accommodation"]'),
-            page.locator('a[href="money-and-benefits"]'),
-            page.locator('div.dfe-card:nth-child(3) a[href="all-support"]')
+            page.locator('a[href="/en/housing-and-accommodation"]'),
+            page.locator('a[href="/en/money-and-benefits"]'),
+            page.locator('div.dfe-card:nth-child(3) a[href="/en/all-support"]')
         ];
     }
 
     // Navigate to the page
     async openCareTermsPage() {
-        await this.navigateTo('/care-terms-explained');
+        await this.navigateTo('/en/care-terms-explained');
     }
 
     // Assert page elements are correct
     async assertPageElements() {
-        await this.validateURLContains('/care-terms-explained');
+        await this.validateURLContains('/en/care-terms-explained');
         await this.verifyLogoPresence();
         await this.verifyHeading(
             "Care terms explained",

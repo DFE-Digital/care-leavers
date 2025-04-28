@@ -107,7 +107,7 @@ export class HomePage extends BasePage {
         
         // Validate the link exists and is functional
         await expect(this.supportLink).toBeVisible();
-        await expect(this.supportLink).toHaveAttribute('href', expect.stringContaining('/status'));
+        await expect(this.supportLink).toHaveAttribute('href', expect.stringContaining('/en/status'));
 
         // Validate the image container exists
         await expect(this.supportImage).toBeVisible();
@@ -120,7 +120,7 @@ export class HomePage extends BasePage {
         // Validate that the guide image exists and is wrapped in a link
         await expect(this.guideImage).toBeVisible();
         await expect(this.guideLink).toBeVisible();
-        await expect(this.guideLink).toHaveAttribute('href', expect.stringContaining('/guide-leaving-care'));
+        await expect(this.guideLink).toHaveAttribute('href', expect.stringContaining('/en/guide-leaving-care'));
     }
 
 }
