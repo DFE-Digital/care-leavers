@@ -4,9 +4,9 @@
     "net8.0": {
       "contentful.csharp": {
         "type": "Direct",
-        "requested": "[8.3.2, )",
-        "resolved": "8.3.2",
-        "contentHash": "q3WfKrpg4LIFDLqBxbGGzltxRVhFji5mDPW+BWFaCAjFelR/Y7Dxe1L4sKQOGOuWaz89NrAu0rd86yqIqPORcw==",
+        "requested": "[8.4.0, )",
+        "resolved": "8.4.0",
+        "contentHash": "JbEJ1JcmEIn7QhkO1e4clIc/YDVSbgR+2NUnba+R3Fq7wdpe5B7MwwwxCKQoYVwDeXo4cce2T/k7SP+Ylhu2eg==",
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
           "Newtonsoft.Json": "13.0.1"
