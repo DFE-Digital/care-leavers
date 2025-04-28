@@ -40,9 +40,9 @@
       },
       "contentful.aspnetcore": {
         "type": "Direct",
-        "requested": "[8.3.2, )",
-        "resolved": "8.3.2",
-        "contentHash": "mkbuTafbToo6fYMJQS+trt60Dk6elMvyVYpRoOo4IPEBSWehhAVnXiphE+4SXzXn/FfvVQlGh3Sxi275NPvRLA==",
+        "requested": "[8.4.0, )",
+        "resolved": "8.4.0",
+        "contentHash": "P1GjzbKTQoN4DKclp4Sfd8NjcykV/HG/B2dlwGZW65IHhadfu+AUnvxNZZpv1jKp+7oZUmgG6j57Aw4/nWqnaA==",
         "dependencies": {
           "Microsoft.AspNetCore.Http": "2.2.2",
           "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
@@ -53,7 +53,7 @@
           "Microsoft.Extensions.Http": "6.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "6.0.0",
           "System.Net.Http": "4.3.4",
-          "contentful.csharp": "8.3.2"
+          "contentful.csharp": "8.4.0"
         }
       },
       "HtmlAgilityPack": {
@@ -214,8 +214,8 @@
       },
       "contentful.csharp": {
         "type": "Transitive",
-        "resolved": "8.3.2",
-        "contentHash": "q3WfKrpg4LIFDLqBxbGGzltxRVhFji5mDPW+BWFaCAjFelR/Y7Dxe1L4sKQOGOuWaz89NrAu0rd86yqIqPORcw==",
+        "resolved": "8.4.0",
+        "contentHash": "JbEJ1JcmEIn7QhkO1e4clIc/YDVSbgR+2NUnba+R3Fq7wdpe5B7MwwwxCKQoYVwDeXo4cce2T/k7SP+Ylhu2eg==",
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
           "Newtonsoft.Json": "13.0.1"
