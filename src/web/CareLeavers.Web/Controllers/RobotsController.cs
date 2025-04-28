@@ -30,14 +30,13 @@ public class RobotsController (IContentfulConfiguration contentfulConfiguration,
         sb.AppendLine($"Disallow: {Url.Action("PageNotFound", "Pages", new { languageCode = "en" })}");
         sb.AppendLine($"Disallow: {Url.Action("Error", "Pages", new { languageCode = "en" })}");
         sb.AppendLine($"Disallow: {Url.Action("ServiceUnavailable", "Pages", new { languageCode = "en" })}");
-
-        foreach (var language in languages.Where(l => !l.Code.Equals("en", StringComparison.InvariantCultureIgnoreCase)))
+        sb.AppendLine($"Disallow: /pdf/");
+        sb.AppendLine($"Disallow: /print/");
+        
+        foreach (var language in languages.Where(l => !l.Code.Equals("en", StringComparison.InvariantCultureIgnoreCase)).OrderBy(l => l.Code))
         {
             sb.AppendLine($"Disallow: /{language.Code}/");
         }
-
-        sb.AppendLine($"Disallow: /pdf/");
-        sb.AppendLine($"Disallow: /print/");
         
         sb.AppendLine("Allow: /");
         sb.AppendLine();
