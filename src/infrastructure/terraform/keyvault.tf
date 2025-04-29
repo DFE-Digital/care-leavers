@@ -81,3 +81,11 @@ resource "azurerm_key_vault_secret" "azure-translation-access-key" {
 
   depends_on = [azurerm_key_vault_access_policy.github-kv-access]
 }
+
+resource "azurerm_key_vault_secret" "pdf-generation-api-key" {
+  key_vault_id = azurerm_key_vault.key-vault.id
+  name         = "pdf-generation-api-key"
+  value        = var.pdf_generation_api_key
+
+  depends_on = [azurerm_key_vault_access_policy.github-kv-access]
+}

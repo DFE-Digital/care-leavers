@@ -84,6 +84,8 @@ public class GDSLinkRenderer(ContentRendererCollection rendererCollection, IServ
                     case PrintableCollection pc:
                         tb.Attributes["href"] = helper.GetPathByAction("DownloadPdf", "Print",
                             values: new { identifier = pc.Identifier, languageCode });
+                        tb.Attributes["rel"] = "nofollow";
+                        
                         break;
                 }
             }
@@ -97,6 +99,7 @@ public class GDSLinkRenderer(ContentRendererCollection rendererCollection, IServ
 
                     case PrintableCollection pc:
                         tb.Attributes["href"] = $"/pdf/{pc.Identifier}";
+                        tb.Attributes["rel"] = "nofollow";
                         break;
                 }
             }

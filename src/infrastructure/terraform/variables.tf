@@ -43,6 +43,11 @@ variable "contentful_use_preview_api" {
   type        = bool
 }
 
+variable "pdf_generation_use_sandbox" {
+  description = "Generate PDFs in Sandbox Mode?"
+  type        = bool
+}
+
 variable "caching_type" {
   description = "Caching type"
   type        = string
