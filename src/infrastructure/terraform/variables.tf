@@ -48,6 +48,12 @@ variable "pdf_generation_use_sandbox" {
   type        = bool
 }
 
+variable "pdf_generation_api_key" {
+  description = "PDF Generation API Key"
+  type        = string
+  sensitive   = true
+}
+
 variable "caching_type" {
   description = "Caching type"
   type        = string
