@@ -102,7 +102,7 @@ export class HomePage extends BasePage {
     }
 
     async verifyKnowWhatSupportSection() {
-        await expect(this.knowWhatSupportSection.locator('h3')).toBeVisible();  // Validate the heading exists 
+        await expect(this.knowWhatSupportSection.locator('h2')).toBeVisible();  // Validate the heading exists 
         await expect(this.knowWhatSupportSection.locator('p').first()).toBeVisible(); // Validate first paragraph
         
         // Validate the link exists and is functional

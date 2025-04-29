@@ -20,7 +20,8 @@ public class ContentfulEntityResolver : IContentTypeResolver
         { DefinitionLink.ContentType, typeof(DefinitionLink) },
         { Definition.ContentType, typeof(Definition) },
         { Spacer.ContentType, typeof(Spacer) },
-        { PrintableCollection.ContentType, typeof(PrintableCollection) }
+        { PrintableCollection.ContentType, typeof(PrintableCollection) },
+        { CallToAction.ContentType, typeof(CallToAction) }
     };
     
     public Type? Resolve(string contentTypeId)

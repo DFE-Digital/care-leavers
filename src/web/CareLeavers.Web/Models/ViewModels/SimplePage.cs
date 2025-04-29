@@ -10,4 +10,6 @@ public class SimplePage
     
     public string? Parent { get; set; }
     
+    public bool ExcludeFromSitemap { get; set; }
+    
 }

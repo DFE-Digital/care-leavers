@@ -14,6 +14,8 @@ public class Page : ContentfulContent
     public string? SeoDescription { get; set; }
     
     public Asset? SeoImage { get; set; }
+
+    public bool ExcludeFromSitemap { get; set; } = false;
     
     public PageWidth Width { get; set; }
     
@@ -22,7 +24,6 @@ public class Page : ContentfulContent
     public string? Title { get; set; }
     
     public string? Slug { get; set; }
-    
     
     public bool ShowBreadcrumb { get; set; } = true;
 
