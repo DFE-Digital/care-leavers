@@ -135,6 +135,7 @@ try
         renderer.AddRenderer(new GDSRiddleRenderer(serviceProvider));
         renderer.AddRenderer(new GDSBannerRenderer(serviceProvider));
         renderer.AddRenderer(new GDSDefinitionRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSCallToActionRenderer(serviceProvider));
         
         // Add custom renderers with renderers and DI
         renderer.AddRenderer(new GDSLinkRenderer(renderer.Renderers, serviceProvider));
