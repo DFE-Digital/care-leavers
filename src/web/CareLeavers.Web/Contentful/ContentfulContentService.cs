@@ -116,7 +116,8 @@ public class ContentfulContentService : IContentService
             Id = home?.Sys.Id,
             Title = home?.Title,
             Slug = home?.Slug,
-            Parent = null
+            Parent = null,
+            ExcludeFromSitemap = home?.ExcludeFromSitemap ?? false
         };
         
         
@@ -263,7 +264,8 @@ public class ContentfulContentService : IContentService
                     Id = p.Sys.Id,
                     Slug = slugs.FirstOrDefault(s => s.Key == p.Sys.Id).Value,
                     Title = p.Title,
-                    Parent = p.Parent != null ? slugs.FirstOrDefault(s => s.Key == p.Parent.Sys.Id).Value : null
+                    Parent = p.Parent != null ? slugs.FirstOrDefault(s => s.Key == p.Parent.Sys.Id).Value : null,
+                    ExcludeFromSitemap = p.ExcludeFromSitemap
                 })
                 .ToList();
         });

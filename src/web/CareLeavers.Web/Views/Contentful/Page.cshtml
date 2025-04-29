@@ -65,6 +65,11 @@
         <meta name="description" content="@Model.SeoDescription"/>
     }
 
+    @if (Model.ExcludeFromSitemap)
+    {
+        <meta name="robots" content="noindex, nofollow"/>
+    }
+    
     <link rel="canonical" href="@Url.Action(
                                     action: "GetContent",
                                     controller: "Contentful",
