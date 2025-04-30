@@ -264,7 +264,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       selector       = "User-Agent"
       operator       = "RegEx"
       transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["facebookexternalhit|facebookscraper|twitterbot|meta-externalagent|meta-externalfetcher|microsoftpreview|linkedinbot|pinterest|redditbot|slack|telegrambot|mastadon"]
+      match_values   = ["facebookbot|facebookexternalhit|facebookscraper|twitterbot|meta-externalagent|meta-externalfetcher|microsoftpreview|linkedinbot|pinterest|redditbot|slack|telegrambot|mastadon|embedly|duckduckbot|figma|oai-searchbot|chatgpt-user|gptbot|claude|perplexity|google-extended|amazonbot|applebot|duckassistbot|cohere-ai"]
     }
   }
 
