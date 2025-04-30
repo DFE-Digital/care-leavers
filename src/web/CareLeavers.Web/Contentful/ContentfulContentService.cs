@@ -112,21 +112,30 @@ public class ContentfulContentService : IContentService
 
     public async Task<bool> IsInPrintableCollection(string id)
     {
-        var slug = await GetSlug(id);
-        var result = await _fusionCache.GetOrSetAsync($"pageIsPrintable:{id}", async token =>
+        try
         {
-            var collection = new QueryBuilder<PrintableCollection>()
-                .ContentTypeIs(PrintableCollection.ContentType)
-                .LinksToEntry(id)
-                .Include(0)
-                .Limit(1);
 
-            var entries = await _contentfulClient.GetEntries(collection, token);
 
-            return entries.Any();
-        }, tags: [ slug ]);
+            var slug = await GetSlug(id);
+            var result = await _fusionCache.GetOrSetAsync($"pageIsPrintable:{id}", async token =>
+            {
+                var collection = new QueryBuilder<PrintableCollection>()
+                    .ContentTypeIs(PrintableCollection.ContentType)
+                    .LinksToEntry(id)
+                    .Include(0)
+                    .Limit(1);
 
-        return result;
+                var entries = await _contentfulClient.GetEntries(collection, token);
+
+                return entries != null && entries.Any();
+            }, tags: [slug]);
+            
+            return result;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
     }
 
     public async Task<List<SimplePage>> GetBreadcrumbs(string? slug, bool includeHome = true)
