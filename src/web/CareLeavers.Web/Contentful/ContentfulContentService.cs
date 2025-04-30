@@ -101,6 +101,32 @@ public class ContentfulContentService : IContentService
 
         return printableCollection;
     }
+    
+    public async Task<bool> IsPageInPrintableCollection(string slug)
+    {
+        var slugs = await GetSiteSlugs();
+        var match = slugs.FirstOrDefault(s => s.Value == slug);
+        var id = match.Key;
+        return id != null && await IsInPrintableCollection(id);
+    }
+
+    public async Task<bool> IsInPrintableCollection(string id)
+    {
+        var result = await _fusionCache.GetOrSetAsync($"pageIsPrintable:{id}", async token =>
+        {
+            var collection = new QueryBuilder<PrintableCollection>()
+                .ContentTypeIs(PrintableCollection.ContentType)
+                .LinksToEntry(id)
+                .Include(0)
+                .Limit(1);
+
+            var entries = await _contentfulClient.GetEntries(collection, token);
+
+            return entries.Any();
+        });
+
+        return result;
+    }
 
     public async Task<List<SimplePage>> GetBreadcrumbs(string? slug, bool includeHome = true)
     {
