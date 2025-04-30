@@ -96,7 +96,10 @@ public class ContentfulContentService : IContentService
 
         if (printableCollection != null)
         {
-            await _fusionCache.SetAsync(printableCollection.Sys.Id, printableCollection);
+            // Get slugs from all of the pages
+            var tags = printableCollection.Content.Where(p => p.Slug != null).Select(p => p.Slug!).ToList();
+            await _fusionCache.SetAsync(printableCollection.Sys.Id, printableCollection, tags: tags);
+            await _fusionCache.SetAsync($"collection:{identifier}", printableCollection, tags: tags);
         }
 
         return printableCollection;
@@ -117,7 +120,7 @@ public class ContentfulContentService : IContentService
 
 
             var slug = await GetSlug(id);
-            var result = await _fusionCache.GetOrSetAsync($"pageIsPrintable:{id}", async token =>
+            var result = await _fusionCache.GetOrSetAsync($"pageIsPrintable:{slug}", async token =>
             {
                 var collection = new QueryBuilder<PrintableCollection>()
                     .ContentTypeIs(PrintableCollection.ContentType)

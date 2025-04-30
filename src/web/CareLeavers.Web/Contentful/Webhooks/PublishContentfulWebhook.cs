@@ -130,7 +130,7 @@ public class PublishContentfulWebhook(
             try
             {
                 await fusionCache.RemoveAsync($"collection:{collection.Identifier}");
-                await fusionCache.RemoveByTagAsync(collection.Identifier);
+                await fusionCache.RemoveByTagAsync($"pc-{collection.Identifier}");
             }
             catch (Exception ex)
             {
