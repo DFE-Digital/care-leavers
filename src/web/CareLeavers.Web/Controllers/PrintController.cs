@@ -63,7 +63,11 @@ public class PrintController(IContentService contentService, ITranslationService
         if (collection == null)
             return NotFound();
 
-        var tags = collection.Content.Select(p => p.Slug!).AsEnumerable();
+        // Add tags for each page in the collection, so we expire it if a page changes
+        var tags = collection.Content.Select(p => p.Slug!).ToList();
+        
+        // Also add our printable collection identifier as a tag too
+        tags.Add($"pc-{identifier}");
 
         try
         {
