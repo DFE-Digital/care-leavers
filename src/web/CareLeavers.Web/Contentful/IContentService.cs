@@ -23,4 +23,8 @@ public interface IContentService
 
     Task<PrintableCollection?> GetPrintableCollection(string identifier);
 
+    Task<bool> IsPageInPrintableCollection(string slug);
+    
+    Task<bool> IsInPrintableCollection(string id);
+    
 }
