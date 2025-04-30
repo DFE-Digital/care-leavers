@@ -132,7 +132,7 @@ public class ContentfulContentService : IContentService
             
             return result;
         }
-        catch (Exception ex)
+        catch
         {
             return false;
         }
