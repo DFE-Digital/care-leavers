@@ -4,6 +4,7 @@
 @if (Model.ShowLastUpdated)
 {
     var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
+    var slug = Model.Slug;
 
     <div class="govuk-grid-row" id="last-updated">
         <div class="metadata-logo-wrapper">
@@ -22,7 +23,7 @@
                                                                                             action: "GetContent",
                                                                                             controller: "Contentful",
                                                                                             protocol: "https",
-                                                                                            values: new { slug = Model.Slug, languageCode })</dd>
+                                                                                            values: new { slug, languageCode })</dd>
                         <dt class="gem-c-metadata__term">Published:</dt>
                         <dd class="gem-c-metadata__definition">@Model.Sys.CreatedAt?.ToString("d MMMM yyyy", DateTimeFormatInfo.InvariantInfo)</dd>
                         <dt class="gem-c-metadata__term">Last updated:</dt>
@@ -33,9 +34,7 @@
                 </div>
                 @if (Model.ShowShareLinks)
                 {
-                    <div class="gem-c-print-link govuk-!-display-none-print govuk-!-margin-top-3 govuk-!-margin-bottom-8">
-                        <button class="govuk-link govuk-body-s gem-c-print-link__button" data-module="print-link" id="print-link">Print this page</button>
-                    </div>
+                    <partial name="PrintThisPage" model="@Model"/>
                 }
             </div>
         </div>

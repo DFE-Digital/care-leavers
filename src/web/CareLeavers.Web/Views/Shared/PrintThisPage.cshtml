@@ -1,0 +1,28 @@
+@using CareLeavers.Web.Contentful
+@model CareLeavers.Web.Models.Content.Page
+@inject IContentService ContentService
+@{
+    var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
+}
+
+<div class="gem-c-print-link govuk-!-display-none-print govuk-!-margin-top-3 govuk-!-margin-bottom-8">
+    <button class="govuk-link govuk-body-s gem-c-print-link__button" data-module="print-link" id="print-link">Print this page</button>
+    
+    @if (await ContentService.IsInPrintableCollection(Model.Sys.Id))
+    {
+        var config = await ContentService.GetConfiguration();
+        var printableCollectionPage = config?.PrintableCollectionPage;
+        var printableCollectionCallToAction = config?.PrintableCollectionCallToAction;
+        if (printableCollectionPage != null && printableCollectionCallToAction != null)
+        {
+            <div class="govuk-!-display-none-print govuk-!-margin-top-4">
+                @Html.ActionLink(
+                    printableCollectionCallToAction, "GetContent", "Contentful", 
+                    routeValues: new { slug = printableCollectionPage.Slug, languageCode }, new
+                    {
+                        @class = "govuk-link"
+                    })
+            </div>
+        }
+    }
+</div>
