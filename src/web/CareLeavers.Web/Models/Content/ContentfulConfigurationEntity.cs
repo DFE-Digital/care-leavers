@@ -39,5 +39,9 @@ public class ContentfulConfigurationEntity : ContentfulContent
     public Document? ServiceUnavailableContent { get; set; }
     
     public Document? AccessibilityStatement { get; set; }
+    
+    public Page? PrintableCollectionPage { get; set; }
+    
+    public string? PrintableCollectionCallToAction { get; set; }
 
 }
