@@ -112,6 +112,7 @@ public class ContentfulContentService : IContentService
 
     public async Task<bool> IsInPrintableCollection(string id)
     {
+        var slug = await GetSlug(id);
         var result = await _fusionCache.GetOrSetAsync($"pageIsPrintable:{id}", async token =>
         {
             var collection = new QueryBuilder<PrintableCollection>()
@@ -123,7 +124,7 @@ public class ContentfulContentService : IContentService
             var entries = await _contentfulClient.GetEntries(collection, token);
 
             return entries.Any();
-        });
+        }, tags: [ slug ]);
 
         return result;
     }
