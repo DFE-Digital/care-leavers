@@ -227,30 +227,35 @@ section.dfe {
   width: 100%;
 }
 
-@media (max-width: 768px) {
-  .box-content {
-    width: 100%;
-  }
-}
-.box-content span {
-  color: #505a5f;
-}
-
 .box-icon {
-  width: 15%;
+  width: 20%;
   display: block;
-  right: 0;
-  top: 0;
+  text-align: right;
   float: right;
 }
 
 .box-icon img {
   max-width: 100%;
+  max-height: 6rem;
 }
 
 @media (max-width: 768px) {
   .box-icon {
-    display: none;
+    float: right;
+    width: 30%;
+    padding-bottom: 0.25rem;
+  }
+
+  .box-content {
+    width: 100%;
+  }
+  
+  .box-icon img {
+    max-height: 3rem;
+  }
+  
+  .box-content p, .box-content ul, .box-content ol, .box-content h4 {
+    clear: both;
   }
 }
 
