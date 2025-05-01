@@ -155,6 +155,12 @@ public class ContentfulController(IContentService contentService, ITranslationSe
         
         return View("Page", page);
     }
-    
-    
+
+    [Route("/flush-cache")]
+    public async Task<IActionResult> FlushCache()
+    {
+        await contentService.FlushCache();
+
+        return new OkObjectResult("Success");
+    }
 }
