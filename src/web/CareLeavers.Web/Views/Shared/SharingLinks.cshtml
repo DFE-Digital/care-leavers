@@ -3,21 +3,21 @@
 @model CareLeavers.Web.Models.Content.Page
 @inject IOptions<ScriptOptions> ScriptOptions
 
+@if (Model is { ShowPrintButton: true, ShowLastUpdated: false })
+{
+    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible"/>
+    <div class="govuk-grid-row">
+        <div class="metadata-logo-wrapper">
+            <div class="govuk-grid-column-two-thirds metadata-column">
+                <partial name="PrintThisPage" model="@Model"/>
+            </div>
+        </div>
+    </div>
+}
+
 @if (Model.ShowShareLinks)
 {
     var scriptConfig = ScriptOptions.Value;
-
-    if (!Model.ShowLastUpdated)
-    {
-        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible"/>
-        <div class="govuk-grid-row">
-            <div class="metadata-logo-wrapper">
-                <div class="govuk-grid-column-two-thirds metadata-column">
-                    <partial name="PrintThisPage" model="@Model"/>
-                </div>
-            </div>
-        </div>
-    }
     
     <div class="govuk-grid-row" id="share-this-page">
         <div class="govuk-grid-column-full">
