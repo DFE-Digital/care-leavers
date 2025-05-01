@@ -251,14 +251,14 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       match_values   = ["aolbuild|baidu|bingbot|bingpreview|msnbot|duckduckgo|adsbot-google|googlebot|mediapartners-google|teoma|slurp|yandex|yahoo"]
     }
   }
-  
+
   custom_rule {
     name     = "allowtools"
     enabled  = true
     action   = "Allow"
     type     = "MatchRule"
     priority = 210
-    
+
     match_condition {
       match_variable = "RequestHeader"
       selector       = "User-Agent"
@@ -283,20 +283,20 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       match_values   = ["facebookbot|facebookexternalhit|facebookscraper|twitterbot|meta-externalagent|meta-externalfetcher|microsoftpreview|linkedinbot|pinterest|redditbot|telegrambot|mastadon|duckduckbot"]
     }
   }
-  
+
   custom_rule {
     name     = "allowai"
     enabled  = true
     action   = "Allow"
     type     = "MatchRule"
     priority = 230
-    
+
     match_condition {
-          match_variable = "RequestHeader"
-          selector       = "User-Agent"
-          operator       = "RegEx"
-          transforms     = ["Lowercase", "UrlDecode"]
-          match_values   = ["oai-search|chatgpt|gptbot|cohere-ai|google-extended|amazonbot|applebot|duckassistbot"]
+      match_variable = "RequestHeader"
+      selector       = "User-Agent"
+      operator       = "RegEx"
+      transforms     = ["Lowercase", "UrlDecode"]
+      match_values   = ["oai-search|chatgpt|gptbot|cohere-ai|google-extended|amazonbot|applebot|duckassistbot"]
     }
   }
 
