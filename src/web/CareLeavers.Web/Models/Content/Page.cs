@@ -15,7 +15,7 @@ public class Page : ContentfulContent
     
     public Asset? SeoImage { get; set; }
 
-    public bool ExcludeFromSitemap { get; set; } = false;
+    public bool ExcludeFromSitemap { get; set; }
     
     public PageWidth Width { get; set; }
     
@@ -25,15 +25,17 @@ public class Page : ContentfulContent
     
     public string? Slug { get; set; }
     
-    public bool ShowBreadcrumb { get; set; } = true;
+    public bool ShowBreadcrumb { get; set; }
 
-    public bool ShowContentsBlock { get; set; } = false;
+    public bool ShowContentsBlock { get; set; }
     
     public HeadingType[] ContentsHeadings { get; set; } = [ ];
 
-    public bool ShowLastUpdated { get; set; } = true;
-    
+    public bool ShowLastUpdated { get; set; }
+
     public bool ShowShareLinks { get; set; }
+
+    public bool ShowPrintButton { get; set; }
     
     public bool ShowFooter { get; set; }
     

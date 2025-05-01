@@ -136,6 +136,10 @@ jobs:
       - name: Delete staging slot
         run: az webapp deployment slot delete --name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-app-service --resource-group s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-rg --slot staging
 
-      - name: Flush Redis Cache
-        if: ${{ vars.CACHING_TYPE == 'Redis' }}
-        run: az redis flush --name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-redis-cache --resource-group s186${{ vars.ENVIRONMENT_PREFIX }}-cl-caching-rg --yes
+      - name: Clear Cache
+        id: clear-cache
+        uses: fjogeleit/http-request-action@v1
+        with: 
+          url: 'https://${{ vars.CUSTOM_DOMAIN }}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f'
+          method: 'POST'
+        

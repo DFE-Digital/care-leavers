@@ -309,6 +309,9 @@ public class ContentfulContentService : IContentService
                 .ToList();
         });
     }
-    
-    
+
+    public async Task FlushCache()
+    {
+        await _fusionCache.ClearAsync(false);
+    }
 }

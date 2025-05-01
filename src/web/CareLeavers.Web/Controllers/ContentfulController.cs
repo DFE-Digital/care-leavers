@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 namespace CareLeavers.Web.Controllers;
 
 [Route("/")]
-public class ContentfulController(IContentService contentService, ITranslationService translationService) : Controller
+public class ContentfulController(IContentService contentService, ITranslationService translationService, IHostEnvironment environment) : Controller
 {
     [Route("/")]
     public async Task<IActionResult> Homepage(
@@ -155,6 +155,23 @@ public class ContentfulController(IContentService contentService, ITranslationSe
         
         return View("Page", page);
     }
+
+    [HttpPost("/b0e0dce2-b96d-4b94-a800-63c3ab56e72f")]
+    public async Task<IActionResult> FlushCache()
+    {
+        await contentService.FlushCache();
+
+        return new OkObjectResult("Success");
+    }
     
-    
+    [HttpGet("flush-cache")]
+    public async Task<IActionResult> FlushCacheOnDev()
+    {
+        if (environment.IsDevelopment())
+        {
+            return await FlushCache();
+        }
+
+        return NotFound();
+    }
 }

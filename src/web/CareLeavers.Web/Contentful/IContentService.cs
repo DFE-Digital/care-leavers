@@ -26,5 +26,7 @@ public interface IContentService
     Task<bool> IsPageInPrintableCollection(string slug);
     
     Task<bool> IsInPrintableCollection(string id);
-    
+
+    Task FlushCache();
+
 }

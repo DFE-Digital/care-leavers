@@ -110,7 +110,8 @@ public class PrintController(IContentService contentService, ITranslationService
 
             if (pdf.Length > 0)
             {
-                return File(pdf, contentType: "application/pdf", fileDownloadName: $"{identifier}.pdf");
+                Response.Headers.Append("Content-Disposition",$"inline;{identifier}.pdf");
+                return File(pdf, contentType: "application/pdf");
             }
         }
         catch (HttpRequestException)
