@@ -171,5 +171,31 @@
   .gem-c-contents-list__list-item--numbered,.gem-c-contents-list__list-item--parent {
     list-style-type: none
   }
+
+  
+  .box-icon {
+    float: right;
+    width: 30%;
+    padding-bottom: 0.25rem;
+  }
+
+  .box-content {
+    width: 100%;
+  }
+  
+  .box-content h3 {
+    break-after: avoid-page;
+  }
+
+  .box-icon img {
+    max-height: 6rem;
+    break-before: avoid-page;
+    break-after: avoid-page;
+  }
+
+  .box-content p, .box-content ul, .box-content ol, .box-content h4 {
+    clear: both;
+  }
+
   
 }
