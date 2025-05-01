@@ -164,7 +164,7 @@ public class ContentfulController(IContentService contentService, ITranslationSe
         return new OkObjectResult("Success");
     }
     
-    [HttpPost("clear-cache")]
+    [HttpGet("clear-cache")]
     public async Task<IActionResult> FlushCacheOnDev()
     {
         if (environment.IsDevelopment())
