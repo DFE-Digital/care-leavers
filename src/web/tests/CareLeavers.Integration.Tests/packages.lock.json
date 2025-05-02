@@ -66,6 +66,15 @@
           "Microsoft.Testing.Platform.MSBuild": "1.5.3"
         }
       },
+      "Azure.AI.Translation.Document": {
+        "type": "Transitive",
+        "resolved": "2.0.0",
+        "contentHash": "zNqMq7eEDvpavqUTG2O1dw+aVx+00LgDA76u/mc+aHF+XdM/lA3zWhNEnCo7aKXA3BluLsr37ZYzeaIrDixuPA==",
+        "dependencies": {
+          "Azure.Core": "1.44.1",
+          "System.Text.Json": "6.0.10"
+        }
+      },
       "Azure.AI.Translation.Text": {
         "type": "Transitive",
         "resolved": "1.0.0",
@@ -2366,6 +2375,7 @@
       "careleavers.web": {
         "type": "Project",
         "dependencies": {
+          "Azure.AI.Translation.Document": "[2.0.0, )",
           "Azure.AI.Translation.Text": "[1.0.0, )",
           "Azure.Core": "[1.45.0, )",
           "Azure.Monitor.OpenTelemetry.AspNetCore": "[1.2.0, )",

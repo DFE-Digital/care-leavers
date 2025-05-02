@@ -8,5 +8,7 @@ public class AzureTranslationOptions
     
     public string Endpoint { get; set; } = string.Empty;
     
+    public string DocumentEndpoint { get; set; } = string.Empty;
+    
     public string Region { get; set; } = string.Empty;
 }

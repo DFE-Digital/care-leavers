@@ -2,6 +2,16 @@
   "version": 1,
   "dependencies": {
     "net8.0": {
+      "Azure.AI.Translation.Document": {
+        "type": "Direct",
+        "requested": "[2.0.0, )",
+        "resolved": "2.0.0",
+        "contentHash": "zNqMq7eEDvpavqUTG2O1dw+aVx+00LgDA76u/mc+aHF+XdM/lA3zWhNEnCo7aKXA3BluLsr37ZYzeaIrDixuPA==",
+        "dependencies": {
+          "Azure.Core": "1.44.1",
+          "System.Text.Json": "6.0.10"
+        }
+      },
       "Azure.AI.Translation.Text": {
         "type": "Direct",
         "requested": "[1.0.0, )",
