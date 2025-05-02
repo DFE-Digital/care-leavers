@@ -1,4 +1,6 @@
+using System.Text;
 using Azure;
+using Azure.AI.Translation.Document;
 using Azure.AI.Translation.Text;
 using CareLeavers.Web.Configuration;
 using Microsoft.Extensions.Options;
@@ -17,6 +19,11 @@ public class AzureTranslationService(
         new Uri(options.Value.Endpoint),
         options.Value.Region);
 
+    private readonly SingleDocumentTranslationClient _documentTranslationClient = new(
+        new Uri(options.Value.DocumentEndpoint),
+        new AzureKeyCredential(options.Value.AccessKey)
+    );
+    
     public async Task<string?> TranslateHtml(string html, string toLanguage)
     {
         var language = await GetLanguage(toLanguage);
@@ -24,6 +31,11 @@ public class AzureTranslationService(
         if (language.Code == "en")
         {
             return html;
+        }
+
+        if (html.Length >= 50000)
+        {
+            return await TranslateDocument(html, language.Code);
         }
         
         var translateOptions = new TextTranslationTranslateOptions(toLanguage, html)
@@ -34,6 +46,23 @@ public class AzureTranslationService(
         var response = await _azureTranslationClient.TranslateAsync(translateOptions);
 
         return response.Value.FirstOrDefault()?.Translations.FirstOrDefault()?.Text;
+    }
+
+    private async Task<string?> TranslateDocument(string html, string language)
+    {
+        using var stream = new MemoryStream();
+        var writer = new StreamWriter(stream);
+        await writer.WriteAsync(html);
+        await writer.FlushAsync();
+        stream.Position = 0;
+
+        var sourceDocument = new MultipartFormFileData("source.html", stream, "text/html");
+        var content = new DocumentTranslateContent(sourceDocument);
+
+        var response = await _documentTranslationClient.TranslateAsync(language, content).ConfigureAwait(false);
+
+        var responseString = Encoding.UTF8.GetString(response.Value.ToArray());
+        return responseString;
     }
 
     public async Task<TranslationLanguage> GetLanguage(string code)
