@@ -63,6 +63,7 @@ No modules.
 | <a name="input_aspnetcore_environment"></a> [aspnetcore\_environment](#input\_aspnetcore\_environment) | ASP.NET Core environment | `string` | n/a | yes |
 | <a name="input_azure_frontdoor_scale"></a> [azure\_frontdoor\_scale](#input\_azure\_frontdoor\_scale) | Azure Front Door Scale | `string` | `"Standard_AzureFrontDoor"` | no |
 | <a name="input_azure_translation_access_key"></a> [azure\_translation\_access\_key](#input\_azure\_translation\_access\_key) | Azure Translation Access Key | `string` | `""` | no |
+| <a name="input_azure_translation_document_endpoint"></a> [azure\_translation\_document\_endpoint](#input\_azure\_translation\_document\_endpoint) | Azure Document Translation Endpoint | `string` | `""` | no |
 | <a name="input_caching_type"></a> [caching\_type](#input\_caching\_type) | Caching type | `string` | n/a | yes |
 | <a name="input_cip_environment"></a> [cip\_environment](#input\_cip\_environment) | The CIP environment to match subscription (e.g. Dev) | `string` | n/a | yes |
 | <a name="input_contentful_delivery_api_key"></a> [contentful\_delivery\_api\_key](#input\_contentful\_delivery\_api\_key) | Contentful Delivery API Key | `string` | n/a | yes |
