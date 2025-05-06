@@ -76,7 +76,9 @@ public class PrintController(IContentService contentService, ITranslationService
                 var config = await contentService.GetConfiguration();
 
                 var url = Url.ActionLink("GetPrintableCollection", "Print", new { identifier, languageCode });
-
+                var sandbox = pdfOptions.Value.Sandbox.ToString().ToLower();
+                var apiKey = pdfOptions.Value.ApiKey;
+                
                 if (config == null)
                     return [];
 
@@ -86,19 +88,19 @@ public class PrintController(IContentService contentService, ITranslationService
                 request.Method = HttpMethod.Post;
                 request.RequestUri = new Uri("https://api.pdfendpoint.com/v1/convert");
                 request.Headers.Authorization =
-                    AuthenticationHeaderValue.Parse($"Bearer {pdfOptions.Value.ApiKey}");
-                request.Content =
-                    new StringContent($$"""
-                                        {
-                                            "url": "{{url}}",
-                                            "sandbox": "{{(pdfOptions.Value.Sandbox ? "true" : "false")}}", 
-                                            "delivery_mode": "inline", 
-                                            "title": "{{collection.Title}}", 
-                                            "author": "{{config.ServiceName}}",
-                                            "print_media": "true",
-                                            "user_agent": "PDF Renderer - twitterbot"
-                                        }
-                                        """);
+                    AuthenticationHeaderValue.Parse($"Bearer {apiKey}");
+                var requestContent = $$"""
+                                       {
+                                           "url": "{{url}}",
+                                           "sandbox": {{sandbox}}, 
+                                           "delivery_mode": "inline", 
+                                           "title": "{{collection.Title}}", 
+                                           "author": "{{config?.ServiceName}}",
+                                           "print_media": true,
+                                           "user_agent": "PDF Renderer - twitterbot"
+                                       }
+                                       """;
+                request.Content = new StringContent(requestContent);
 
                 request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
 

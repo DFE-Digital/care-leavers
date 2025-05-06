@@ -52,14 +52,14 @@
                             "GetContent",
                             "Contentful",
                             new { slug = currentSlug, languageCode = "en" },
-                            new { @class = "govuk-link", rel = "nofollow" })
+                            new { @class = "govuk-link", rel = "nofollow", hreflang = "en" })
                         break;
                     case "Pages" when currentLanguage != "en":
                         @Html.ActionLink(Model.Language.NativeName,
                             currentAction,
                             "Pages",
                             new { languageCode = "en" },
-                            new { @class = "govuk-link", rel = "nofollow" })
+                            new { @class = "govuk-link", rel = "nofollow", hreflang = "en" })
                         break;
                     case "Pages":
                         @Html.ActionLink(Model.Language.NativeName,
