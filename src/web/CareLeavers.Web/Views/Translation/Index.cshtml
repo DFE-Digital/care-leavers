@@ -51,7 +51,7 @@
                                 Model.Page,
                                 "Pages",
                                 new { languageCode = translation.Code },
-                                new { @class = "govuk-link", rel = "nofollow" })
+                                new { @class = "govuk-link", rel = "nofollow", hreflang = translation.Code })
                         }
                         else
                         {
@@ -60,7 +60,7 @@
                                 "GetContent",
                                 "Contentful",
                                 new { slug = Model.Slug ?? config.HomePage?.Slug, languageCode = translation.Code },
-                                new { @class = "govuk-link", rel = "nofollow" })
+                                new { @class = "govuk-link", rel = "nofollow", hreflang = translation.Code })
                         }
                     </li>
                 }
