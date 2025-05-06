@@ -20,6 +20,8 @@ using Newtonsoft.Json.Serialization;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using Serilog;
+using WebMarkupMin.AspNet.Common.UrlMatchers;
+using WebMarkupMin.AspNetCoreLatest;
 using ZiggyCreatures.Caching.Fusion;
 using static System.TimeSpan;
 
@@ -57,6 +59,22 @@ try
     }
 
     #endregion
+
+    #region Minification
+
+    builder.Services
+        .AddWebMarkupMin(options =>
+        {
+            options.AllowCompressionInDevelopmentEnvironment = true;
+            options.AllowMinificationInDevelopmentEnvironment = true;
+            options.DisablePoweredByHttpHeaders = true;
+        })
+        .AddHtmlMinification()
+        .AddXhtmlMinification()
+        .AddXmlMinification()
+        .AddHttpCompression();
+
+    #endregion
     
     #region Controllers
     
@@ -91,16 +109,7 @@ try
     
     #endregion
     
-    #region Compression
-    
-    builder.Services.AddResponseCompression(options =>
-    {
-        options.EnableForHttps = true;
-    });
-    
-    #endregion
-    
-    #region Contentful
+    #region Contentful and Renderers
     
     builder.Services.AddScoped<IContentService, ContentfulContentService>();
     builder.Services.AddContentful(builder.Configuration);
@@ -240,7 +249,7 @@ try
     
     var app = builder.Build();
     
-    #region Security, Compression, and Headers
+    #region Content Security (CSP) and Headers
 
     // HSTS
     app.UseStrictTransportSecurity(new HstsOptions(FromDays(365), true, true));
@@ -307,7 +316,6 @@ try
 
     });
 
-    app.UseResponseCompression();
     app.UseHttpsRedirection();
     app.UseForwardedHeaders();
 
@@ -361,6 +369,12 @@ try
             return new { Result = "OK" };
         });
     });
+
+    #endregion
+
+    #region Minification
+
+    app.UseWebMarkupMin();
 
     #endregion
     
