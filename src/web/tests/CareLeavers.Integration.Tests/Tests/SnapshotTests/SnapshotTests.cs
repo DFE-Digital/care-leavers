@@ -88,8 +88,6 @@ public class SnapshotTests
         
         var response = await client.GetStringAsync($"");
 
-        return response;
-        
         var parser = new HtmlParser();
         var doc = parser.ParseDocument(response);
 
