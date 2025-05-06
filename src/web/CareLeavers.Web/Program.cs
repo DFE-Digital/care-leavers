@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.IO.Compression;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using CareLeavers.Web;
 using CareLeavers.Web.Configuration;
@@ -20,6 +21,9 @@ using Newtonsoft.Json.Serialization;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using Serilog;
+using WebMarkupMin.AspNet.Common.Compressors;
+using WebMarkupMin.AspNetCoreLatest;
+using WebMarkupMin.Core;
 using ZiggyCreatures.Caching.Fusion;
 using static System.TimeSpan;
 
@@ -57,6 +61,37 @@ try
     }
 
     #endregion
+
+    #region Minification
+
+    builder.Services
+        .AddWebMarkupMin(options =>
+        {
+            options.DisablePoweredByHttpHeaders = true;
+        })
+        .AddHtmlMinification()
+        .AddXhtmlMinification()
+        .AddXmlMinification()
+        .AddHttpCompression(options =>
+        {
+            options.CompressorFactories = new List<ICompressorFactory>
+            {
+                new BuiltInBrotliCompressorFactory(new BuiltInBrotliCompressionSettings
+                {
+                    Level = CompressionLevel.Fastest
+                }),
+                new DeflateCompressorFactory(new DeflateCompressionSettings
+                {
+                    Level = CompressionLevel.Fastest
+                }),
+                new GZipCompressorFactory(new GZipCompressionSettings
+                {
+                    Level = CompressionLevel.Fastest
+                })
+            };
+        });
+
+    #endregion
     
     #region Controllers
     
@@ -91,16 +126,7 @@ try
     
     #endregion
     
-    #region Compression
-    
-    builder.Services.AddResponseCompression(options =>
-    {
-        options.EnableForHttps = true;
-    });
-    
-    #endregion
-    
-    #region Contentful
+    #region Contentful and Renderers
     
     builder.Services.AddScoped<IContentService, ContentfulContentService>();
     builder.Services.AddContentful(builder.Configuration);
@@ -240,7 +266,7 @@ try
     
     var app = builder.Build();
     
-    #region Security, Compression, and Headers
+    #region Content Security (CSP) and Headers
 
     // HSTS
     app.UseStrictTransportSecurity(new HstsOptions(FromDays(365), true, true));
@@ -307,7 +333,6 @@ try
 
     });
 
-    app.UseResponseCompression();
     app.UseHttpsRedirection();
     app.UseForwardedHeaders();
 
@@ -361,6 +386,12 @@ try
             return new { Result = "OK" };
         });
     });
+
+    #endregion
+
+    #region Minification
+
+    app.UseWebMarkupMin();
 
     #endregion
     

@@ -32,6 +32,8 @@
         <PackageReference Include="Serilog" Version="4.2.0" />
         <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
         <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
+        <PackageReference Include="WebMarkupMin.AspNet.Brotli" Version="2.18.0" />
+        <PackageReference Include="WebMarkupMin.AspNetCoreLatest" Version="2.18.1" />
         <PackageReference Include="ZiggyCreatures.FusionCache.Backplane.Memory" Version="2.2.0" />
         <PackageReference Include="ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis" Version="2.2.0" />
         <PackageReference Include="ZiggyCreatures.FusionCache.OpenTelemetry" Version="2.2.0" />

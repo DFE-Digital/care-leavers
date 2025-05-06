@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using CareLeavers.Web.Caching;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
@@ -10,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using WebMarkupMin.AspNet.Common.Compressors;
+using WebMarkupMin.AspNetCoreLatest;
 using ZiggyCreatures.Caching.Fusion;
 
 namespace CareLeavers.Integration.Tests.TestSupport;
@@ -35,7 +38,7 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
                 .ToList();
 
             descriptorsToRemove.ForEach(x => services.Remove(x));
-            
+
             var httpClient = new HttpClient(FakeMessageHandler);
             var contentfulClient = new ContentfulClient(httpClient, "test", "test", "test");
             contentfulClient.SerializerSettings.Converters.RemoveAt(0);
@@ -47,7 +50,7 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
             };
 
             services.AddSingleton<IContentfulClient>(x => contentfulClient);
-            
+
             services.AddSingleton<IDistributedCache, CacheDisabledDistributedCache>();
 
             services.AddFusionCache()
@@ -56,7 +59,7 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
                     o.SkipMemoryCacheWrite = true;
                     o.SkipDistributedCacheWrite = true;
                 });
-            
+
             services.AddSingleton<ICspNonceService, MockCspNonceService>();
 
             services.AddScoped<IOptions<ScriptOptions>>(x => Options.Create(new ScriptOptions
@@ -70,6 +73,35 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
             }));
 
             services.AddSingleton<IContentfulConfiguration, MockContentfulConfiguration>();
+
+            // Disable minification for our testing
+            services
+                .AddWebMarkupMin(options =>
+                {
+                    options.DisablePoweredByHttpHeaders = true;
+                })
+                .AddHtmlMinification()
+                .AddXhtmlMinification()
+                .AddXmlMinification()
+                .AddHttpCompression(options =>
+                {
+                    options.CompressorFactories = new List<ICompressorFactory>
+                    {
+                        new BuiltInBrotliCompressorFactory(new BuiltInBrotliCompressionSettings
+                        {
+                            Level = CompressionLevel.Fastest
+                        }),
+                        new DeflateCompressorFactory(new DeflateCompressionSettings
+                        {
+                            Level = CompressionLevel.Fastest
+                        }),
+                        new GZipCompressorFactory(new GZipCompressionSettings
+                        {
+                            Level = CompressionLevel.Fastest
+                        })
+                    };
+                });
+
         });
     }
 

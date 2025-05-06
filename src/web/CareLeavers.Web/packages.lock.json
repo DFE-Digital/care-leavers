@@ -173,6 +173,24 @@
           "Serilog": "2.11.0"
         }
       },
+      "WebMarkupMin.AspNet.Brotli": {
+        "type": "Direct",
+        "requested": "[2.18.0, )",
+        "resolved": "2.18.0",
+        "contentHash": "pMAPTHTzVZTj8fCp5akCrJxi6cNp2sqtMi/yKELObhIeMIoG7n5uVY4VJGGZ8MwTe2P5KEQOnApcSKnqEWrVyQ==",
+        "dependencies": {
+          "WebMarkupMin.AspNet.Common": "2.18.0"
+        }
+      },
+      "WebMarkupMin.AspNetCoreLatest": {
+        "type": "Direct",
+        "requested": "[2.18.1, )",
+        "resolved": "2.18.1",
+        "contentHash": "KyDDOa79rz3+JyH1NUipCB/ngd/aY5QEDMhdvStjvsutiWM2GZk8N3TQO7FnNd/3NIVzSk+lR0XLcoKob6OZUw==",
+        "dependencies": {
+          "WebMarkupMin.AspNet.Common": "2.18.0"
+        }
+      },
       "ZiggyCreatures.FusionCache.Backplane.Memory": {
         "type": "Direct",
         "requested": "[2.2.0, )",
@@ -211,6 +229,11 @@
           "Newtonsoft.Json": "13.0.3",
           "ZiggyCreatures.FusionCache": "2.2.0"
         }
+      },
+      "AdvancedStringBuilder": {
+        "type": "Transitive",
+        "resolved": "0.1.1",
+        "contentHash": "32IrlspOA59ewotQ4tlKP27QhKxMKGB7oncqlwVHn/hAz+j/r3HvLr6/W9ni9Mnyktlcg6kt7QZS8rEgur1+4Q=="
       },
       "Azure.Monitor.OpenTelemetry.Exporter": {
         "type": "Transitive",
@@ -2099,6 +2122,22 @@
           "System.Xml.ReaderWriter": "4.3.0",
           "System.Xml.XDocument": "4.3.0",
           "System.Xml.XPath": "4.3.0"
+        }
+      },
+      "WebMarkupMin.AspNet.Common": {
+        "type": "Transitive",
+        "resolved": "2.18.0",
+        "contentHash": "w5v2QkEMLudVNXRq42Up3EpsEfjtJsSJvZPwm544FrX+iNw7JduCAZ6at7lJgXt7alMHKulP5GInE0d08PPMTA==",
+        "dependencies": {
+          "WebMarkupMin.Core": "2.17.0"
+        }
+      },
+      "WebMarkupMin.Core": {
+        "type": "Transitive",
+        "resolved": "2.17.0",
+        "contentHash": "TKCwf7usSSqKkXzc+rfc11K1GGA5KUnj241ImDRRPvpfgekUsg9FbqZuhqbOCjkEw4WDEKWN6EODPBBtP5g5hA==",
+        "dependencies": {
+          "AdvancedStringBuilder": "0.1.1"
         }
       },
       "ZiggyCreatures.FusionCache": {
