@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using WebMarkupMin.AspNetCoreLatest;
 using ZiggyCreatures.Caching.Fusion;
 
 namespace CareLeavers.Integration.Tests.TestSupport;
@@ -70,6 +71,13 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
             }));
 
             services.AddSingleton<IContentfulConfiguration, MockContentfulConfiguration>();
+
+            // Disable minification for our testing
+            services.AddWebMarkupMin(options =>
+            {
+                options.DisableCompression = true;
+                options.DisableMinification = true;
+            });
         });
     }
 

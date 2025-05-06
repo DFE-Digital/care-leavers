@@ -67,18 +67,10 @@ try
     builder.Services
         .AddWebMarkupMin(options =>
         {
-            options.AllowCompressionInDevelopmentEnvironment = true;
-            options.AllowMinificationInDevelopmentEnvironment = true;
             options.DisablePoweredByHttpHeaders = true;
         })
-        .AddHtmlMinification(options =>
-        {
-            options.MinificationSettings.NewLineStyle = NewLineStyle.Unix;
-        })
-        .AddXhtmlMinification(options =>
-        {
-            options.MinificationSettings.NewLineStyle = NewLineStyle.Unix;
-        })
+        .AddHtmlMinification()
+        .AddXhtmlMinification()
         .AddXmlMinification()
         .AddHttpCompression(options =>
         {
