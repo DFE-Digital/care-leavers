@@ -23,6 +23,7 @@ using OpenTelemetry.Trace;
 using Serilog;
 using WebMarkupMin.AspNet.Common.Compressors;
 using WebMarkupMin.AspNetCoreLatest;
+using WebMarkupMin.Core;
 using ZiggyCreatures.Caching.Fusion;
 using static System.TimeSpan;
 
@@ -70,8 +71,14 @@ try
             options.AllowMinificationInDevelopmentEnvironment = true;
             options.DisablePoweredByHttpHeaders = true;
         })
-        .AddHtmlMinification()
-        .AddXhtmlMinification()
+        .AddHtmlMinification(options =>
+        {
+            options.MinificationSettings.NewLineStyle = NewLineStyle.Unix;
+        })
+        .AddXhtmlMinification(options =>
+        {
+            options.MinificationSettings.NewLineStyle = NewLineStyle.Unix;
+        })
         .AddXmlMinification()
         .AddHttpCompression(options =>
         {
