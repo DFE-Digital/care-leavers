@@ -173,6 +173,15 @@
           "Serilog": "2.11.0"
         }
       },
+      "WebMarkupMin.AspNet.Brotli": {
+        "type": "Direct",
+        "requested": "[2.18.0, )",
+        "resolved": "2.18.0",
+        "contentHash": "pMAPTHTzVZTj8fCp5akCrJxi6cNp2sqtMi/yKELObhIeMIoG7n5uVY4VJGGZ8MwTe2P5KEQOnApcSKnqEWrVyQ==",
+        "dependencies": {
+          "WebMarkupMin.AspNet.Common": "2.18.0"
+        }
+      },
       "WebMarkupMin.AspNetCoreLatest": {
         "type": "Direct",
         "requested": "[2.18.1, )",

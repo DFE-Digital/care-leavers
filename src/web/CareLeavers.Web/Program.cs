@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.IO.Compression;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using CareLeavers.Web;
 using CareLeavers.Web.Configuration;
@@ -20,7 +21,7 @@ using Newtonsoft.Json.Serialization;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using Serilog;
-using WebMarkupMin.AspNet.Common.UrlMatchers;
+using WebMarkupMin.AspNet.Common.Compressors;
 using WebMarkupMin.AspNetCoreLatest;
 using ZiggyCreatures.Caching.Fusion;
 using static System.TimeSpan;
@@ -72,7 +73,24 @@ try
         .AddHtmlMinification()
         .AddXhtmlMinification()
         .AddXmlMinification()
-        .AddHttpCompression();
+        .AddHttpCompression(options =>
+        {
+            options.CompressorFactories = new List<ICompressorFactory>
+            {
+                new BuiltInBrotliCompressorFactory(new BuiltInBrotliCompressionSettings
+                {
+                    Level = CompressionLevel.Fastest
+                }),
+                new DeflateCompressorFactory(new DeflateCompressionSettings
+                {
+                    Level = CompressionLevel.Fastest
+                }),
+                new GZipCompressorFactory(new GZipCompressionSettings
+                {
+                    Level = CompressionLevel.Fastest
+                })
+            };
+        });
 
     #endregion
     
