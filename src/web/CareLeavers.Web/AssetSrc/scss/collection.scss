@@ -220,3 +220,17 @@ p
 }
 
 .print-only { display: inherit; }
+
+// Make link text black and remove underline
+[href^="/"].govuk-link::after, [href^="http://"].govuk-link::after, [href^="https://"].govuk-link::after {
+  color: #000000;
+  display: inline-block;
+  margin-left: 0.1rem;
+}
+
+// Hide link for relative URLs (same site) and WhatsApp links
+[href^="/"].govuk-link::after, [href^="https://wa.me/"].govuk-link::after{
+  content: "";
+  font-size: inherit;
+  word-wrap: inherit;
+}
