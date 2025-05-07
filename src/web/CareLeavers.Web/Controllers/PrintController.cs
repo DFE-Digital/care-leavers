@@ -68,6 +68,12 @@ public class PrintController(IContentService contentService, ITranslationService
         
         // Also add our printable collection identifier as a tag too
         tags.Add($"pc-{identifier}");
+        var filename = identifier;
+        if (languageCode != "en")
+        {
+            filename += "-" + languageCode;
+        }
+        filename += ".pdf";
 
         try
         {
@@ -76,6 +82,7 @@ public class PrintController(IContentService contentService, ITranslationService
                 var config = await contentService.GetConfiguration();
 
                 var url = Url.ActionLink("GetPrintableCollection", "Print", new { identifier, languageCode });
+                
                 var sandbox = pdfOptions.Value.Sandbox.ToString().ToLower();
                 var apiKey = pdfOptions.Value.ApiKey;
                 
@@ -96,6 +103,7 @@ public class PrintController(IContentService contentService, ITranslationService
                                            "delivery_mode": "inline", 
                                            "title": "{{collection.Title}}", 
                                            "author": "{{config?.ServiceName}}",
+                                           "filename": "{{filename}}"
                                            "print_media": true,
                                            "user_agent": "PDF Renderer - twitterbot"
                                        }
@@ -112,7 +120,7 @@ public class PrintController(IContentService contentService, ITranslationService
 
             if (pdf.Length > 0)
             {
-                Response.Headers.Append("Content-Disposition",$"inline;{identifier}.pdf");
+                Response.Headers.Append("Content-Disposition",$"inline;{filename}");
                 return File(pdf, contentType: "application/pdf");
             }
         }
