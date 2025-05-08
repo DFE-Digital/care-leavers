@@ -237,6 +237,29 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   }
 
   custom_rule {
+    name     = "blockarchiving"
+    enabled  = true
+    action   = "Block"
+    type     = "MatchRule"
+    priority = 150
+    
+    match_condition {
+      match_variable = "RequestHeader"
+      selector       = "User-Agent"
+      operator       = "Contains"
+      transforms     = ["Lowercase"]
+      match_values   = ["mirrorweb"]
+    }
+
+    match_condition {
+      match_variable     = "RequestUri"
+      operator           = "Contains"
+      transforms         = ["Lowercase", "UrlDecode"]
+      match_values       = ["/pdf/", "/translate-this-website/"]
+    }
+  }
+  
+  custom_rule {
     name     = "allowsearchengines"
     enabled  = true
     action   = "Allow"
@@ -250,6 +273,14 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       transforms     = ["Lowercase", "UrlDecode"]
       match_values   = ["aolbuild|baidu|bingbot|bingpreview|msnbot|duckduckgo|adsbot-google|googlebot|mediapartners-google|teoma|slurp|yandex|yahoo"]
     }
+
+    match_condition {
+      match_variable     = "RequestUri"
+      operator           = "Contains"
+      negation_condition = true
+      transforms         = ["Lowercase", "UrlDecode"]
+      match_values       = ["/pdf/", "/translate-this-website/"]
+    }
   }
 
   custom_rule {
@@ -262,9 +293,9 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
     match_condition {
       match_variable = "RequestHeader"
       selector       = "User-Agent"
-      operator       = "RegEx"
+      operator       = "Contains"
       transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["slack|embedly|figma|skype"]
+      match_values   = ["slack", "embedly", "figma", "skype"]
     }
   }
 
@@ -283,22 +314,30 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       match_values   = ["facebookbot|facebookexternalhit|facebookscraper|twitterbot|meta-externalagent|meta-externalfetcher|microsoftpreview|linkedinbot|pinterest|redditbot|telegrambot|mastadon|duckduckbot"]
     }
   }
-
+  
   custom_rule {
-    name     = "allowai"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 230
-
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "User-Agent"
-      operator       = "RegEx"
-      transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["oai-search|chatgpt|gptbot|cohere-ai|google-extended|amazonbot|applebot|duckassistbot"]
+      name     = "allowai"
+      enabled  = true
+      action   = "Allow"
+      type     = "MatchRule"
+      priority = 230
+  
+      match_condition {
+        match_variable = "RequestHeader"
+        selector       = "User-Agent"
+        operator       = "RegEx"
+        transforms     = ["Lowercase", "UrlDecode"]
+        match_values   = ["oai-search|chatgpt|gptbot|cohere-ai|google-extended|amazonbot|applebot|duckassistbot"]
+      }
+  
+      match_condition {
+        match_variable     = "RequestUri"
+        operator           = "Contains"
+        negation_condition = true
+        transforms         = ["Lowercase", "UrlDecode"]
+        match_values       = ["/pdf/", "/translate-this-website/"]
+      }
     }
-  }
 
   custom_rule {
     name     = "blocknonuk"
