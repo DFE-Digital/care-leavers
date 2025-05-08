@@ -43,5 +43,9 @@ public class ContentfulConfigurationEntity : ContentfulContent
     public Page? PrintableCollectionPage { get; set; }
     
     public string? PrintableCollectionCallToAction { get; set; }
+    
+    public string? GoogleSiteVerification { get; set; }
+    
+    public string? BingSiteVerification { get; set; }
 
 }
