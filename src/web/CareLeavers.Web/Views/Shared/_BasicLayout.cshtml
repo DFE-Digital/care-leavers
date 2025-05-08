@@ -80,16 +80,22 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"]</title>
-    <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="icon" sizes="48x48" href="/assets/images/favicon.ico" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="icon" sizes="any" type="image/svg+xml" href="/assets/images/favicon.svg" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="mask-icon" href="/assets/images/govuk-icon-mask.svg" color="#0b0c0c" asp-append-version="@scriptConfig.AddCssVersion"/>
-    <link rel="shortcut icon" href="/assets/images/favicon.ico" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/govuk-icon-180.png" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="manifest" href="/assets/manifest.json">
+    
     <meta name="apple-mobile-web-app-title" content="@config.ServiceName" />
+    
     <link rel="stylesheet" href="~/css/application.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="stylesheet" href="~/css/print.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     @if (IsSectionDefined("Head")) {
         @await RenderSectionAsync("Head", required: false)
     }
+    
+    <meta name="google-site-verification" content="@config.GoogleSiteVerification"/>
+    <meta name="msvalidate.01" content="@config.BingSiteVerification"/>
 </head>
 
 <body class="govuk-template__body">
