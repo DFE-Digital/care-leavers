@@ -43,26 +43,22 @@ public class GDSContentfulContentsTagHelper : TagHelper
         var html = new HtmlDocument();
         html.LoadHtml(await _renderer.ToHtml(Document));
 
-        var headingsList = new List<string>();
-        
-        foreach (var level in Levels)
-        {
-            headingsList.Add("self::" + level.ToString().ToLower());
-        }
-        
+        var headingsList = Levels.Select(level => "self::" + level.ToString().ToLower()).ToList();
+
         // Get our list of heading tags with IDs and their text
         var headings = html.DocumentNode.SelectNodes($"//*[({string.Join(" or ", headingsList)}) and @id!=\"\"]");
 
         // Loop through
-        foreach (var heading in headings)
-        {
-            TagBuilder item = new TagBuilder("li");
-            item.AddCssClass("gem-c-contents-list__list-item gem-c-contents-list__list-item--dashed");
-            item.InnerHtml.AppendHtml(
-                "<span class=\"gem-c-contents-list__list-item-dash\" aria-hidden=\"true\"></span>");
-            item.InnerHtml.AppendHtml($"<a href=\"#{heading.Id}\" class=\"govuk-link\">{heading.InnerHtml}</a>");
-            list.InnerHtml.AppendHtml(item);
-        }
+        if (headings != null)
+            foreach (var heading in headings)
+            {
+                var item = new TagBuilder("li");
+                item.AddCssClass("gem-c-contents-list__list-item gem-c-contents-list__list-item--dashed");
+                item.InnerHtml.AppendHtml(
+                    "<span class=\"gem-c-contents-list__list-item-dash\" aria-hidden=\"true\"></span>");
+                item.InnerHtml.AppendHtml($"<a href=\"#{heading.Id}\" class=\"govuk-link\">{heading.InnerHtml}</a>");
+                list.InnerHtml.AppendHtml(item);
+            }
 
         if (list.HasInnerHtml)
         {
