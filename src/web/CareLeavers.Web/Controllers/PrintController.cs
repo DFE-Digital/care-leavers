@@ -103,7 +103,7 @@ public class PrintController(IContentService contentService, ITranslationService
                                            "delivery_mode": "inline", 
                                            "title": "{{collection.Title}}", 
                                            "author": "{{config?.ServiceName}}",
-                                           "filename": "{{filename}}"
+                                           "filename": "{{filename}}",
                                            "print_media": true,
                                            "user_agent": "PDF Renderer - twitterbot"
                                        }
