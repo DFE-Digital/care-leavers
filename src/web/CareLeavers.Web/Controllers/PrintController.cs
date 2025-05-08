@@ -81,7 +81,7 @@ public class PrintController(IContentService contentService, ITranslationService
             {
                 var config = await contentService.GetConfiguration();
 
-                var url = Url.ActionLink("GetPrintableCollection", "Print", new { identifier, languageCode });
+                var url = Url.ActionLink("GetPrintableCollection", "Print", new { identifier, languageCode }, protocol: "https");
                 
                 var sandbox = pdfOptions.Value.Sandbox.ToString().ToLower();
                 var apiKey = pdfOptions.Value.ApiKey;
