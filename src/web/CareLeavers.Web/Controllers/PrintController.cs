@@ -81,7 +81,7 @@ public class PrintController(IContentService contentService, ITranslationService
             {
                 var config = await contentService.GetConfiguration();
 
-                var url = Url.ActionLink("GetPrintableCollection", "Print", new { identifier, languageCode });
+                var url = Url.ActionLink("GetPrintableCollection", "Print", new { identifier, languageCode }, protocol: "https");
                 
                 var sandbox = pdfOptions.Value.Sandbox.ToString().ToLower();
                 var apiKey = pdfOptions.Value.ApiKey;
@@ -103,7 +103,7 @@ public class PrintController(IContentService contentService, ITranslationService
                                            "delivery_mode": "inline", 
                                            "title": "{{collection.Title}}", 
                                            "author": "{{config?.ServiceName}}",
-                                           "filename": "{{filename}}"
+                                           "filename": "{{filename}}",
                                            "print_media": true,
                                            "user_agent": "PDF Renderer - twitterbot"
                                        }

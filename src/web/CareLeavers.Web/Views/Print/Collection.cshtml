@@ -51,7 +51,7 @@
     <style asp-add-nonce="true">
         :root {
             --generated: '@DateTime.Today.ToString("d MMMM yyyy", DateTimeFormatInfo.InvariantInfo)' ;
-            --siteurl: '@Url.ActionLink("GetContent", "Contentful", values: new { slug = config.HomePage?.Slug, languageCode})';
+            --siteurl: '@Url.ActionLink("GetContent", "Contentful", values: new { slug = config.HomePage?.Slug, languageCode}, protocol: "https")';
         }
     </style>
     <link rel="stylesheet" href="~/css/application.css" asp-append-version="@scriptConfig.AddCssVersion"/>
