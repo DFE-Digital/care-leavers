@@ -104,6 +104,8 @@
     @if (IsSectionDefined("Head")) {
         @await RenderSectionAsync("Head", required: false)
     }
+    <meta name="google-site-verification" content="@config.GoogleSiteVerification"/>
+    <meta name="msvalidate.01" content="@config.BingSiteVerification"/>
 </head>
 
 <body class="govuk-template__body">
