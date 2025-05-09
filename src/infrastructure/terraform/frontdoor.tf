@@ -242,7 +242,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
     action   = "Block"
     type     = "MatchRule"
     priority = 150
-    
+
     match_condition {
       match_variable = "RequestHeader"
       selector       = "User-Agent"
@@ -252,13 +252,13 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
     }
 
     match_condition {
-      match_variable     = "RequestUri"
-      operator           = "Contains"
-      transforms         = ["Lowercase", "UrlDecode"]
-      match_values       = ["/pdf/", "/translate-this-website/"]
+      match_variable = "RequestUri"
+      operator       = "Contains"
+      transforms     = ["Lowercase", "UrlDecode"]
+      match_values   = ["/pdf/", "/translate-this-website/"]
     }
   }
-  
+
   custom_rule {
     name     = "allowsearchengines"
     enabled  = true
@@ -314,30 +314,30 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       match_values   = ["facebookbot|facebookexternalhit|facebookscraper|twitterbot|meta-externalagent|meta-externalfetcher|microsoftpreview|linkedinbot|pinterest|redditbot|telegrambot|mastadon|duckduckbot"]
     }
   }
-  
+
   custom_rule {
-      name     = "allowai"
-      enabled  = true
-      action   = "Allow"
-      type     = "MatchRule"
-      priority = 230
-  
-      match_condition {
-        match_variable = "RequestHeader"
-        selector       = "User-Agent"
-        operator       = "RegEx"
-        transforms     = ["Lowercase", "UrlDecode"]
-        match_values   = ["oai-search|chatgpt|gptbot|cohere-ai|google-extended|amazonbot|applebot|duckassistbot"]
-      }
-  
-      match_condition {
-        match_variable     = "RequestUri"
-        operator           = "Contains"
-        negation_condition = true
-        transforms         = ["Lowercase", "UrlDecode"]
-        match_values       = ["/pdf/", "/translate-this-website/"]
-      }
+    name     = "allowai"
+    enabled  = true
+    action   = "Allow"
+    type     = "MatchRule"
+    priority = 230
+
+    match_condition {
+      match_variable = "RequestHeader"
+      selector       = "User-Agent"
+      operator       = "RegEx"
+      transforms     = ["Lowercase", "UrlDecode"]
+      match_values   = ["oai-search|chatgpt|gptbot|cohere-ai|google-extended|amazonbot|applebot|duckassistbot"]
     }
+
+    match_condition {
+      match_variable     = "RequestUri"
+      operator           = "Contains"
+      negation_condition = true
+      transforms         = ["Lowercase", "UrlDecode"]
+      match_values       = ["/pdf/", "/translate-this-website/"]
+    }
+  }
 
   custom_rule {
     name     = "blocknonuk"
