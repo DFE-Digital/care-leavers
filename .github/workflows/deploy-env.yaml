@@ -12,6 +12,15 @@ on:
           - 'Test'
           - 'Staging'
           - 'Production'
+      clear-cache:
+        type: choice
+        description: 'Clear the cache?'
+        required: true
+        default: 'False'
+        options:
+          - 'True'
+          - 'False'
+            
 run-name: Deploy to ${{ github.event.inputs.environment }}
 jobs:
   package:
@@ -141,6 +150,7 @@ jobs:
       - name: Clear Cache
         id: clear-cache
         uses: fjogeleit/http-request-action@v1
+        if: ${{ inputs.clear-cache == 'True' }}
         with: 
           url: 'https://${{ vars.CUSTOM_DOMAIN }}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f'
           method: 'POST'

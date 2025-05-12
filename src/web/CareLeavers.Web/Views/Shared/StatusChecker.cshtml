@@ -23,6 +23,12 @@
                             <label class="govuk-label govuk-checkboxes__label" for="@answer.Sys.Id">
                                 @answer.Answer
                             </label>
+                            @if (!string.IsNullOrEmpty(answer.Description))
+                            {
+                                <div id="@answer.Sys.Id-hint" class="govuk-hint govuk-checkboxes__hint">
+                                    @answer.Description
+                                </div>
+                            }
                         </div>
                     }
                 </div>

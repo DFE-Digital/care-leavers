@@ -301,6 +301,9 @@ try
             .FromSelf()
             .AllowUnsafeInline();
 
+        x.AllowManifest
+            .FromSelf();
+
         config.AllowStyleUrls.ForEach(f => x.AllowStyles.From(f));
 
         x.AllowFonts
