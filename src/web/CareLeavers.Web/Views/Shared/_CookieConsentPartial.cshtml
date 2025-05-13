@@ -14,8 +14,8 @@
     var scriptConfig = ScriptOptions.Value;
     
     var consentCookie = Context.Request.Cookies[ops.ConsentCookie.Name!];
-    
-    var showBanner = consentCookie == null;
+
+    var showBanner = consentCookie == null && !Context.Request.Headers.Referer.Any(x => x != null && x.ToLower().Contains("riddle.com"));
     var acceptCookieString = consentFeature?.CreateConsentCookie() ?? string.Empty;
     var rejectCookieString = acceptCookieString.Replace(ops.ConsentCookieValue, "no");
     
