@@ -6,22 +6,24 @@ We had some problems using pure distributed caching as discussed in [Decision - 
 
 We found that:
 
-* Some of our serialised data was quite large (over 150kb), which was on the larger side for Redis
-* The standard Redis multiplexer was having issues creating new connections
-* These connection timeouts were causing 500 errors, or very slow page rendering
+- Some of our serialised data was quite large (over 150kb), which was on the larger side for Redis
+- The standard Redis multiplexer was having issues creating new connections
+- These connection timeouts were causing 500 errors, or very slow page rendering
 
 As part of further investigations, we noted that:
-* Redis itself didn't appear to be the problem - both CPU and memory usage were low
+
+- Redis itself didn't appear to be the problem - both CPU and memory usage were low
 
 Whilst going through this process, we also found some other issues that we had discovered:
-* Clearing the cache was very time consuming and slow (required IAM elevation in the Azure Portal and/or a Powershell script via deployment)
-* Clearing related cache entries was cumbersome and required additional development
+
+- Clearing the cache was very time consuming and slow (required IAM elevation in the Azure Portal and/or a Powershell script via deployment)
+- Clearing related cache entries was cumbersome and required additional development
 
 ## Considered Options
 
-* Switching back to in-memory caching
-* [Microsoft HybridCache](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/hybrid?view=aspnetcore-9.0)
-* [FusionCache](https://github.com/ZiggyCreatures/FusionCache)
+- Switching back to in-memory caching
+- [Microsoft HybridCache](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/hybrid?view=aspnetcore-9.0)
+- [FusionCache](https://github.com/ZiggyCreatures/FusionCache)
 
 ### Evaluation
 
@@ -39,6 +41,7 @@ Whilst going through this process, we also found some other issues that we had d
 Based on the analysis above, we have chose to switch to FusionCache as this had better documentation and was, in fact, ahead of Microsoft in making itself HybridCache compatible (Microsoft hadn't yet released HybridCache themselves).
 
 FusionCache allows us to support the following features:
+
 - L1 cache in-memory
 - L2 cache using IDistributedCache (in this case, Redis)
 - Ability to use the Redis instance as a backplane to enable communication between nodes
