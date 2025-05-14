@@ -18,10 +18,10 @@ This uses Playwright Typescript which runs against a site host either locally or
 The E2E tests have their own dedicated Contentful environment which should only be changed when working on the tests.
 
 The best way to ensure full E2E testing is to do the following:
-1. Rebuild the docker image using the Dockerfile in the `/web` folder
-2. Ensure you have a `docker-compose-local.yml` file in the `/src/infrastructure/docker` folder
-3. :rotating_light: Do _**NOT**_ add this file to GitHub as it will later contain secrets :rotating_light:
-4. Add the following to the file:
+- Rebuild the docker image using the Dockerfile in the `/web` folder
+- Ensure you have a `docker-compose-local.yml` file in the `/src/infrastructure/docker` folder
+- _** DO NOT ADD THIS FILE TO GITHUB **_ as it will later contain secrets
+- Add the following to the file:
 ```yaml
 name: 'care-leavers'
 services:
@@ -43,14 +43,14 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Password=e2e
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/aspnetapp.pfx
 ```
-5. Ensure any existing development instances are stopped
-6. Start this docker-compose file via the IDE or Command Line
-7. Open a shell in the `/src/e2e/CareLeavers.E2ETests` folder
-8. Run your E2E tests using `yarn playwright test`
-9. If there are any failures, view them easily using `yarn playwright show-report`
+- Ensure any existing development instances are stopped
+- Start this docker-compose file via the IDE or Command Line
+- Open a shell in the `/src/e2e/CareLeavers.E2ETests` folder
+- Run your E2E tests using `yarn playwright test`
+- If there are any failures, view them easily using `yarn playwright show-report`
 
 
-- [README Here](../../src/e2e/CareLeavers.E2ETests/README.md)
+Further testing information is available via the [README here](../../src/e2e/CareLeavers.E2ETests/README.md)
 
 ## Infrastructure
 
