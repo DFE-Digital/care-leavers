@@ -18,6 +18,7 @@ This uses Playwright Typescript which runs against a site host either locally or
 The E2E tests have their own dedicated Contentful environment which should only be changed when working on the tests.
 
 The best way to ensure full E2E testing is to do the following:
+
 - Rebuild the docker image using the Dockerfile in the `/web` folder
 - Ensure you have a `docker-compose-local.yml` file in the `/src/infrastructure/docker` folder
 - _** DO NOT ADD THIS FILE TO GITHUB **_ as it will later contain secrets
