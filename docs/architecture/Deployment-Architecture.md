@@ -14,8 +14,14 @@ have been modified. Any failures should be addressed before merging. Failures on
 
 ## Release Pipeline
 
-Once the team is happy to release, they can request this via workflow dispatch. This will trigger the deployment pipeline 
-and run the following steps:
+The site is deployed via GitHub Actions.
+> Before deploying a release, it is best to check if Contentful Migrations need to be applied first
+
+Once the team is happy to publish a release, this can be done by running the "Deploy - Environment" action.
+
+Most times the site is published, the cache will not need clearing, but if Contentful Migrations have changed the structure of any of the models, you will also need to select "True" when asked whether to clear the cache.
+
+Publishing runs the following steps:
 
 ```mermaid
 %%{ init: { 'flowchart': { 'curve': 'step' } } }%%
@@ -24,11 +30,12 @@ flowchart TD
     
     A["Build Docker Image"]-->B["Push Docker Image to Registry"]
     B-->C["Provision Terraform Infrastructure"]
-    C-->D["Push Docker Image to Azure Web App"]
+    C-->D["Push Docker Image to Azure Web App deployment slot"]
     D-->E["Request Deployment Slot Swap"]
     E-->F{Is slot warmed up?}
-    F--No-->F
-    F-->H["Deployment Slot Swapped"]
+    F--"No"-->F
+    F--Yes-->G["Deployment slot swapped to Production"]
+    G-->H["Deployment slot Deleted"]
 ```
 
 ## Contentful Models Deployment
@@ -42,10 +49,11 @@ are not one-to-one, the release process is managed seperately.
 flowchart TD
     accDescr: "App Service to Contentful Environment Mapping"
     
-    A["Local Dev Environment"]-->CDev["Contentful - Dev"]
-    B["App Service - Test"]-->CStag["Contentful - Test"]
-    C["App Service - Staging"]--Preview-->CProd["Contentful - Production"]
-    D["App Service - Production"]--Published-->CProd
+    A["Local Dev Environment"]-->Dev["Contentful - Dev"]
+    B["Local/Remote E2E Tests"]-->E2E["Contentful - E2E"]
+    C["App Service - Test"]-->Staging["Contentful - Test"]
+    D["App Service - Staging"]--Preview-->Prod["Contentful - Production"]
+    E["App Service - Production"]--Published-->Prod
 ```
 
 
@@ -59,9 +67,10 @@ flowchart TD
     B-->C["Running Migrations .NET App"]
     C-->D["Foreach migration"]
     D-->E{Is migration already applied?}
-    E--No-->G{Any migrations left?}
+    E--"No"-->G{Any migrations left?}
     E--Yes-->F["Run Migration"]
     F-->G
     G--Yes-->D
-    G--No-->H["Migration Complete"]
+    G--"No"-->H["Migration Complete"]
 ```
+The Contentful migration process is executed either locally (in development), or using the GitHub Action "Deploy - Contentful Migrations", at which point you are asked which environment you wish to run the deployment against
