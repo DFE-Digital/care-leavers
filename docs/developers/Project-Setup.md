@@ -20,7 +20,8 @@ The E2E tests have their own dedicated Contentful environment which should only 
 The best way to ensure full E2E testing is to do the following:
 1. Rebuild the docker image using the Dockerfile in the `/web` folder
 2. Ensure you have a `docker-compose-local.yml` file in the `/src/infrastructure/docker` folder
-3. Add the following to the file:
+3. :rotating_light: Do _**NOT**_ add this file to GitHub as it will later contain secrets :rotating_light:
+4. Add the following to the file:
 ```yaml
 name: 'care-leavers'
 services:
@@ -42,11 +43,11 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Password=e2e
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/aspnetapp.pfx
 ```
-4. Ensure any existing development instances are stopped
-5. Start this docker-compose file via the IDE or Command Line
-6. Open a shell in the `/src/e2e/CareLeavers.E2ETests` folder
-7. Run your E2E tests using `yarn playwright test`
-8. If there are any failures, view them easily using `yarn playwright show-report`
+5. Ensure any existing development instances are stopped
+6. Start this docker-compose file via the IDE or Command Line
+7. Open a shell in the `/src/e2e/CareLeavers.E2ETests` folder
+8. Run your E2E tests using `yarn playwright test`
+9. If there are any failures, view them easily using `yarn playwright show-report`
 
 
 - [README Here](../../src/e2e/CareLeavers.E2ETests/README.md)
