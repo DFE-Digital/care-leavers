@@ -77,3 +77,20 @@ As a gov.uk site, the site was crawled by [The National Archive](https://www.nat
 Their crawler, however, ignores the robots.txt file by default, which resulted in the site hitting rate limits for translation and PDF generation.
 
 We have reached out to the service, who have agreed to exclude the URLs specified in our robots.txt, however while we waited for this to happen, we also placed a restriction on the Mirror Bot scraping translated and PDF content
+
+The National Archive have since agreed to exclude the URLs defined in our robots.txt file - so I would highly recommend reaching out to them when creating a new site if you have URLs with dynamically generated content that could incur costs.
+
+The rule we implemented is as follows:
+
+- If the user agent (converted to lower case) contains `mirrorweb`
+- And the request URI (converted to lower case) contains 
+
+```js
+["/pdf/", "/translate-this-website/"]
+```
+
+- Then block the connection
+
+As our translatable pages and PDF generation is not linked to from other pages, this works for blocking the archive service on those parts of the site.
+
+> _Our robots.txt file actually goes fully down to a full list of language codes to exclude from search engines._
