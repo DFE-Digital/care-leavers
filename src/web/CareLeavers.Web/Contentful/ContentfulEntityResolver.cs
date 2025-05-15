@@ -21,7 +21,8 @@ public class ContentfulEntityResolver : IContentTypeResolver
         { Definition.ContentType, typeof(Definition) },
         { Spacer.ContentType, typeof(Spacer) },
         { PrintableCollection.ContentType, typeof(PrintableCollection) },
-        { CallToAction.ContentType, typeof(CallToAction) }
+        { CallToAction.ContentType, typeof(CallToAction) },
+        { Button.ContentType, typeof(Button) }
     };
     
     public Type? Resolve(string contentTypeId)
