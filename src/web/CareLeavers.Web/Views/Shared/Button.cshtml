@@ -1,0 +1,45 @@
+@using CareLeavers.Web.Models.Enums
+@model CareLeavers.Web.Models.Content.Button
+@inject LinkGenerator LinkGenerator
+@inject IHttpContextAccessor HttpContextAccessor;
+@{
+    var languageCode = HttpContextAccessor.HttpContext?.Request.RouteValues["languageCode"]?.ToString();
+
+    var destination = "";
+    if (!string.IsNullOrEmpty(Model.ExternalDestination))
+    {
+        destination = Model.ExternalDestination;
+    }
+    else
+    {
+        destination = LinkGenerator.GetPathByAction("GetContent", "Contentful", values: new { slug = Model.InternalDestination?.Slug, languageCode });
+    }
+
+    @switch (Model.Type)
+    {
+        case ButtonType.Default:
+        default:
+            <a href="@destination" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                @Model.Text
+            </a>
+            break;
+        case ButtonType.Secondary:
+            <a href="@destination" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                @Model.Text
+            </a>
+            break;
+        case ButtonType.Warning:
+            <a href="@destination" role="button" draggable="false" class="govuk-button govuk-button--warning" data-module="govuk-button">
+                @Model.Text
+            </a>
+            break;
+        case ButtonType.Start:
+            <a href="@destination" role="button" draggable="false" class="govuk-button govuk-button--start" data-module="govuk-button">
+                @Model.Text
+                <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
+                    <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z"/>
+                </svg>
+            </a>
+            break;
+    }
+}

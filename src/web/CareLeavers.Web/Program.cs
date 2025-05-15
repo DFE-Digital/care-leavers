@@ -162,6 +162,7 @@ try
         renderer.AddRenderer(new GDSBannerRenderer(serviceProvider));
         renderer.AddRenderer(new GDSDefinitionRenderer(serviceProvider));
         renderer.AddRenderer(new GDSCallToActionRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSButtonRenderer(serviceProvider));
         
         // Add custom renderers with renderers and DI
         renderer.AddRenderer(new GDSLinkRenderer(renderer.Renderers, serviceProvider));
