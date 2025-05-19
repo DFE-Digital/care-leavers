@@ -1,18 +1,28 @@
 @using CareLeavers.Web.Contentful
 @model CareLeavers.Web.Models.Content.StatusChecker
+@inject IHttpContextAccessor HttpContextAccessor;
 @inject IContentService ContentService
 @{
     var checker = await ContentService.Hydrate(Model);
+    var languageCode = HttpContextAccessor.HttpContext?.Request.RouteValues["languageCode"]?.ToString();
+    HttpContextAccessor.HttpContext?.Request.Query.TryGetValue("errorMessage", out var errorMessage);
 }
-<form method="post" action="/statuschecker/index">
+<form method="post" action="/statuschecker" novalidate>
     <input type="hidden" name="CheckerId" id="CheckerId" value="@checker?.Sys?.Id"/>
-    <div class="govuk-form-group">
-        <fieldset class="govuk-fieldset">
+    <input type="hidden" name="LanguageCode" id="LanguageCode" value="@languageCode"/>
+    <div class="govuk-form-group @(errorMessage.Any() ? "govuk-form-group--error" : "")">
+        <fieldset class="govuk-fieldset" role="group" aria-describedby="answers-error">
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                 <h2 class="govuk-fieldset__heading">
                     @checker?.InitialQuestion
                 </h2>
             </legend>
+            @if (errorMessage.Any())
+            {
+                <p id="answers-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> @errorMessage.First()
+                </p>
+            }
             @if (checker?.Answers != null)
             {
                 <div class="govuk-checkboxes" data-module="govuk-checkboxes">
@@ -34,14 +44,10 @@
                 </div>
             }
         </fieldset>
-        <fieldset class="govuk-fieldset govuk-!-padding-top-5">
-            <div class="govuk-button-group">
-                <button type="submit" class="govuk-button" data-module="govuk-button">
-                    Continue
-                </button>
-            </div>
-        </fieldset>
     </div>
+    <button type="submit" class="govuk-button" data-module="govuk-button">
+        Continue
+    </button>
 
     
 </form>
