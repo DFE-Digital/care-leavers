@@ -29,7 +29,7 @@
                     @foreach (var answer in checker.Answers)
                     {
                         <div class="govuk-checkboxes__item">
-                            <input class="govuk-checkboxes__input" id="@answer.Sys.Id" name="Answers" type="checkbox" value="@answer.Sys.Id">
+                            <input class="govuk-checkboxes__input" id="@answer.Sys.Id" name="Answers" type="checkbox" value="@answer.Sys.Id" aria-describedby="@answer.Sys.Id-hint">
                             <label class="govuk-label govuk-checkboxes__label" for="@answer.Sys.Id">
                                 @answer.Answer
                             </label>
