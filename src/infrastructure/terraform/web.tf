@@ -15,6 +15,7 @@ locals {
     "AzureTranslation__AccessKey"           = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.azure-translation-access-key.versionless_id})"
     "PdfGeneration__ApiKey"                 = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.pdf-generation-api-key.versionless_id})"
     "PdfGeneration__Sandbox"                = var.pdf_generation_use_sandbox
+    "Rebrand"                               = var.rebrand
   }
 }
 

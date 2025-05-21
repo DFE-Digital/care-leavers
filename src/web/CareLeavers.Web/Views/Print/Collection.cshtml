@@ -39,10 +39,7 @@
 }
 
 <!DOCTYPE html>
-<html 
-    class="govuk-template" 
-    dir="@language.Direction" 
-    lang="@languageCode">
+<html class="@(SiteConfiguration.Rebrand ? "govuk-template--rebranded" : "govuk-template")" dir="@language.Direction" lang="@languageCode">
 
 <head>
     <meta charset="utf-8"/>
@@ -56,6 +53,10 @@
     </style>
     <link rel="stylesheet" href="~/css/application.css" asp-append-version="@scriptConfig.AddCssVersion"/>
     <link rel="stylesheet" href="~/css/collection.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    @if (SiteConfiguration.Rebrand)
+    {
+        <link rel="stylesheet" href="~/css/rebrand.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    }
     <meta name="robots" content="noindex, nofollow"/>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
     <meta http-equiv="Pragma" content="no-cache"/>
@@ -72,16 +73,31 @@
 
 <body class="govuk-template__body">
 <div id="collection-header">
-    <header class="dfe-header" role="banner">
-        <div class="dfe-width-container dfe-header__container">
-            <div class="dfe-header__logo">
-                <a class="dfe-header__link dfe-header__link--service " href="~/@languageCode/@configViewModel.ContentfulConfiguration.HomePage?.Slug" aria-label="@configViewModel.ContentfulConfiguration.ServiceName homepage">
-                    <img src="~/assets/dfe-logo.png" class="dfe-logo" alt="@configViewModel.ContentfulConfiguration.ServiceName homepage">
-                    <img src="~/assets/dfe-logo-alt.png" class="dfe-logo-hover" alt="@configViewModel.ContentfulConfiguration.ServiceName homepage">
-                </a>
+    @if (SiteConfiguration.Rebrand)
+    {
+        <header class="govuk-header" data-module="govuk-header">
+            <div class="govuk-header__container govuk-width-container">
+                <div class="govuk-header__logo">
+                    <a class="govuk-header__link govuk-header__link--homepage" href="~/@languageCode/@configViewModel.ContentfulConfiguration.HomePage?.Slug" aria-label="@configViewModel.ContentfulConfiguration.ServiceName homepage">
+                        <img src="/assets/department-for-education_black.png" alt="@configViewModel.ContentfulConfiguration.ServiceName homepage" class="govuk-header__logotype">
+                    </a>
+                </div>
             </div>
-        </div>
-    </header>
+        </header>
+    }
+    else
+    {
+        <header class="dfe-header" role="banner">
+            <div class="dfe-width-container dfe-header__container">
+                <div class="dfe-header__logo">
+                    <a class="dfe-header__link dfe-header__link--service " href="~/@languageCode/@configViewModel.ContentfulConfiguration.HomePage?.Slug" aria-label="@configViewModel.ContentfulConfiguration.ServiceName homepage">
+                        <img src="~/assets/dfe-logo.png" class="dfe-logo" alt="@configViewModel.ContentfulConfiguration.ServiceName homepage">
+                        <img src="~/assets/dfe-logo-alt.png" class="dfe-logo-hover" alt="@configViewModel.ContentfulConfiguration.ServiceName homepage">
+                    </a>
+                </div>
+            </div>
+        </header>
+    }
     <partial model="configViewModel.ContentfulConfiguration.ServiceName" name="ServiceName"></partial>
 </div>
 <table>

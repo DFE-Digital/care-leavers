@@ -3,11 +3,22 @@
   @page {
     size: A4;
     margin: 35px 0;
-    
-    @bottom-right{
-      content: "Page " counter(page);
-      margin-right: 1rem;
-      margin-bottom: 1rem;
+
+    @bottom-right {
+      margin-right: 10pt;
+      font-size: 9pt;
+      content: "Page " counter(page) " of " counter(pages);
+    }
+
+    @bottom-left {
+      content: "Generated: " var(--generated);
+      font-size: 9pt;
+      margin-left: 10pt;
+    }
+
+    @bottom-center {
+      font-size: 9pt;
+      content: var(--siteurl)
     }
   }
   
@@ -32,6 +43,24 @@
     display: inherit !important;
     width: 136px !important;
     height: 80px !important;
+  }
+
+  .govuk-template--rebranded {
+    .govuk-header {
+      background-color: #ffffff;
+    }
+
+    .govuk-header__link--homepage:not(:focus),
+    .govuk-header__link--homepage
+    {
+      background-color: #ffffff;
+    }
+
+    .govuk-header__link:not(:focus) .govuk-header__logotype, 
+    .govuk-header__link:focus .govuk-header__logotype{
+      content: url(/assets/department-for-education_black.png);
+      height: 30px;
+    }
   }
 
   .govuk-service-navigation__wrapper {
@@ -210,5 +239,12 @@
     font-size: inherit;
     word-wrap: inherit;
   }
-  
+
+  .govuk-template--rebranded .govuk-footer {
+    display: none;
+  }
+
+  .govuk-template--rebranded {
+    background-color: inherit;
+  }
 }
