@@ -52,11 +52,11 @@ export class BasePage {
     constructor(page: Page) {
         this.page = page;
         //Locator for the Website Title navigation Link
-        this.WebsiteNameLink = page.locator('a.dfe-header__link--service');
+        this.WebsiteNameLink = page.locator('.govuk-service-navigation__service-name a.govuk-service-navigation__link');
 
         //Logo 
-        this.logoLink = page.locator('a.dfe-header__link');
-        this.defaultLogo = page.locator('img.dfe-logo');
+        this.logoLink = page.locator('a.govuk-header__link--homepage');
+        this.defaultLogo = page.locator('img.govuk-header__logotype');
 
         // Locators for cookie banner and buttons
         this.cookieBanner = page.locator('.govuk-cookie-banner');

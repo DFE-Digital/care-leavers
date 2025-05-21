@@ -103,6 +103,8 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
                 });
 
         });
+        
+        SiteConfiguration.Rebrand = true;
     }
 
 }

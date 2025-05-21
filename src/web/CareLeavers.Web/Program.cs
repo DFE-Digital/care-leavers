@@ -177,9 +177,8 @@ try
     builder.Services.AddOptions<ScriptOptions>().BindConfiguration(ScriptOptions.Name);
     builder.Services.AddOptions<CachingOptions>().BindConfiguration(CachingOptions.Name);
     builder.Services.AddOptions<PdfGenerationOptions>().BindConfiguration(PdfGenerationOptions.Name);
-
     builder.Services.AddOptions<AzureTranslationOptions>().BindConfiguration(AzureTranslationOptions.Name);
-
+    
     if (string.IsNullOrEmpty(builder.Configuration.GetValue<string>("AzureTranslation:AccessKey")))
     {
         Log.Logger.Information("Azure Translation subscription key not found, translation service will be disabled");
@@ -390,6 +389,12 @@ try
             return new { Result = "OK" };
         });
     });
+
+    #endregion
+    
+    #region Rebrand
+
+    SiteConfiguration.Rebrand = app.Configuration.GetValue<bool>("Rebrand") || DateTime.Today >= new DateTime(2025, 6, 25);
 
     #endregion
 
