@@ -93,3 +93,9 @@ variable "azure_frontdoor_scale" {
   type        = string
   default     = "Standard_AzureFrontDoor"
 }
+
+variable "rebrand" {
+  description = "Force DfE Rebrand before 25th June 2025"
+  type        = bool
+  default     = false
+}

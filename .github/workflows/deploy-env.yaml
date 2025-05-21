@@ -123,6 +123,7 @@ jobs:
           TF_VAR_azure_frontdoor_scale: ${{ vars.AZURE_FRONTDOOR_SCALE }}
           TF_VAR_pdf_generation_api_key: ${{ secrets.PDF_GENERATION_API_KEY }}
           TF_VAR_pdf_generation_use_sandbox: ${{ vars.PDF_GENERATION_USE_SANDBOX }}
+          TF_VAR_rebrand: ${{ vars.REBRANBD }}
         
 
       - name: 'Terraform Apply'
