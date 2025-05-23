@@ -164,6 +164,23 @@ For a ticket or feature to be considered complete and ready for testing, the fol
 | Staging     | Pre-production validation.     |
 | Production  | Post-deployment testing.       |
 
+## Release Process
+A structured and repeatable release management process is in place to ensure stable deployments across environments. All releases are executed through GitHub Actions and follow a CI/CD workflow. Code changes are first validated in the development environment using unit and integration tests. Upon successful validation, they are promoted to the test environment, where automated end-to-end tests are executed.
+
+Before any release is considered production-ready, the following criteria must be met:
+
+1. All automated tests have passed across dev, test, and staging environments.
+
+2. No critical defects are outstanding.
+
+3. Accessibility checks meet WCAG 2.1 AA compliance.
+
+4. The Definition of Done is fully satisfied, including peer code review and functional deployment to the test environment.
+
+5. A Contentful migration check is completed, and any necessary migrations are applied.
+
+Release communications, including test summaries and defect status, are shared via Slack and test reports with key stakeholders (e.g., Delivery Manager, Product Owner, Test Architect). Upon go-live, a high-level smoke test is executed to verify critical functionality and production readiness. Any cache-clearing steps related to model changes are applied if needed. This structured approach ensures quality, stakeholder visibility, and fast feedback loops.
+
 ## Risks and Dependencies
 
 - **Risks**: Delays in third-party API responses, cache inconsistencies, security vulnerabilities.

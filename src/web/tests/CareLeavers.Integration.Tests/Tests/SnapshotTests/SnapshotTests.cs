@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using AngleSharp.Html;
 using AngleSharp.Html.Parser;
 using CareLeavers.Web.Models.Content;
@@ -45,7 +46,7 @@ public class SnapshotTests
        
        var resp = await DoTest(folder);
        
-       Assert.That(resp, Is.EqualTo(existing));
+       Assert.That(resp, Is.EqualTo(ReplaceDate	(existing)));
     }
 
     private async Task<string> DoTest(string folder)
@@ -94,7 +95,14 @@ public class SnapshotTests
         await using var sw = new StringWriter();
         doc.ToHtml(sw, new PrettyMarkupFormatter());
         
-        return sw.ToString();
+        return ReplaceDate(sw.ToString());
+    }
+
+    private string ReplaceDate(string content)
+    {
+        var dateRegex = new Regex(@"--generated:'(.*)';", RegexOptions.Multiline);
+        content = dateRegex.Replace	(content, "--generated:TODAY';");
+        return content;
     }
     
     private static async Task<string> FullJson(string content)
