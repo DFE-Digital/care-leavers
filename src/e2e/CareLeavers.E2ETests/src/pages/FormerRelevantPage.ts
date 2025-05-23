@@ -13,9 +13,9 @@ export class FormerRelevantPage extends BasePage {
         super(page);
         this.mainContent = page.locator('#main-content'); // Main content wrapper
         this.supportSection = page.locator('#Support-as-a-former-relevant-child');
-        this.generalSupportSection = page.locator('#zGeneral-support');
+        this.generalSupportSection = page.locator('#General-support');
         this.helpWithMoneySection = page.locator('#Help-with-money');
-        this.moreSupportSection = page.locator('#z-strong-More-support--strong---160-');
+        this.moreSupportSection = page.locator('#zstrong-More-support--strong---160-');
     }
 
     async openFormerRelevantPage() {

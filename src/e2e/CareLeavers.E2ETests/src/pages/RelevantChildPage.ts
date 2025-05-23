@@ -12,7 +12,7 @@ export class RelevantChildPage extends BasePage {
     constructor(page: Page) {
         super(page);
         this.mainContent = page.locator('#main-content'); // Main content wrapper
-        this.relevantChildSupportSection = page.locator('#zSupport-as-a-relevant-child');
+        this.relevantChildSupportSection = page.locator('#Support-as-a-relevant-child');
         this.generalSupportSection = page.locator('#General-support');
         this.helpWithMoneySection = page.locator('#Help-with-money');
         this.moreSupportSection = page.locator('#zstrong-More-support--strong---160-');
