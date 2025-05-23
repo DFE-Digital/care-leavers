@@ -1,4 +1,4 @@
-name: Validate - Deployment
+name: Validate - Accessibility
 
 on:
   workflow_dispatch:

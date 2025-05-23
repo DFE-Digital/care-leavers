@@ -2,6 +2,7 @@
   "defaults": {
     "standard": "WCAG2AA",
     "timeout": 10000,
+    "userAgent": "pa11y - accessibility test (twitterbot)",
     "viewport": {
       "width": 320,
       "height": 480
