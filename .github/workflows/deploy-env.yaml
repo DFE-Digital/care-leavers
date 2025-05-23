@@ -124,6 +124,7 @@ jobs:
           TF_VAR_pdf_generation_api_key: ${{ secrets.PDF_GENERATION_API_KEY }}
           TF_VAR_pdf_generation_use_sandbox: ${{ vars.PDF_GENERATION_USE_SANDBOX }}
           TF_VAR_rebrand: ${{ vars.REBRAND }}
+          TF_VAR_support_alert_email: ${{ secrets.SUPPORT_ALERT_EMAIL }}
         
 
       - name: 'Terraform Apply'

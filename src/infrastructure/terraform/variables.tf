@@ -99,3 +99,63 @@ variable "rebrand" {
   type        = bool
   default     = false
 }
+
+variable "support_alert_email" {
+  description = "Where to send alert emails to"
+  type        = string
+  sensitive   = true 
+}
+
+variable "alerting" {
+  description = "Alerting configuration per environment"
+  type = map(object({
+    name                 = string
+    alerts_enabled       = bool
+    email_alerts_enabled = bool
+    smart_alerts_enabled = bool
+    thresholds = object({
+      availability = number
+      cpu          = number
+      memory       = number
+      error        = number
+    })
+  }))
+  default = {
+    d01 = {
+      name                 = "Test"
+      alerts_enabled       = false
+      email_alerts_enabled = false
+      smart_alerts_enabled = false
+      thresholds = {
+        availability = 90
+        cpu          = 95
+        memory       = 95
+        error        = 5
+      }
+    }
+    t01 = {
+      name                 = "Staging"
+      alerts_enabled       = true
+      email_alerts_enabled = false
+      smart_alerts_enabled = true
+      thresholds = {
+        availability = 99.9
+        cpu          = 85
+        memory       = 85
+        error        = 1
+      }
+    }
+    t02 = {
+      name                 = "Production"
+      alerts_enabled       = true
+      email_alerts_enabled = true
+      smart_alerts_enabled = true
+      thresholds = {
+        availability = 99.9
+        cpu          = 85
+        memory       = 85
+        error        = 1
+      }
+    }
+  }
+}
