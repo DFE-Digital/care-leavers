@@ -32,7 +32,8 @@ public class GDSHeaderRenderer(ContentRendererCollection rendererCollection) : I
             var renderer = rendererCollection.GetRendererForContent(subContent);
             headingTag.InnerHtml.AppendHtml(await renderer.RenderAsync(subContent));
         }
-        headingTag.GenerateId(headingTag.InnerHtml.ToHtmlString(), "-");
+        if (content is Heading1 or Heading2 or Heading3)
+            headingTag.GenerateId(headingTag.InnerHtml.ToHtmlString().Trim(), "-");
             
         return headingTag.ToHtmlString();
     }
