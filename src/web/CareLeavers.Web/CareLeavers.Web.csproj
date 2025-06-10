@@ -10,6 +10,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Content Include="..\..\.dockerignore">
+          <Link>.dockerignore</Link>
+        </Content>
         <Content Include="..\.dockerignore">
             <Link>.dockerignore</Link>
         </Content>
@@ -34,10 +37,10 @@
         <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
         <PackageReference Include="WebMarkupMin.AspNet.Brotli" Version="2.19.0" />
         <PackageReference Include="WebMarkupMin.AspNetCoreLatest" Version="2.19.0" />
-        <PackageReference Include="ZiggyCreatures.FusionCache.Backplane.Memory" Version="2.2.0" />
-        <PackageReference Include="ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis" Version="2.2.0" />
-        <PackageReference Include="ZiggyCreatures.FusionCache.OpenTelemetry" Version="2.2.0" />
-        <PackageReference Include="ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson" Version="2.2.0" />
+        <PackageReference Include="ZiggyCreatures.FusionCache.Backplane.Memory" Version="2.3.0" />
+        <PackageReference Include="ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis" Version="2.3.0" />
+        <PackageReference Include="ZiggyCreatures.FusionCache.OpenTelemetry" Version="2.3.0" />
+        <PackageReference Include="ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson" Version="2.3.0" />
     </ItemGroup>
 
 </Project>
