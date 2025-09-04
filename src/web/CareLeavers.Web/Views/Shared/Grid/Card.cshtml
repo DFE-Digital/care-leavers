@@ -18,9 +18,12 @@
             link = LinkGenerator.GetPathByAction("DownloadPdf", "Print", values: new { identifier, languageCode });
             rel = "nofollow";
             break;
-        
     }
-    
+
+    if (!string.IsNullOrEmpty(Model.ExternalLink))
+    {
+        link = Model.ExternalLink;
+    }
 }
 
 <div class="dfe-card">
