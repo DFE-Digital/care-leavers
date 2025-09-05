@@ -10,9 +10,10 @@
 
 
 @{
-    ViewBag.Title = !string.IsNullOrEmpty(Model.SeoTitle) ? Model.SeoTitle : Model.Title;
-    Layout = "_Layout";
     var config = await ContentfulConfiguration.GetConfiguration();
+    ViewBag.Title = !string.IsNullOrEmpty(Model.SeoTitle) ? Model.SeoTitle : $"{Model.Title} - {config.ServiceName}"; 
+    
+    Layout = "_Layout";
     var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
 
     var pageWidth = Model.Width switch
