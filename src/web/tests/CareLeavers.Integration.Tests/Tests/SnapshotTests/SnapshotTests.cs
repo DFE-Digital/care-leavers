@@ -46,7 +46,7 @@ public class SnapshotTests
        
        var resp = await DoTest(folder);
        
-       Assert.That(resp, Is.EqualTo(ReplaceDate	(existing)));
+       Assert.That(resp, Is.EqualTo(ReplaceDate(existing)));
     }
 
     private async Task<string> DoTest(string folder)
@@ -64,8 +64,8 @@ public class SnapshotTests
 
             if (Path.GetFileNameWithoutExtension(file).Contains("_"))
             {
-                id = Path.GetFileNameWithoutExtension(file).Split("_", StringSplitOptions.None).Last();
-                contentType = Path.GetFileNameWithoutExtension(file).Split("_", StringSplitOptions.None).First();
+                id = Path.GetFileNameWithoutExtension(file).Split("_").Last();
+                contentType = Path.GetFileNameWithoutExtension(file).Split("_").First();
             }
 
             WebFixture.AddContent(new ContentfulContent()
@@ -100,7 +100,7 @@ public class SnapshotTests
 
     private string ReplaceDate(string content)
     {
-        var dateRegex = new Regex(@"--generated:'(.*)';", RegexOptions.Multiline);
+        var dateRegex = new Regex("--generated:'(.*)';", RegexOptions.Multiline);
         content = dateRegex.Replace	(content, "--generated:TODAY';");
         return content;
     }
