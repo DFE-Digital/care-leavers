@@ -146,6 +146,7 @@ try
         // Add custom renderers with no renderers or DI
         renderer.AddRenderer(new GDSHorizontalRulerContentRenderer());
         renderer.AddRenderer(new GDSSpacerRenderer());
+        renderer.AddRenderer(new GDSTableRenderer());
         
         // Add custom renderers, passing renderer collection
         renderer.AddRenderer(new GDSParagraphRenderer(renderer.Renderers));

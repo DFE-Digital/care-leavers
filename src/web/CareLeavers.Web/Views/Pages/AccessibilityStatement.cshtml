@@ -2,11 +2,13 @@
 
 @inject IContentfulConfiguration ContentfulConfiguration
 
+@model CareLeavers.Web.Models.Content.Page
+
 @{
     var config = await ContentfulConfiguration.GetConfiguration();
     var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
 
-    ViewBag.Title = $"Accessibility statement for " + config.ServiceName;
+    ViewBag.Title = Model.Title ?? $"Accessibility statement for " + config.ServiceName;
     Layout = "_Layout";
 }
 @section Head
@@ -43,7 +45,14 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <gds-contentful-rich-text document="@config.AccessibilityStatement"></gds-contentful-rich-text>
+        @if (Model.MainContent is not null && Model.MainContent.Content.Any())
+        {
+            <gds-contentful-rich-text document="@Model.MainContent"></gds-contentful-rich-text>
+        }
+        else
+        {
+            <gds-contentful-rich-text document="@config.AccessibilityStatement"></gds-contentful-rich-text>
+        }
     </div>
 </div>
 
