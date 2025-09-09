@@ -45,7 +45,7 @@ public class ContentfulContentService : IContentService
             var pageEntries = await _contentfulClient.GetEntries(pages, token);
             var pageResult = pageEntries.FirstOrDefault();
 
-            if (pageResult != null)
+            if (pageResult != null && pageEntries.IncludedEntries?.Any() == true)
             {
                 var latestUpdate = pageResult.Sys.UpdatedAt ?? DateTime.MinValue;
 
