@@ -51,7 +51,7 @@ public class ContentfulContentService : IContentService
 
                 var maxUpdatedAt = pageEntries.IncludedEntries
                     .Where(e => e.SystemProperties.UpdatedAt != null)
-                    .Select(e => e.SystemProperties.UpdatedAt.Value)
+                    .Select(e => e.SystemProperties.UpdatedAt!.Value)
                     .Where(entryUpdatedAt => entryUpdatedAt > latestUpdate)
                     .DefaultIfEmpty(latestUpdate)
                     .Max();
@@ -59,7 +59,7 @@ public class ContentfulContentService : IContentService
                 if (maxUpdatedAt > latestUpdate)
                     pageResult.Sys.UpdatedAt = maxUpdatedAt;
             }
-
+            
             return pageResult;
         });
 
