@@ -43,11 +43,28 @@ public class ContentfulContentService : IContentService
                 .Limit(1);
 
             var pageEntries = await _contentfulClient.GetEntries(pages, token);
-            return pageEntries.FirstOrDefault();
+            var pageResult = pageEntries.FirstOrDefault();
+
+            if (pageResult != null)
+            {
+                var latestUpdate = pageResult.Sys.UpdatedAt ?? DateTime.MinValue;
+
+                var maxUpdatedAt = pageEntries.IncludedEntries
+                    .Where(e => e.SystemProperties.UpdatedAt != null)
+                    .Select(e => e.SystemProperties.UpdatedAt.Value)
+                    .Where(entryUpdatedAt => entryUpdatedAt > latestUpdate)
+                    .DefaultIfEmpty(latestUpdate)
+                    .Max();
+
+                if (maxUpdatedAt > latestUpdate)
+                    pageResult.Sys.UpdatedAt = maxUpdatedAt;
+            }
+
+            return pageResult;
         });
 
         // If we get a page, but the slug doesn't match (used in tests), return null so we trigger our 404s
-        if (page?.Slug != null && !(page.Slug).Equals(slug, StringComparison.InvariantCultureIgnoreCase))
+        if (page?.Slug != null && !page.Slug.Equals(slug, StringComparison.InvariantCultureIgnoreCase))
         {
             page = null;
         }
@@ -117,8 +134,6 @@ public class ContentfulContentService : IContentService
     {
         try
         {
-
-
             var slug = await GetSlug(id);
             var result = await _fusionCache.GetOrSetAsync($"pageIsPrintable:{slug}", async token =>
             {
@@ -158,8 +173,6 @@ public class ContentfulContentService : IContentService
             Parent = null,
             ExcludeFromSitemap = home?.ExcludeFromSitemap ?? false
         };
-        
-        
         
         // Get site hierarchy
         var hierarchy = await GetSiteHierarchy();
