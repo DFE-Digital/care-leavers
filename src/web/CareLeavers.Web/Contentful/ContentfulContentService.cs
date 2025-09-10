@@ -35,7 +35,7 @@ public class ContentfulContentService : IContentService
     public async Task<Page?> GetPage(string slug)
     {
         var page = await _fusionCache.GetOrSetAsync($"content:{slug}", async token =>
-        {
+            {
             var pages = new QueryBuilder<Page>()
                 .ContentTypeIs(Page.ContentType)
                 .FieldEquals(c => c.Slug, slug)
@@ -48,21 +48,22 @@ public class ContentfulContentService : IContentService
             if (pageResult != null && pageEntries.IncludedEntries?.Any() == true)
             {
                 var latestUpdate = pageResult.Sys.UpdatedAt ?? DateTime.MinValue;
-
+                
+                //Get the max updated at from included entries that are more recent than the page's updated at
                 var maxUpdatedAt = pageEntries.IncludedEntries
                     .Where(e => e.SystemProperties.UpdatedAt != null)
                     .Select(e => e.SystemProperties.UpdatedAt!.Value)
                     .Where(entryUpdatedAt => entryUpdatedAt > latestUpdate)
                     .DefaultIfEmpty(latestUpdate)
                     .Max();
-
+            
                 if (maxUpdatedAt > latestUpdate)
                     pageResult.Sys.UpdatedAt = maxUpdatedAt;
             }
             
             return pageResult;
         });
-
+        
         // If we get a page, but the slug doesn't match (used in tests), return null so we trigger our 404s
         if (page?.Slug != null && !page.Slug.Equals(slug, StringComparison.InvariantCultureIgnoreCase))
         {
