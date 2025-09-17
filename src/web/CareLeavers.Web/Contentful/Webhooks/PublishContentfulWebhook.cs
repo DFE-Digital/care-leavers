@@ -14,16 +14,25 @@ public class PublishContentfulWebhook(
 {
     private HashSet<string> _idsScanned = [];
 
-    public async Task Consume(Entry<ContentfulContent> entry)
+    private readonly List<string> _entryTypesForRepublishingLinkedPages =
+    [
+        RichContent.ContentType,
+        RichContentBlock.ContentType,
+        PrintableCollection.ContentType
+    ];
+
+    private readonly List<Page>? _linkedPageEntries = [];
+
+    public async Task Consume(Entry<ContentfulContent> entry, string? topic)
     {
         contentfulClient.ContentTypeResolver = new ContentfulEntityResolver();
 
         // Reset our scanned list
         _idsScanned.Clear();
-        
+
         // Add this entry, since we've already got it
         _idsScanned.Add(entry.SystemProperties.Id);
-        
+
         if (entry.SystemProperties.ContentType.SystemProperties.Id == RedirectionRules.ContentType)
         {
             logger.LogInformation("Redirection rules entry updated, purging redirections cache");
@@ -39,37 +48,40 @@ public class PublishContentfulWebhook(
         else if (entry.SystemProperties.ContentType.SystemProperties.Id == Page.ContentType)
         {
             var pageEntry = await contentfulClient.GetEntry<Page>(entry.SystemProperties.Id);
-            
+
             if (pageEntry == null)
             {
                 return;
             }
-            
+
             logger.LogInformation("The following slug will be purged: {Slug}", pageEntry.Slug);
 
             try
             {
                 await fusionCache.RemoveAsync($"content:{pageEntry.Slug}");
-                if (pageEntry.Slug != null) await fusionCache.RemoveByTagAsync(pageEntry.Slug);
+                if (pageEntry.Slug != null)
+                    await fusionCache.RemoveByTagAsync(pageEntry.Slug);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Unable to purge page with slug {slug}", pageEntry.Slug);
             }
-            
+
             var pageById = await fusionCache.TryGetAsync<Page>(pageEntry.Sys.Id);
 
             if (pageById.HasValue && pageEntry.Slug != null && pageById.Value.Slug != pageEntry.Slug)
             {
                 logger.LogInformation("Slug changed from {OldSlug} to {NewSlug}", pageById.Value.Slug, pageEntry.Slug);
                 await fusionCache.RemoveAsync($"content:{pageById.Value.Slug}");
-                if (pageById.Value.Slug != null) await fusionCache.RemoveByTagAsync(pageById.Value.Slug);
+
+                if (pageById.Value.Slug != null)
+                    await fusionCache.RemoveByTagAsync(pageById.Value.Slug);
 
                 var redirectionContent = await contentfulClient.GetEntries(
                     new QueryBuilder<RedirectionRules>()
                         .ContentTypeIs(RedirectionRules.ContentType)
                         .Include(1));
-                
+
                 var redirectionRules = redirectionContent.Items.FirstOrDefault() ?? new RedirectionRules()
                 {
                     Sys = new SystemProperties()
@@ -93,7 +105,7 @@ public class PublishContentfulWebhook(
                     },
                     Fields = new
                     {
-                        title = new Dictionary<string, dynamic> 
+                        title = new Dictionary<string, dynamic>
                         {
                             ["en-US"] = "Redirection Rules - DO NOT DELETE"
                         },
@@ -104,6 +116,7 @@ public class PublishContentfulWebhook(
                     }
                 }, contentTypeId: RedirectionRules.ContentType, version: redirectionRules.Sys.PublishedVersion + 1);
 
+                //Publish updated Redirection Rules
                 await contentfulManagementClient.PublishEntry(
                     updatedEntryResp.SystemProperties.Id,
                     updatedEntryResp.SystemProperties.Version ?? 1
@@ -136,32 +149,36 @@ public class PublishContentfulWebhook(
             {
                 logger.LogError(ex, "Unable to purge collection with identifier {identifier}", collection.Identifier);
             }
-            
+
             await fusionCache.RemoveAsync(collection.Sys.Id);
-            
+
+            await RepublishPagesLinkedToEntry(entry, topic);
         }
         else
         {
-            var pageEntries = new List<Page>();
-            
-            await FindLinkedPages(entry.SystemProperties.Id, pageEntries);
+            await FindLinkedPages(entry.SystemProperties.Id, _linkedPageEntries);
 
-            logger.LogInformation("The following slugs will be purged: {Slugs}", pageEntries.Select(x => x.Slug));
-
-            foreach (var pageEntry in pageEntries)
+            if (_linkedPageEntries != null)
             {
-                try
+                logger.LogInformation("The following slugs will be purged: {Slugs}",
+                    _linkedPageEntries.Select(x => x.Slug));
+
+                foreach (var pageEntry in _linkedPageEntries)
                 {
-                    await fusionCache.RemoveAsync($"content:{pageEntry.Slug}");
-                    if (pageEntry.Slug != null) await fusionCache.RemoveByTagAsync(pageEntry.Slug);
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, "Unable to purge page with slug {slug}", pageEntry.Slug);
+                    try
+                    {
+                        await fusionCache.RemoveAsync($"content:{pageEntry.Slug}");
+
+                        if (pageEntry.Slug != null) await fusionCache.RemoveByTagAsync(pageEntry.Slug);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(ex, "Unable to purge page with slug {slug}", pageEntry.Slug);
+                    }
                 }
             }
         }
-        
+
         // Now wipe all direct IDs that have been cached
         foreach (var id in _idsScanned)
         {
@@ -180,14 +197,44 @@ public class PublishContentfulWebhook(
         {
             await fusionCache.RemoveAsync("content:sitemap");
             await fusionCache.RemoveAsync("content:hierarchy");
-        } 
+        }
         catch (Exception ex)
         {
             logger.LogError(ex, "Unable to clear sitemap and hierarchy");
         }
+
+        await RepublishPagesLinkedToEntry(entry, topic);
     }
-    
-    private async Task FindLinkedPages(string id, List<Page> linkedPages)
+
+    private async Task RepublishPagesLinkedToEntry(Entry<ContentfulContent> entry, string? topic)
+    {
+        // Only republish if this is a publish event, and the entry type is in our list
+        if (topic == "ContentManagement.Entry.publish" &&
+            _entryTypesForRepublishingLinkedPages.Contains(entry.SystemProperties.ContentType.SystemProperties.Id))
+        {
+            if (_linkedPageEntries?.Count == 0 || _linkedPageEntries == null)
+                await FindLinkedPages(entry.SystemProperties.Id, _linkedPageEntries);
+
+            if (_linkedPageEntries == null)
+                return;
+
+            try
+            {
+                foreach (var page in _linkedPageEntries)
+                    await contentfulManagementClient.PublishEntry(page.Sys.Id, page.Sys.PublishedVersion + 1 ?? 1);
+
+                logger.LogInformation("The following pages were Republished: {Slugs}",
+                    _linkedPageEntries.Select(x => x.Slug));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to republish linked pages: {LinkedPages}",
+                    _linkedPageEntries.Select(x => x.Slug));
+            }
+        }
+    }
+
+    private async Task FindLinkedPages(string id, List<Page>? linkedPages)
     {
         var entries = await contentfulClient.GetEntries(new QueryBuilder<ContentfulContent>()
             .LinksToEntry(id)
@@ -200,10 +247,10 @@ public class PublishContentfulWebhook(
             {
                 continue;
             }
-            
+
             if (linkedEntry is Page pageEntry)
             {
-                linkedPages.Add(pageEntry);
+                linkedPages?.Add(pageEntry);
             }
             else
             {
