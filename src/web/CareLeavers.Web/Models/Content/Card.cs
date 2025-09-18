@@ -17,5 +17,7 @@ public class Card : ContentfulContent
     public List<string> Types { get; set; } = new();
     
     public string? Metadata { get; set; }
+    
+    public string? ExternalLink { get; set; }
 
 }
