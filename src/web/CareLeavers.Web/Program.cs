@@ -364,15 +364,17 @@ try
 
     app.UseContentfulWebhooks(consumers =>
     {
-        consumers.AddConsumer<Entry<ContentfulContent>>("*", "Entry", "*",  async entry =>
+        consumers.AddConsumer<Entry<ContentfulContent>>("*", "Entry", "*", async (entry, httpContext) =>
         {
+            var topic = httpContext.Request.Headers["X-Contentful-Topic"].FirstOrDefault();
+            
             var webhookConsumer = new PublishContentfulWebhook(
                 app.Services.GetRequiredService<IContentfulClient>(),
                 app.Services.GetRequiredService<IFusionCache>(),
                 app.Services.GetRequiredService<IContentfulManagementClient>(),
                 app.Services.GetRequiredService<ILogger<PublishContentfulWebhook>>());
 
-            await webhookConsumer.Consume(entry);
+            await webhookConsumer.Consume(entry, topic);
             
             return new { Result = "OK" };
         });
