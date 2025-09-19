@@ -8,6 +8,8 @@ public class StatusChecker : ContentfulContent
     
     public string? InitialQuestion { get; set; }
     
+    public string? Description { get; set; }
+    
     public string? ValidationError { get; set; }
     
     public List<AnswerEntity>? Answers { get; set; }

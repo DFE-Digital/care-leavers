@@ -17,6 +17,12 @@
                     @checker?.InitialQuestion
                 </h2>
             </legend>
+            @if (!string.IsNullOrEmpty(checker.Description))
+            {
+                <div id="@checker.Sys.Id-hint" class="govuk-hint">
+                    @checker.Description
+                </div>
+            }
             @if (errorMessage.Any())
             {
                 <p id="answers-error" class="govuk-error-message">
