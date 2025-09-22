@@ -3,6 +3,8 @@ import { MoneyAndBenefitsPage } from '../pages/MoneyAndBenefitsPage';
 
 let browser: Browser;
 let context: BrowserContext;
+let page: Page;
+let moneyAndBenefitsPage: MoneyAndBenefitsPage;
 
 test.beforeAll(async ({ browserName }) => {
     const browserType: BrowserType<{}> = { chromium, firefox, webkit }[browserName];
@@ -13,17 +15,17 @@ test.beforeAll(async ({ browserName }) => {
 
     browser = await browserType.launch();
     context = await browser.newContext();
+    page = await context.newPage();
+    moneyAndBenefitsPage = new MoneyAndBenefitsPage(page);
 });
 
 test.describe('Money and Benefits Page Tests', () => {
 
     test.beforeEach(async ({ page }) => {
-        const moneyAndBenefitsPage = new MoneyAndBenefitsPage(page);
         await moneyAndBenefitsPage.openMoneyAndBenefitsPage();
     });
 
     test('should verify page structure without validating content', async ({ page }) => {
-        const moneyAndBenefitsPage = new MoneyAndBenefitsPage(page);
         await moneyAndBenefitsPage.assertPageElements();
     });
 
