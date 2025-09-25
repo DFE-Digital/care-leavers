@@ -47,8 +47,10 @@ jobs:
         id: set_tag
         run: |
           if [[ "${{ github.event_name }}" == "release" ]]; then
+            echo "Using Git tag for versioning: ${{ github.ref_name }}"
             echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
           else
+            echo "Using commit SHA for versioning: ${{ github.sha }}"
             echo "tag=${{ github.sha }}" >> $GITHUB_OUTPUT
           fi
 
@@ -66,14 +68,16 @@ jobs:
         run: docker push ghcr.io/${{ env.REPO }}:${{ steps.set_tag.outputs.tag }}
 
   deploy_environment:
-    name: Deploying site to ${{ github.event.inputs.environment || 'Production' }}
+    # This name is dynamic and will update based on the determined environment
+    name: Deploying site to ${{ needs.package.outputs.environment || 'Production' }}
     runs-on: ubuntu-latest
     needs: [ package ]
     permissions:
       contents: read
       id-token: write
+    # The environment name is now set dynamically in a later step
     environment:
-      name: ${{ github.event.inputs.environment || 'Production' }}
+      name: ${{ steps.vars.outputs.environment }}
     env:
       ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
       ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
@@ -81,6 +85,28 @@ jobs:
       ARM_CLIENT_SECRET: "${{ secrets.AZURE_CLIENT_SECRET }}"
 
     steps:
+      - name: Set dynamic variables
+        id: vars
+        run: |
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            echo "Triggered by release. Parsing release body for options."
+            BODY="${{ github.event.release.body }}"
+            # Extract values, trim whitespace, and provide defaults
+            ENV_VALUE=$(echo "$BODY" | grep 'environment:' | awk -F': ' '{print $2}' | tr -d '[:space:]')
+            CACHE_VALUE=$(echo "$BODY" | grep 'clear-cache:' | awk -F': ' '{print $2}' | tr -d '[:space:]')
+            echo "environment=${ENV_VALUE:-Production}" >> $GITHUB_OUTPUT
+            echo "clear_cache=${CACHE_VALUE:-False}" >> $GITHUB_OUTPUT
+          else
+            echo "Triggered manually. Using workflow dispatch inputs."
+            echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+            echo "clear_cache=${{ github.event.inputs.clear-cache }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Display Determined Variables
+        run: |
+          echo "Deployment Environment: ${{ steps.vars.outputs.environment }}"
+          echo "Clear Cache: ${{ steps.vars.outputs.clear_cache }}"
+
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
         with:
@@ -119,6 +145,8 @@ jobs:
         working-directory: ./src/infrastructure/terraform
         run: terraform plan -out plan.plan
         env:
+          # MODIFIED: Uses the output from the 'vars' step
+          TF_VAR_aspnetcore_environment: ${{ steps.vars.outputs.environment }}
           TF_VAR_environment_prefix: ${{ vars.ENVIRONMENT_PREFIX }}
           TF_VAR_cip_environment: ${{ vars.CIP_ENVIRONMENT }}
           TF_VAR_contentful_delivery_api_key: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
@@ -132,13 +160,11 @@ jobs:
           TF_VAR_custom_domain: ${{ vars.CUSTOM_DOMAIN }}
           TF_VAR_azure_translation_document_endpoint: ${{ vars.AZURE_TRANSLATION_DOCUMENT_ENDPOINT }}
           TF_VAR_azure_translation_access_key: ${{ secrets.AZURE_TRANSLATION_ACCESS_KEY }}
-          TF_VAR_aspnetcore_environment: ${{ github.event.inputs.environment }}
           TF_VAR_azure_frontdoor_scale: ${{ vars.AZURE_FRONTDOOR_SCALE }}
           TF_VAR_pdf_generation_api_key: ${{ secrets.PDF_GENERATION_API_KEY }}
           TF_VAR_pdf_generation_use_sandbox: ${{ vars.PDF_GENERATION_USE_SANDBOX }}
           TF_VAR_rebrand: ${{ vars.REBRAND }}
           TF_VAR_support_alert_email: ${{ secrets.SUPPORT_ALERT_EMAIL }}
-
 
       - name: 'Terraform Apply'
         id: terraform_apply
@@ -165,7 +191,8 @@ jobs:
       - name: Clear Cache
         id: clear-cache
         uses: fjogeleit/http-request-action@v1
-        if: ${{ inputs.clear-cache == 'True' }}
+        # MODIFIED: Uses the output from the 'vars' step
+        if: ${{ steps.vars.outputs.clear_cache == 'True' }}
         with:
           url: 'https://${{ vars.CUSTOM_DOMAIN }}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f'
           method: 'POST'
