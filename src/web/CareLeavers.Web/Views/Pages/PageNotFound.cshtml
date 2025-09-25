@@ -1,5 +1,6 @@
+@model CareLeavers.Web.Models.Content.Page
 @{
-    ViewBag.Title = "Page not found";
+    ViewBag.Title = Model.Title ?? "Page not found";
     Layout = "_Layout";
 }
 
@@ -18,14 +19,24 @@
         </div>
     </div>
 }
-<p class="govuk-body">
-    If you typed the web address, check it is correct.
-</p>
-<p class="govuk-body">
-    If you pasted the web address, check you copied the entire address.
-</p>
-<p class="govuk-body">
-    If the web address is correct or you selected a link or button, visit 
-    <a href="https://www.childrenscommissioner.gov.uk/help-at-hand" class="govuk-link">Help at Hand</a> 
-    to get help and support about being in care or if you’re a care leaver.
-</p>
+
+@if (Model.MainContent is not null && Model.MainContent.Content.Any())
+{
+    <gds-contentful-rich-text document="@Model.MainContent"/>
+}
+else
+{
+    <p class="govuk-body">
+        If you typed the web address, check it is correct.
+    </p>
+    <p class="govuk-body">
+        If you pasted the web address, check you copied the entire address.
+    </p>
+    <p class="govuk-body">
+        If the web address is correct or you selected a link or button, visit 
+        <a href="https://www.childrenscommissioner.gov.uk/help-at-hand" class="govuk-link">Help at Hand</a> 
+        to get help and support about being in care or if you’re a care leaver.
+    </p>
+}
+
+

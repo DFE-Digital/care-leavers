@@ -1,11 +1,12 @@
 @using CareLeavers.Web.Configuration
 
 @inject IContentfulConfiguration ContentfulConfiguration
+@model CareLeavers.Web.Models.Content.Page
 
 @{
     var config = await ContentfulConfiguration.GetConfiguration();
 
-    ViewBag.Title = $"Sorry, the service is unavailable";
+    ViewBag.Title = Model.Title ?? "Sorry, the service is unavailable";
     Layout = "_BasicLayout";
 }
 

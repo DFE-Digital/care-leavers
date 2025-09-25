@@ -59,138 +59,145 @@
     </div>
 }
 
-<h2 class="govuk-heading-l">What are cookies?</h2>
-<p class="govuk-body">
-    Cookies are small files saved on your device when you visit a website. 
-    We use cookies to ensure the functionality of this site and to collect information on how you use our service. 
-    You can choose to opt into optional cookies that help us improve the service.
-</p>
-<h2 class="govuk-heading-l">Essential cookies</h2>
-<p class="govuk-body">
-    Essential cookies keep your information secure while you use @(config.ServiceName). 
-    These cookies enable core functionality, such as security, network management, and accessibility. 
-    We do not require permission to use essential cookies.
-</p>
-<table class="govuk-table" aria-label="Essential cookies that we store">
-    <thead class="govuk-table__head">
-    <tr>
-        <th scope="col" class="govuk-table__header">
-            Name
-        </th>
+@if (Model.Page?.MainContent is not null && Model.Page.MainContent.Content.Any())
+{
+    <gds-contentful-rich-text document="@Model.Page.MainContent"/>
+}
+else
+{
+    <h2 class="govuk-heading-l">What are cookies?</h2>
+    <p class="govuk-body">
+        Cookies are small files saved on your device when you visit a website.
+        We use cookies to ensure the functionality of this site and to collect information on how you use our service.
+        You can choose to opt into optional cookies that help us improve the service.
+    </p>
+    <h2 class="govuk-heading-l">Essential cookies</h2>
+    <p class="govuk-body">
+        Essential cookies keep your information secure while you use @(config.ServiceName).
+        These cookies enable core functionality, such as security, network management, and accessibility.
+        We do not require permission to use essential cookies.
+    </p>
+    <table class="govuk-table" aria-label="Essential cookies that we store">
+        <thead class="govuk-table__head">
+        <tr>
+            <th scope="col" class="govuk-table__header">
+                Name
+            </th>
 
-        <th scope="col" class="govuk-table__header">
-            Purpose
-        </th>
-        <th scope="col" class="govuk-table__header">
-            Expires
-        </th>
-    </tr>
-    </thead>
-    <tbody class="govuk-table__body">
-    <tr>
-        <td class="govuk-table__cell">
-            .AspNet.Consent
-        </td>
-        <td class="govuk-table__cell">
-            Stores if user has non-essential cookies
-        </td>
-        <td class="govuk-table__cell">
-            1 year
-        </td>
-    </tr>
-    <tr>
-        <td class="govuk-table__cell">
-            .AspNetCore.Antiforgery
-        </td>
-        <td class="govuk-table__cell">
-            Protects against Cross-Site Request Forgery attacks
-        </td>
-        <td class="govuk-table__cell">
-            Session
-        </td>
-    </tr>
-    </tbody>
-</table>
-<hr class="govuk-section-break govuk-section-break--l g" />
-<h2 class="govuk-heading-l">Optional cookies</h2>
-<p class="govuk-body">
-    We use optional cookies only with your consent. 
-    These help us understand how you interact with our website, allowing us to make improvements. 
-    You can opt in or out of these cookies at any time on this page.
-</p>
-<table class="govuk-table" aria-label="Optional cookies that we store">
-    <thead class="govuk-table__head">
-    <tr>
-        <th scope="col" class="govuk-table__header">
-            Name
-        </th>
+            <th scope="col" class="govuk-table__header">
+                Purpose
+            </th>
+            <th scope="col" class="govuk-table__header">
+                Expires
+            </th>
+        </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+        <tr>
+            <td class="govuk-table__cell">
+                .AspNet.Consent
+            </td>
+            <td class="govuk-table__cell">
+                Stores if user has non-essential cookies
+            </td>
+            <td class="govuk-table__cell">
+                1 year
+            </td>
+        </tr>
+        <tr>
+            <td class="govuk-table__cell">
+                .AspNetCore.Antiforgery
+            </td>
+            <td class="govuk-table__cell">
+                Protects against Cross-Site Request Forgery attacks
+            </td>
+            <td class="govuk-table__cell">
+                Session
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <hr class="govuk-section-break govuk-section-break--l g"/>
+    <h2 class="govuk-heading-l">Optional cookies</h2>
+    <p class="govuk-body">
+        We use optional cookies only with your consent.
+        These help us understand how you interact with our website, allowing us to make improvements.
+        You can opt in or out of these cookies at any time on this page.
+    </p>
+    <table class="govuk-table" aria-label="Optional cookies that we store">
+        <thead class="govuk-table__head">
+        <tr>
+            <th scope="col" class="govuk-table__header">
+                Name
+            </th>
 
-        <th scope="col" class="govuk-table__header">
-            Purpose
-        </th>
-        <th scope="col" class="govuk-table__header">
-            Expires
-        </th>
-    </tr>
-    </thead>
-    <tbody class="govuk-table__body">
-    <tr>
-        <td class="govuk-table__cell">
-            _ga
-        </td>
-        <td class="govuk-table__cell">
-            Used by Google Analytics to distinguish users
-        </td>
-        <td class="govuk-table__cell">
-            2 years
-        </td>
-    </tr>
-    <tr>
-        <td class="govuk-table__cell">
-            _gat
-        </td>
-        <td class="govuk-table__cell">
-            Google Analytics throttling rate request
-        </td>
-        <td class="govuk-table__cell">
-            1 minute
-        </td>
-    </tr>
-    <tr>
-        <td class="govuk-table__cell">
-            _gid
-        </td>
-        <td class="govuk-table__cell">
-            Used by Google Analytics to distinguish users
-        </td>
-        <td class="govuk-table__cell">
-            1 day
-        </td>
-    </tr>
-    <tr>
-        <td class="govuk-table__cell">
-            _clck
-        </td>
-        <td class="govuk-table__cell">
-            Persists the Clarity User ID and preferences, unique to this site
-        </td>
-        <td class="govuk-table__cell">
-            1 year
-        </td>
-    </tr>
-    <tr>
-        <td class="govuk-table__cell">
-            _clsk
-        </td>
-        <td class="govuk-table__cell">
-            Connects a user’s page views into a single session recording
-        </td>
-        <td class="govuk-table__cell">
-            1 day
-        </td>
-    </tr>
-    </tbody>
-</table>
+            <th scope="col" class="govuk-table__header">
+                Purpose
+            </th>
+            <th scope="col" class="govuk-table__header">
+                Expires
+            </th>
+        </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+        <tr>
+            <td class="govuk-table__cell">
+                _ga
+            </td>
+            <td class="govuk-table__cell">
+                Used by Google Analytics to distinguish users
+            </td>
+            <td class="govuk-table__cell">
+                2 years
+            </td>
+        </tr>
+        <tr>
+            <td class="govuk-table__cell">
+                _gat
+            </td>
+            <td class="govuk-table__cell">
+                Google Analytics throttling rate request
+            </td>
+            <td class="govuk-table__cell">
+                1 minute
+            </td>
+        </tr>
+        <tr>
+            <td class="govuk-table__cell">
+                _gid
+            </td>
+            <td class="govuk-table__cell">
+                Used by Google Analytics to distinguish users
+            </td>
+            <td class="govuk-table__cell">
+                1 day
+            </td>
+        </tr>
+        <tr>
+            <td class="govuk-table__cell">
+                _clck
+            </td>
+            <td class="govuk-table__cell">
+                Persists the Clarity User ID and preferences, unique to this site
+            </td>
+            <td class="govuk-table__cell">
+                1 year
+            </td>
+        </tr>
+        <tr>
+            <td class="govuk-table__cell">
+                _clsk
+            </td>
+            <td class="govuk-table__cell">
+                Connects a user’s page views into a single session recording
+            </td>
+            <td class="govuk-table__cell">
+                1 day
+            </td>
+        </tr>
+        </tbody>
+    </table>
+}
 <hr class="govuk-section-break govuk-section-break--l g" />
 @using (Html.BeginForm("PostCookiePolicy", "Pages", method: FormMethod.Post, htmlAttributes: new { @class = "govuk-form" }, routeValues: new { languageCode }, antiforgery: true ))
 {
