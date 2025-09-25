@@ -1,12 +1,14 @@
 @using CareLeavers.Web.Configuration
+@using Contentful.Core.Models
 
 @inject IContentfulConfiguration ContentfulConfiguration
+@model CareLeavers.Web.Models.Content.Page
 
 @{
     var config = await ContentfulConfiguration.GetConfiguration();
     var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
 
-    ViewBag.Title = "Privacy policies";
+    ViewBag.Title = Model.Title ?? "Privacy policies";
     Layout = "_Layout";
 }
 
@@ -42,18 +44,25 @@
     </div>
 }
 
-<p class="govuk-body">
-    This work is being carried out by the Department for Education (DfE).
-</p>
-<p class="govuk-body">
-    For the purpose of data protection legislation, the DfE is the data controller for the personal data processed as part of the @config.ServiceName website.
-</p>
-<p class="govuk-body">
-    To find out how DfE collects, uses and stores personal data, see:
-</p>
-<ul class="govuk-list govuk-list--bullet">
-    <li>
-    <a class="govuk-link" href="https://www.gov.uk/government/publications/privacy-information-members-of-the-public/privacy-information-members-of-the-public">
-        Privacy information: members of the public
-    </a>
-</ul>
+@if (Model.MainContent is not null && Model.MainContent.Content.Any())
+{
+    <gds-contentful-rich-text document="@Model.MainContent"/>
+}
+else
+{
+    <p class="govuk-body">
+        This work is being carried out by the Department for Education (DfE).
+    </p>
+    <p class="govuk-body">
+        For the purpose of data protection legislation, the DfE is the data controller for the personal data processed as part of the @config.ServiceName website.
+    </p>
+    <p class="govuk-body">
+        To find out how DfE collects, uses and stores personal data, see:
+    </p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>
+        <a class="govuk-link" href="https://www.gov.uk/government/publications/privacy-information-members-of-the-public/privacy-information-members-of-the-public">
+            Privacy information: members of the public
+        </a>
+    </ul>
+}

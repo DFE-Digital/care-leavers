@@ -1,7 +1,7 @@
 @model ErrorViewModel
 
 @{
-    ViewBag.Title = "Sorry, there is a problem with the service";
+    ViewBag.Title = Model.Page?.Title ?? "Sorry, there is a problem with the service";
     Layout = "_ErrorLayout";
 }
 
@@ -26,6 +26,16 @@
         </div>
     </div>
 }
-<p class="govuk-body">
-    Try again later.
-</p>
+
+@if (Model.Page?.MainContent is not null && Model.Page.MainContent.Content.Any()) 
+{
+    <gds-contentful-rich-text document="@Model.Page.MainContent"/>
+}
+else
+{
+    <p class="govuk-body">
+        Try again later.
+    </p>
+}
+
+

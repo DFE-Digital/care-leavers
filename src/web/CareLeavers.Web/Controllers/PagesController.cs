@@ -1,4 +1,6 @@
+using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Filters;
+using CareLeavers.Web.Models;
 using CareLeavers.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
@@ -6,25 +8,30 @@ using Microsoft.Extensions.Options;
 
 namespace CareLeavers.Web.Controllers;
 
-public class PagesController : Controller
+public class PagesController(IContentService contentService) : Controller
 {
     [HttpGet("{languageCode}/privacy-policies")]
     [Translation(HardcodedSlug="privacy-policies")]
-    public IActionResult PrivacyPolicies()
+    public async Task<IActionResult> PrivacyPolicies()
     {
-        return View();
+        var page = await contentService.GetPage("/privacy-policies");
+        
+        return View(page ?? new());
     }
     
     [HttpGet("{languageCode}/cookie-policy")]
     [Translation(HardcodedSlug="cookie-policy")]
-    public IActionResult CookiePolicy()
+    public async Task<IActionResult> CookiePolicy()
     {
         var consent = HttpContext.Features.Get<ITrackingConsentFeature>() ??
             throw new InvalidOperationException("ITrackingConsentFeature is not available.");
+        
+        var page = await contentService.GetPage("/cookie-policy");
 
         var vm = new CookiePolicyModel
         {
-            AcceptCookies = consent.CanTrack
+            AcceptCookies = consent.CanTrack,
+            Page = page ?? new(),
         };
         
         return View(vm);
@@ -32,37 +39,51 @@ public class PagesController : Controller
     
     [Route("{languageCode}/error")]
     [Translation(HardcodedSlug="error")]
-    public IActionResult Error(int statusCode)
+    public async Task<IActionResult> Error(int statusCode)
     {
         if (statusCode == 404)
         {
-            return PageNotFound();
+            return await PageNotFound();
         }
-        return View();
+        
+        var page = await contentService.GetPage($"/error-{statusCode}");
+
+        var viewModel = new ErrorViewModel
+        {
+            Page = page ?? new (),
+        };
+        
+        return View(viewModel);
     }
     
     [Route("{languageCode}/service-unavailable")]
     [Translation(HardcodedSlug="service-unavailable")]
-    public IActionResult ServiceUnavailable()
+    public async Task<IActionResult> ServiceUnavailable()
     {
-        return View();
+        var page = await contentService.GetPage("/service-unavailable");
+        
+        return View(page ?? new());
     }
     
     [Route("{languageCode}/page-not-found")]
     [Translation(HardcodedSlug="page-not-found")]
-    public IActionResult PageNotFound()
+    public async Task<IActionResult> PageNotFound()
     {
+        var page = await contentService.GetPage("/page-not-found");
+
         Response.StatusCode = StatusCodes.Status404NotFound;
-        var result = View("PageNotFound");
+        var result = View("PageNotFound", page ?? new ());
         result.StatusCode = StatusCodes.Status404NotFound;
         return result;
     }
     
     [Route("{languageCode}/accessibility-statement")]
     [Translation(HardcodedSlug="accessibility-statement")]
-    public IActionResult AccessibilityStatement()
+    public async Task<IActionResult> AccessibilityStatement()
     {
-        return View();
+        var page = await contentService.GetPage("/accessibility-statement");
+        
+        return View(page);
     }
     
     
