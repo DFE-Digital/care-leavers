@@ -11,7 +11,11 @@ using Newtonsoft.Json;
 namespace CareLeavers.Web.Controllers;
 
 [Route("/")]
-public class ContentfulController(IContentService contentService, ITranslationService translationService, IHostEnvironment environment) : Controller
+public class ContentfulController(
+    IContentService contentService,
+    ITranslationService translationService,
+    IHostEnvironment environment,
+    ILogger<ContentfulController> logger) : Controller
 {
     [Route("/")]
     public async Task<IActionResult> Homepage(
@@ -22,7 +26,7 @@ public class ContentfulController(IContentService contentService, ITranslationSe
         var config = await contentfulConfiguration.GetConfiguration();
         return RedirectToAction("GetContent", new { slug = config.HomePage?.Slug, languageCode });
     }
-    
+
     [Route("/en")]
     [Route("/en/en")]
     public async Task<IActionResult> NoSlug(
@@ -69,10 +73,11 @@ public class ContentfulController(IContentService contentService, ITranslationSe
 
         return Content(JsonConvert.SerializeObject(configuration, Constants.SerializerSettings), "application/json");
     }
-    
+
     [Route("/json/{contentType}/{id}")]
     [ExcludeFromCodeCoverage(Justification = "Development only")]
-    public async Task<IActionResult> GetContentAsJson(string contentType, string id, [FromServices] IWebHostEnvironment environment)
+    public async Task<IActionResult> GetContentAsJson(string contentType, string id,
+        [FromServices] IWebHostEnvironment environment)
     {
         if (!ModelState.IsValid)
         {
@@ -85,11 +90,11 @@ public class ContentfulController(IContentService contentService, ITranslationSe
         }
 
         var returnObject = new object();
-        
+
         if (contentType == Grid.ContentType)
         {
             returnObject = new Grid() { Sys = new SystemProperties() { Id = id } };
-        } 
+        }
         else if (contentType == RichContentBlock.ContentType)
         {
             returnObject = new RichContentBlock() { Sys = new SystemProperties() { Id = id } };
@@ -113,6 +118,8 @@ public class ContentfulController(IContentService contentService, ITranslationSe
     [Translation]
     public async Task<IActionResult> GetContent(string slug, string? languageCode)
     {
+        logger.LogInformation($"Get content for slug {slug} and language {languageCode}");
+        
         if (string.IsNullOrEmpty(languageCode))
         {
             return RedirectToAction("GetContent", new { slug, languageCode = "en" });
@@ -126,6 +133,9 @@ public class ContentfulController(IContentService contentService, ITranslationSe
         }
 
         var redirectionRule = await contentService.GetRedirectionRules(slug);
+        
+        logger.LogInformation($"Redirection rules for slug {slug}: {JsonConvert.SerializeObject(redirectionRule)}");
+        
         if (redirectionRule?.Rules != null && redirectionRule.Rules.TryGetValue(slug, out var destinationSlug))
         {
             return RedirectToAction("GetContent", new { slug = destinationSlug, languageCode });
@@ -136,23 +146,24 @@ public class ContentfulController(IContentService contentService, ITranslationSe
         {
             languages.AddRange((await translationService.GetLanguages()).Select(l => l.Code));
         }
+
         if (languages.Count == 0)
         {
             languages.Add("en");
         }
-        
+
         if (!languages.Contains(languageCode))
         {
             return RedirectToAction("GetContent", new { slug, languageCode = "en" });
         }
-        
+
         var page = await contentService.GetPage(slug);
 
         if (page == null)
         {
             return NotFound();
         }
-        
+
         return View("Page", page);
     }
 
@@ -163,7 +174,7 @@ public class ContentfulController(IContentService contentService, ITranslationSe
 
         return new OkObjectResult("Success");
     }
-    
+
     [HttpGet("flush-cache")]
     public async Task<IActionResult> FlushCacheOnDev()
     {
