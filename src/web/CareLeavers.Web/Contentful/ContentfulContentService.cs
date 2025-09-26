@@ -10,32 +10,41 @@ public class ContentfulContentService : IContentService
 {
     private readonly IContentfulClient _contentfulClient;
     private readonly IFusionCache _fusionCache;
+    private readonly ILogger<ContentfulContentService> _logger;
 
-    public ContentfulContentService(IContentfulClient contentfulClient, IFusionCache fusionCache)
+    public ContentfulContentService(IContentfulClient contentfulClient, IFusionCache fusionCache,
+        ILogger<ContentfulContentService> logger)
     {
         _contentfulClient = contentfulClient;
         _fusionCache = fusionCache;
+        _logger = logger;
         _contentfulClient.ContentTypeResolver = new ContentfulEntityResolver();
     }
-    
+
     public async Task<RedirectionRules?> GetRedirectionRules(string fromSlug)
     {
         return await _fusionCache.GetOrSetAsync("content:redirections", async token =>
         {
+            _logger.LogInformation($"Could not find cache entry for redirection rules, querying Contentful");
+            
             var rules = new QueryBuilder<RedirectionRules>()
                 .ContentTypeIs(RedirectionRules.ContentType)
                 .Limit(1);
-
+            
             var ruleEntries = await _contentfulClient.GetEntries(rules, token);
 
             return ruleEntries.FirstOrDefault();
         });
     }
-    
+
     public async Task<Page?> GetPage(string slug)
     {
+        _logger.LogInformation($"Getting page for slug: {slug}");
+        
         var page = await _fusionCache.GetOrSetAsync($"content:{slug}", async token =>
         {
+            _logger.LogInformation($"Could not find cache entry for: {slug}, querying Contentful");
+            
             var pages = new QueryBuilder<Page>()
                 .ContentTypeIs(Page.ContentType)
                 .FieldEquals(c => c.Slug, slug)
@@ -49,17 +58,19 @@ public class ContentfulContentService : IContentService
         // If we get a page, but the slug doesn't match (used in tests), return null so we trigger our 404s
         if (page?.Slug != null && !(page.Slug).Equals(slug, StringComparison.InvariantCultureIgnoreCase))
         {
+            _logger.LogInformation($"Slug mismatch, expected {slug} but got {page.Slug}");
             page = null;
         }
 
         if (page != null)
         {
+            _logger.LogInformation($"Setting cache for page id: {page.Sys.Id} & slug: {page.Slug}");
             await _fusionCache.SetAsync(page.Sys.Id, page);
         }
 
         return page;
     }
-    
+
     public async Task<PrintableCollection?> GetPrintableCollection(string identifier)
     {
         var printableCollection = await _fusionCache.GetOrSetAsync($"collection:{identifier}", async token =>
@@ -71,7 +82,7 @@ public class ContentfulContentService : IContentService
                 .Limit(1);
 
             var entries = await _contentfulClient.GetEntries(collection, token);
-            
+
             var result = entries.FirstOrDefault();
             if (result != null)
             {
@@ -89,7 +100,8 @@ public class ContentfulContentService : IContentService
         });
 
         // If we get a page, but the slug doesn't match (used in tests), return null so we trigger our 404s
-        if (printableCollection?.Identifier != null && !(printableCollection.Identifier).Equals(identifier, StringComparison.InvariantCultureIgnoreCase))
+        if (printableCollection?.Identifier != null &&
+            !(printableCollection.Identifier).Equals(identifier, StringComparison.InvariantCultureIgnoreCase))
         {
             printableCollection = null;
         }
@@ -104,7 +116,7 @@ public class ContentfulContentService : IContentService
 
         return printableCollection;
     }
-    
+
     public async Task<bool> IsPageInPrintableCollection(string slug)
     {
         var slugs = await GetSiteSlugs();
@@ -117,8 +129,6 @@ public class ContentfulContentService : IContentService
     {
         try
         {
-
-
             var slug = await GetSlug(id);
             var result = await _fusionCache.GetOrSetAsync($"pageIsPrintable:{slug}", async token =>
             {
@@ -132,7 +142,7 @@ public class ContentfulContentService : IContentService
 
                 return entries != null && entries.Any();
             }, tags: [slug]);
-            
+
             return result;
         }
         catch
@@ -147,7 +157,7 @@ public class ContentfulContentService : IContentService
         {
             return [];
         }
-        
+
         // Get homepage slug
         var home = (await GetConfiguration())?.HomePage;
         var homePage = new SimplePage()
@@ -158,12 +168,11 @@ public class ContentfulContentService : IContentService
             Parent = null,
             ExcludeFromSitemap = home?.ExcludeFromSitemap ?? false
         };
-        
-        
-        
+
+
         // Get site hierarchy
         var hierarchy = await GetSiteHierarchy();
-        
+
         // Keep backing up until the homepage
         List<SimplePage> breadcrumbs = [];
 
@@ -174,7 +183,7 @@ public class ContentfulContentService : IContentService
             {
                 return breadcrumbs;
             }
-        
+
             var parentPage = hierarchy.Find(p => p.Slug == currentPage.Parent);
 
             while (parentPage != null)
@@ -188,7 +197,8 @@ public class ContentfulContentService : IContentService
                 parentPage = hierarchy.Find(p => p.Slug == parentPage.Parent);
             }
 
-            if (((parentPage == null) || breadcrumbs.Count == 0) && includeHome && !breadcrumbs.Exists(b => b.Id == homePage.Id))
+            if (((parentPage == null) || breadcrumbs.Count == 0) && includeHome &&
+                !breadcrumbs.Exists(b => b.Id == homePage.Id))
             {
                 breadcrumbs.Add(homePage);
             }
@@ -199,11 +209,11 @@ public class ContentfulContentService : IContentService
         {
             simplePage.Title = "Home";
         }
-        
+
         breadcrumbs.Reverse();
         return breadcrumbs;
     }
-    
+
     public async Task<string> GetSlug(string id)
     {
         var slugs = await GetSiteSlugs();
@@ -237,7 +247,7 @@ public class ContentfulContentService : IContentService
             default:
                 return content;
         }
-        
+
         if (id != null)
             content = await _fusionCache.GetOrSetAsync(id, async token =>
             {
@@ -295,7 +305,7 @@ public class ContentfulContentService : IContentService
 
             var pageEntries = await _contentfulClient.GetEntries(pages, token);
             var slugs = await GetSiteSlugs();
-            
+
             return pageEntries
                 .Where(x => x.Slug != null)
                 .Select(p => new SimplePage()
