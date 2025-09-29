@@ -3,7 +3,7 @@
 You will need:
 - .NET IDE (Visual Studio, Rider, etc)
 - Docker
-- Node v20 installed.
+- Node v20 installed
 
 1. Clone the repository
 2. Open the solution in your IDE
