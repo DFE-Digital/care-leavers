@@ -37,46 +37,54 @@ public class GDSTableRenderer : IContentRenderer
             var theadTag = new TagBuilder("thead");
             theadTag.AddCssClass("govuk-table__head");
             
-            foreach (var th in table.Content.OfType<TableHeader>())
-            {
-                // Extract plain text from cell
-                var cellText = string.Join("", th.Content
-                    .OfType<Paragraph>()
-                    .SelectMany(p => p.Content.OfType<Text>())
-                    .Select(t => t.Value));
-
-                var thTag = new TagBuilder("th");
-                thTag.AddCssClass("govuk-table__header");
-                thTag.InnerHtml.Append(cellText);
-
-                theadTag.InnerHtml.AppendHtml(thTag);
-            }
-            
             var tbodyTag = new TagBuilder("tbody");
             tbodyTag.AddCssClass("govuk-table__body");
 
             foreach (var row in table.Content.OfType<TableRow>())
             {
-                var trTag = new TagBuilder("tr");
+                var tableHeaders = row.Content.OfType<TableHeader>().ToList();
 
-                foreach (var cell in row.Content.OfType<TableCell>())
+                if (tableHeaders.Count != 0)
                 {
-                    // Extract plain text from cell
-                    var cellText = string.Join("", cell.Content
-                        .OfType<Paragraph>()
-                        .SelectMany(p => p.Content.OfType<Text>())
-                        .Select(t => t.Value));
+                    foreach (var th in tableHeaders)
+                    {
+                        // Extract plain text from cell
+                        var cellText = string.Join("", th.Content
+                            .OfType<Paragraph>()
+                            .SelectMany(p => p.Content.OfType<Text>())
+                            .Select(t => t.Value));
 
-                    var tdTag = new TagBuilder("td");
-                    tdTag.AddCssClass("govuk-table__cell");
-                    tdTag.InnerHtml.Append(cellText);
+                        var thTag = new TagBuilder("th");
+                        thTag.AddCssClass("govuk-table__header");
+                        thTag.InnerHtml.Append(cellText);
 
-                    trTag.InnerHtml.AppendHtml(tdTag);
+                        theadTag.InnerHtml.AppendHtml(thTag);
+                    }
                 }
+                else
+                {
+                    var trTag = new TagBuilder("tr");
 
-                tbodyTag.InnerHtml.AppendHtml(trTag);
+                    foreach (var cell in row.Content.OfType<TableCell>())
+                    {
+                        // Extract plain text from cell
+                        var cellText = string.Join("", cell.Content
+                            .OfType<Paragraph>()
+                            .SelectMany(p => p.Content.OfType<Text>())
+                            .Select(t => t.Value));
+
+                        var tdTag = new TagBuilder("td");
+                        tdTag.AddCssClass("govuk-table__cell");
+                        tdTag.InnerHtml.Append(cellText);
+
+                        trTag.InnerHtml.AppendHtml(tdTag);
+                    }
+
+                    tbodyTag.InnerHtml.AppendHtml(trTag);
+                }
             }
 
+            tb.InnerHtml.AppendHtml(theadTag);
             tb.InnerHtml.AppendHtml(tbodyTag);
         }
         
