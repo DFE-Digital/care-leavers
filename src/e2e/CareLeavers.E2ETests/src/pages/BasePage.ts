@@ -1,4 +1,4 @@
-import { Page,Locator, expect, BrowserContext, Cookie } from '@playwright/test';
+import {Page, Locator, expect, BrowserContext, Cookie} from '@playwright/test';
 
 export class BasePage {
     protected readonly page: Page;
@@ -70,8 +70,8 @@ export class BasePage {
         this.firstHeaderParagraph = headerSection.locator('p.govuk-body-l').first();
 
         //Locators for Navigation Bar
-        this.navLinkHome = page.locator('a.govuk-service-navigation__link', { hasText: "Support for care leavers" });
-        this.navLinkAllSupport = page.locator('a.govuk-service-navigation__link', { hasText: "All support" });
+        this.navLinkHome = page.locator('a.govuk-service-navigation__link', {hasText: "Support for care leavers"});
+        this.navLinkAllSupport = page.locator('a.govuk-service-navigation__link', {hasText: "All support"});
         //update locators 
         this.navLinkYourRights = page.locator('[role="link"][aria-label="Your rights"]');
         this.navLinkLeavingCareGuides = page.locator('[role="link"][aria-label="Leaving care guides"]');
@@ -103,12 +103,17 @@ export class BasePage {
 
     // Navigates to the specified URL and waits for the page to load.
     async navigateTo(url: string) {
-        await this.page.goto(url, { waitUntil: 'networkidle' });
+        await this.page.goto(url, {waitUntil: 'networkidle'});
     }
 
     // Validate URL contains a specific path
     async validateURLContains(path: string) {
         await expect(this.page).toHaveURL(new RegExp(path));
+    }
+
+    //Validate URL matches with expected pattern (RegExp characters replaced in expected Url)  
+    async validateURLMatches(pattern: RegExp) {
+        await expect(this.page).toHaveURL(pattern);
     }
 
     // Wait for the page to load
@@ -206,8 +211,7 @@ export class BasePage {
                 await link.click();
                 await this.page.waitForURL(new RegExp(href));
             }
-        }
-        else {
+        } else {
             // Click on the hamburger menu to open the mobile menu
             await expect(this.menuToggle).toBeVisible();
             await this.menuToggle.click();
@@ -228,8 +232,8 @@ export class BasePage {
 
             // click each link and ensure the menu is visible each time
             const links = [
-                { index: 0, href: '/en/all-support' },
-                { index: 1, href: '/en/your-rights' }
+                {index: 0, href: '/en/all-support'},
+                {index: 1, href: '/en/your-rights'}
             ];
 
             for (const link of links) {
