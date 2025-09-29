@@ -1,6 +1,12 @@
 name: Deploy - Environment
 
 on:
+  pull_request:
+    types: [ closed ]
+    branches:
+      - main
+  release:
+    types: [ published ]
   workflow_dispatch:
     inputs:
       environment:
@@ -11,6 +17,7 @@ on:
         options:
           - 'Test'
           - 'Staging'
+          - 'Production'
       clear-cache:
         type: choice
         description: 'Clear the cache?'
@@ -19,15 +26,32 @@ on:
         options:
           - 'True'
           - 'False'
-  release:
-    types: [ published ]
 
-run-name: Deploy to ${{ (github.event_name == 'release' && (github.event.release.prerelease && 'Test' || 'Production')) || github.event.inputs.environment }}
+run-name: Deploy to ${{ (github.event_name == 'release' && 'Production') || (github.event.pull_request.merged && 'Test') || github.event.inputs.environment }}
 
 jobs:
+  tag_release:
+    if: github.event.pull_request.merged == true
+    name: Create New Tag
+    runs-on: ubuntu-latest
+    outputs:
+      new_tag: ${{ steps.tag_version.outputs.new_tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: main
+
   package:
     name: 'Package Web in Docker'
     runs-on: ubuntu-latest
+    needs: [ tag_release ]
+    if: always() && (needs.tag_release.result == 'success' || github.event_name != 'pull_request')
     defaults:
       run:
         working-directory: ./src
@@ -47,10 +71,13 @@ jobs:
         id: set_tag
         run: |
           if [[ "${{ github.event_name }}" == "release" ]]; then
-            echo "Using Git tag for versioning: ${{ github.ref_name }}"
+            echo "Using release tag for versioning: ${{ github.ref_name }}"
             echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event.pull_request.merged }}" == "true" ]]; then
+            echo "Using new auto-generated tag for versioning: ${{ needs.tag_release.outputs.new_tag }}"
+            echo "tag=${{ needs.tag_release.outputs.new_tag }}" >> $GITHUB_OUTPUT
           else
-            echo "Using commit SHA for versioning: ${{ github.sha }}"
+            echo "Using commit SHA for versioning for manual run"
             echo "tag=${{ github.sha }}" >> $GITHUB_OUTPUT
           fi
 
@@ -68,14 +95,15 @@ jobs:
         run: docker push ghcr.io/${{ env.REPO }}:${{ steps.set_tag.outputs.tag }}
 
   deploy_environment:
-    name: Deploying site to ${{ (github.event_name == 'release' && (github.event.release.prerelease && 'Test' || 'Production')) || github.event.inputs.environment }}
+    name: Deploying site to ${{ (github.event_name == 'release' && 'Production') || (github.event.pull_request.merged && 'Test') || github.event.inputs.environment }}
     runs-on: ubuntu-latest
     needs: [ package ]
+    if: github.event.pull_request.merged == true || github.event_name != 'pull_request'
     permissions:
       contents: read
       id-token: write
     environment:
-      name: ${{ (github.event_name == 'release' && (github.event.release.prerelease && 'Test' || 'Production')) || github.event.inputs.environment }}
+      name: ${{ (github.event_name == 'release' && 'Production') || (github.event_name == 'pull_request' && 'Test') || github.event.inputs.environment }}
     env:
       ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
       ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
@@ -86,17 +114,18 @@ jobs:
       - name: Set dynamic variables
         id: vars
         run: |
-          # Set Environment Name as an environment variable for use in later steps
-          ENV_NAME="${{ (github.event_name == 'release' && (github.event.release.prerelease && 'Test' || 'Production')) || github.event.inputs.environment }}"
+          ENV_NAME="${{ (github.event_name == 'release' && 'Production') || (github.event_name == 'pull_request' && 'Test') || github.event.inputs.environment }}"
           echo "ENV_NAME=$ENV_NAME" >> $GITHUB_ENV
           echo "Deployment Environment: $ENV_NAME"
 
-          # Set Clear Cache as a step output for use in 'if' conditions
           if [[ "${{ github.event_name }}" == "release" ]]; then
             BODY="${{ github.event.release.body }}"
             CACHE_VALUE=$(echo "$BODY" | grep 'clear-cache:' | awk -F': ' '{print $2}' | tr -d '[:space:]')
             echo "clear_cache=${CACHE_VALUE:-False}" >> $GITHUB_OUTPUT
             echo "Clear Cache: ${CACHE_VALUE:-False}"
+          elif [[ "${{ github.event.pull_request.merged }}" == "true" ]]; then
+            echo "clear_cache=False" >> $GITHUB_OUTPUT
+            echo "Clear Cache: False"
           else
             echo "clear_cache=${{ github.event.inputs.clear-cache }}" >> $GITHUB_OUTPUT
             echo "Clear Cache: ${{ github.event.inputs.clear-cache }}"
