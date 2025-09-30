@@ -1,6 +1,9 @@
 name: Deploy - Contentful Migrations
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       target_environment:
@@ -38,7 +41,7 @@ jobs:
           dotnet-version: 8.0.x
           cache: true
           cache-dependency-path: |
-              src/contentful/CareLeavers.ContentfulMigration/packages.lock.json
+            src/contentful/CareLeavers.ContentfulMigration/packages.lock.json
 
       - name: Deploy Contentful migrations
         working-directory: ./src/contentful/CareLeavers.ContentfulMigration
@@ -46,5 +49,5 @@ jobs:
           ContentfulOptions__DeliveryApiKey: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
           ContentfulOptions__SpaceId: ${{ secrets.CONTENTFUL_SPACE_ID }}
           ContentfulOptions__ManagementApiKey: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
-          ContentfulOptions__Environment: ${{ github.event.inputs.target_environment }}
+          ContentfulOptions__Environment: ${{ (github.event_name == 'push' && 'test') || github.event.inputs.target_environment }}
         run: dotnet run

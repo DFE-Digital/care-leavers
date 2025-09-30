@@ -1,11 +1,7 @@
 name: Validate - Web
 
 on:
-  push:
-    branches: [ "main" ]
-    paths:
-      - 'src/web/**'
-      - '.github/workflows/validate-web.yaml'
+  workflow_call:
   pull_request:
     branches: [ "main" ]
     paths:
