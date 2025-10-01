@@ -27,7 +27,7 @@ export class AllSupportPage extends BasePage {
         await this.verifyLogoPresence();
         await this.verifyHeading(
             "All support",
-            "When you leave care, you may have the right to certain support and there’s some you must apply for."
+            "Find care leaver support, services and help you could apply for."
         );
         await expect(this.mainContent).toBeVisible();
         await this.verifySupportCardsPresence();
