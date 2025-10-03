@@ -14,7 +14,7 @@ public class PagesController(IContentService contentService) : Controller
     [Translation(HardcodedSlug="privacy-policies")]
     public async Task<IActionResult> PrivacyPolicies()
     {
-        var page = await contentService.GetPage("/privacy-policies");
+        var page = await contentService.GetPage("privacy-policies");
         
         return View(page ?? new());
     }
@@ -26,7 +26,7 @@ public class PagesController(IContentService contentService) : Controller
         var consent = HttpContext.Features.Get<ITrackingConsentFeature>() ??
             throw new InvalidOperationException("ITrackingConsentFeature is not available.");
         
-        var page = await contentService.GetPage("/cookie-policy");
+        var page = await contentService.GetPage("cookie-policy");
 
         var vm = new CookiePolicyModel
         {
@@ -46,7 +46,8 @@ public class PagesController(IContentService contentService) : Controller
             return await PageNotFound();
         }
         
-        var page = await contentService.GetPage($"/error-{statusCode}");
+        var page = await contentService.GetPage($"error-{statusCode}");
+        page ??= await contentService.GetPage("error");
 
         var viewModel = new ErrorViewModel
         {
@@ -60,7 +61,7 @@ public class PagesController(IContentService contentService) : Controller
     [Translation(HardcodedSlug="service-unavailable")]
     public async Task<IActionResult> ServiceUnavailable()
     {
-        var page = await contentService.GetPage("/service-unavailable");
+        var page = await contentService.GetPage("service-unavailable");
         
         return View(page ?? new());
     }
@@ -69,7 +70,7 @@ public class PagesController(IContentService contentService) : Controller
     [Translation(HardcodedSlug="page-not-found")]
     public async Task<IActionResult> PageNotFound()
     {
-        var page = await contentService.GetPage("/page-not-found");
+        var page = await contentService.GetPage("page-not-found");
 
         Response.StatusCode = StatusCodes.Status404NotFound;
         var result = View("PageNotFound", page ?? new ());
@@ -81,9 +82,9 @@ public class PagesController(IContentService contentService) : Controller
     [Translation(HardcodedSlug="accessibility-statement")]
     public async Task<IActionResult> AccessibilityStatement()
     {
-        var page = await contentService.GetPage("/accessibility-statement");
+        var page = await contentService.GetPage("accessibility-statement");
         
-        return View(page);
+        return View(page ?? new ());
     }
     
     
