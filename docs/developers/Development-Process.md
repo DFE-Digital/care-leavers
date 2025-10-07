@@ -35,14 +35,14 @@ These are the preliminary development processes for developers and QAs. These pr
     3. Manually update content added in development to e2e
 9. Rerun the checks in pull request, if failed due content differences in e2e environment
 10. When pull request has been approved and merged, do step 8 for the test environment
-11. Move the ticket to the Jira `Test` column and inform Imran
-12. Imran manual tests to see if the acceptance criteria was met.
-13. Once Imran has signed off.
+11. Move the ticket to the Jira `Test` column and inform any QA/Testers.
+12. QA/Tester to perform manual tests to see if the acceptance criteria was met.
+13. Once QA/Test has signed off.
 14. Update `production` contentful environment
     1. Use `Deploy - Contentful Migrations` to run the new script in the production environment, use your branch as the source code
     2. Use `Deploy - Environment` to deploy the code changes made outside of the migration scripts to the `staging` azure instance (staging uses published/draft pages in contentful)
     3. Use `Deploy - Environment` to deploy the code changes made outside of the migration scripts to the `production` azure instance (potentially; only uses published pages in contentful)
-15. Inform Amy Leak in the Care Leavers MS Teams group chat, that the code changes have been deployed ready for her to apply the content changes.
+15. Inform Content Designers/anyone responsible for content in the Care Leavers MS Teams group chat, that the code changes have been deployed ready for her to apply the content changes.
 
 ## QA Test Suite Development Process
 
