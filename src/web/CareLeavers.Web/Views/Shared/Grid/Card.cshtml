@@ -44,11 +44,11 @@
             <p class="govuk-body-s">@Model.Metadata</p>
         }
         
-        @if (!string.IsNullOrEmpty(Model.ExternalLink))
+        @if (!string.IsNullOrEmpty(link))
         {
             <div class="dfe-card-external-link-print-only">
                 <p class="govuk-body-s govuk-!-margin-top-2">
-                    <a href="@Model.ExternalLink" class="govuk-link">@Model.ExternalLink</a>
+                    <a href="@link" class="govuk-link">@link</a>
                 </p>
             </div>
         }
