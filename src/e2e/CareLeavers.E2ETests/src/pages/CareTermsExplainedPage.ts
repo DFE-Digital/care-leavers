@@ -26,9 +26,9 @@ export class CareTermsExplainedPage extends BasePage {
         // Locators for the Helpful Links section
         this.helpfulLinksSection = page.locator('#Helpful-links');
         this.helpfulLinks = [
-            page.locator('a[href="/en/housing-and-accommodation"]'),
-            page.locator('a[href="/en/money-and-benefits"]'),
-            page.locator('div.dfe-card:nth-child(3) a[href="/en/all-support"]')
+            page.locator('a[href="/en/housing-and-accommodation"]').first(),
+            page.locator('a[href="/en/money-and-benefits"]').first(),
+            page.locator('div.dfe-card:nth-child(3) a[href="/en/all-support"]').first(),
         ];
     }
 

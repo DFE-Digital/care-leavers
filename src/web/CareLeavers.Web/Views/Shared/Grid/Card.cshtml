@@ -37,10 +37,20 @@
                 @Model.Title
             </a>
         </h3>
+
         <p class="govuk-body">@Model.Text</p>
         @if (!string.IsNullOrEmpty(Model.Metadata))
         {
             <p class="govuk-body-s">@Model.Metadata</p>
+        }
+        
+        @if (!string.IsNullOrEmpty(link))
+        {
+            <div class="dfe-card-external-link-print-only">
+                <p class="govuk-body-s govuk-!-margin-top-2">
+                    <a href="@link" class="govuk-link">@link</a>
+                </p>
+            </div>
         }
     </div>
 </div>
