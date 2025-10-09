@@ -29,7 +29,8 @@
 <div class="dfe-card">
     @if (Model.Image != null)
     {
-        <contentful-image asset="@Model.Image" class="full-width-image card-image" alt="" role="presentation"></contentful-image>
+        <contentful-image asset="@Model.Image" class="full-width-image card-image" alt=""
+                          role="presentation"></contentful-image>
     }
     <div class="dfe-card-container">
         <h3 class="govuk-heading-m">
@@ -41,6 +42,10 @@
         @if (!string.IsNullOrEmpty(Model.Metadata))
         {
             <p class="govuk-body-s">@Model.Metadata</p>
+        }
+        @if (!string.IsNullOrEmpty(link))
+        {
+            <div class="dfe-card-link-print-url govuk-body-s">@link</div>
         }
     </div>
 </div>
