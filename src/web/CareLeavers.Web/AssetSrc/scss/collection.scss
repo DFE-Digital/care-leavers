@@ -273,6 +273,14 @@ p
     word-break: break-all;
     margin-top: 1em;
     font-size: 12pt;
-    color: #505a5f;
+    color: #1d70b8;
+    text-decoration: underline !important;
+    font-weight: 500;
+    font-family: inherit;
+  }
+
+  .dfe-card-link--no-url-after::after {
+    content: none !important;
+    display: none !important;
   }
 }

@@ -34,9 +34,9 @@
     }
     <div class="dfe-card-container">
         <h3 class="govuk-heading-m">
-            <a href="@link" class="govuk-link govuk-link--no-visited-state dfe-card-link--header" rel="@rel">
-                @Model.Title
-            </a>
+         <a href="@link" class="govuk-link govuk-link--no-visited-state dfe-card-link--header dfe-card-link--no-url-after" rel="@rel">
+             @Model.Title
+         </a>
         </h3>
         <p class="govuk-body">@Model.Text</p>
         @if (!string.IsNullOrEmpty(Model.Metadata))
