@@ -122,6 +122,7 @@ jobs:
       ARM_CLIENT_SECRET: "${{ secrets.AZURE_CLIENT_SECRET }}"
     
     steps:
+      #Set dynamic variables based on deployment type - push to main, release or manual run
       - name: Set dynamic variables
         id: vars
         run: |
