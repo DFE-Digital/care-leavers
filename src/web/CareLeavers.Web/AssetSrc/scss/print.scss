@@ -233,11 +233,11 @@
   }
 
   // Hide link for relative URLs (same site) and WhatsApp links
-  [href^="/"].govuk-link::after, [href^="https://wa.me/"].govuk-link::after {
-    content: "";
-    font-size: inherit;
-    word-wrap: inherit;
-  }
+  //[href^="/"].govuk-link::after, [href^="https://wa.me/"].govuk-link::after {
+  //  content: "";
+  //  font-size: inherit;
+  //  word-wrap: inherit;
+  //}
 
   .govuk-template--rebranded .govuk-footer {
     display: none;
@@ -262,12 +262,20 @@
     font-family: inherit;
   }
 
+  .dfe-card-link-print-url::after {
+    content: attr(data-full-url);
+    display: block;
+    word-break: break-all;
+    margin-top: 0.5em;
+    font-size: 12pt;
+    color: #1d70b8;
+    text-decoration: underline !important;
+    font-weight: 500;
+    font-family: inherit;
+  }
+
   .dfe-card-link--no-url-after::after {
     content: none !important;
     display: none !important;
   }
 }
-
- 
-
-
