@@ -6,6 +6,8 @@
     var link = "";
     var rel = "";
     var languageCode = HttpContextAccessor.HttpContext?.Request.RouteValues["languageCode"]?.ToString();
+    var baseUrl = $"{HttpContextAccessor.HttpContext?.Request.Scheme}://{HttpContextAccessor.HttpContext?.Request.Host}";
+    string? fullUrl;
 
     switch (Model.Link)
     {
@@ -23,6 +25,15 @@
     if (!string.IsNullOrEmpty(Model.ExternalLink))
     {
         link = Model.ExternalLink;
+    } 
+
+    if (!string.IsNullOrEmpty(link) && !link.StartsWith("http"))
+    {
+        fullUrl = baseUrl + link;
+    }
+    else
+    {
+        fullUrl = link;
     }
 }
 
@@ -34,9 +45,11 @@
     }
     <div class="dfe-card-container">
         <h3 class="govuk-heading-m">
-         <a href="@link" class="govuk-link govuk-link--no-visited-state dfe-card-link--header dfe-card-link--no-url-after" rel="@rel">
-             @Model.Title
-         </a>
+            <a href="@link"
+               class="govuk-link govuk-link--no-visited-state dfe-card-link--header dfe-card-link--no-url-after"
+               rel="@rel">
+                @Model.Title
+            </a>
         </h3>
         <p class="govuk-body">@Model.Text</p>
         @if (!string.IsNullOrEmpty(Model.Metadata))
@@ -45,7 +58,7 @@
         }
         @if (!string.IsNullOrEmpty(link))
         {
-            <div class="dfe-card-link-print-url govuk-body-s">@link</div>
+            <div class="dfe-card-link-print-url govuk-body-s" data-full-url="@fullUrl"></div>
         }
     </div>
 </div>
