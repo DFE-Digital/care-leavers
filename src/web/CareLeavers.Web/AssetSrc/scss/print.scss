@@ -251,10 +251,10 @@
     text-decoration: none !important;
   }
 
-  .dfe-card-link-print-url {
+  .dfe-card-link-print-url,
+  .dfe-card-link-print-url::after {
     display: block;
     word-break: break-all;
-    margin-top: 1em;
     font-size: 12pt;
     color: #1d70b8;
     text-decoration: underline !important;
@@ -262,16 +262,13 @@
     font-family: inherit;
   }
 
+  .dfe-card-link-print-url {
+    margin-top: 1em;
+  }
+
   .dfe-card-link-print-url::after {
     content: attr(data-full-url);
-    display: block;
-    word-break: break-all;
     margin-top: 0.5em;
-    font-size: 12pt;
-    color: #1d70b8;
-    text-decoration: underline !important;
-    font-weight: 500;
-    font-family: inherit;
   }
 
   .dfe-card-link--no-url-after::after {
