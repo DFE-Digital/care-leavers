@@ -61,4 +61,6 @@ We discounted the others for the following reasons:
 
 ### Considerations on selected technology
 
-This was approved in principal in discussions with the lead architect of Vulnerable Children and Families at the time
+This was approved in principal in discussions with the lead architect of Vulnerable Children and Families at the time.
+
+Also fully discussed as part of the Tech Assessment within the assessment
