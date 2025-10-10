@@ -679,6 +679,8 @@ html
   font-weight: 700
 }
 
-.dfe-card-external-link-print-only {
+.print-only { display: none; }
+
+.dfe-card-link-print-url {
   display: none;
 }

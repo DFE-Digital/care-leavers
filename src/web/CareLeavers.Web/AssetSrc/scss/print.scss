@@ -247,25 +247,27 @@
     background-color: inherit;
   }
 
-  .dfe-card .govuk-link[href^="http"]::after {
-    display: none !important;
-    content: "" !important;
+  .dfe-card-link--header {
+    text-decoration: none !important;
   }
 
-  // Dedicated container for the external link
-  .dfe-card .dfe-card-external-link-print-only {
+  .dfe-card-link-print-url {
     display: block;
-    word-wrap: break-word;
-
-    p {
-      font-size: govuk-font-size(14);
-      color: #505a5f;
-      margin-top: govuk-spacing(3);
-      margin-bottom: 0;
-    }
+    word-break: break-all;
+    margin-top: 1em;
+    font-size: 12pt;
+    color: #1d70b8;
+    text-decoration: underline !important;
+    font-weight: 500;
+    font-family: inherit;
   }
 
-  .dfe-card {
-    height: auto;
+  .dfe-card-link--no-url-after::after {
+    content: none !important;
+    display: none !important;
   }
 }
+
+ 
+
+
