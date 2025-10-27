@@ -327,6 +327,11 @@ html
   margin: -35px auto 0;
 }
 
+.gtaa-wrapper iframe {
+  width:100%; height:100%;
+  border:none;
+}
+
 .govuk-grid-column-two-thirds > .govuk-grid-row > .box-ext {
   margin: 2.5em 15px;
 }
