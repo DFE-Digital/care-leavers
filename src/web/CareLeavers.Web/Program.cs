@@ -160,6 +160,7 @@ try
         renderer.AddRenderer(new GDSRichContentRenderer(serviceProvider));
         renderer.AddRenderer(new GDSStatusCheckerRenderer(serviceProvider));
         renderer.AddRenderer(new GDSRiddleRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSGetToAnAnswerRenderer(serviceProvider));
         renderer.AddRenderer(new GDSBannerRenderer(serviceProvider));
         renderer.AddRenderer(new GDSDefinitionRenderer(serviceProvider));
         renderer.AddRenderer(new GDSCallToActionRenderer(serviceProvider));

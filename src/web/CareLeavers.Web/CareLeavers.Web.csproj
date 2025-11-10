@@ -43,4 +43,9 @@
         <PackageReference Include="ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson" Version="2.3.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <AdditionalFiles Include="Views\GetToAnAnswer\EmbeddedGetToAnAnswer.cshtml" />
+      <AdditionalFiles Include="Views\Shared\_IFrameLayout.cshtml" />
+    </ItemGroup>
+
 </Project>
