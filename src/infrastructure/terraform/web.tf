@@ -38,6 +38,7 @@ resource "azurerm_service_plan" "web-app-service-plan" {
 resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
   app_service_id = azurerm_linux_web_app.web-app-service.id
   name           = "staging"
+  https_only          = true
 
   site_config {
     always_on = true
@@ -59,7 +60,7 @@ resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
   identity {
     type = "SystemAssigned"
   }
-
+  
   app_settings = local.web_app_settings
 
   tags = local.common_tags
