@@ -169,7 +169,7 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az group create --name s186${ENVIRONMENT_PREFIX}-cl-tfstate --location westeurope --output none --tags "Environment=${CIP_ENVIRONMENT}" "Product=Design Operations" "Service=Newly onboarded" "Service offering=Design operations"
-            az storage account create --name s186${ENVIRONMENT_PREFIX}cltfstate --resource-group s186${ENVIRONMENT_PREFIX}-cl-tfstate --location westeurope --sku Standard_LRS
+            az storage account create --name s186${ENVIRONMENT_PREFIX}cltfstate --resource-group s186${ENVIRONMENT_PREFIX}-cl-tfstate --location westeurope --sku Standard_LRS --min-tls-version TLS1_2 --https-only true
             az storage container create --name tfstate --account-name s186${ENVIRONMENT_PREFIX}cltfstate
 
       - name: 'Terraform Init'
