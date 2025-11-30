@@ -203,6 +203,7 @@ jobs:
           TF_VAR_pdf_generation_use_sandbox: ${{ vars.PDF_GENERATION_USE_SANDBOX }}
           TF_VAR_rebrand: ${{ vars.REBRAND }}
           TF_VAR_support_alert_email: ${{ secrets.SUPPORT_ALERT_EMAIL }}
+          TF_VAR_gtaa_base_url: ${{ vars.GTAA_BASE_URL }}
 
       - name: 'Terraform Apply'
         id: terraform_apply
