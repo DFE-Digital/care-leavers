@@ -291,7 +291,18 @@ try
         x.ByDefaultAllow.FromNowhere();
 
         var config = app.Configuration.GetSection("Csp").Get<CspConfiguration>() ?? new CspConfiguration();
+        var cspConfigList = new List<List<string>>
+       {
+            config.AllowConnectUrls, config.AllowFontUrls, config.AllowFrameUrls,
+            config.AllowImageUrls, config.AllowStyleUrls, config.AllowScriptUrls
+        };
 
+        var gtaaConfig = app.Configuration.GetSection("GetToAnAnswer");
+        if (gtaaConfig.GetValue<object>("BaseUrl") is string gtaaBaseUrl)
+        {
+            cspConfigList.ForEach(c => c.Add(gtaaBaseUrl));
+        }
+        
         x.AllowScripts
             .FromSelf()
             .AddNonce();

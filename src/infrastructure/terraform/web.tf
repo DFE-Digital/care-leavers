@@ -16,6 +16,7 @@ locals {
     "PdfGeneration__ApiKey"                 = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.pdf-generation-api-key.versionless_id})"
     "PdfGeneration__Sandbox"                = var.pdf_generation_use_sandbox
     "Rebrand"                               = var.rebrand
+    "GetToAnAnswer__BaseUrl"                = var.gtaa_base_url
   }
 }
 
