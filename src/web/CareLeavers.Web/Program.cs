@@ -6,6 +6,7 @@ using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Contentful.Webhooks;
 using CareLeavers.Web.ContentfulRenderers;
+using CareLeavers.Web.GetToAnAnswerRun;
 using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Telemetry;
 using CareLeavers.Web.Translation;
@@ -122,6 +123,17 @@ try
             "*.azurefd.net",
             "*.support-for-care-leavers.education.gov.uk"
         };
+    });
+    
+    #endregion
+    
+    #region GetToAnAnswer
+
+    var gtaaBaseUrl = builder.Configuration.GetSection("GetToAnAnswer:BaseUrl").Value!;
+    
+    builder.Services.AddHttpClient<IGetToAnAnswerRunClient, GetToAnAnswerRunClient>(client =>
+    {
+        client.BaseAddress = new Uri(gtaaBaseUrl);
     });
     
     #endregion
