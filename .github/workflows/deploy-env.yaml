@@ -188,7 +188,7 @@ jobs:
       - name: Create TF State dependencies
         uses: azure/cli@v2
         env:
-          ENVIRONMENT_PREFIX: "${{steps.vars.outputs.service-id}}${{ vars.ENVIRONMENT_PREFIX }}"
+          ENVIRONMENT_PREFIX: "${{github.event.inputs.service-id}}${{ vars.ENVIRONMENT_PREFIX }}"
           CIP_ENVIRONMENT: ${{ vars.CIP_ENVIRONMENT }}
         with:
           azcliversion: latest
@@ -201,7 +201,7 @@ jobs:
         id: terraform_init
         working-directory: ./src/infrastructure/terraform
         env:
-          ENVIRONMENT_PREFIX: "${{steps.vars.outputs.service-id}}${{ vars.ENVIRONMENT_PREFIX }}"
+          ENVIRONMENT_PREFIX: "${{github.event.inputs.service-id}}${{ vars.ENVIRONMENT_PREFIX }}"
         run: terraform init -backend-config="resource_group_name=${ENVIRONMENT_PREFIX}-cl-tfstate" -backend-config="storage_account_name=${ENVIRONMENT_PREFIX}cltfstate" -backend-config="container_name=tfstate" -backend-config="key=terraform.tfstate"
 
       - name: "Terraform Plan"
@@ -246,7 +246,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         env:
-          ENVIRONMENT_PREFIX: "${{steps.vars.outputs.service-id}}${{vars.ENVIRONMENT_PREFIX}}"
+          ENVIRONMENT_PREFIX: "${{github.event.inputs.service-id}}${{vars.ENVIRONMENT_PREFIX}}"
         with:
           app-name: "${{env.ENVIRONMENT_PREFIX}}-cl-web-app-service"
           slot-name: "staging"
@@ -256,14 +256,14 @@ jobs:
         #'if' only needed for migration testing
         if: github.event.inputs.release-type == 'full'
         env:
-          ENVIRONMENT_PREFIX: "${{steps.vars.outputs.service-id}}${{vars.ENVIRONMENT_PREFIX}}"
+          ENVIRONMENT_PREFIX: "${{github.event.inputs.service-id}}${{vars.ENVIRONMENT_PREFIX}}"
         run: az webapp deployment slot swap --name ${{ env.ENVIRONMENT_PREFIX }}-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}-cl-web-rg --slot staging --target-slot production
 
       - name: Delete staging slot
         #'if' only needed for migration testing
         if: github.event.inputs.release-type == 'full'
         env:
-          ENVIRONMENT_PREFIX: "${{steps.vars.outputs.service-id}}${{vars.ENVIRONMENT_PREFIX}}"
+          ENVIRONMENT_PREFIX: "${{github.event.inputs.service-id}}${{vars.ENVIRONMENT_PREFIX}}"
         run: az webapp deployment slot delete --name ${{ env.ENVIRONMENT_PREFIX }}-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}-cl-web-rg --slot staging
 
       - name: Clear Cache
