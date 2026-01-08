@@ -194,7 +194,7 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az group create --name ${ENVIRONMENT_PREFIX}-cl-tfstate --location westeurope --output none --tags "Environment=${CIP_ENVIRONMENT}" "Product=Design Operations" "Service=Newly onboarded" "Service offering=Design operations"
-            az storage account create --name ${ENVIRONMENT_PREFIX}cltfstate --resource-group ${ENVIRONMENT_PREFIX}-cl-tfstate --location westeurope --sku Standard_LRS --min-tls-version TLS1_2 --https-only true
+            az storage account create --name ${ENVIRONMENT_PREFIX}cltfstate --resource-group ${ENVIRONMENT_PREFIX}rg-weu-cl-tfstate --location westeurope --sku Standard_LRS --min-tls-version TLS1_2 --https-only true
             az storage container create --name tfstate --account-name ${ENVIRONMENT_PREFIX}cltfstate
 
       - name: "Terraform Init"
@@ -202,7 +202,7 @@ jobs:
         working-directory: ./src/infrastructure/terraform
         env:
           ENVIRONMENT_PREFIX: "${{github.event.inputs.service-id}}${{ vars.ENVIRONMENT_PREFIX }}"
-        run: terraform init -backend-config="resource_group_name=${ENVIRONMENT_PREFIX}-cl-tfstate" -backend-config="storage_account_name=${ENVIRONMENT_PREFIX}cltfstate" -backend-config="container_name=tfstate" -backend-config="key=terraform.tfstate"
+        run: terraform init -backend-config="resource_group_name=${ENVIRONMENT_PREFIX}rg-weu-cl-tfstate" -backend-config="storage_account_name=${ENVIRONMENT_PREFIX}cltfstate" -backend-config="container_name=tfstate" -backend-config="key=terraform.tfstate"
 
       - name: "Terraform Plan"
         id: terraform_plan
@@ -257,14 +257,14 @@ jobs:
         if: github.event.inputs.release-type == 'full'
         env:
           ENVIRONMENT_PREFIX: "${{github.event.inputs.service-id}}${{vars.ENVIRONMENT_PREFIX}}"
-        run: az webapp deployment slot swap --name ${{ env.ENVIRONMENT_PREFIX }}-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}-cl-web-rg --slot staging --target-slot production
+        run: az webapp deployment slot swap --name ${{ env.ENVIRONMENT_PREFIX }}-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}rg-weu-cl-web-rg --slot staging --target-slot production
 
       - name: Delete staging slot
         #'if' only needed for migration testing
         if: github.event.inputs.release-type == 'full'
         env:
           ENVIRONMENT_PREFIX: "${{github.event.inputs.service-id}}${{vars.ENVIRONMENT_PREFIX}}"
-        run: az webapp deployment slot delete --name ${{ env.ENVIRONMENT_PREFIX }}-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}-cl-web-rg --slot staging
+        run: az webapp deployment slot delete --name ${{ env.ENVIRONMENT_PREFIX }}-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}rg-weu-cl-web-rg --slot staging
 
       - name: Clear Cache
         id: clear-cache
