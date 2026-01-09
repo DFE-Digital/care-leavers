@@ -1,10 +1,11 @@
 locals {
   common_tags = {
-    "Environment"      = var.cip_environment
+    "Environment"      = var.elz_environment
     "Product"          = "Design Operations"
     "Service"          = "Newly Onboarded"
     "Service Offering" = "Design Operations"
   }
-  service_prefix = "s186${var.environment_prefix}-cl"
-  location       = "westeurope"
+  prefix         = var.environment_prefix
+  service_prefix = "${var.environment_prefix}-uks-cl"
+  location       = "uksouth"
 }
