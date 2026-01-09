@@ -231,8 +231,6 @@ jobs:
           TF_VAR_gtaa_base_url: ${{ vars.GTAA_BASE_URL }}
 
       - name: "Terraform Apply"
-        #'if' only needed for migration testing
-        if: github.event.inputs.release-type == 'full'
         id: terraform_apply
         working-directory: ./src/infrastructure/terraform
         run: terraform apply plan.plan
