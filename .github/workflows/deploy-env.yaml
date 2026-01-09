@@ -31,7 +31,7 @@ on:
         type: choice
         description: "Service ID?"
         required: true
-        default: "s186"
+        default: "s272"
         options:
           - "s186"
           - "s272"
@@ -40,7 +40,7 @@ on:
         type: choice
         description: "Type of release"
         required: true
-        default: "full"
+        default: "infraplan"
         options:
           - "full"
           - "infraplan"
@@ -193,8 +193,8 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
-            az group create --name ${ENVIRONMENT_PREFIX}rg-weu-cl-tfstate --location westeurope --output none --tags "Environment=${CIP_ENVIRONMENT}" "Product=Design Operations" "Service=Newly onboarded" "Service offering=Design operations"
-            az storage account create --name ${ENVIRONMENT_PREFIX}cltfstate --resource-group ${ENVIRONMENT_PREFIX}rg-weu-cl-tfstate --location westeurope --sku Standard_LRS --min-tls-version TLS1_2 --https-only true
+            az group create --name ${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate --location uksouth --output none --tags "Environment=${CIP_ENVIRONMENT}" "Product=Design Operations" "Service=Newly onboarded" "Service offering=Design operations"
+            az storage account create --name ${ENVIRONMENT_PREFIX}cltfstate --resource-group ${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate --location uksouth --sku Standard_LRS --min-tls-version TLS1_2 --https-only true
             az storage container create --name tfstate --account-name ${ENVIRONMENT_PREFIX}cltfstate
 
       - name: "Terraform Init"
@@ -202,7 +202,7 @@ jobs:
         working-directory: ./src/infrastructure/terraform
         env:
           ENVIRONMENT_PREFIX: "${{github.event.inputs.service-id}}${{ vars.ENVIRONMENT_PREFIX }}"
-        run: terraform init -backend-config="resource_group_name=${ENVIRONMENT_PREFIX}rg-weu-cl-tfstate" -backend-config="storage_account_name=${ENVIRONMENT_PREFIX}cltfstate" -backend-config="container_name=tfstate" -backend-config="key=terraform.tfstate"
+        run: terraform init -backend-config="resource_group_name=${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate" -backend-config="storage_account_name=${ENVIRONMENT_PREFIX}cltfstate" -backend-config="container_name=tfstate" -backend-config="key=terraform.tfstate"
 
       - name: "Terraform Plan"
         id: terraform_plan
@@ -211,7 +211,7 @@ jobs:
         env:
           TF_VAR_aspnetcore_environment: ${{ env.ENV_NAME }}
           TF_VAR_environment_prefix: ${{ vars.ENVIRONMENT_PREFIX }}
-          TF_VAR_cip_environment: ${{ vars.CIP_ENVIRONMENT }}
+          TF_VAR_elz_environment: ${{ vars.CIP_ENVIRONMENT }}
           TF_VAR_contentful_delivery_api_key: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
           TF_VAR_contentful_preview_api_key: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
           TF_VAR_contentful_management_api_key: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
