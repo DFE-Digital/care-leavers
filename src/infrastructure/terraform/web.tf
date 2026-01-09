@@ -40,7 +40,7 @@ resource "azurerm_service_plan" "web-app-service-plan" {
   name                = "${local.service_prefix}-web-app-service-plan"
   resource_group_name = azurerm_resource_group.web-rg.name
   os_type             = "Linux"
-  sku_name            = "P0v4"
+  sku_name            = "B1"
 
   tags = local.common_tags
 }
