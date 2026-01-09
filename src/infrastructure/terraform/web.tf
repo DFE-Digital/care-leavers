@@ -21,12 +21,12 @@ locals {
   }
 
   # added managed identity
-  managed_identity = {
-    type = "UserAssigned"
-    identity_ids = [
-      azurerm_user_assigned_identity.gtaa-identity.id
-    ]
-  }
+  # managed_identity = {
+  #   type = "UserAssigned"
+  #   identity_ids = [
+  #     azurerm_user_assigned_identity.cl-identity.id
+  #   ]
+  # }
 }
 
 resource "azurerm_resource_group" "web-rg" {
