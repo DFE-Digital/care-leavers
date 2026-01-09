@@ -36,11 +36,11 @@ resource "azurerm_resource_group" "web-rg" {
 }
 
 resource "azurerm_service_plan" "web-app-service-plan" {
-  location            = local.location
+  location            = "westeurope"
   name                = "${local.service_prefix}-web-app-service-plan"
   resource_group_name = azurerm_resource_group.web-rg.name
   os_type             = "Linux"
-  sku_name            = "B1"
+  sku_name            = "P0v3"
 
   tags = local.common_tags
 }
@@ -80,7 +80,7 @@ resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
 
 resource "azurerm_linux_web_app" "web-app-service" {
   service_plan_id     = azurerm_service_plan.web-app-service-plan.id
-  location            = local.location
+  location            = "westeurope"
   name                = "${local.service_prefix}-web-app-service"
   resource_group_name = azurerm_resource_group.web-rg.name
   https_only          = true
