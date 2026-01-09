@@ -10,6 +10,7 @@ locals {
     "ApplicationInsights__ConnectionString" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.application-insights-connection-string.versionless_id})"
     "Caching__Type"                         = var.caching_type
     "Caching__ConnectionString"             = lower(var.caching_type) == "redis" ? "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-cache-connection-string[0].versionless_id})" : ""
+    # "Caching__ConnectionString"             = lower(var.caching_type) == "redis" ? "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-enterprise-connection-string[0].versionless_id})" : ""
     "Scripts__Clarity"                      = var.scripts_clarity
     "AzureTranslation__DocumentEndpoint"    = var.azure_translation_document_endpoint
     "AzureTranslation__AccessKey"           = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.azure-translation-access-key.versionless_id})"
@@ -18,10 +19,18 @@ locals {
     "Rebrand"                               = var.rebrand
     "GetToAnAnswer__BaseUrl"                = var.gtaa_base_url
   }
+
+  # added managed identity
+  managed_identity = {
+    type = "UserAssigned"
+    identity_ids = [
+      azurerm_user_assigned_identity.gtaa-identity.id
+    ]
+  }
 }
 
 resource "azurerm_resource_group" "web-rg" {
-  name     = "${local.service_prefix}-web-rg"
+  name     = "${local.prefix}rg-uks-cl-web"
   location = local.location
   tags     = local.common_tags
 }
@@ -39,7 +48,7 @@ resource "azurerm_service_plan" "web-app-service-plan" {
 resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
   app_service_id = azurerm_linux_web_app.web-app-service.id
   name           = "staging"
-  https_only          = true
+  https_only     = true
 
   site_config {
     always_on = true
@@ -53,15 +62,17 @@ resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
 
     health_check_path                 = "/health"
     health_check_eviction_time_in_min = 5
-    
-    minimum_tls_version = "1.3"
+
+    minimum_tls_version     = "1.3"
     scm_minimum_tls_version = "1.3"
   }
 
   identity {
     type = "SystemAssigned"
+    # type         = local.managed_identity.type
+    # identity_ids = local.managed_identity.identity_ids
   }
-  
+
   app_settings = local.web_app_settings
 
   tags = local.common_tags
@@ -90,6 +101,8 @@ resource "azurerm_linux_web_app" "web-app-service" {
 
   identity {
     type = "SystemAssigned"
+    # type         = local.managed_identity.type
+    # identity_ids = local.managed_identity.identity_ids
   }
 
   app_settings = local.web_app_settings

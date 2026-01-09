@@ -5,7 +5,7 @@ locals {
     "Service"          = "Newly Onboarded"
     "Service Offering" = "Design Operations"
   }
-  prefix         = var.environment_prefix
-  service_prefix = "${var.environment_prefix}-uks-cl"
+  prefix         = "s272${var.environment_prefix}"
+  service_prefix = "s272${var.environment_prefix}-uks-cl"
   location       = "uksouth"
 }
