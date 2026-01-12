@@ -206,7 +206,7 @@ jobs:
         working-directory: ./src/infrastructure/terraform
         env:
           ENVIRONMENT_PREFIX: "${{github.event.inputs.service-id}}${{ vars.ENVIRONMENT_PREFIX }}"
-        run: terraform init -backend-config="resource_group_name=${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate" -backend-config="storage_account_name=${ENVIRONMENT_PREFIX}cltfstate" -backend-config="container_name=tfstate" -backend-config="key=terraform.tfstate"
+        run: terraform init -upgrade -backend-config="resource_group_name=${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate" -backend-config="storage_account_name=${ENVIRONMENT_PREFIX}cltfstate" -backend-config="container_name=tfstate" -backend-config="key=terraform.tfstate"
 
       - name: "Terraform Plan"
         id: terraform_plan
