@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "translator-rg" {
   tags     = local.common_tags
 }
 
-resource "azurerm_cognitive_services_account" "ai-translator" {
+resource "azurerm_cognitive_account" "ai-translator" {
   name                = "${local.service_prefix}-ai-translation"
   location            = azurerm_resource_group.translator-rg.location
   resource_group_name = azurerm_resource_group.translator-rg.name

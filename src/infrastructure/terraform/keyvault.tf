@@ -87,7 +87,7 @@ resource "azurerm_key_vault_secret" "pdf-generation-api-key" {
 resource "azurerm_key_vault_secret" "azure-translation-access-key" {
   key_vault_id = azurerm_key_vault.key-vault.id
   name         = "azure-translation-access-key"
-  value        = azurerm_cognitive_services_account.ai-translator.primary_access_key
+  value        = azurerm_cognitive_account.ai-translator.primary_access_key
 
   depends_on = [azurerm_key_vault_access_policy.github-kv-access]
 }
