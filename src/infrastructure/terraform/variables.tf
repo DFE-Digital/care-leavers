@@ -75,19 +75,6 @@ variable "aspnetcore_environment" {
   type        = string
 }
 
-variable "azure_translation_access_key" {
-  description = "Azure Translation Access Key"
-  type        = string
-  sensitive   = true
-  default     = ""
-}
-
-variable "azure_translation_document_endpoint" {
-  description = "Azure Document Translation Endpoint"
-  type        = string
-  default     = ""
-}
-
 variable "azure_frontdoor_scale" {
   description = "Azure Front Door Scale"
   type        = string

@@ -9,24 +9,16 @@ locals {
     "ContentfulOptions__UsePreviewApi"      = var.contentful_use_preview_api
     "ApplicationInsights__ConnectionString" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.application-insights-connection-string.versionless_id})"
     "Caching__Type"                         = var.caching_type
-    # "Caching__ConnectionString"             = lower(var.caching_type) == "redis" ? "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-cache-connection-string[0].versionless_id})" : ""
     "Caching__ConnectionString"             = lower(var.caching_type) == "redis" ? "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-enterprise-connection-string[0].versionless_id})" : ""
     "Scripts__Clarity"                      = var.scripts_clarity
-    "AzureTranslation__DocumentEndpoint"    = var.azure_translation_document_endpoint
-    "AzureTranslation__AccessKey"           = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.azure-translation-access-key.versionless_id})"
-    "PdfGeneration__ApiKey"                 = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.pdf-generation-api-key.versionless_id})"
-    "PdfGeneration__Sandbox"                = var.pdf_generation_use_sandbox
-    "Rebrand"                               = var.rebrand
-    "GetToAnAnswer__BaseUrl"                = var.gtaa_base_url
+    # "AzureTranslation__DocumentEndpoint"    = var.azure_translation_document_endpoint
+    "AzureTranslation__DocumentEndpoint" = azurerm_cognitive_services_account.ai-translator.endpoint
+    "AzureTranslation__AccessKey"        = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.azure-translation-access-key.versionless_id})"
+    "PdfGeneration__ApiKey"              = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.pdf-generation-api-key.versionless_id})"
+    "PdfGeneration__Sandbox"             = var.pdf_generation_use_sandbox
+    "Rebrand"                            = var.rebrand
+    "GetToAnAnswer__BaseUrl"             = var.gtaa_base_url
   }
-
-  # added managed identity
-  # managed_identity = {
-  #   type = "UserAssigned"
-  #   identity_ids = [
-  #     azurerm_user_assigned_identity.cl-identity.id
-  #   ]
-  # }
 }
 
 resource "azurerm_resource_group" "web-rg" {
@@ -69,8 +61,6 @@ resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
 
   identity {
     type = "SystemAssigned"
-    # type         = local.managed_identity.type
-    # identity_ids = local.managed_identity.identity_ids
   }
 
   app_settings = local.web_app_settings
@@ -101,8 +91,6 @@ resource "azurerm_linux_web_app" "web-app-service" {
 
   identity {
     type = "SystemAssigned"
-    # type         = local.managed_identity.type
-    # identity_ids = local.managed_identity.identity_ids
   }
 
   app_settings = local.web_app_settings
