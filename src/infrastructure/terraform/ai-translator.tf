@@ -9,6 +9,6 @@ resource "azurerm_cognitive_account" "ai-translator" {
   location            = azurerm_resource_group.translator-rg.location
   resource_group_name = azurerm_resource_group.translator-rg.name
   kind                = "TextTranslation" # Specifies the Translator service
-  sku_name            = "S"
+  sku_name            = "S1"
   tags                = local.common_tags
 }
