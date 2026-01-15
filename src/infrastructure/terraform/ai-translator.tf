@@ -11,6 +11,4 @@ resource "azurerm_cognitive_account" "ai-translator" {
   kind                = "TextTranslation" # Specifies the Translator service
   sku_name            = "S1"
   tags                = local.common_tags
-
-  local_auth_enabled = false
 }
