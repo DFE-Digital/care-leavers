@@ -251,7 +251,7 @@ jobs:
         env:
           ENVIRONMENT_PREFIX: "${{github.event.inputs.service-id}}${{vars.ENVIRONMENT_PREFIX}}"
         with:
-          app-name: "${{env.ENVIRONMENT_PREFIX}}-cl-web-app-service"
+          app-name: "${{env.ENVIRONMENT_PREFIX}}-uks-cl-web-app-service"
           slot-name: "staging"
           images: "ghcr.io/${{ env.REPO }}:${{ needs.package.outputs.image_tag }}"
 
