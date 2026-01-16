@@ -55,8 +55,8 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   patterns_to_match      = ["/*"]
   supported_protocols    = ["Http", "Https"]
 
-  cdn_frontdoor_custom_domain_ids = var.custom_domain != "" ? [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id] : null
-  link_to_default_domain          = false
+  # cdn_frontdoor_custom_domain_ids = var.custom_domain != "" ? [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id] : null
+  link_to_default_domain          = true
 }
 
 resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy" {
