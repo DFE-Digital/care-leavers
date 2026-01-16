@@ -1,9 +1,9 @@
 locals {
   common_tags = {
     "Environment"      = var.elz_environment
-    "Product"          = "Design Operations"
+    "Product"          = "Support for care leavers"
     "Service"          = "Newly Onboarded"
-    "Service Offering" = "Design Operations"
+    "Service Offering" = "Support for care leavers"
   }
   prefix         = "s272${var.environment_prefix}"
   service_prefix = "s272${var.environment_prefix}-uks-cl"
