@@ -260,14 +260,14 @@ jobs:
         if: github.event.inputs.release-type == 'full'
         env:
           ENVIRONMENT_PREFIX: "${{github.event.inputs.service-id}}${{vars.ENVIRONMENT_PREFIX}}"
-        run: az webapp deployment slot swap --name ${{ env.ENVIRONMENT_PREFIX }}-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}rg-weu-cl-web-rg --slot staging --target-slot production
+        run: az webapp deployment slot swap --name ${{ env.ENVIRONMENT_PREFIX }}-uks-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-web --slot staging --target-slot production
 
       - name: Delete staging slot
         #'if' only needed for migration testing
         if: github.event.inputs.release-type == 'full'
         env:
           ENVIRONMENT_PREFIX: "${{github.event.inputs.service-id}}${{vars.ENVIRONMENT_PREFIX}}"
-        run: az webapp deployment slot delete --name ${{ env.ENVIRONMENT_PREFIX }}-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}rg-weu-cl-web-rg --slot staging
+        run: az webapp deployment slot delete --name ${{ env.ENVIRONMENT_PREFIX }}-uks-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-web --slot staging
 
       - name: Clear Cache
         id: clear-cache
