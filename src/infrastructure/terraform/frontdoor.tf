@@ -72,12 +72,12 @@ resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy"
           cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.id
         }
 
-        dynamic "domain" {
-          for_each = var.custom_domain != "" ? ["apply"] : []
-          content {
-            cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id
-          }
-        }
+        # dynamic "domain" {
+        #   for_each = var.custom_domain != "" ? ["apply"] : []
+        #   content {
+        #     cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id
+        #   }
+        # }
 
         patterns_to_match = ["/*"]
       }
