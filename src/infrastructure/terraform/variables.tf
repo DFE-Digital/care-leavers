@@ -137,7 +137,7 @@ variable "alerting" {
         error        = 1
       }
     }
-    t02 = {
+    p01 = {
       name                 = "Production"
       alerts_enabled       = true
       email_alerts_enabled = true
