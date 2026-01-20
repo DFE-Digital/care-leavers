@@ -266,3 +266,28 @@ p
 .govuk-template--rebranded {
   background-color: inherit;
 }
+
+.dfe-card-link-print-url,
+.dfe-card-link-print-url::after {
+  display: block;
+  word-break: break-all;
+  font-size: 12pt;
+  color: inherit;
+  text-decoration: none !important;
+  font-weight: 400;
+  font-family: inherit;
+}
+
+.dfe-card-link-print-url {
+  margin-top: 1em;
+}
+
+.dfe-card-link-print-url::after {
+  content: attr(data-full-url);
+  margin-top: 0.5em;
+}
+
+.dfe-card-link--no-url-after::after {
+  content: none !important;
+  display: none !important;
+}

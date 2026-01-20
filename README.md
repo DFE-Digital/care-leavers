@@ -13,3 +13,4 @@ The site is made up of various components, each with their own README files deta
 - End-to-end tests: [README](./src/e2e/CareLeavers.E2ETests/README.md)
 - Terraform: [README](./src/infrastructure/terraform/README.md)
 - Contentful Migration: [README](./src/contentful/CareLeavers.ContentfulMigration/README.md)
+- Release Process: [README](./docs/developers/Release-Process.md)

@@ -1,0 +1,18 @@
+@using CareLeavers.Web.Configuration
+
+@inject IContentfulConfiguration ContentfulConfiguration
+
+@model CareLeavers.Web.Models.Content.Page
+
+@{
+    ViewBag.Title = Model?.Title;
+    Layout = "_IFrameLayout";
+}
+
+@if (Model?.MainContent is not null && Model.MainContent.Content.Any()) 
+{
+    <gds-contentful-rich-text document="@Model.MainContent"/>
+}
+
+
+

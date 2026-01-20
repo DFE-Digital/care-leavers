@@ -1,0 +1,177 @@
+@using System.Globalization
+@using CareLeavers.Web.Configuration
+@using CareLeavers.Web.Models.ViewModels
+@using CareLeavers.Web.Translation
+@using Joonasw.AspNetCore.SecurityHeaders.Csp
+@using Joonasw.AspNetCore.SecurityHeaders.TagHelpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Options
+
+@inject IWebHostEnvironment WebHostEnvironment
+@inject ICspNonceService CspNonceService
+@inject IContentfulConfiguration ContentfulConfiguration
+@inject IOptions<ScriptOptions> ScriptOptions
+@inject ITranslationService TranslationService
+
+@{
+    var config = await ContentfulConfiguration.GetConfiguration();
+    var scriptConfig = ScriptOptions.Value;
+
+    var languageCode = "en";
+    var language = await TranslationService.GetLanguage(languageCode);
+
+    var configViewModel = new ConfigViewModel
+    {
+        ContentfulConfiguration = config,
+        Language = language,
+        ShowLanguage = false,
+        ShowFooterLinks = false,
+        ShowNavigation = false
+    };
+}
+
+<!DOCTYPE html>
+<html class="@(SiteConfiguration.Rebrand ? "govuk-template--rebranded" : "govuk-template")" dir="@language.Direction" lang="@languageCode">
+
+<head>
+    @if (WebHostEnvironment.IsProduction() && !string.IsNullOrEmpty(scriptConfig.GTM))
+    {
+        <script asp-add-nonce="true">
+            // Define dataLayer and the gtag function.
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+
+            // Set default consent to 'denied' as a placeholder
+            // Determine actual values based on your own requirements
+            gtag('consent', 'default', {
+                'ad_storage': 'denied',
+                'ad_user_data': 'denied',
+                'ad_personalization': 'denied',
+                'analytics_storage': 'denied',
+            });
+        </script>
+
+        <!-- Google Tag Manager -->
+        <script asp-add-nonce="true">
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+                var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
+                j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+                j.setAttribute('nonce','@CspNonceService.GetNonce()');
+                f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','@scriptConfig.GTM');</script>
+        <!-- End Google Tag Manager -->
+    }
+    @if (!string.IsNullOrEmpty(scriptConfig.Clarity))
+    {
+        <!-- Clarity -->
+        <script type="text/javascript" asp-add-nonce="true">
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "@scriptConfig.Clarity");
+
+            (function () {
+                window.clarity('consent', false);
+            }());
+        </script>
+        <!-- End Clarity -->
+    }
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"]</title>
+    <style asp-add-nonce="true">
+        :root {
+            --generated: '@DateTime.Today.ToString("d MMMM yyyy", DateTimeFormatInfo.InvariantInfo)' ;
+            --siteurl: '@Url.ActionLink("GetContent", "Contentful", values: new { slug = config.HomePage?.Slug, languageCode}, protocol: "https")';
+        }
+    </style>
+    @if (SiteConfiguration.Rebrand)
+    {
+        <link rel="icon" sizes="48x48" href="/assets/rebrand/images/favicon.ico" asp-append-version="@scriptConfig.AddCssVersion"/>
+        <link rel="icon" sizes="any" type="image/svg+xml" href="/assets/rebrand/images/favicon.svg" asp-append-version="@scriptConfig.AddCssVersion"/>
+        <link rel="mask-icon" href="/assets/rebrand/images/govuk-icon-mask.svg" color="#0b0c0c" asp-append-version="@scriptConfig.AddCssVersion"/>
+        <link rel="apple-touch-icon" sizes="180x180" href="/assets/rebrand/images/govuk-icon-180.png" asp-append-version="@scriptConfig.AddCssVersion"/>
+        <link rel="manifest" href="/assets/rebrand/manifest.json">
+    }
+    else
+    {
+        <link rel="icon" sizes="48x48" href="/assets/images/favicon.ico" asp-append-version="@scriptConfig.AddCssVersion"/>
+        <link rel="icon" sizes="any" type="image/svg+xml" href="/assets/images/favicon.svg" asp-append-version="@scriptConfig.AddCssVersion"/>
+        <link rel="mask-icon" href="/assets/images/govuk-icon-mask.svg" color="#0b0c0c" asp-append-version="@scriptConfig.AddCssVersion"/>
+        <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/govuk-icon-180.png" asp-append-version="@scriptConfig.AddCssVersion"/>
+        <link rel="manifest" href="/assets/manifest.json">
+    }
+    
+    <meta name="apple-mobile-web-app-title" content="@config.ServiceName" />
+    
+    <link rel="stylesheet" href="~/css/application.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="stylesheet" href="~/css/print.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    @if (SiteConfiguration.Rebrand)
+    {
+        <link rel="stylesheet" href="~/css/rebrand.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    }
+    @if (IsSectionDefined("Head")) {
+        @await RenderSectionAsync("Head", required: false)
+    }
+    
+    <meta name="google-site-verification" content="@config.GoogleSiteVerification"/>
+    <meta name="msvalidate.01" content="@config.BingSiteVerification"/>
+</head>
+
+<body class="govuk-template__body">
+@if (WebHostEnvironment.IsProduction() && !string.IsNullOrEmpty(scriptConfig.GTM))
+{
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe title="GTM" src="https://www.googletagmanager.com/ns.html?id=@scriptConfig.GTM"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+}
+<script asp-add-nonce="true">
+    document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
+</script>
+
+<a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
+@{
+    await Html.RenderPartialAsync("_Header", configViewModel);
+}
+
+
+@await RenderSectionAsync("BeforeContent", required: false)
+
+@if (IsSectionDefined("BeforeGDSContent"))
+
+{
+    <section class="dfe-page-grey" id="main-content-header">
+        <div class="govuk-width-container" id="main-header-container">
+            @await RenderSectionAsync("BeforeGDSContent", required: false)
+        </div>
+    </section>
+}
+
+@RenderBody()
+
+@if (IsSectionDefined("AfterGDSContent"))
+{
+    <section class="dfe-page-grey" id="main-content-footer">
+        <div class="govuk-width-container">
+            @await RenderSectionAsync("AfterGDSContent")
+        </div>
+    </section>
+}
+
+@{
+    await Html.RenderPartialAsync("_Footer", configViewModel);
+}
+
+@await RenderSectionAsync("Scripts", false)
+<script asp-add-nonce="true" type="module">
+    import { initAll } from '/js/govuk-frontend.min.js'
+    initAll()
+</script>
+<script asp-add-nonce="true" src="/js/dfefrontend.min.js"></script>
+</body>
+
+</html>

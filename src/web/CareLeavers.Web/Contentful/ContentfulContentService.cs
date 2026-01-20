@@ -244,6 +244,10 @@ public class ContentfulContentService : IContentService
                 id = checker?.Sys.Id;
                 contentType = StatusChecker.ContentType;
                 break;
+            case GetToAnAnswer gtaa:
+                id = gtaa?.Sys.Id;
+                contentType = GetToAnAnswer.ContentType;
+                break;
             default:
                 return content;
         }

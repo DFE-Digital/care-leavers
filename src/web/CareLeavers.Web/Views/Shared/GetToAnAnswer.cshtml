@@ -1,0 +1,19 @@
+@model CareLeavers.Web.Models.Content.GetToAnAnswer
+@inject IHttpContextAccessor HttpContextAccessor;
+
+@{
+    var languageCode = HttpContextAccessor.HttpContext?.Request.RouteValues["languageCode"]?.ToString();
+}
+
+<div class="gtaa-wrapper"
+     data-auto-scroll="false"
+     data-is-fixed-height-enabled="false"
+     data-bg="#fff"
+     data-fg="#00205b"
+     style="margin:0 auto; max-width:100%; width:100%;">
+    <iframe id="gtaaFrame" title="@Model.Title"
+            src="/@languageCode/get-to-an-answer-questionnaires/@Model.questionnaireSlug/start"
+            allow="autoplay" referrerpolicy="strict-origin" 
+            sandbox="allow-scripts allow-top-navigation allow-forms"></iframe>
+</div>
+<script asp-add-nonce="true" src="@Model.BaseUrl/js/gtaa.external.js"></script>

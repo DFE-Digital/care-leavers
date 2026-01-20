@@ -6,6 +6,7 @@ using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Contentful.Webhooks;
 using CareLeavers.Web.ContentfulRenderers;
+using CareLeavers.Web.GetToAnAnswerRun;
 using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Telemetry;
 using CareLeavers.Web.Translation;
@@ -126,6 +127,17 @@ try
     
     #endregion
     
+    #region GetToAnAnswer
+
+    var gtaaBaseUrl = builder.Configuration.GetSection("GetToAnAnswer:BaseUrl").Value!;
+    
+    builder.Services.AddHttpClient<IGetToAnAnswerRunClient, GetToAnAnswerRunClient>(client =>
+    {
+        client.BaseAddress = new Uri(gtaaBaseUrl);
+    });
+    
+    #endregion
+    
     #region Contentful and Renderers
     
     builder.Services.AddScoped<IContentService, ContentfulContentService>();
@@ -160,6 +172,7 @@ try
         renderer.AddRenderer(new GDSRichContentRenderer(serviceProvider));
         renderer.AddRenderer(new GDSStatusCheckerRenderer(serviceProvider));
         renderer.AddRenderer(new GDSRiddleRenderer(serviceProvider));
+        renderer.AddRenderer(new GDSGetToAnAnswerRenderer(serviceProvider));
         renderer.AddRenderer(new GDSBannerRenderer(serviceProvider));
         renderer.AddRenderer(new GDSDefinitionRenderer(serviceProvider));
         renderer.AddRenderer(new GDSCallToActionRenderer(serviceProvider));
@@ -290,7 +303,18 @@ try
         x.ByDefaultAllow.FromNowhere();
 
         var config = app.Configuration.GetSection("Csp").Get<CspConfiguration>() ?? new CspConfiguration();
+        var cspConfigList = new List<List<string>>
+       {
+            config.AllowConnectUrls, config.AllowFontUrls, config.AllowFrameUrls,
+            config.AllowImageUrls, config.AllowStyleUrls, config.AllowScriptUrls
+        };
 
+        var gtaaConfig = app.Configuration.GetSection("GetToAnAnswer");
+        if (gtaaConfig.GetValue<object>("BaseUrl") is string gtaaBaseUrl)
+        {
+            cspConfigList.ForEach(c => c.Add(gtaaBaseUrl));
+        }
+        
         x.AllowScripts
             .FromSelf()
             .AddNonce();
