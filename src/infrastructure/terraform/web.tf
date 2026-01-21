@@ -11,8 +11,6 @@ locals {
     "Caching__Type"                         = var.caching_type
     "Caching__ConnectionString"             = lower(var.caching_type) == "redis" ? "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-enterprise-connection-string[0].versionless_id})" : ""
     "Scripts__Clarity"                      = var.scripts_clarity
-    # "AzureTranslation__DocumentEndpoint"    = var.azure_translation_document_endpoint
-    "AzureTranslation__DocumentEndpoint" = azurerm_cognitive_account.ai-translator.endpoint
     "AzureTranslation__AccessKey"        = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.azure-translation-access-key.versionless_id})"
     "PdfGeneration__ApiKey"              = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.pdf-generation-api-key.versionless_id})"
     "PdfGeneration__Sandbox"             = var.pdf_generation_use_sandbox
