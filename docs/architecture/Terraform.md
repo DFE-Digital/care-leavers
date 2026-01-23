@@ -3,7 +3,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.52 |
 
 ## Providers
 
@@ -45,16 +45,19 @@ No modules.
 | [azurerm_key_vault_secret.contentful-preview-api-key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.contentful-space-id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.pdf-generation-api-key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.redis-cache-connection-string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.redis-enterprise-connection-string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_linux_web_app.web-app-service](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_web_app) | resource |
 | [azurerm_linux_web_app_slot.web-app-service-staging](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_web_app_slot) | resource |
 | [azurerm_log_analytics_workspace.log-analytics-workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
-| [azurerm_redis_cache.redis-cache](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/redis_cache) | resource |
-| [azurerm_resource_group.caching-rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_managed_redis.redis-enterprise](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_redis) | resource |
+| [azurerm_resource_group.redis-rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.core-rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.web-rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_service_plan.web-app-service-plan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/service_plan) | resource |
+| [azurerm_resource_group.translator-rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_cognitive_account.ai-translator](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cognitive_account) | resource |
 | [azurerm_client_config.client](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
+
 
 ## Inputs
 
@@ -62,8 +65,6 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_aspnetcore_environment"></a> [aspnetcore\_environment](#input\_aspnetcore\_environment) | ASP.NET Core environment | `string` | n/a | yes |
 | <a name="input_azure_frontdoor_scale"></a> [azure\_frontdoor\_scale](#input\_azure\_frontdoor\_scale) | Azure Front Door Scale | `string` | `"Standard_AzureFrontDoor"` | no |
-| <a name="input_azure_translation_access_key"></a> [azure\_translation\_access\_key](#input\_azure\_translation\_access\_key) | Azure Translation Access Key | `string` | `""` | no |
-| <a name="input_azure_translation_document_endpoint"></a> [azure\_translation\_document\_endpoint](#input\_azure\_translation\_document\_endpoint) | Azure Document Translation Endpoint | `string` | `""` | no |
 | <a name="input_caching_type"></a> [caching\_type](#input\_caching\_type) | Caching type | `string` | n/a | yes |
 | <a name="input_cip_environment"></a> [cip\_environment](#input\_cip\_environment) | The CIP environment to match subscription (e.g. Dev) | `string` | n/a | yes |
 | <a name="input_contentful_delivery_api_key"></a> [contentful\_delivery\_api\_key](#input\_contentful\_delivery\_api\_key) | Contentful Delivery API Key | `string` | n/a | yes |
