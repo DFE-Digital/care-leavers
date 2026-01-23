@@ -55,15 +55,12 @@ jobs:
       - name: Install SonarCloud Scanner
         run: dotnet tool install --global dotnet-sonarscanner
 
-      - name: Build, Test and Analyze
-        working-directory: ./src
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Start SonarCloud Scanner
         run: |
           dotnet-sonarscanner begin \
             /k:DFE-Digital_care-leavers \
             /o:dfe-digital \
-            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.coverageReportPaths=CoverageReport/SonarQube.xml \
             /d:sonar.coverage.exclusions="**/Program.cs,**/*.json" \
@@ -72,5 +69,7 @@ jobs:
             /d:sonar.scanner.skipJreProvisioning=true \
             /d:sonar.scanner.scanAll=false
           dotnet build --no-incremental
-          dotnet-coverage collect --settings dotnet-cover-config.xml -f xml -o coverage.xml "dotnet test"
-          dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          dotnet test --no-build --verbosity normal
+          reportgenerator -reports:./src/web/**/coverage.cobertura.xml -targetdir:CoverageReport -reporttypes:SonarQube,html
+          dotnet coverage merge --reports "src/web/**/coverage.cobertura.xml" -f cobertura -o src/web/coverage/coverage.xml
+          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
