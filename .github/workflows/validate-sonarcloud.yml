@@ -60,7 +60,7 @@ jobs:
           dotnet-sonarscanner begin \
             /k:DFE-Digital_care-leavers \
             /o:dfe-digital \
-           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.coverageReportPaths=CoverageReport/SonarQube.xml \
             /d:sonar.coverage.exclusions="**/Program.cs,**/*.json" \
@@ -70,6 +70,4 @@ jobs:
             /d:sonar.scanner.scanAll=false
           dotnet build ./src/CareLeavers.sln --no-incremental
           dotnet test ./src/CareLeavers.sln --no-build --verbosity normal
-          reportgenerator -reports:./src/**/coverage.cobertura.xml -targetdir:CoverageReport -reporttypes:SonarQube,html
-          dotnet coverage merge --reports "src/**/coverage.cobertura.xml" -f cobertura -o src/coverage/coverage.xml
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
