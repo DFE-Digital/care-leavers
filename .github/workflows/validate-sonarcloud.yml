@@ -68,8 +68,8 @@ jobs:
             /d:sonar.issue.ignore.multicriteria.e1.ruleKey=csharpsquid:S6602 \
             /d:sonar.scanner.skipJreProvisioning=true \
             /d:sonar.scanner.scanAll=false
-          dotnet build ./src/web --no-incremental
-          dotnet test ./src/web --no-build --verbosity normal
-          reportgenerator -reports:./src/web/**/coverage.cobertura.xml -targetdir:CoverageReport -reporttypes:SonarQube,html
-          dotnet coverage merge --reports "src/web/**/coverage.cobertura.xml" -f cobertura -o src/web/coverage/coverage.xml
+          dotnet build ./src/CareLeavers.sln --no-incremental
+          dotnet test ./src/CareLeavers.sln --no-build --verbosity normal
+          reportgenerator -reports:./src/**/coverage.cobertura.xml -targetdir:CoverageReport -reporttypes:SonarQube,html
+          dotnet coverage merge --reports "src/**/coverage.cobertura.xml" -f cobertura -o src/coverage/coverage.xml
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
