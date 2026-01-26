@@ -20,7 +20,8 @@ public class GetToAnAnswerRunClient(HttpClient httpClient, IServiceProvider serv
             throw new Exception($"Failed to get start state for questionnaire {questionnaireSlug}");
         }
         
-        var html = await responseMessage.Content.ReadAsStringAsync();
+        var bytes = await responseMessage.Content.ReadAsByteArrayAsync();
+        var html = Encoding.UTF8.GetString(bytes);
         
         // Replace the base url with the local url so that the embedded content redirects to the correct page
         return SubstitutePageContent(languageCode, html);
@@ -36,7 +37,8 @@ public class GetToAnAnswerRunClient(HttpClient httpClient, IServiceProvider serv
             throw new Exception($"Failed to get initial state for questionnaire {questionnaireSlug}");
         }
         
-        var html = await responseMessage.Content.ReadAsStringAsync();
+        var bytes = await responseMessage.Content.ReadAsByteArrayAsync();
+        var html = Encoding.UTF8.GetString(bytes);
         
         // Replace the base url with the local url so that the embedded content redirects to the correct page
         return SubstitutePageContent(languageCode, html);
@@ -57,7 +59,8 @@ public class GetToAnAnswerRunClient(HttpClient httpClient, IServiceProvider serv
             throw new Exception($"Failed to get next state for questionnaire {questionnaireSlug}");
         }
         
-        var html = await responseMessage.Content.ReadAsStringAsync();
+        var bytes = await responseMessage.Content.ReadAsByteArrayAsync();
+        var html = Encoding.UTF8.GetString(bytes);
         
         // Replace the base url with the local url so that the embedded content redirects to the correct page
         return SubstitutePageContent(languageCode, html);
@@ -91,7 +94,9 @@ public class GetToAnAnswerRunClient(HttpClient httpClient, IServiceProvider serv
         // Inject nonce into script and style tags
         InjectBaseUrlAndNonce(languageCode, doc);
         
-        return doc.DocumentNode.OuterHtml;
+        using var writer = new StringWriter();
+        doc.Save(writer);
+        return writer.ToString();
     }
     
     private void InjectBaseUrlAndNonce(string languageCode, HtmlDocument doc)
