@@ -44,7 +44,7 @@ public class GetToAnAnswerRunClient(HttpClient httpClient, IServiceProvider serv
         return SubstitutePageContent(languageCode, html);
     }
 
-    public async Task<string> GetNextState(string languageCode, string questionnaireSlug, Dictionary<string, StringValues> formData)
+    public async Task<string> GetNextState(string thisUrl, string languageCode, string questionnaireSlug, Dictionary<string, StringValues> formData)
     {
         // Flatten the dictionary for FormUrlEncodedContent
         var formContent = formData
@@ -63,7 +63,7 @@ public class GetToAnAnswerRunClient(HttpClient httpClient, IServiceProvider serv
         var html = Encoding.UTF8.GetString(bytes);
         
         // Replace the base url with the local url so that the embedded content redirects to the correct page
-        return SubstitutePageContent(languageCode, html);
+        return SubstitutePageContent(languageCode, html, thisUrl);
     }
 
     public async Task<(Stream fileStream, string contentType)> GetDecorativeImage(string questionnaireSlug)
@@ -81,7 +81,7 @@ public class GetToAnAnswerRunClient(HttpClient httpClient, IServiceProvider serv
         return (stream, contentType);
     }
 
-    private string SubstitutePageContent(string languageCode, string html)
+    private string SubstitutePageContent(string languageCode, string html, string? thisUrl = null)
     {
         var doc = new HtmlDocument();
         
@@ -92,14 +92,14 @@ public class GetToAnAnswerRunClient(HttpClient httpClient, IServiceProvider serv
         doc.LoadHtml(html);
         
         // Inject nonce into script and style tags
-        InjectBaseUrlAndNonce(languageCode, doc);
+        InjectBaseUrlAndNonce(languageCode, doc, thisUrl);
         
         using var writer = new StringWriter();
         doc.Save(writer);
         return writer.ToString();
     }
     
-    private void InjectBaseUrlAndNonce(string languageCode, HtmlDocument doc)
+    private void InjectBaseUrlAndNonce(string languageCode, HtmlDocument doc, string? thisUrl = null)
     {
         var baseUrl = _configuration["GetToAnAnswer:BaseUrl"];
         var nonce = _cspNonceService.GetNonce();
@@ -193,6 +193,29 @@ public class GetToAnAnswerRunClient(HttpClient httpClient, IServiceProvider serv
                     img.SetAttributeValue("src", img.Attributes["src"].Value
                         .Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires"));
                 }
+            }
+        }
+        
+        // if the external link is this site, change the language code 
+        var externalLinkInput = doc.DocumentNode.SelectSingleNode("//input[@id='external-link-dest']");
+        if (externalLinkInput != null && thisUrl != null)
+        {
+            // if 'externalLinkInput.value' starts with 'thisUrl' (https://*.support-for-care-leavers.education.gov.uk)
+            // then replace the language code in the url with the current translation language code
+            
+            if (externalLinkInput.Attributes["value"].Value.StartsWith(thisUrl))
+            {
+                var url = new Uri(externalLinkInput.Attributes["value"].Value);
+                var pathParts = url.AbsolutePath.Split('/');
+
+                if (pathParts.Length > 1)
+                {
+                    pathParts[1] = languageCode;
+                }
+                
+                var newUrl = new UriBuilder(url) {Path = string.Join('/', pathParts)}.Uri;
+                
+                externalLinkInput.SetAttributeValue("value", newUrl.ToString());
             }
         }
     }

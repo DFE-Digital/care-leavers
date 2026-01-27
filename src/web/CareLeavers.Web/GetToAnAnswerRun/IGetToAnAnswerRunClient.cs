@@ -8,7 +8,7 @@ public interface IGetToAnAnswerRunClient
     
     Task<string> GetInitialState(string languageCode, string questionnaireSlug);
     
-    Task<string> GetNextState(string languageCode, string questionnaireSlug, Dictionary<string, StringValues> formData);
+    Task<string> GetNextState(string thisUrl, string languageCode, string questionnaireSlug, Dictionary<string, StringValues> formData);
     
     Task<(Stream fileStream, string contentType)> GetDecorativeImage(string questionnaireSlug);
 }

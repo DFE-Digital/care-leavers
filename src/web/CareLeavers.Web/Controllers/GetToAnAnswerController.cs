@@ -76,8 +76,12 @@ public class GetToAnAnswerController (
                 x => x.Key,
                 x => x.Value
             );
+            
+            var protocol = Request.Scheme;
+            var host = Request.Host.Value;
 
-            var html = await getToAnAnswerRunClient.GetNextState(languageCode, slug, formData);
+            var html = await getToAnAnswerRunClient.GetNextState(
+                $"{protocol}://{host}", languageCode, slug, formData);
 
             return Content(html, "text/html");
         }
