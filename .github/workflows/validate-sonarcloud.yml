@@ -10,8 +10,13 @@ on:
 permissions:
   pull-requests: read
 
+env:
+  JAVA_VERSION: '21'
+  DOTNET_VERSION: '8.0.x'
+
 jobs:
-  Analysis:
+  build:
+    name: Build, Test and Analyse
     runs-on: ubuntu-latest
 
     steps:
@@ -19,24 +24,41 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-
-      - name: SonarScanner for .NET 10 with pull request decoration support
-        uses: highbyte/sonarscan-dotnet@v2.5.0
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
-          # The key of the SonarQube project
-          sonarProjectKey: DFE-Digital_care-leavers
-          # The name of the SonarQube project
-          sonarProjectName:  care-leavers
-          # The name of the SonarQube organization in SonarCloud. For hosted SonarQube, skip this setting.
-          sonarOrganization: dfe-digital
-          # Optional command arguments to dotnet build
-          dotnetBuildArguments: ./src
-          # Optional command arguments to dotnet test
-          dotnetTestArguments: ./src --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
-          # Optional extra command arguments the the SonarScanner 'begin' command
-          sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
-          
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'microsoft'
+  
+      - name: Cache SonarCloud packages
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
+        with:
+          path: ~/.sonar
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+  
+      - name: Install SonarCloud scanners
+        run: dotnet tool install --global dotnet-sonarscanner
+  
+      - name: Install dotnet reportgenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build, Test and Analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet-sonarscanner begin /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /o:dfe-digital /k:DFE-Digital_care-leavers
+          dotnet build ./src --no-restore
+          dotnet test ./src --no-build --verbosity normal -m:1 --collect:"XPlat Code Coverage"
+          reportgenerator -reports:"./**/coverage.cobertura.xml" -targetdir:./src/CoverageReport -reporttypes:SonarQube
+          dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
     
