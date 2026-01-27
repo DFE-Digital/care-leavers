@@ -16,58 +16,11 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - name: Set Node.js 20.x
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.x
-
-      - name: Run install
-        uses: borales/actions-yarn@v5
-        with:
-          cmd: install
-          dir: ./src/web/CareLeavers.Web
-
-      - name: Run Gulp Dev
-        working-directory: ./src/web/CareLeavers.Web
-        run: gulp dev
-        
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: "8.0.x"
-          
-      - name: Setup Java 21
-        uses: actions/setup-java@v5
-        with:
-          distribution: "microsoft"
-          java-version: 21
-
-      - name: Install dotnet coverage
-        run: dotnet tool install --global dotnet-coverage
-
-      - name: Install dotnet reportgenerator
-        run: dotnet tool install --global dotnet-reportgenerator-globaltool
-
-      - name: Install SonarCloud Scanner
-        run: dotnet tool install --global dotnet-sonarscanner
-
-      - name: Start SonarCloud Scanner
-        run: |
-          dotnet-sonarscanner begin \
-            /k:DFE-Digital_care-leavers \
-            /o:dfe-digital \
-            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
-            /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.coverageReportPaths=CoverageReport/SonarQube.xml \
-            /d:sonar.coverage.exclusions="**/Program.cs,**/*.json" \
-            /d:sonar.cpd.exclusions="**/Program.cs" \
-            /d:sonar.issue.ignore.multicriteria.e1.ruleKey=csharpsquid:S6602 \
-            /d:sonar.scanner.skipJreProvisioning=true \
-            /d:sonar.scanner.scanAll=false
-          dotnet build ./src/CareLeavers.sln --no-incremental
-          dotnet test ./src/CareLeavers.sln --no-build --verbosity normal
-          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+      - name: SonarQubeScan
+        uses: SonarSource/sonarqube-scan-action@v7
+        env: 
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
