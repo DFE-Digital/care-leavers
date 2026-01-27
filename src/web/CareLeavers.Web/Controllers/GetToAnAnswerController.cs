@@ -76,12 +76,9 @@ public class GetToAnAnswerController (
                 x => x.Key,
                 x => x.Value
             );
-            
-            var protocol = Request.Scheme;
-            var host = Request.Host.Value;
 
             var html = await getToAnAnswerRunClient.GetNextState(
-                $"{protocol}://{host}", languageCode, slug, formData);
+                Request.Host.Value, languageCode, slug, formData);
 
             return Content(html, "text/html");
         }
@@ -93,7 +90,6 @@ public class GetToAnAnswerController (
     }
     
     [HttpGet("/{languageCode}/get-to-an-answer-questionnaires/{slug}/decorative-image")]
-    [Translation(NoCache = true)]
     public async Task<IActionResult> GetDecorativeImage(string languageCode, string slug)
     {
         try
