@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  pull-requests: write
+  pull-requests: read
 
 jobs:
   Analysis:
@@ -22,6 +22,9 @@ jobs:
 
       - name: SonarScanner for .NET 10 with pull request decoration support
         uses: highbyte/sonarscan-dotnet@v2.5.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # The key of the SonarQube project
           sonarProjectKey: DFE-Digital_care-leavers
@@ -36,6 +39,4 @@ jobs:
           # Optional extra command arguments the the SonarScanner 'begin' command
           sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
           
-    env:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
