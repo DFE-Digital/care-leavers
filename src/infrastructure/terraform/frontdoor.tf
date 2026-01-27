@@ -237,6 +237,21 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   }
 
   custom_rule {
+    name     = "allowgtaaembeds"
+    enabled  = true
+    action   = "Allow"
+    type     = "MatchRule"
+    priority = 105
+
+    match_condition {
+      match_variable = "RequestUri"
+      operator       = "Contains"
+      match_values   = ["/get-to-an-answer-questionnaires/"]
+      transforms     = ["Lowercase"]
+    }
+  }
+
+  custom_rule {
     name     = "blockarchiving"
     enabled  = true
     action   = "Block"
