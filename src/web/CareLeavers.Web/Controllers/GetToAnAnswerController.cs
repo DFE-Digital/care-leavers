@@ -78,7 +78,7 @@ public class GetToAnAnswerController (
             );
 
             var html = await getToAnAnswerRunClient.GetNextState(
-                Request.Host.Value, languageCode, slug, formData);
+                Request.Host.Host, languageCode, slug, formData);
 
             return Content(html, "text/html");
         }
