@@ -5,8 +5,11 @@ using Microsoft.Extensions.Primitives;
 
 namespace CareLeavers.Web.GetToAnAnswerRun;
 
-public class GetToAnAnswerRunClient(HttpClient httpClient, IServiceProvider serviceProvider) : IGetToAnAnswerRunClient
-{
+public class GetToAnAnswerRunClient(
+    HttpClient httpClient, 
+    IServiceProvider serviceProvider,
+    ILogger<GetToAnAnswerRunClient> logger
+) : IGetToAnAnswerRunClient {
     private readonly IConfiguration _configuration = serviceProvider.GetRequiredService<IConfiguration>();
     private readonly ICspNonceService _cspNonceService = serviceProvider.GetRequiredService<ICspNonceService>();
 
@@ -204,6 +207,9 @@ public class GetToAnAnswerRunClient(HttpClient httpClient, IServiceProvider serv
             // then replace the language code in the url with the current translation language code
             
             var url = new Uri(externalLinkInput.Attributes["value"].Value);
+            
+            logger.LogInformation($"Replacing language code in external link: {url}");
+            logger.LogInformation($"Checking if this {thisOrigin} matches {url.Host}");
             
             if (url.Host.Equals(thisOrigin))
             {
