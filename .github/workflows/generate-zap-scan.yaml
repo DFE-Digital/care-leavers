@@ -22,7 +22,7 @@ jobs:
       name: ${{ github.event.inputs.environment }}
     steps:
       - name: 'Checkout source'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 'Az CLI login'
         uses: azure/login@v2

@@ -41,7 +41,7 @@ jobs:
     outputs:
       new_tag: ${{ steps.tag_version.outputs.new_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         if: github.event_name == 'push'
         with:
           fetch-depth: 0
@@ -72,7 +72,7 @@ jobs:
       image_tag: ${{ steps.set_tag.outputs.tag }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Lowercase the repo name and username
         run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
@@ -143,7 +143,7 @@ jobs:
             echo "Clear Cache: ${{ github.event.inputs.clear-cache }}"
           fi
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_wrapper: false
