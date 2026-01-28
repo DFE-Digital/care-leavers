@@ -42,23 +42,59 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
   
-      - name: Install SonarCloud scanners
-        run: dotnet tool install --global dotnet-sonarscanner
-  
       - name: Install dotnet reportgenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
       - name: Restore dependencies
         run: dotnet restore ./src
 
-      - name: Build, Test and Analyze
+      - name: Start sonar scanner
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          dotnet-sonarscanner begin /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /o:dfe-digital /k:DFE-Digital_care-leavers
-          dotnet build ./src --no-restore
-          dotnet test ./src --no-build --verbosity normal -m:1 --collect:"XPlat Code Coverage"
-          reportgenerator -reports:"./**/coverage.cobertura.xml" -targetdir:./src/CoverageReport -reporttypes:SonarQube
-          dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
-    
+          dotnet tool install --global dotnet-sonarscanner
+          dotnet sonarscanner begin `
+            /o:"dfe-digital" `
+            /k:"DFE-Digital_care-leavers" `
+            /d:sonar.token="$env:SONAR_TOKEN" `
+            /d:sonar.scanner.skipJreProvisioning=true `
+            /s:${{ github.workspace }}/SonarQube.Analysis.xml
+
+      - name: Build project
+        run: |
+          dotnet build ./src /maxcpucount:1 `
+            --framework net8.0 `
+            /clp:NoSummary `
+            /p:AutomatedRun=true
+            
+      - name: Run unit tests
+        run: |
+          dotnet test ./src `
+            --no-build `
+            --collect "XPlat Code Coverage" `
+            --logger "trx;LogFileName=TestResults.trx" `
+            /p:AutomatedRun=true
+      
+      - name: Report unit test results
+        uses: dorny/test-reporter@dc3a92680fcc15842eef52e8c4606ea7ce6bd3f3
+        if: ${{ !cancelled() }}
+        with:
+          name: .NET unit test results
+          path: "**/*.trx"
+          reporter: dotnet-trx
+
+      - name: Generate code coverage report
+        run: |
+          reportgenerator `
+            -reports:./**/coverage.cobertura.xml `
+            -targetdir:./CoverageReport `
+            -reporttypes:SonarQube `
+            -sourcedirs:./src `
+            -filefilters:"-*/RegexGenerator.g.cs"
+          
+      - name: Stop sonar scanner
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet sonarscanner end `
+            /d:sonar.token="$env:SONAR_TOKEN"
