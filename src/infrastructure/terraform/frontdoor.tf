@@ -202,6 +202,26 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       version = "2.1"
       action  = "Block"
 
+      override {
+        rule_group_name = "SQLI"
+
+        rule {
+          rule_id = "942390"
+          enabled = true
+          action  = "Allow"
+        }
+      }
+
+      override {
+        rule_group_name = "PROTOCOL-ENFORCEMENT"
+
+        rule {
+          rule_id = "920300"
+          enabled = true
+          action  = "Allow"
+        }
+      }
+
       /* Get into Teaching may set this snapchat cookie at the .education.gov.uk level, which contains a suspicious but safe body */
       exclusion {
         match_variable = "RequestCookieNames"
@@ -233,21 +253,6 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       selector       = "X-Contentful-CRN"
       operator       = "Contains"
       match_values   = ["crn:contentful"]
-    }
-  }
-
-  custom_rule {
-    name     = "allowgtaaembeds"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 105
-
-    match_condition {
-      match_variable = "RequestUri"
-      operator       = "Contains"
-      match_values   = ["/get-to-an-answer-questionnaires/"]
-      transforms     = ["Lowercase"]
     }
   }
 
