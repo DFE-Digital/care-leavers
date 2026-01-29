@@ -14,7 +14,9 @@ public class TranslationAttribute : ActionFilterAttribute
     private Stream? _originalBodyStream;
 
     public string? HardcodedSlug { get; init; }
-    
+
+    public bool NoCache { get; init; } = false;
+
     public override async Task OnActionExecutionAsync(
         ActionExecutingContext context,
         ActionExecutionDelegate next)
@@ -24,7 +26,8 @@ public class TranslationAttribute : ActionFilterAttribute
 
         var fusionCache = context.HttpContext.RequestServices.GetRequiredService<IFusionCache>();
         var translationService = context.HttpContext.RequestServices.GetRequiredService<ITranslationService>();
-        var contentfulConfiguration = context.HttpContext.RequestServices.GetRequiredService<IContentfulConfiguration>();
+        var contentfulConfiguration =
+            context.HttpContext.RequestServices.GetRequiredService<IContentfulConfiguration>();
         var config = await contentfulConfiguration.GetConfiguration();
 
         var slug = HardcodedSlug ?? context.RouteData.Values["slug"]?.ToString();
@@ -35,17 +38,18 @@ public class TranslationAttribute : ActionFilterAttribute
         {
             languages.AddRange((await translationService.GetLanguages()).Select(l => l.Code));
         }
+
         if (languages.Count == 0)
         {
             languages.Add("en");
         }
-        
-        if ((slug == null && identifier == null) || 
+
+        if ((slug == null && identifier == null) ||
             !config.TranslationEnabled ||
-            string.IsNullOrEmpty(languageCode) || 
+            string.IsNullOrEmpty(languageCode) ||
             languageCode == "en" ||
             !languages.Contains(languageCode)
-            )
+           )
         {
             await base.OnActionExecutionAsync(context, next);
             return;
@@ -53,13 +57,17 @@ public class TranslationAttribute : ActionFilterAttribute
 
         MaybeValue<byte[]?> cachedResponse = MaybeValue<byte[]?>.None;
 
-        if (slug != null)
+        if (!NoCache)
         {
-            cachedResponse = await fusionCache.TryGetAsync<byte[]?>($"content:{slug}:language:{languageCode}");
-        } 
-        else if (identifier != null)
-        {
-            cachedResponse = await fusionCache.TryGetAsync<byte[]?>($"collection:{identifier}:language:{languageCode}");
+            if (slug != null)
+            {
+                cachedResponse = await fusionCache.TryGetAsync<byte[]?>($"content:{slug}:language:{languageCode}");
+            }
+            else if (identifier != null)
+            {
+                cachedResponse =
+                    await fusionCache.TryGetAsync<byte[]?>($"collection:{identifier}:language:{languageCode}");
+            }
         }
 
         if (cachedResponse is { HasValue: true, Value: not null })
@@ -85,9 +93,10 @@ public class TranslationAttribute : ActionFilterAttribute
         ResultExecutionDelegate next)
     {
         await base.OnResultExecutionAsync(context, next);
-        
+
         var translationService = context.HttpContext.RequestServices.GetRequiredService<ITranslationService>();
-        var contentfulConfiguration = context.HttpContext.RequestServices.GetRequiredService<IContentfulConfiguration>();
+        var contentfulConfiguration =
+            context.HttpContext.RequestServices.GetRequiredService<IContentfulConfiguration>();
         var config = await contentfulConfiguration.GetConfiguration();
         var fusionCache = context.HttpContext.RequestServices.GetRequiredService<IFusionCache>();
 
@@ -104,10 +113,10 @@ public class TranslationAttribute : ActionFilterAttribute
             languages.Add("en");
         }
 
-        if ((slug == null && identifier == null) || 
-            string.IsNullOrEmpty(languageCode) || 
-            _memoryStream == null || 
-            _originalBodyStream == null || 
+        if ((slug == null && identifier == null) ||
+            string.IsNullOrEmpty(languageCode) ||
+            _memoryStream == null ||
+            _originalBodyStream == null ||
             !languages.Contains(languageCode))
         {
             return;
@@ -117,7 +126,7 @@ public class TranslationAttribute : ActionFilterAttribute
         _memoryStream.Seek(0, SeekOrigin.Begin);
 
         var responseBody = await new StreamReader(_memoryStream).ReadToEndAsync();
-        
+
         var translatedHtml = await translationService.TranslateHtml(responseBody, languageCode);
         if (string.IsNullOrEmpty(translatedHtml))
         {
@@ -128,29 +137,36 @@ public class TranslationAttribute : ActionFilterAttribute
             await _memoryStream.DisposeAsync();
             _memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(translatedHtml));
         }
+        
+        // Clear the Content-Length header since the content size may have changed
+        context.HttpContext.Response.ContentLength = null;
 
         context.HttpContext.Response.Body = _originalBodyStream!;
         await context.HttpContext.Response.Body!.WriteAsync(_memoryStream.ToArray());
-        
+
         _memoryStream.Seek(0, SeekOrigin.Begin);
 
-        if (slug != null)
+        if (!NoCache)
         {
-            await fusionCache.SetAsync($"content:{slug}:language:{languageCode}", _memoryStream.ToArray(),
-                tags: [slug]);
-        } 
-        else if (identifier != null)
-        {
-            var collection = await fusionCache.TryGetAsync<PrintableCollection>($"collection:{identifier}");
-            List<string>? tags = [];
-            if (collection is { HasValue: true, Value: not null })
+            if (slug != null)
             {
-                tags = collection.Value.Content.Select(p => p.Slug!).ToList();
+                await fusionCache.SetAsync($"content:{slug}:language:{languageCode}", _memoryStream.ToArray(),
+                    tags: [slug]);
             }
-            tags.Add(identifier);
-            
-            await fusionCache.SetAsync($"collection:{identifier}:language:{languageCode}", _memoryStream.ToArray(),
-                tags: tags);
+            else if (identifier != null)
+            {
+                var collection = await fusionCache.TryGetAsync<PrintableCollection>($"collection:{identifier}");
+                List<string>? tags = [];
+                if (collection is { HasValue: true, Value: not null })
+                {
+                    tags = collection.Value.Content.Select(p => p.Slug!).ToList();
+                }
+
+                tags.Add(identifier);
+
+                await fusionCache.SetAsync($"collection:{identifier}:language:{languageCode}", _memoryStream.ToArray(),
+                    tags: tags);
+            }
         }
     }
 }
