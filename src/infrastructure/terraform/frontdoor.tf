@@ -208,7 +208,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
         rule {
           rule_id = "942390"
           enabled = true
-          action  = "Allow"
+          action  = "Log"
         }
       }
 
@@ -218,7 +218,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
         rule {
           rule_id = "920300"
           enabled = true
-          action  = "Allow"
+          action  = "Log"
         }
       }
 
