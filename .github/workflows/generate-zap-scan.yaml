@@ -40,7 +40,7 @@ jobs:
 
       - name: Get Azure Frontdoor URL
         run: |
-          FRONTDOOR_URL=$(az afd endpoint list -g s272${{ vars.ENVIRONMENT_PREFIX }}rg-uks-cl-web --profile-name s272${{ vars.ENVIRONMENT_PREFIX }}rg-uks-cl-web-fd-profile | jq -r '.[0].hostName')
+          FRONTDOOR_URL=$(az afd endpoint list -g s272${{ vars.ENVIRONMENT_PREFIX }}rg-uks-cl-web --profile-name s272${{ vars.ENVIRONMENT_PREFIX }}-uks-cl-web-fd-profile | jq -r '.[0].hostName')
           echo "FRONTDOOR_URL=$FRONTDOOR_URL" >>${GITHUB_ENV}
 
       - name: "Running ZAP scan against https://${{ env.FRONTDOOR_URL }}"
