@@ -238,7 +238,7 @@ jobs:
 
       - name: "Terraform Apply"
         #'if' only needed for migration testing
-        if: github.event.inputs.release-type == 'full'
+        # if: github.event.inputs.release-type == 'full'
         id: terraform_apply
         working-directory: ./src/infrastructure/terraform
         run: terraform apply plan.plan
