@@ -56,7 +56,7 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   supported_protocols    = ["Http", "Https"]
 
   # cdn_frontdoor_custom_domain_ids = var.custom_domain != "" ? [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id] : null
-  link_to_default_domain          = true
+  link_to_default_domain = true
 }
 
 resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy" {
@@ -201,6 +201,26 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       type    = "Microsoft_DefaultRuleSet"
       version = "2.1"
       action  = "Block"
+
+      override {
+        rule_group_name = "SQLI"
+
+        rule {
+          rule_id = "942390"
+          enabled = true
+          action  = "Log"
+        }
+      }
+
+      override {
+        rule_group_name = "PROTOCOL-ENFORCEMENT"
+
+        rule {
+          rule_id = "920300"
+          enabled = true
+          action  = "Log"
+        }
+      }
 
       /* Get into Teaching may set this snapchat cookie at the .education.gov.uk level, which contains a suspicious but safe body */
       exclusion {
