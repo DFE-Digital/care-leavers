@@ -8,7 +8,7 @@ resource "azurerm_log_analytics_workspace" "log-analytics-workspace" {
   name                = "${local.service_prefix}-log-analytics-workspace"
   location            = azurerm_resource_group.core-rg.location
   resource_group_name = azurerm_resource_group.core-rg.name
-  retention_in_days   = var.elz_environment == "Production" ? 30 : 5
+  retention_in_days   = 30
   tags                = local.common_tags
 }
 
