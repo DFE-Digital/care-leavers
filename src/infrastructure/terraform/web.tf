@@ -95,3 +95,31 @@ resource "azurerm_linux_web_app" "web-app-service" {
 
   tags = local.common_tags
 }
+
+resource "azurerm_monitor_diagnostic_setting" "webapp_logs" {
+  name                       = "${var.environment_prefix}-web-app-diagnostics"
+  target_resource_id         = azurerm_linux_web_app.web-app-service.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.log-analytics-workspace.id
+
+  # Capture common runtime and diagnostic logs
+  enabled_log {
+    category = "AppServiceConsoleLogs"
+  }
+
+  enabled_log {
+    category = "AppServiceHTTPLogs"
+  }
+
+  enabled_log {
+    category = "AppServicePlatformLogs"
+  }
+
+  enabled_log {
+    category = "AppServiceAppLogs"
+  }
+
+  # All Metrics
+  enabled_metric {
+    category = "AllMetrics"
+  }
+}
