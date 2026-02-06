@@ -15,26 +15,72 @@ resource "azurerm_key_vault" "key-vault" {
   tags = local.common_tags
 }
 
-resource "azurerm_key_vault_access_policy" "github-kv-access" {
-  key_vault_id       = azurerm_key_vault.key-vault.id
-  tenant_id          = data.azurerm_client_config.client.tenant_id
-  object_id          = data.azurerm_client_config.client.object_id
-  secret_permissions = ["Get", "List", "Set", "Delete", "Purge", "Restore"]
+# resource "azurerm_key_vault_access_policy" "github-kv-access" {
+#   key_vault_id       = azurerm_key_vault.key-vault.id
+#   tenant_id          = data.azurerm_client_config.client.tenant_id
+#   object_id          = data.azurerm_client_config.client.object_id
+#   secret_permissions = ["Get", "List", "Set", "Delete", "Purge", "Restore"]
+# }
+
+# resource "azurerm_key_vault_access_policy" "web-app-kv-access" {
+#   key_vault_id       = azurerm_key_vault.key-vault.id
+#   tenant_id          = azurerm_linux_web_app.web-app-service.identity[0].tenant_id
+#   object_id          = azurerm_linux_web_app.web-app-service.identity[0].principal_id
+#   secret_permissions = ["Get"]
+# }
+
+# resource "azurerm_key_vault_access_policy" "web-app-staging-kv-access" {
+#   key_vault_id       = azurerm_key_vault.key-vault.id
+#   tenant_id          = azurerm_linux_web_app_slot.web-app-service-staging.identity[0].tenant_id
+#   object_id          = azurerm_linux_web_app_slot.web-app-service-staging.identity[0].principal_id
+#   secret_permissions = ["Get"]
+# }
+
+
+
+data "azurerm_role_definition" "kv_secrets_user" {
+  name  = "Key Vault Secrets User"
+  scope = azurerm_key_vault.kv.id
 }
 
-resource "azurerm_key_vault_access_policy" "web-app-kv-access" {
-  key_vault_id       = azurerm_key_vault.key-vault.id
-  tenant_id          = azurerm_linux_web_app.web-app-service.identity[0].tenant_id
-  object_id          = azurerm_linux_web_app.web-app-service.identity[0].principal_id
-  secret_permissions = ["Get"]
+data "azurerm_role_definition" "kv_secrets_officer" {
+  name  = "Key Vault Secrets Officer"
+  scope = azurerm_key_vault.kv.id
 }
 
-resource "azurerm_key_vault_access_policy" "web-app-staging-kv-access" {
-  key_vault_id       = azurerm_key_vault.key-vault.id
-  tenant_id          = azurerm_linux_web_app_slot.web-app-service-staging.identity[0].tenant_id
-  object_id          = azurerm_linux_web_app_slot.web-app-service-staging.identity[0].principal_id
-  secret_permissions = ["Get"]
+data "azurerm_role_definition" "kv_admin" {
+  name  = "Key Vault Administrator"
+  scope = azurerm_key_vault.kv.id
 }
+
+resource "azurerm_role_assignment" "kv_officer" {
+  scope              = azurerm_key_vault.kv.id
+  role_definition_id = data.azurerm_role_definition.kv_secrets_officer.role_definition_id
+  principal_id       = azurerm_user_assigned_identity.cl-identity.principal_id
+  principal_type     = "ServicePrincipal"
+}
+
+resource "azurerm_role_assignment" "kv_user" {
+  scope              = azurerm_key_vault.kv.id
+  role_definition_id = data.azurerm_role_definition.kv_secrets_user.role_definition_id
+  principal_id       = azurerm_user_assigned_identity.cl-identity.principal_id
+  principal_type     = "ServicePrincipal"
+}
+
+resource "azurerm_role_assignment" "kv_administrator" {
+  scope              = azurerm_key_vault.kv.id
+  role_definition_id = data.azurerm_role_definition.kv_admin.role_definition_id
+  principal_id       = azurerm_user_assigned_identity.cl-identity.principal_id
+  principal_type     = "ServicePrincipal"
+}
+
+resource "azurerm_role_assignment" "kv_admin_sp" {
+  scope              = azurerm_key_vault.kv.id
+  role_definition_id = data.azurerm_role_definition.kv_admin.role_definition_id
+  principal_id       = data.azurerm_client_config.client.object_id
+  principal_type     = "ServicePrincipal"
+}
+
 
 resource "azurerm_key_vault_secret" "contentful-delivery-api-key" {
   key_vault_id = azurerm_key_vault.key-vault.id
