@@ -135,7 +135,7 @@ jobs:
   deploy_environment:
     name: Deploying site to ${{ (github.event_name == 'release' && 'Production') || (github.event_name == 'push' && 'Test') || github.event.inputs.environment }}
     runs-on: ubuntu-latest
-    # needs: [package]
+    needs: [package]
     #if: github.event_name == 'push' || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     permissions:
       contents: read
