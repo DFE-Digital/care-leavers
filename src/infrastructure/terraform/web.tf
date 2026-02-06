@@ -69,7 +69,7 @@ resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
     type         = local.managed_identity.type
     identity_ids = local.managed_identity.identity_ids
   }
-  
+
 
   app_settings = local.web_app_settings
 
