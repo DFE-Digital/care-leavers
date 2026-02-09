@@ -38,7 +38,7 @@ resource "azurerm_cdn_frontdoor_origin" "frontdoor-web-origin" {
 
 resource "azurerm_cdn_frontdoor_endpoint" "frontdoor-web-endpoint" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
-  name                     = "${local.service_prefix}-web-fd-endpoint"
+  name                     = "afdverify.${local.service_prefix}-web-fd-endpoint"
   tags                     = local.common_tags
 }
 
@@ -55,7 +55,7 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   patterns_to_match      = ["/*"]
   supported_protocols    = ["Http", "Https"]
 
-  # cdn_frontdoor_custom_domain_ids = var.custom_domain != "" ? [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id] : null
+  cdn_frontdoor_custom_domain_ids = var.custom_domain != "" ? [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id] : null
   link_to_default_domain = true
 }
 
