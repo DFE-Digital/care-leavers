@@ -38,7 +38,7 @@ resource "azurerm_cdn_frontdoor_origin" "frontdoor-web-origin" {
 
 resource "azurerm_cdn_frontdoor_endpoint" "frontdoor-web-endpoint" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
-  name                     = "afdverify.${local.service_prefix}-web-fd-endpoint"
+  name                     = "${local.service_prefix}-web-fd-endpoint"
   tags                     = local.common_tags
 }
 
