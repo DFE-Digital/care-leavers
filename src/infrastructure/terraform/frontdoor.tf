@@ -56,7 +56,7 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
   supported_protocols    = ["Http", "Https"]
 
   cdn_frontdoor_custom_domain_ids = var.custom_domain != "" ? [azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id] : null
-  link_to_default_domain = true
+  link_to_default_domain          = true
 }
 
 resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-web-security-policy" {
@@ -177,211 +177,211 @@ resource "azurerm_cdn_frontdoor_custom_domain" "fd-custom-domain" {
   host_name                = var.custom_domain
 
   tls {
-    certificate_type = "ManagedCertificate"
+    certificate_type = "CustomerCertificate"
   }
 }
 
-resource "azurerm_cdn_frontdoor_custom_domain_association" "web-app-custom-domain" {
-  count                          = var.custom_domain != "" ? 1 : 0
-  cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id
-  cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.frontdoor-web-route.id]
-}
+# resource "azurerm_cdn_frontdoor_custom_domain_association" "web-app-custom-domain" {
+#   count                          = var.custom_domain != "" ? 1 : 0
+#   cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.fd-custom-domain[0].id
+#   cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.frontdoor-web-route.id]
+# }
 
-resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
-  name                = "webFirewallPolicy"
-  resource_group_name = azurerm_resource_group.web-rg.name
-  tags                = local.common_tags
-  mode                = "Prevention"
-  sku_name            = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name
-  redirect_url        = "https://${var.custom_domain}/en/service-unavailable"
+# resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
+#   name                = "webFirewallPolicy"
+#   resource_group_name = azurerm_resource_group.web-rg.name
+#   tags                = local.common_tags
+#   mode                = "Prevention"
+#   sku_name            = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name
+#   redirect_url        = "https://${var.custom_domain}/en/service-unavailable"
 
-  dynamic "managed_rule" {
-    for_each = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name == "Premium_AzureFrontDoor" ? [0] : []
-    content {
-      type    = "Microsoft_DefaultRuleSet"
-      version = "2.1"
-      action  = "Block"
+#   dynamic "managed_rule" {
+#     for_each = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name == "Premium_AzureFrontDoor" ? [0] : []
+#     content {
+#       type    = "Microsoft_DefaultRuleSet"
+#       version = "2.1"
+#       action  = "Block"
 
-      override {
-        rule_group_name = "SQLI"
+#       override {
+#         rule_group_name = "SQLI"
 
-        rule {
-          rule_id = "942390"
-          enabled = true
-          action  = "Log"
-        }
-      }
+#         rule {
+#           rule_id = "942390"
+#           enabled = true
+#           action  = "Log"
+#         }
+#       }
 
-      override {
-        rule_group_name = "PROTOCOL-ENFORCEMENT"
+#       override {
+#         rule_group_name = "PROTOCOL-ENFORCEMENT"
 
-        rule {
-          rule_id = "920300"
-          enabled = true
-          action  = "Log"
-        }
-      }
+#         rule {
+#           rule_id = "920300"
+#           enabled = true
+#           action  = "Log"
+#         }
+#       }
 
-      /* Get into Teaching may set this snapchat cookie at the .education.gov.uk level, which contains a suspicious but safe body */
-      exclusion {
-        match_variable = "RequestCookieNames"
-        operator       = "Equals"
-        selector       = "_ScCbts"
-      }
+#       /* Get into Teaching may set this snapchat cookie at the .education.gov.uk level, which contains a suspicious but safe body */
+#       exclusion {
+#         match_variable = "RequestCookieNames"
+#         operator       = "Equals"
+#         selector       = "_ScCbts"
+#       }
 
-    }
-  }
+#     }
+#   }
 
-  dynamic "managed_rule" {
-    for_each = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name == "Premium_AzureFrontDoor" ? [0] : []
-    content {
-      type    = "Microsoft_BotManagerRuleSet"
-      version = "1.1"
-      action  = "Block"
-    }
-  }
+#   dynamic "managed_rule" {
+#     for_each = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.sku_name == "Premium_AzureFrontDoor" ? [0] : []
+#     content {
+#       type    = "Microsoft_BotManagerRuleSet"
+#       version = "1.1"
+#       action  = "Block"
+#     }
+#   }
 
-  custom_rule {
-    name     = "allowcontentful"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 100
+#   custom_rule {
+#     name     = "allowcontentful"
+#     enabled  = true
+#     action   = "Allow"
+#     type     = "MatchRule"
+#     priority = 100
 
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "X-Contentful-CRN"
-      operator       = "Contains"
-      match_values   = ["crn:contentful"]
-    }
-  }
+#     match_condition {
+#       match_variable = "RequestHeader"
+#       selector       = "X-Contentful-CRN"
+#       operator       = "Contains"
+#       match_values   = ["crn:contentful"]
+#     }
+#   }
 
-  custom_rule {
-    name     = "blockarchiving"
-    enabled  = true
-    action   = "Block"
-    type     = "MatchRule"
-    priority = 150
+#   custom_rule {
+#     name     = "blockarchiving"
+#     enabled  = true
+#     action   = "Block"
+#     type     = "MatchRule"
+#     priority = 150
 
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "User-Agent"
-      operator       = "Contains"
-      transforms     = ["Lowercase"]
-      match_values   = ["mirrorweb"]
-    }
+#     match_condition {
+#       match_variable = "RequestHeader"
+#       selector       = "User-Agent"
+#       operator       = "Contains"
+#       transforms     = ["Lowercase"]
+#       match_values   = ["mirrorweb"]
+#     }
 
-    match_condition {
-      match_variable = "RequestUri"
-      operator       = "Contains"
-      transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["/pdf/", "/translate-this-website/"]
-    }
-  }
+#     match_condition {
+#       match_variable = "RequestUri"
+#       operator       = "Contains"
+#       transforms     = ["Lowercase", "UrlDecode"]
+#       match_values   = ["/pdf/", "/translate-this-website/"]
+#     }
+#   }
 
-  custom_rule {
-    name     = "allowsearchengines"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 200
+#   custom_rule {
+#     name     = "allowsearchengines"
+#     enabled  = true
+#     action   = "Allow"
+#     type     = "MatchRule"
+#     priority = 200
 
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "User-Agent"
-      operator       = "RegEx"
-      transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["aolbuild|baidu|bingbot|bingpreview|msnbot|duckduckgo|-google|googlebot|google-|googleother|read-aloud|teoma|slurp|yandex|yahoo"]
-    }
+#     match_condition {
+#       match_variable = "RequestHeader"
+#       selector       = "User-Agent"
+#       operator       = "RegEx"
+#       transforms     = ["Lowercase", "UrlDecode"]
+#       match_values   = ["aolbuild|baidu|bingbot|bingpreview|msnbot|duckduckgo|-google|googlebot|google-|googleother|read-aloud|teoma|slurp|yandex|yahoo"]
+#     }
 
-    match_condition {
-      match_variable     = "RequestUri"
-      operator           = "Contains"
-      negation_condition = true
-      transforms         = ["Lowercase", "UrlDecode"]
-      match_values       = ["/pdf/", "/translate-this-website/"]
-    }
-  }
+#     match_condition {
+#       match_variable     = "RequestUri"
+#       operator           = "Contains"
+#       negation_condition = true
+#       transforms         = ["Lowercase", "UrlDecode"]
+#       match_values       = ["/pdf/", "/translate-this-website/"]
+#     }
+#   }
 
-  custom_rule {
-    name     = "allowtools"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 210
+#   custom_rule {
+#     name     = "allowtools"
+#     enabled  = true
+#     action   = "Allow"
+#     type     = "MatchRule"
+#     priority = 210
 
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "User-Agent"
-      operator       = "Contains"
-      transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["slack", "embedly", "figma", "skype"]
-    }
-  }
+#     match_condition {
+#       match_variable = "RequestHeader"
+#       selector       = "User-Agent"
+#       operator       = "Contains"
+#       transforms     = ["Lowercase", "UrlDecode"]
+#       match_values   = ["slack", "embedly", "figma", "skype"]
+#     }
+#   }
 
-  custom_rule {
-    name     = "allowsocialmedia"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 220
+#   custom_rule {
+#     name     = "allowsocialmedia"
+#     enabled  = true
+#     action   = "Allow"
+#     type     = "MatchRule"
+#     priority = 220
 
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "User-Agent"
-      operator       = "RegEx"
-      transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["facebookbot|facebookexternalhit|facebookscraper|twitterbot|meta-externalagent|meta-externalfetcher|microsoftpreview|linkedinbot|pinterest|redditbot|telegrambot|mastadon|duckduckbot"]
-    }
-  }
+#     match_condition {
+#       match_variable = "RequestHeader"
+#       selector       = "User-Agent"
+#       operator       = "RegEx"
+#       transforms     = ["Lowercase", "UrlDecode"]
+#       match_values   = ["facebookbot|facebookexternalhit|facebookscraper|twitterbot|meta-externalagent|meta-externalfetcher|microsoftpreview|linkedinbot|pinterest|redditbot|telegrambot|mastadon|duckduckbot"]
+#     }
+#   }
 
-  custom_rule {
-    name     = "allowai"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 230
+#   custom_rule {
+#     name     = "allowai"
+#     enabled  = true
+#     action   = "Allow"
+#     type     = "MatchRule"
+#     priority = 230
 
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "User-Agent"
-      operator       = "RegEx"
-      transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["oai-search|chatgpt|gptbot|cohere-ai|google-extended|amazonbot|applebot|duckassistbot"]
-    }
+#     match_condition {
+#       match_variable = "RequestHeader"
+#       selector       = "User-Agent"
+#       operator       = "RegEx"
+#       transforms     = ["Lowercase", "UrlDecode"]
+#       match_values   = ["oai-search|chatgpt|gptbot|cohere-ai|google-extended|amazonbot|applebot|duckassistbot"]
+#     }
 
-    match_condition {
-      match_variable     = "RequestUri"
-      operator           = "Contains"
-      negation_condition = true
-      transforms         = ["Lowercase", "UrlDecode"]
-      match_values       = ["/pdf/", "/translate-this-website/"]
-    }
-  }
+#     match_condition {
+#       match_variable     = "RequestUri"
+#       operator           = "Contains"
+#       negation_condition = true
+#       transforms         = ["Lowercase", "UrlDecode"]
+#       match_values       = ["/pdf/", "/translate-this-website/"]
+#     }
+#   }
 
-  custom_rule {
-    name     = "blocknonuk"
-    enabled  = true
-    action   = "Redirect"
-    type     = "MatchRule"
-    priority = 400
+#   custom_rule {
+#     name     = "blocknonuk"
+#     enabled  = true
+#     action   = "Redirect"
+#     type     = "MatchRule"
+#     priority = 400
 
-    match_condition {
-      match_variable     = "SocketAddr"
-      operator           = "GeoMatch"
-      negation_condition = true
-      match_values       = ["GB", "ZZ"]
-    }
+#     match_condition {
+#       match_variable     = "SocketAddr"
+#       operator           = "GeoMatch"
+#       negation_condition = true
+#       match_values       = ["GB", "ZZ"]
+#     }
 
-    match_condition {
-      match_variable     = "RequestUri"
-      operator           = "RegEx"
-      negation_condition = true
-      transforms         = ["Lowercase", "UrlDecode"]
-      match_values       = ["\\/(robots\\.txt|error|service-unavailable|accessibility-statement|page-not-found|cookie-policy|privacy-policies|assets\\/|css\\/|js\\/|sitemap)"]
-    }
-  }
-}
+#     match_condition {
+#       match_variable     = "RequestUri"
+#       operator           = "RegEx"
+#       negation_condition = true
+#       transforms         = ["Lowercase", "UrlDecode"]
+#       match_values       = ["\\/(robots\\.txt|error|service-unavailable|accessibility-statement|page-not-found|cookie-policy|privacy-policies|assets\\/|css\\/|js\\/|sitemap)"]
+#     }
+#   }
+# }
 
 resource "azurerm_monitor_diagnostic_setting" "frontdoor_logging" {
   name                       = "${var.environment_prefix}-frontdoor-to-log-analytics"
