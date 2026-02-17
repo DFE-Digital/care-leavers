@@ -48,4 +48,5 @@ public class ContentfulConfigurationEntity : ContentfulContent
     
     public string? BingSiteVerification { get; set; }
 
+    public string DfELogoAltText { get; set; } = string.Empty;
 }
