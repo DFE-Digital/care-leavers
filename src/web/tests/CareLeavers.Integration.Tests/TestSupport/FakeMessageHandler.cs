@@ -1,6 +1,9 @@
 using System.Net;
+using CareLeavers.Integration.Tests.Tests;
+using CareLeavers.Web;
 using CareLeavers.Web.Models.Content;
 using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json;
 using ContentfulContent = CareLeavers.Integration.Tests.Tests.ContentfulContent;
 
 namespace CareLeavers.Integration.Tests.TestSupport;
@@ -32,11 +35,13 @@ public class FakeMessageHandler : HttpClientHandler
         // If we're requesting config, just grab the first config
         else if (request.RequestUri != null && request.RequestUri.PathAndQuery.Contains("content_type=configuration"))
         {
-            var matchingContent = Content.FirstOrDefault(c => c.ContentType == ContentfulConfigurationEntity.ContentType);
-            if (matchingContent != null)
-            {
-                response = matchingContent.Content;
-            }
+            var configuration = new MockContentfulConfiguration().GetConfiguration().Result;
+
+            var json = JsonConvert.SerializeObject(configuration, Constants.SerializerSettings);
+            
+            var wrapper = await File.ReadAllTextAsync(Path.Combine(WebFixture.WrapperBasePath, "RequestWrapper.json"), cancellationToken);
+     
+            response = wrapper.Replace("**REPLACE**", json);
         }
         // Same for redirection rules
         else if (request.RequestUri != null && request.RequestUri.PathAndQuery.Contains("content_type=redirectionRule"))

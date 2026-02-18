@@ -72,8 +72,7 @@ public class SnapshotTests
             {
                 ContentType = contentType,
                 Id = id,
-                Slug = contentType == Page.ContentType ? folder :
-                    contentType == ContentfulConfigurationEntity.ContentType ? "config" : null,
+                Slug = contentType == Page.ContentType ? folder : null,
                 Content = await FullJson((await File.ReadAllTextAsync(Path.Combine(file))))
             });
         }
