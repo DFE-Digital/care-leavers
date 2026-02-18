@@ -94,3 +94,8 @@ The rule we implemented is as follows:
 As our translatable pages and PDF generation is not linked to from other pages, this works for blocking the archive service on those parts of the site.
 
 > _Our robots.txt file actually goes fully down to a full list of language codes to exclude from search engines._
+
+## Front Door (WAF) Managed Rules Overrides
+The GTAA Service, which is embedded into the Care Leavers site, was sending data with certain character that was triggering Frontdoor WAF Managed Rule, specifically the rules: `Microsoft_DefaultRuleSet-2.1-SQLI-942390` and `Microsoft_DefaultRuleSet-2.1-PROTOCOL_VIOLATION-942130`.
+
+To resolve this, we added overrides to these managed rules. The override configuration can be found in the [frontdoor.tf](../../../src/infrastructure/terraform/frontdoor.tf) file.
