@@ -102,13 +102,13 @@ variable "rebrand" {
 
 variable "gtaa_base_url" {
   description = "The base url for the 'Get-To-An-Answer' questionnaire service"
-  type = string
+  type        = string
 }
 
 variable "support_alert_email" {
   description = "Where to send alert emails to"
   type        = string
-  sensitive   = true 
+  sensitive   = true
 }
 
 variable "alerting" {
