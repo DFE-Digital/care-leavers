@@ -39,7 +39,7 @@ resource "azurerm_service_plan" "web-app-service-plan" {
 resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
   app_service_id = azurerm_linux_web_app.web-app-service.id
   name           = "staging"
-  https_only          = true
+  https_only     = true
 
   site_config {
     always_on = true
@@ -53,15 +53,15 @@ resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
 
     health_check_path                 = "/health"
     health_check_eviction_time_in_min = 5
-    
-    minimum_tls_version = "1.3"
+
+    minimum_tls_version     = "1.3"
     scm_minimum_tls_version = "1.3"
   }
 
   identity {
     type = "SystemAssigned"
   }
-  
+
   app_settings = local.web_app_settings
 
   tags = local.common_tags
