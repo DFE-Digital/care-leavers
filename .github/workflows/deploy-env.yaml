@@ -5,26 +5,26 @@ on:
     branches:
       - main
   release:
-    types: [ published ]
+    types: [published]
   workflow_dispatch:
     inputs:
       environment:
         type: choice
-        description: 'Environment to deploy to'
+        description: "Environment to deploy to"
         required: true
-        default: 'Test'
+        default: "elz-test"
         options:
-          - 'Test'
-          - 'Staging'
-          - 'Production'
+          - "elz-test"
+          - "elz-staging"
+          - "elz-production"
       clear-cache:
         type: choice
-        description: 'Clear the cache?'
+        description: "Clear the cache?"
         required: true
-        default: 'False'
+        default: "False"
         options:
-          - 'True'
-          - 'False'
+          - "True"
+          - "False"
 
 run-name: ${{ github.event_name == 'push' && 'Build & Deploy to Test' || format('Deploy to {0}', github.event_name == 'release' && 'Production' || github.event.inputs.environment) }}
 
@@ -37,7 +37,7 @@ jobs:
   tag_release:
     name: Create New Tag
     runs-on: ubuntu-latest
-    needs: [ validate_web ]
+    needs: [validate_web]
     outputs:
       new_tag: ${{ steps.tag_version.outputs.new_tag }}
     steps:
@@ -54,9 +54,9 @@ jobs:
           release_branches: main
 
   package:
-    name: 'Package Web in Docker'
+    name: "Package Web in Docker"
     runs-on: ubuntu-latest
-    needs: [ validate_web, tag_release ]
+    needs: [validate_web, tag_release]
     if: always() &&
       (github.event_name == 'push' && needs.tag_release.result == 'success') ||
       (github.event_name == 'release' && needs.validate_web.result == 'success') ||
@@ -108,25 +108,25 @@ jobs:
   deploy_environment:
     name: Deploying site to ${{ (github.event_name == 'release' && 'Production') || (github.event_name == 'push' && 'Test') || github.event.inputs.environment }}
     runs-on: ubuntu-latest
-    needs: [ package ]
+    needs: [package]
     if: github.event_name == 'push' || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     permissions:
       contents: read
       id-token: write
     environment:
-      name: ${{ (github.event_name == 'release' && 'Production') || (github.event_name == 'push' && 'Test') || github.event.inputs.environment }}
+      name: ${{ (github.event_name == 'release' && 'elz-production') || (github.event_name == 'push' && 'elz-test') || github.event.inputs.environment }}
     env:
       ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
       ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
       ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
       ARM_CLIENT_SECRET: "${{ secrets.AZURE_CLIENT_SECRET }}"
-    
+
     steps:
       #Set dynamic variables based on deployment type - push to main, release or manual run
       - name: Set dynamic variables
         id: vars
         run: |
-          ENV_NAME="${{ (github.event_name == 'release' && 'Production') || (github.event_name == 'push' && 'Test') || github.event.inputs.environment }}"
+          ENV_NAME="${{ (github.event_name == 'release' && 'elz-production') || (github.event_name == 'push' && 'elz-test') || github.event.inputs.environment }}"
           echo "ENV_NAME=$ENV_NAME" >> $GITHUB_ENV
           echo "Deployment Environment: $ENV_NAME"
 
@@ -149,7 +149,7 @@ jobs:
           terraform_wrapper: false
           terraform_version: 1.10.4
 
-      - name: 'Az CLI login'
+      - name: "Az CLI login"
         uses: azure/login@v2
         with:
           creds: |
@@ -163,30 +163,34 @@ jobs:
       - name: Create TF State dependencies
         uses: azure/cli@v2
         env:
-          ENVIRONMENT_PREFIX: ${{ vars.ENVIRONMENT_PREFIX }}
+          ENVIRONMENT_PREFIX: "s272${{ vars.ENVIRONMENT_PREFIX }}"
           CIP_ENVIRONMENT: ${{ vars.CIP_ENVIRONMENT }}
         with:
           azcliversion: latest
           inlineScript: |
-            az group create --name s186${ENVIRONMENT_PREFIX}-cl-tfstate --location westeurope --output none --tags "Environment=${CIP_ENVIRONMENT}" "Product=Design Operations" "Service=Newly onboarded" "Service offering=Design operations"
-            az storage account create --name s186${ENVIRONMENT_PREFIX}cltfstate --resource-group s186${ENVIRONMENT_PREFIX}-cl-tfstate --location westeurope --sku Standard_LRS --min-tls-version TLS1_2 --https-only true
-            az storage container create --name tfstate --account-name s186${ENVIRONMENT_PREFIX}cltfstate
+            az group create --name ${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate --location uksouth --output none --tags "Environment=${CIP_ENVIRONMENT}" "Product=Design Operations" "Service=Newly onboarded" "Service offering=Design operations"
+            az storage account create --name ${ENVIRONMENT_PREFIX}cltfstate --resource-group ${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate --location uksouth --sku Standard_LRS --min-tls-version TLS1_2 --https-only true
+            az storage container create --name tfstate --account-name ${ENVIRONMENT_PREFIX}cltfstate
 
-      - name: 'Terraform Init'
+      - name: Add Alert Mgmt Provider
+        run: |
+          az provider register --namespace Microsoft.AlertsManagement
+
+      - name: "Terraform Init"
         id: terraform_init
         working-directory: ./src/infrastructure/terraform
         env:
-          ENVIRONMENT_PREFIX: ${{ vars.ENVIRONMENT_PREFIX }}
-        run: terraform init -backend-config="resource_group_name=s186${ENVIRONMENT_PREFIX}-cl-tfstate" -backend-config="storage_account_name=s186${ENVIRONMENT_PREFIX}cltfstate" -backend-config="container_name=tfstate" -backend-config="key=terraform.tfstate"
+          ENVIRONMENT_PREFIX: "s272${{ vars.ENVIRONMENT_PREFIX }}"
+        run: terraform init -upgrade -backend-config="resource_group_name=${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate" -backend-config="storage_account_name=${ENVIRONMENT_PREFIX}cltfstate" -backend-config="container_name=tfstate" -backend-config="key=terraform.tfstate"
 
-      - name: 'Terraform Plan'
+      - name: "Terraform Plan"
         id: terraform_plan
         working-directory: ./src/infrastructure/terraform
         run: terraform plan -out plan.plan
         env:
-          TF_VAR_aspnetcore_environment: ${{ env.ENV_NAME }}
+          TF_VAR_aspnetcore_environment: ${{ vars.ELZ_ENVIRONMENT }}
           TF_VAR_environment_prefix: ${{ vars.ENVIRONMENT_PREFIX }}
-          TF_VAR_cip_environment: ${{ vars.CIP_ENVIRONMENT }}
+          TF_VAR_elz_environment: ${{ vars.CIP_ENVIRONMENT }}
           TF_VAR_contentful_delivery_api_key: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
           TF_VAR_contentful_preview_api_key: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
           TF_VAR_contentful_management_api_key: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
@@ -205,7 +209,7 @@ jobs:
           TF_VAR_support_alert_email: ${{ secrets.SUPPORT_ALERT_EMAIL }}
           TF_VAR_gtaa_base_url: ${{ vars.GTAA_BASE_URL }}
 
-      - name: 'Terraform Apply'
+      - name: "Terraform Apply"
         id: terraform_apply
         working-directory: ./src/infrastructure/terraform
         run: terraform apply plan.plan
@@ -216,21 +220,27 @@ jobs:
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
+        env:
+          ENVIRONMENT_PREFIX: "s272${{vars.ENVIRONMENT_PREFIX}}"
         with:
-          app-name: s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-app-service
-          slot-name: 'staging'
-          images: 'ghcr.io/${{ env.REPO }}:${{ needs.package.outputs.image_tag }}'
+          app-name: "${{env.ENVIRONMENT_PREFIX}}-uks-cl-web-app-service"
+          slot-name: "staging"
+          images: "ghcr.io/${{ env.REPO }}:${{ needs.package.outputs.image_tag }}"
 
       - name: Swap slot to production
-        run: az webapp deployment slot swap --name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-app-service --resource-group s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-rg --slot staging --target-slot production
+        env:
+          ENVIRONMENT_PREFIX: "s272${{vars.ENVIRONMENT_PREFIX}}"
+        run: az webapp deployment slot swap --name ${{ env.ENVIRONMENT_PREFIX }}-uks-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-web --slot staging --target-slot production
 
       - name: Delete staging slot
-        run: az webapp deployment slot delete --name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-app-service --resource-group s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-rg --slot staging
+        env:
+          ENVIRONMENT_PREFIX: "s272${{vars.ENVIRONMENT_PREFIX}}"
+        run: az webapp deployment slot delete --name ${{ env.ENVIRONMENT_PREFIX }}-uks-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-web --slot staging
 
       - name: Clear Cache
         id: clear-cache
         uses: fjogeleit/http-request-action@v1
         if: ${{ steps.vars.outputs.clear_cache == 'True' }}
         with:
-          url: 'https://${{ vars.CUSTOM_DOMAIN }}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f'
-          method: 'POST'
+          url: "https://${{ vars.CUSTOM_DOMAIN }}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f"
+          method: "POST"

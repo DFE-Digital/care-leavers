@@ -9,9 +9,8 @@ locals {
     "ContentfulOptions__UsePreviewApi"      = var.contentful_use_preview_api
     "ApplicationInsights__ConnectionString" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.application-insights-connection-string.versionless_id})"
     "Caching__Type"                         = var.caching_type
-    "Caching__ConnectionString"             = lower(var.caching_type) == "redis" ? "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-cache-connection-string[0].versionless_id})" : ""
+    "Caching__ConnectionString"             = lower(var.caching_type) == "redis" ? "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-enterprise-connection-string[0].versionless_id})" : ""
     "Scripts__Clarity"                      = var.scripts_clarity
-    "AzureTranslation__DocumentEndpoint"    = var.azure_translation_document_endpoint
     "AzureTranslation__AccessKey"           = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.azure-translation-access-key.versionless_id})"
     "PdfGeneration__ApiKey"                 = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.pdf-generation-api-key.versionless_id})"
     "PdfGeneration__Sandbox"                = var.pdf_generation_use_sandbox
@@ -21,7 +20,7 @@ locals {
 }
 
 resource "azurerm_resource_group" "web-rg" {
-  name     = "${local.service_prefix}-web-rg"
+  name     = "${local.prefix}rg-uks-cl-web"
   location = local.location
   tags     = local.common_tags
 }
@@ -39,7 +38,7 @@ resource "azurerm_service_plan" "web-app-service-plan" {
 resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
   app_service_id = azurerm_linux_web_app.web-app-service.id
   name           = "staging"
-  https_only          = true
+  https_only     = true
 
   site_config {
     always_on = true
@@ -53,15 +52,15 @@ resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
 
     health_check_path                 = "/health"
     health_check_eviction_time_in_min = 5
-    
-    minimum_tls_version = "1.3"
+
+    minimum_tls_version     = "1.3"
     scm_minimum_tls_version = "1.3"
   }
 
   identity {
     type = "SystemAssigned"
   }
-  
+
   app_settings = local.web_app_settings
 
   tags = local.common_tags
@@ -95,4 +94,32 @@ resource "azurerm_linux_web_app" "web-app-service" {
   app_settings = local.web_app_settings
 
   tags = local.common_tags
+}
+
+resource "azurerm_monitor_diagnostic_setting" "webapp_logs" {
+  name                       = "${var.environment_prefix}-web-app-diagnostics"
+  target_resource_id         = azurerm_linux_web_app.web-app-service.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.log-analytics-workspace.id
+
+  # Capture common runtime and diagnostic logs
+  enabled_log {
+    category = "AppServiceConsoleLogs"
+  }
+
+  enabled_log {
+    category = "AppServiceHTTPLogs"
+  }
+
+  enabled_log {
+    category = "AppServicePlatformLogs"
+  }
+
+  enabled_log {
+    category = "AppServiceAppLogs"
+  }
+
+  # All Metrics
+  enabled_metric {
+    category = "AllMetrics"
+  }
 }
