@@ -5,18 +5,21 @@ on:
     inputs:
       environment:
         type: choice
-        description: 'Environment to run scan against'
+        description: "Environment to run scan against"
         required: true
-        default: 'Test'
+        default: "Test"
         options:
-          - 'Test'
-          - 'Staging'
-          - 'Production'
+          - "Test"
+          - "Staging"
+          - "Production"
+          - "elz-test"
+          - "elz-staging"
+          - "elz-production"
 
 run-name: Running ZAP scan against ${{ github.event.inputs.environment }}
 jobs:
   zap_scan:
-    name: 'Run Zap Scan'
+    name: "Run Zap Scan"
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.event.inputs.environment }}
@@ -24,7 +27,7 @@ jobs:
       - name: 'Checkout source'
         uses: actions/checkout@v6
 
-      - name: 'Az CLI login'
+      - name: "Az CLI login"
         uses: azure/login@v2
         with:
           creds: |
@@ -37,18 +40,18 @@ jobs:
 
       - name: Get Azure Frontdoor URL
         run: |
-          FRONTDOOR_URL=$(az afd custom-domain list -g s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-rg --profile-name s186${{ vars.ENVIRONMENT_PREFIX }}-cl-web-fd-profile | jq -r '.[0].hostName')
+          FRONTDOOR_URL=$(az afd endpoint list -g s272${{ vars.ENVIRONMENT_PREFIX }}rg-uks-cl-web --profile-name s272${{ vars.ENVIRONMENT_PREFIX }}-uks-cl-web-fd-profile | jq -r '.[0].hostName')
           echo "FRONTDOOR_URL=$FRONTDOOR_URL" >>${GITHUB_ENV}
 
-      - name: 'Running ZAP scan against https://${{ env.FRONTDOOR_URL }}'
+      - name: "Running ZAP scan against https://${{ env.FRONTDOOR_URL }}"
         uses: zaproxy/action-full-scan@v0.12.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          docker_name: 'ghcr.io/zaproxy/zaproxy:stable'
-          target: 'https://${{ env.FRONTDOOR_URL }}'
-          rules_file_name: 'src/rules.tsv'
-          cmd_options: "-a -z '-c src/zapscan.options"
-          allow_issue_writing: 'false'
+          docker_name: "ghcr.io/zaproxy/zaproxy:stable"
+          target: "https://${{ env.FRONTDOOR_URL }}"
+          rules_file_name: "src/rules.tsv"
+          cmd_options: "-a -z -c src/zapscan.options"
+          allow_issue_writing: "false"
 
       - name: Commit and Push Report
         run: |
