@@ -1,0 +1,4597 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../operational/Subscription-Migration/">
+      
+      
+        <link rel="next" href="../../testing/Performance%20Test%20Plan-Care%20Leavers%20Website/">
+      
+      
+      <link rel="icon" href="../../favicons/favicon.ico">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>ZAP Scanning Report - Care Leavers Documentation</title>
+      
+    
+    
+  
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+  <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
+
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#zap-scanning-report" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Care Leavers Documentation" class="md-header__button md-logo" aria-label="Care Leavers Documentation" data-md-component="logo">
+      
+  <img src="../../logos/govuk-icon-512.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Care Leavers Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ZAP Scanning Report
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Introduction
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/Application-Architecture/" class="md-tabs__link">
+          
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../developers/Branching-Strategy/" class="md-tabs__link">
+          
+  
+  Developers
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../operational/Design-System-Changes-Jun-2025/" class="md-tabs__link">
+          
+  
+  Operational
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  Scans
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../testing/Performance%20Test%20Plan-Care%20Leavers%20Website/" class="md-tabs__link">
+          
+  
+  Testing
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Care Leavers Documentation" class="md-nav__button md-logo" aria-label="Care Leavers Documentation" data-md-component="logo">
+      
+  <img src="../../logos/govuk-icon-512.png" alt="logo">
+
+    </a>
+    Care Leavers Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/Application-Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Application Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/Deployment-Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deployment Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/Front-Door/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Front Door
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/Information-Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Information Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/Terraform/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Terraform
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/Volumetrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Volumetrics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/adr/001-caching-technology/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Decision - 0001 - Caching Technology
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/adr/002-translation-technology/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Decision - 0002 - Translation Provider
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/adr/003-front-door-vs-application-gateway/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Decision - 0003 - Front Door vs Application Gateway
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/adr/004-hybrid-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Decision - 0004 - Hybrid Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/adr/005-pdf-generation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Decision - 0005 - PDF Generation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Developers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Developers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developers/Branching-Strategy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Branching strategy and code quality
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developers/Contentful-Development/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contentful Development Process
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developers/Development-Process/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development Process
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developers/Project-Setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Project Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developers/Release-Process/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Release Process
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Operational
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Operational
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operational/Design-System-Changes-Jun-2025/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design System Changes - June 2025
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operational/Disaster-Recovery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Disaster Recovery
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operational/Stopping-The-Site/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Stopping The Site
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operational/Subscription-Migration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Subscription Migration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Scans
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Scans
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    ZAP Scanning Report
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    ZAP Scanning Report
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary-of-alerts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary of Alerts
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      Insights
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alerts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alerts
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alert-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alert Detail
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alert Detail">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#csp-style-src-unsafe-inline" class="md-nav__link">
+    <span class="md-ellipsis">
+      CSP: style-src unsafe-inline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CSP: style-src unsafe-inline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#medium-high" class="md-nav__link">
+    <span class="md-ellipsis">
+      Medium (High)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-693" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 693
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 15
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxy-disclosure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proxy Disclosure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Proxy Disclosure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#medium-medium" class="md-nav__link">
+    <span class="md-ellipsis">
+      Medium (Medium)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-204" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 204
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-45" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 45
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 1
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sub-resource-integrity-attribute-missing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sub Resource Integrity Attribute Missing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sub Resource Integrity Attribute Missing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#medium-high_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Medium (High)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-345" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 345
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-15_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 15
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cookie-no-httponly-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cookie No HttpOnly Flag
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cookie No HttpOnly Flag">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#low-medium" class="md-nav__link">
+    <span class="md-ellipsis">
+      Low (Medium)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-1004" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 1004
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-13" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 13
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross-domain-javascript-source-file-inclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cross-Domain JavaScript Source File Inclusion
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cross-Domain JavaScript Source File Inclusion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#low-medium_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Low (Medium)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-829" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 829
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-15_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 15
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insufficient-site-isolation-against-spectre-vulnerability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Insufficient Site Isolation Against Spectre Vulnerability
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Insufficient Site Isolation Against Spectre Vulnerability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#low-medium_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Low (Medium)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-693_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 693
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-14" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 14
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permissions-policy-header-not-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      Permissions Policy Header Not Set
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Permissions Policy Header Not Set">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#low-medium_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Low (Medium)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-693_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 693
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-15_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 15
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#private-ip-disclosure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Private IP Disclosure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Private IP Disclosure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#low-medium_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Low (Medium)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-497" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 497
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-13_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 13
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strict-transport-security-header-not-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strict-Transport-Security Header Not Set
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Strict-Transport-Security Header Not Set">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#low-high" class="md-nav__link">
+    <span class="md-ellipsis">
+      Low (High)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-319" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 319
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-15_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 15
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#base64-disclosure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Base64 Disclosure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Base64 Disclosure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#informational-medium" class="md-nav__link">
+    <span class="md-ellipsis">
+      Informational (Medium)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-319_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 319
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-13_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 13
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cookie-slack-detector" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cookie Slack Detector
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cookie Slack Detector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#informational-low" class="md-nav__link">
+    <span class="md-ellipsis">
+      Informational (Low)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-205" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 205
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-45_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 45
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 1
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-storable-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-Storable Content
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Non-Storable Content">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#informational-medium_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Informational (Medium)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-524" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 524
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-13_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 13
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#re-examine-cache-control-directives" class="md-nav__link">
+    <span class="md-ellipsis">
+      Re-examine Cache-control Directives
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Re-examine Cache-control Directives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#informational-low_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Informational (Low)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-525" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 525
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-13_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 13
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sec-fetch-dest-header-is-missing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sec-Fetch-Dest Header is Missing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sec-Fetch-Dest Header is Missing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#informational-high" class="md-nav__link">
+    <span class="md-ellipsis">
+      Informational (High)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-352" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 352
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-9" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 9
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sec-fetch-mode-header-is-missing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sec-Fetch-Mode Header is Missing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sec-Fetch-Mode Header is Missing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#informational-high_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Informational (High)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-352_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 352
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-9_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 9
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sec-fetch-site-header-is-missing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sec-Fetch-Site Header is Missing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sec-Fetch-Site Header is Missing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#informational-high_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Informational (High)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-352_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 352
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-9_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 9
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sec-fetch-user-header-is-missing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sec-Fetch-User Header is Missing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sec-Fetch-User Header is Missing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#informational-high_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Informational (High)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-352_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 352
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-9_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 9
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-management-response-identified" class="md-nav__link">
+    <span class="md-ellipsis">
+      Session Management Response Identified
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Session Management Response Identified">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#informational-medium_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Informational (Medium)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storable-and-cacheable-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storable and Cacheable Content
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Storable and Cacheable Content">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#informational-medium_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Informational (Medium)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-524_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 524
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-13_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 13
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-agent-fuzzer" class="md-nav__link">
+    <span class="md-ellipsis">
+      User Agent Fuzzer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="User Agent Fuzzer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#informational-medium_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Informational (Medium)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#source-id-1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 1
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-controllable-html-element-attribute-potential-xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      User Controllable HTML Element Attribute (Potential XSS)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="User Controllable HTML Element Attribute (Potential XSS)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#informational-low_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Informational (Low)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cwe-id-20" class="md-nav__link">
+    <span class="md-ellipsis">
+      CWE Id: 20
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wasc-id-20" class="md-nav__link">
+    <span class="md-ellipsis">
+      WASC Id: 20
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-id-3_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source ID: 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Testing
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Testing
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/Performance%20Test%20Plan-Care%20Leavers%20Website/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance Test Plan Care Leavers Website
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/Test-Plan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Test Plan for DfE Care Leavers Website
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="zap-scanning-report">ZAP Scanning Report</h1>
+<p>ZAP by <a href="https://checkmarx.com/">Checkmarx</a>.</p>
+<h2 id="summary-of-alerts">Summary of Alerts</h2>
+<table>
+<thead>
+<tr>
+<th>Risk Level</th>
+<th>Number of Alerts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>High</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Medium</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Low</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Informational</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<h2 id="insights">Insights</h2>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Reason</th>
+<th>Site</th>
+<th>Description</th>
+<th>Statistic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Low</td>
+<td>Warning</td>
+<td></td>
+<td>ZAP warnings logged - see the zap.log file for details</td>
+<td>3,359</td>
+</tr>
+<tr>
+<td>Low</td>
+<td>Exceeded Low</td>
+<td></td>
+<td>Percentage of network failures</td>
+<td>20 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>http://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</td>
+<td>Percentage of responses with status code 3xx</td>
+<td>50 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>http://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</td>
+<td>Percentage of responses with status code 4xx</td>
+<td>49 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>http://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</td>
+<td>Percentage of slow responses</td>
+<td>1 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://analytics.shareaholic.com</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://analytics.shareaholic.com</td>
+<td>Percentage of slow responses</td>
+<td>2 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://cdn.openshareweb.com</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://cdn.openshareweb.com</td>
+<td>Percentage of slow responses</td>
+<td>33 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://cdn.shareaholic.net</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://cdn.shareaholic.net</td>
+<td>Percentage of slow responses</td>
+<td>16 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://dferesearch.fra1.qualtrics.com</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://dferesearch.fra1.qualtrics.com</td>
+<td>Percentage of slow responses</td>
+<td>26 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://elz-staging.support-for-care-leavers.education.gov.uk</td>
+<td>Percentage of endpoints with content type text/plain</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://elz-staging.support-for-care-leavers.education.gov.uk</td>
+<td>Percentage of endpoints with method GET</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://elz-staging.support-for-care-leavers.education.gov.uk</td>
+<td>Count of total endpoints</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://fonts.googleapis.com</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://fonts.googleapis.com</td>
+<td>Percentage of slow responses</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://fonts.gstatic.com</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://fonts.gstatic.com</td>
+<td>Percentage of slow responses</td>
+<td>5 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://fra1.qualtrics.com</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://fra1.qualtrics.com</td>
+<td>Percentage of slow responses</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://hnd1.qualtrics.com</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://hnd1.qualtrics.com</td>
+<td>Percentage of slow responses</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://iad1.qualtrics.com</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://iad1.qualtrics.com</td>
+<td>Percentage of slow responses</td>
+<td>50 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://lhr1.qualtrics.com</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://lhr1.qualtrics.com</td>
+<td>Percentage of slow responses</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://o.clarity.ms</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://o.clarity.ms</td>
+<td>Percentage of slow responses</td>
+<td>11 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://partner.shareaholic.com</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>88 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://partner.shareaholic.com</td>
+<td>Percentage of responses with status code 4xx</td>
+<td>11 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://partner.shareaholic.com</td>
+<td>Percentage of slow responses</td>
+<td>96 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://pdx1.qualtrics.com</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://pdx1.qualtrics.com</td>
+<td>Percentage of slow responses</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://rsms.me</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://rsms.me</td>
+<td>Percentage of slow responses</td>
+<td>4 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://s.qualtrics.com</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://s.qualtrics.com</td>
+<td>Percentage of slow responses</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>13 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</td>
+<td>Percentage of responses with status code 3xx</td>
+<td>72 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Exceeded Low</td>
+<td>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</td>
+<td>Percentage of responses with status code 4xx</td>
+<td>13 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</td>
+<td>Percentage of endpoints with content type text/css</td>
+<td>1 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</td>
+<td>Percentage of endpoints with content type text/html</td>
+<td>93 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</td>
+<td>Percentage of endpoints with method GET</td>
+<td>99 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</td>
+<td>Count of total endpoints</td>
+<td>211</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Exceeded Low</td>
+<td>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</td>
+<td>Percentage of slow responses</td>
+<td>7 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://scripts.clarity.ms</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://sin1.qualtrics.com</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://sin1.qualtrics.com</td>
+<td>Percentage of slow responses</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://syd1.qualtrics.com</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://syd1.qualtrics.com</td>
+<td>Percentage of slow responses</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://www.clarity.ms</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://www.clarity.ms</td>
+<td>Percentage of slow responses</td>
+<td>3 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://www.google-analytics.com</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://www.google-analytics.com</td>
+<td>Percentage of slow responses</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://www.googletagmanager.com</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://www.googletagmanager.com</td>
+<td>Percentage of slow responses</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://www.nationalarchives.gov.uk</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://www.nationalarchives.gov.uk</td>
+<td>Percentage of slow responses</td>
+<td>21 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://www.shareaholic.net</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://www.shareaholic.net</td>
+<td>Percentage of slow responses</td>
+<td>4 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://yul1.qualtrics.com</td>
+<td>Percentage of responses with status code 2xx</td>
+<td>100 %</td>
+</tr>
+<tr>
+<td>Info</td>
+<td>Informational</td>
+<td>https://yul1.qualtrics.com</td>
+<td>Percentage of slow responses</td>
+<td>100 %</td>
+</tr>
+</tbody>
+</table>
+<h2 id="alerts">Alerts</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Risk Level</th>
+<th>Number of Instances</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CSP: style-src unsafe-inline</td>
+<td>Medium</td>
+<td>Systemic</td>
+</tr>
+<tr>
+<td>Proxy Disclosure</td>
+<td>Medium</td>
+<td>Systemic</td>
+</tr>
+<tr>
+<td>Sub Resource Integrity Attribute Missing</td>
+<td>Medium</td>
+<td>Systemic</td>
+</tr>
+<tr>
+<td>Cookie No HttpOnly Flag</td>
+<td>Low</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Cross-Domain JavaScript Source File Inclusion</td>
+<td>Low</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Insufficient Site Isolation Against Spectre Vulnerability</td>
+<td>Low</td>
+<td>Systemic</td>
+</tr>
+<tr>
+<td>Permissions Policy Header Not Set</td>
+<td>Low</td>
+<td>Systemic</td>
+</tr>
+<tr>
+<td>Private IP Disclosure</td>
+<td>Low</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Strict-Transport-Security Header Not Set</td>
+<td>Low</td>
+<td>Systemic</td>
+</tr>
+<tr>
+<td>Base64 Disclosure</td>
+<td>Informational</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Cookie Slack Detector</td>
+<td>Informational</td>
+<td>Systemic</td>
+</tr>
+<tr>
+<td>Non-Storable Content</td>
+<td>Informational</td>
+<td>Systemic</td>
+</tr>
+<tr>
+<td>Re-examine Cache-control Directives</td>
+<td>Informational</td>
+<td>Systemic</td>
+</tr>
+<tr>
+<td>Sec-Fetch-Dest Header is Missing</td>
+<td>Informational</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Sec-Fetch-Mode Header is Missing</td>
+<td>Informational</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Sec-Fetch-Site Header is Missing</td>
+<td>Informational</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Sec-Fetch-User Header is Missing</td>
+<td>Informational</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Session Management Response Identified</td>
+<td>Informational</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Storable and Cacheable Content</td>
+<td>Informational</td>
+<td>1</td>
+</tr>
+<tr>
+<td>User Agent Fuzzer</td>
+<td>Informational</td>
+<td>Systemic</td>
+</tr>
+<tr>
+<td>User Controllable HTML Element Attribute (Potential XSS)</td>
+<td>Informational</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="alert-detail">Alert Detail</h2>
+<h3 id="csp-style-src-unsafe-inline"><a href="https://www.zaproxy.org/docs/alerts/10055/"> CSP: style-src unsafe-inline </a></h3>
+<h5 id="medium-high">Medium (High)</h5>
+<h3 id="description">Description</h3>
+<p>Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks. Including (but not limited to) Cross Site Scripting (XSS), and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</p>
+<ul>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/accessibility-statement</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/accessibility-statement</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Content-Security-Policy</code></li>
+<li>Attack: ``</li>
+<li>Evidence: <code>default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com https://staging.get-to-an-answer.education.gov.uk 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'sha256-EHM+nPamQPBwYVIwtgQKUmGfjqij8qTZMegp1TOVicU=' 'nonce-5rVRrhi0nQNeJQcH+eMXzF+Iopo3n2wKIRo13MZ3TFY=';style-src 'self' cdn.openshareweb.com rsms.me https://staging.get-to-an-answer.education.gov.uk 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com https://staging.get-to-an-answer.education.gov.uk;manifest-src 'self';font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com https://staging.get-to-an-answer.education.gov.uk;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com https://staging.get-to-an-answer.education.gov.uk;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com https://staging.get-to-an-answer.education.gov.uk;frame-src *.googletagmanager.com app.contentful.com *.riddle.com https://staging.get-to-an-answer.education.gov.uk</code></li>
+<li>Other Info: <code>style-src includes unsafe-inline.</code></li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Content-Security-Policy</code></li>
+<li>Attack: ``</li>
+<li>Evidence: <code>default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com https://staging.get-to-an-answer.education.gov.uk 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'sha256-EHM+nPamQPBwYVIwtgQKUmGfjqij8qTZMegp1TOVicU=' 'nonce-ixKMOtx2XpBUjMbPVKxbO7GHD6OpNZvHK9b5btXkJY0=';style-src 'self' cdn.openshareweb.com rsms.me https://staging.get-to-an-answer.education.gov.uk 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com https://staging.get-to-an-answer.education.gov.uk;manifest-src 'self';font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com https://staging.get-to-an-answer.education.gov.uk;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com https://staging.get-to-an-answer.education.gov.uk;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com https://staging.get-to-an-answer.education.gov.uk;frame-src *.googletagmanager.com app.contentful.com *.riddle.com https://staging.get-to-an-answer.education.gov.uk</code></li>
+<li>Other Info: <code>style-src includes unsafe-inline.</code></li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/error</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/error</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Content-Security-Policy</code></li>
+<li>Attack: ``</li>
+<li>Evidence: <code>default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com https://staging.get-to-an-answer.education.gov.uk 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'sha256-EHM+nPamQPBwYVIwtgQKUmGfjqij8qTZMegp1TOVicU=' 'nonce-RLNkv6gZzmTMFG96CmBtkZEIJJZ9dIsBoGLL+9XpQWI=';style-src 'self' cdn.openshareweb.com rsms.me https://staging.get-to-an-answer.education.gov.uk 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com https://staging.get-to-an-answer.education.gov.uk;manifest-src 'self';font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com https://staging.get-to-an-answer.education.gov.uk;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com https://staging.get-to-an-answer.education.gov.uk;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com https://staging.get-to-an-answer.education.gov.uk;frame-src *.googletagmanager.com app.contentful.com *.riddle.com https://staging.get-to-an-answer.education.gov.uk</code></li>
+<li>Other Info: <code>style-src includes unsafe-inline.</code></li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/page-not-found</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/page-not-found</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Content-Security-Policy</code></li>
+<li>Attack: ``</li>
+<li>Evidence: <code>default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com https://staging.get-to-an-answer.education.gov.uk 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'sha256-EHM+nPamQPBwYVIwtgQKUmGfjqij8qTZMegp1TOVicU=' 'nonce-W0BfbIshnV8M7GQyciQyVd4vCCQ/Gw00x15H8kb7K9o=';style-src 'self' cdn.openshareweb.com rsms.me https://staging.get-to-an-answer.education.gov.uk 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com https://staging.get-to-an-answer.education.gov.uk;manifest-src 'self';font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com https://staging.get-to-an-answer.education.gov.uk;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com https://staging.get-to-an-answer.education.gov.uk;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com https://staging.get-to-an-answer.education.gov.uk;frame-src *.googletagmanager.com app.contentful.com *.riddle.com https://staging.get-to-an-answer.education.gov.uk</code></li>
+<li>Other Info: <code>style-src includes unsafe-inline.</code></li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/privacy-policies</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/privacy-policies</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Content-Security-Policy</code></li>
+<li>Attack: ``</li>
+<li>Evidence: <code>default-src 'none';script-src 'self' cdn.openshareweb.com cdn.openshareweb.net cdn.shareaholic.net partner.shareaholic.com *.googletagmanager.com *.google-analytics.com *.clarity.ms c.bing.com https://staging.get-to-an-answer.education.gov.uk 'sha256-xrAXrOY+vbRBqDmgZaRaAkCXcYa6i7XrdPSlOPQiY2E=' 'sha256-EHM+nPamQPBwYVIwtgQKUmGfjqij8qTZMegp1TOVicU=' 'nonce-UttszvWysZNhb850Fwk68C1IY2HW11TmFAZDv1scaV0=';style-src 'self' cdn.openshareweb.com rsms.me https://staging.get-to-an-answer.education.gov.uk 'unsafe-inline';connect-src 'self' *.shareaholic.com *.shareaholic.net cdn.openshareweb.com *.clarity.ms c.bing.com *.googletagmanager.com *.google-analytics.com *.analytics.google.com https://staging.get-to-an-answer.education.gov.uk;manifest-src 'self';font-src 'self' data: rsms.me cdn.openshareweb.net cdn.openshareweb.com https://staging.get-to-an-answer.education.gov.uk;form-action 'self';img-src 'self' data: cdn.openshareweb.com cdn.openshareweb.net images.ctfassets.net *.googletagmanager.com *.google-analytics.com https://staging.get-to-an-answer.education.gov.uk;frame-ancestors 'self' *.googletagmanager.com app.contentful.com *.riddle.com https://staging.get-to-an-answer.education.gov.uk;frame-src *.googletagmanager.com app.contentful.com *.riddle.com https://staging.get-to-an-answer.education.gov.uk</code></li>
+<li>Other Info: <code>style-src includes unsafe-inline.</code></li>
+</ul>
+<p>Instances: Systemic</p>
+<h3 id="solution">Solution</h3>
+<p>Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.</p>
+<h3 id="reference">Reference</h3>
+<ul>
+<li><a href="https://www.w3.org/TR/CSP/"> https://www.w3.org/TR/CSP/ </a></li>
+<li><a href="https://caniuse.com/#search=content+security+policy"> https://caniuse.com/#search=content+security+policy </a></li>
+<li><a href="https://content-security-policy.com/"> https://content-security-policy.com/ </a></li>
+<li><a href="https://github.com/HtmlUnit/htmlunit-csp"> https://github.com/HtmlUnit/htmlunit-csp </a></li>
+<li><a href="https://web.dev/articles/csp#resource-options"> https://web.dev/articles/csp#resource-options </a></li>
+</ul>
+<h4 id="cwe-id-693">CWE Id: <a href="https://cwe.mitre.org/data/definitions/693.html"> 693 </a></h4>
+<h4 id="wasc-id-15">WASC Id: 15</h4>
+<h4 id="source-id-3">Source ID: 3</h4>
+<h3 id="proxy-disclosure"><a href="https://www.zaproxy.org/docs/alerts/40025/"> Proxy Disclosure </a></h3>
+<h5 id="medium-medium">Medium (Medium)</h5>
+<h3 id="description_1">Description</h3>
+<p>2 proxy server(s) were detected or fingerprinted. This information helps a potential attacker to determine
+- A list of targets for an attack against the application.
+ - Potential vulnerabilities on the proxy servers that service the application.
+ - The presence or absence of any proxy-based components that might cause attacks against the application to be detected, prevented, or mitigated.</p>
+<ul>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: <code>TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.</code></li>
+<li>Evidence: ``</li>
+<li>Other Info: `Using the TRACE, OPTIONS, and TRACK methods, the following proxy servers have been identified between ZAP and the application/web server:</li>
+<li>Unknown</li>
+<li>Unknown
+The following web/application server has been identified:</li>
+<li>Unknown
+`</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/images</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/images</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: <code>TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.</code></li>
+<li>Evidence: ``</li>
+<li>Other Info: `Using the TRACE, OPTIONS, and TRACK methods, the following proxy servers have been identified between ZAP and the application/web server:</li>
+<li>Unknown</li>
+<li>Unknown
+The following web/application server has been identified:</li>
+<li>Unknown
+`</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/images/govuk-icon-180.png%3Fv=Z2t08EphhEIq4GLa3SQzSSx2cQiDDrMv2tDfDn0v-TE</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/images/govuk-icon-180.png (v)</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: <code>TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.</code></li>
+<li>Evidence: ``</li>
+<li>Other Info: `Using the TRACE, OPTIONS, and TRACK methods, the following proxy servers have been identified between ZAP and the application/web server:</li>
+<li>Unknown</li>
+<li>Unknown
+The following web/application server has been identified:</li>
+<li>Unknown
+`</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/images/govuk-icon-mask.svg%3Fv=N0Z3XZRPHy7GhBSmbzJ0FMxChzQ6CsBnL3LwjbH9xHQ</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/images/govuk-icon-mask.svg (v)</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: <code>TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.</code></li>
+<li>Evidence: ``</li>
+<li>Other Info: `Using the TRACE, OPTIONS, and TRACK methods, the following proxy servers have been identified between ZAP and the application/web server:</li>
+<li>Unknown</li>
+<li>Unknown
+The following web/application server has been identified:</li>
+<li>Unknown
+`</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/manifest.json</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/manifest.json</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: <code>TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.</code></li>
+<li>Evidence: ``</li>
+<li>Other Info: `Using the TRACE, OPTIONS, and TRACK methods, the following proxy servers have been identified between ZAP and the application/web server:</li>
+<li>Unknown</li>
+<li>Unknown
+The following web/application server has been identified:</li>
+<li>Unknown
+`</li>
+</ul>
+<p>Instances: Systemic</p>
+<h3 id="solution_1">Solution</h3>
+<p>Disable the 'TRACE' method on the proxy servers, as well as the origin web/application server.
+Disable the 'OPTIONS' method on the proxy servers, as well as the origin web/application server, if it is not required for other purposes, such as 'CORS' (Cross Origin Resource Sharing).
+Configure the web and application servers with custom error pages, to prevent 'fingerprintable' product-specific error pages being leaked to the user in the event of HTTP errors, such as 'TRACK' requests for non-existent pages.
+Configure all proxies, application servers, and web servers to prevent disclosure of the technology and version information in the 'Server' and 'X-Powered-By' HTTP response headers.</p>
+<h3 id="reference_1">Reference</h3>
+<ul>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc7231#section-5.1.2"> https://datatracker.ietf.org/doc/html/rfc7231#section-5.1.2 </a></li>
+</ul>
+<h4 id="cwe-id-204">CWE Id: <a href="https://cwe.mitre.org/data/definitions/204.html"> 204 </a></h4>
+<h4 id="wasc-id-45">WASC Id: 45</h4>
+<h4 id="source-id-1">Source ID: 1</h4>
+<h3 id="sub-resource-integrity-attribute-missing"><a href="https://www.zaproxy.org/docs/alerts/90003/"> Sub Resource Integrity Attribute Missing </a></h3>
+<h5 id="medium-high_1">Medium (High)</h5>
+<h3 id="description_2">Description</h3>
+<p>The integrity attribute is missing on a script or link tag served by an external server. The integrity tag prevents an attacker who have gained access to this server from injecting a malicious content.</p>
+<ul>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/accessibility-statement</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/accessibility-statement</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>&lt;link rel=preload href=https://cdn.shareaholic.net/assets/pub/shareaholic.js as=script&gt;</code></li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/page-not-found</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/page-not-found</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>&lt;link rel="preload" href="https://cdn.shareaholic.net/assets/pub/shareaholic.js" as="script"/&gt;</code></li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/page-not-found</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/page-not-found</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>&lt;script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="W0BfbIshnV8M7GQyciQyVd4vCCQ/Gw00x15H8kb7K9o="&gt;&lt;/script&gt;</code></li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/privacy-policies</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/privacy-policies</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>&lt;link rel=preload href=https://cdn.shareaholic.net/assets/pub/shareaholic.js as=script&gt;</code></li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/privacy-policies</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/privacy-policies</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>&lt;script data-cfasync=false async src=https://cdn.shareaholic.net/assets/pub/shareaholic.js nonce="UttszvWysZNhb850Fwk68C1IY2HW11TmFAZDv1scaV0="&gt;&lt;/script&gt;</code></li>
+<li>Other Info: ``</li>
+</ul>
+<p>Instances: Systemic</p>
+<h3 id="solution_2">Solution</h3>
+<p>Provide a valid integrity attribute to the tag.</p>
+<h3 id="reference_2">Reference</h3>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity"> https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity </a></li>
+</ul>
+<h4 id="cwe-id-345">CWE Id: <a href="https://cwe.mitre.org/data/definitions/345.html"> 345 </a></h4>
+<h4 id="wasc-id-15_1">WASC Id: 15</h4>
+<h4 id="source-id-3_1">Source ID: 3</h4>
+<h3 id="cookie-no-httponly-flag"><a href="https://www.zaproxy.org/docs/alerts/10010/"> Cookie No HttpOnly Flag </a></h3>
+<h5 id="low-medium">Low (Medium)</h5>
+<h3 id="description_3">Description</h3>
+<p>A cookie has been set without the HttpOnly flag, which means that the cookie can be accessed by JavaScript. If a malicious script can be run on this page then the cookie will be accessible and can be transmitted to another site. If this is a session cookie then session hijacking may be possible.</p>
+<ul>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy ()(AcceptCookies,__RequestVerificationToken)</code></li>
+<li>Method: <code>POST</code></li>
+<li>Parameter: <code>.AspNet.Consent</code></li>
+<li>Attack: ``</li>
+<li>Evidence: <code>Set-Cookie: .AspNet.Consent</code></li>
+<li>Other Info: ``</li>
+</ul>
+<p>Instances: 1</p>
+<h3 id="solution_3">Solution</h3>
+<p>Ensure that the HttpOnly flag is set for all cookies.</p>
+<h3 id="reference_3">Reference</h3>
+<ul>
+<li><a href="https://owasp.org/www-community/HttpOnly"> https://owasp.org/www-community/HttpOnly </a></li>
+</ul>
+<h4 id="cwe-id-1004">CWE Id: <a href="https://cwe.mitre.org/data/definitions/1004.html"> 1004 </a></h4>
+<h4 id="wasc-id-13">WASC Id: 13</h4>
+<h4 id="source-id-3_2">Source ID: 3</h4>
+<h3 id="cross-domain-javascript-source-file-inclusion"><a href="https://www.zaproxy.org/docs/alerts/10017/"> Cross-Domain JavaScript Source File Inclusion </a></h3>
+<h5 id="low-medium_1">Low (Medium)</h5>
+<h3 id="description_4">Description</h3>
+<p>The page includes one or more script files from a third-party domain.</p>
+<ul>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/accessibility-statement</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/accessibility-statement</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>https://cdn.shareaholic.net/assets/pub/shareaholic.js</code></li>
+<li>Attack: ``</li>
+<li>Evidence: <code>&lt;script data-cfasync=false async src=https://cdn.shareaholic.net/assets/pub/shareaholic.js nonce="5rVRrhi0nQNeJQcH+eMXzF+Iopo3n2wKIRo13MZ3TFY="&gt;&lt;/script&gt;</code></li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>https://cdn.shareaholic.net/assets/pub/shareaholic.js</code></li>
+<li>Attack: ``</li>
+<li>Evidence: <code>&lt;script data-cfasync=false async src=https://cdn.shareaholic.net/assets/pub/shareaholic.js nonce="ixKMOtx2XpBUjMbPVKxbO7GHD6OpNZvHK9b5btXkJY0="&gt;&lt;/script&gt;</code></li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/page-not-found</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/page-not-found</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>https://cdn.shareaholic.net/assets/pub/shareaholic.js</code></li>
+<li>Attack: ``</li>
+<li>Evidence: <code>&lt;script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="W0BfbIshnV8M7GQyciQyVd4vCCQ/Gw00x15H8kb7K9o="&gt;&lt;/script&gt;</code></li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/privacy-policies</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/privacy-policies</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>https://cdn.shareaholic.net/assets/pub/shareaholic.js</code></li>
+<li>Attack: ``</li>
+<li>Evidence: <code>&lt;script data-cfasync=false async src=https://cdn.shareaholic.net/assets/pub/shareaholic.js nonce="UttszvWysZNhb850Fwk68C1IY2HW11TmFAZDv1scaV0="&gt;&lt;/script&gt;</code></li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy ()(AcceptCookies,__RequestVerificationToken)</code></li>
+<li>Method: <code>POST</code></li>
+<li>Parameter: <code>https://cdn.shareaholic.net/assets/pub/shareaholic.js</code></li>
+<li>Attack: ``</li>
+<li>Evidence: <code>&lt;script data-cfasync="false" async src="https://cdn.shareaholic.net/assets/pub/shareaholic.js" nonce="CGBytaNmoI5cM4mK8gNpGpOOtbgbC1b2ZUiCJslNocQ="&gt;&lt;/script&gt;</code></li>
+<li>Other Info: ``</li>
+</ul>
+<p>Instances: 5</p>
+<h3 id="solution_4">Solution</h3>
+<p>Ensure JavaScript source files are loaded from only trusted sources, and the sources can't be controlled by end users of the application.</p>
+<h3 id="reference_4">Reference</h3>
+<h4 id="cwe-id-829">CWE Id: <a href="https://cwe.mitre.org/data/definitions/829.html"> 829 </a></h4>
+<h4 id="wasc-id-15_2">WASC Id: 15</h4>
+<h4 id="source-id-3_3">Source ID: 3</h4>
+<h3 id="insufficient-site-isolation-against-spectre-vulnerability"><a href="https://www.zaproxy.org/docs/alerts/90004/"> Insufficient Site Isolation Against Spectre Vulnerability </a></h3>
+<h5 id="low-medium_2">Low (Medium)</h5>
+<h3 id="description_5">Description</h3>
+<p>Cross-Origin-Resource-Policy header is an opt-in header designed to counter side-channels attacks like Spectre. Resource should be specifically set as shareable amongst different origins.</p>
+<ul>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/images/favicon.ico%3Fv=e6Pz54n_UZOUoLj4th_S0Jg72AaVI1oeaBWWj_PEamA</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/images/favicon.ico (v)</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Cross-Origin-Resource-Policy</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/images/favicon.svg%3Fv=LtEKVZewwEuq7AKiUbW5G75TmZuaB6bGPs4V4c9WxSk</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/images/favicon.svg (v)</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Cross-Origin-Resource-Policy</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/images/govuk-icon-180.png%3Fv=Z2t08EphhEIq4GLa3SQzSSx2cQiDDrMv2tDfDn0v-TE</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/images/govuk-icon-180.png (v)</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Cross-Origin-Resource-Policy</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/robots.txt</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/robots.txt</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Cross-Origin-Resource-Policy</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/sitemap.xml</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/sitemap.xml</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Cross-Origin-Resource-Policy</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/error</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/error</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Cross-Origin-Embedder-Policy</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/sitemap.xml</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/sitemap.xml</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Cross-Origin-Embedder-Policy</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/error</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/error</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Cross-Origin-Opener-Policy</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/sitemap.xml</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/sitemap.xml</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Cross-Origin-Opener-Policy</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+</ul>
+<p>Instances: Systemic</p>
+<h3 id="solution_5">Solution</h3>
+<p>Ensure that the application/web server sets the Cross-Origin-Resource-Policy header appropriately, and that it sets the Cross-Origin-Resource-Policy header to 'same-origin' for all web pages.
+'same-site' is considered as less secured and should be avoided.
+If resources must be shared, set the header to 'cross-origin'.
+If possible, ensure that the end user uses a standards-compliant and modern web browser that supports the Cross-Origin-Resource-Policy header (https://caniuse.com/mdn-http_headers_cross-origin-resource-policy).</p>
+<h3 id="reference_5">Reference</h3>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy"> https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy </a></li>
+</ul>
+<h4 id="cwe-id-693_1">CWE Id: <a href="https://cwe.mitre.org/data/definitions/693.html"> 693 </a></h4>
+<h4 id="wasc-id-14">WASC Id: 14</h4>
+<h4 id="source-id-3_4">Source ID: 3</h4>
+<h3 id="permissions-policy-header-not-set"><a href="https://www.zaproxy.org/docs/alerts/10063/"> Permissions Policy Header Not Set </a></h3>
+<h5 id="low-medium_3">Low (Medium)</h5>
+<h3 id="description_6">Description</h3>
+<p>Permissions Policy Header is an added layer of security that helps to restrict from unauthorized access or usage of browser/client features by web resources. This policy ensures the user privacy by limiting or specifying the features of the browsers can be used by the web resources. Permissions Policy provides a set of standard HTTP headers that allow website owners to limit which features of browsers can be used by the page such as camera, microphone, location, full screen etc.</p>
+<ul>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/accessibility-statement</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/accessibility-statement</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/error</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/error</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/page-not-found</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/page-not-found</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/privacy-policies</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/privacy-policies</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+</ul>
+<p>Instances: Systemic</p>
+<h3 id="solution_6">Solution</h3>
+<p>Ensure that your web server, application server, load balancer, etc. is configured to set the Permissions-Policy header.</p>
+<h3 id="reference_6">Reference</h3>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy"> https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy </a></li>
+<li><a href="https://developer.chrome.com/blog/feature-policy/"> https://developer.chrome.com/blog/feature-policy/ </a></li>
+<li><a href="https://scotthelme.co.uk/a-new-security-header-feature-policy/"> https://scotthelme.co.uk/a-new-security-header-feature-policy/ </a></li>
+<li><a href="https://w3c.github.io/webappsec-feature-policy/"> https://w3c.github.io/webappsec-feature-policy/ </a></li>
+<li><a href="https://www.smashingmagazine.com/2018/12/feature-policy/"> https://www.smashingmagazine.com/2018/12/feature-policy/ </a></li>
+</ul>
+<h4 id="cwe-id-693_2">CWE Id: <a href="https://cwe.mitre.org/data/definitions/693.html"> 693 </a></h4>
+<h4 id="wasc-id-15_3">WASC Id: 15</h4>
+<h4 id="source-id-3_5">Source ID: 3</h4>
+<h3 id="private-ip-disclosure"><a href="https://www.zaproxy.org/docs/alerts/2/"> Private IP Disclosure </a></h3>
+<h5 id="low-medium_4">Low (Medium)</h5>
+<h3 id="description_7">Description</h3>
+<p>A private IP (such as 10.x.x.x, 172.x.x.x, 192.168.x.x) or an Amazon EC2 private hostname (for example, ip-10-0-56-78) has been found in the HTTP response body. This information might be helpful for further attacks targeting internal systems.</p>
+<ul>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/images/favicon.svg%3Fv=LtEKVZewwEuq7AKiUbW5G75TmZuaB6bGPs4V4c9WxSk</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/images/favicon.svg (v)</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>10.02.68.86</code></li>
+<li>Other Info: <code>10.02.68.86</code></li>
+</ul>
+<p>Instances: 1</p>
+<h3 id="solution_7">Solution</h3>
+<p>Remove the private IP address from the HTTP response body. For comments, use JSP/ASP/PHP comment instead of HTML/JavaScript comment which can be seen by client browsers.</p>
+<h3 id="reference_7">Reference</h3>
+<ul>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc1918"> https://datatracker.ietf.org/doc/html/rfc1918 </a></li>
+</ul>
+<h4 id="cwe-id-497">CWE Id: <a href="https://cwe.mitre.org/data/definitions/497.html"> 497 </a></h4>
+<h4 id="wasc-id-13_1">WASC Id: 13</h4>
+<h4 id="source-id-3_6">Source ID: 3</h4>
+<h3 id="strict-transport-security-header-not-set"><a href="https://www.zaproxy.org/docs/alerts/10035/"> Strict-Transport-Security Header Not Set </a></h3>
+<h5 id="low-high">Low (High)</h5>
+<h3 id="description_8">Description</h3>
+<p>HTTP Strict Transport Security (HSTS) is a web security policy mechanism whereby a web server declares that complying user agents (such as a web browser) are to interact with it using only secure HTTPS connections (i.e. HTTP layered over TLS/SSL). HSTS is an IETF standards track protocol and is specified in RFC 6797.</p>
+<ul>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/af/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/af/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/translate-this-website</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/translate-this-website</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/translate-this-website/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/translate-this-website/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+</ul>
+<p>Instances: Systemic</p>
+<h3 id="solution_8">Solution</h3>
+<p>Ensure that your web server, application server, load balancer, etc. is configured to enforce Strict-Transport-Security.</p>
+<h3 id="reference_8">Reference</h3>
+<ul>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Strict_Transport_Security_Cheat_Sheet.html"> https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Strict_Transport_Security_Cheat_Sheet.html </a></li>
+<li><a href="https://owasp.org/www-community/Security_Headers"> https://owasp.org/www-community/Security_Headers </a></li>
+<li><a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security"> https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security </a></li>
+<li><a href="https://caniuse.com/stricttransportsecurity"> https://caniuse.com/stricttransportsecurity </a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc6797"> https://datatracker.ietf.org/doc/html/rfc6797 </a></li>
+</ul>
+<h4 id="cwe-id-319">CWE Id: <a href="https://cwe.mitre.org/data/definitions/319.html"> 319 </a></h4>
+<h4 id="wasc-id-15_4">WASC Id: 15</h4>
+<h4 id="source-id-3_7">Source ID: 3</h4>
+<h3 id="base64-disclosure"><a href="https://www.zaproxy.org/docs/alerts/10094/"> Base64 Disclosure </a></h3>
+<h5 id="informational-medium">Informational (Medium)</h5>
+<h3 id="description_9">Description</h3>
+<p>Base64 encoded data was disclosed by the application/web server. Note: in the interests of performance not all base64 strings in the response were analyzed individually, the entire response should be looked at by the analyst/security team/developer(s).</p>
+<ul>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/accessibility-statement</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/accessibility-statement</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>5rVRrhi0nQNeJQcH+eMXzF+Iopo3n2wKIRo13MZ3TFY=</code></li>
+<li>Other Info: <code>�Q���^%���_���7�l
+!5��wLV</code></li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>CfDJ8BvbUwsZpDdClIYxCBeoxq_4N1DlAnZvLit4jIBkYVpRIVKFkrZa7CYEXwrBznsHoKYkwbIiu-JiX5P08-3R1tgKO7WXDfuB2sdhZLQuPZzK1lr3TDY-uztxhk1PjrAxAsKT902bsm7BE9q9YDiqJ1E</code></li>
+<li>Other Info: <code>����S�7B��1�Ư�7P�vo.+x��daZQ!R���Z�&amp;_
+��{��$��"��b_�������
+;��
+����ad�.=���Z�L6&gt;�;q�MO��1�M��n�ڽ</code>8�'Q`</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/error</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/error</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>RLNkv6gZzmTMFG96CmBtkZEIJJZ9dIsBoGLL+9XpQWI=</code></li>
+<li>Other Info: <code>D�d���d�oz</code>m��$�}t��b����Ab`</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/page-not-found</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/page-not-found</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>W0BfbIshnV8M7GQyciQyVd4vCCQ/Gw00x15H8kb7K9o=</code></li>
+<li>Other Info: <code>[@_l�!�_�d2r$2U�/$?
+4�^G�F�+�</code></li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/privacy-policies</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/privacy-policies</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>UttszvWysZNhb850Fwk68C1IY2HW11TmFAZDv1scaV0=</code></li>
+<li>Other Info: <code>R�l�����ao�t  :�-Hca��T�C�[i]</code></li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/service-unavailable</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/service-unavailable</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>dyQJp6PSy2RnCYybCNxL6cUnSTJfkSzAUIIJHe3FN2s=</code></li>
+<li>Other Info: <code>w$ ����dg  ���K��'I2_�,�P�    ��7k</code></li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy ()(AcceptCookies,__RequestVerificationToken)</code></li>
+<li>Method: <code>POST</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>CGBytaNmoI5cM4mK8gNpGpOOtbgbC1b2ZUiCJslNocQ=</code></li>
+<li>Other Info: <code></code>r��f��\3���i����V�eH�&amp;�M��`</li>
+</ul>
+<p>Instances: 7</p>
+<h3 id="solution_9">Solution</h3>
+<p>Manually confirm that the Base64 data does not leak sensitive information, and that the data cannot be aggregated/used to exploit other vulnerabilities.</p>
+<h3 id="reference_9">Reference</h3>
+<ul>
+<li><a href="https://projects.webappsec.org/w/page/13246936/Information%20Leakage"> https://projects.webappsec.org/w/page/13246936/Information%20Leakage </a></li>
+</ul>
+<h4 id="cwe-id-319_1">CWE Id: <a href="https://cwe.mitre.org/data/definitions/319.html"> 319 </a></h4>
+<h4 id="wasc-id-13_2">WASC Id: 13</h4>
+<h4 id="source-id-3_8">Source ID: 3</h4>
+<h3 id="cookie-slack-detector"><a href="https://www.zaproxy.org/docs/alerts/90027/"> Cookie Slack Detector </a></h3>
+<h5 id="informational-low">Informational (Low)</h5>
+<h3 id="description_10">Description</h3>
+<p>Repeated GET requests: drop a different cookie each time, followed by normal request with all cookies to stabilize session, compare responses against original baseline GET. This can reveal areas where cookie based authentication/attributes are not actually enforced.</p>
+<ul>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/xh/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/xh/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: <code>Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk</code></li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/yua/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/yua/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: <code>Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk</code></li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/yue/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/yue/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: <code>Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk</code></li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/zh-Hans/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/zh-Hans/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: <code>Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk</code></li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/zh-Hant/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/zh-Hant/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: <code>Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
+These cookies affected the response: 
+These cookies did NOT affect the response: .AspNetCore.Antiforgery.VyLW6ORzMgk</code></li>
+</ul>
+<p>Instances: Systemic</p>
+<h3 id="solution_10">Solution</h3>
+<h3 id="reference_10">Reference</h3>
+<ul>
+<li><a href="https://cwe.mitre.org/data/definitions/205.html"> https://cwe.mitre.org/data/definitions/205.html </a></li>
+</ul>
+<h4 id="cwe-id-205">CWE Id: <a href="https://cwe.mitre.org/data/definitions/205.html"> 205 </a></h4>
+<h4 id="wasc-id-45_1">WASC Id: 45</h4>
+<h4 id="source-id-1_1">Source ID: 1</h4>
+<h3 id="non-storable-content"><a href="https://www.zaproxy.org/docs/alerts/10049/"> Non-Storable Content </a></h3>
+<h5 id="informational-medium_1">Informational (Medium)</h5>
+<h3 id="description_11">Description</h3>
+<p>The response contents are not storable by caching components such as proxy servers. If the response does not contain sensitive, personal or user-specific information, it may benefit from being stored and cached, to improve performance.</p>
+<ul>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>302</code></li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>302</code></li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/af/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/af/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>302</code></li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/translate-this-website</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/translate-this-website</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>302</code></li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/translate-this-website/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/translate-this-website/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: <code>302</code></li>
+<li>Other Info: ``</li>
+</ul>
+<p>Instances: Systemic</p>
+<h3 id="solution_11">Solution</h3>
+<p>The content may be marked as storable by ensuring that the following conditions are satisfied:
+The request method must be understood by the cache and defined as being cacheable ("GET", "HEAD", and "POST" are currently defined as cacheable)
+The response status code must be understood by the cache (one of the 1XX, 2XX, 3XX, 4XX, or 5XX response classes are generally understood)
+The "no-store" cache directive must not appear in the request or response header fields
+For caching by "shared" caches such as "proxy" caches, the "private" response directive must not appear in the response
+For caching by "shared" caches such as "proxy" caches, the "Authorization" header field must not appear in the request, unless the response explicitly allows it (using one of the "must-revalidate", "public", or "s-maxage" Cache-Control response directives)
+In addition to the conditions above, at least one of the following conditions must also be satisfied by the response:
+It must contain an "Expires" header field
+It must contain a "max-age" response directive
+For "shared" caches such as "proxy" caches, it must contain a "s-maxage" response directive
+It must contain a "Cache Control Extension" that allows it to be cached
+It must have a status code that is defined as cacheable by default (200, 203, 204, 206, 300, 301, 404, 405, 410, 414, 501).</p>
+<h3 id="reference_11">Reference</h3>
+<ul>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc7234"> https://datatracker.ietf.org/doc/html/rfc7234 </a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc7231"> https://datatracker.ietf.org/doc/html/rfc7231 </a></li>
+<li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html"> https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html </a></li>
+</ul>
+<h4 id="cwe-id-524">CWE Id: <a href="https://cwe.mitre.org/data/definitions/524.html"> 524 </a></h4>
+<h4 id="wasc-id-13_3">WASC Id: 13</h4>
+<h4 id="source-id-3_9">Source ID: 3</h4>
+<h3 id="re-examine-cache-control-directives"><a href="https://www.zaproxy.org/docs/alerts/10015/"> Re-examine Cache-control Directives </a></h3>
+<h5 id="informational-low_1">Informational (Low)</h5>
+<h3 id="description_12">Description</h3>
+<p>The cache-control header has not been set properly or is missing, allowing the browser and proxies to cache content. For static assets like css, js, or image files this might be intended, however, the resources should be reviewed to ensure that no sensitive content will be cached.</p>
+<ul>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/manifest.json</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/assets/rebrand/manifest.json</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>cache-control</code></li>
+<li>Attack: ``</li>
+<li>Evidence: <code>public, max-age=2678400</code></li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/error</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/error</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>cache-control</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/privacy-policies</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/privacy-policies</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>cache-control</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/robots.txt</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/robots.txt</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>cache-control</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/sitemap.xml</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/sitemap.xml</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>cache-control</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+</ul>
+<p>Instances: Systemic</p>
+<h3 id="solution_12">Solution</h3>
+<p>For secure content, ensure the cache-control HTTP header is set with "no-cache, no-store, must-revalidate". If an asset should be cached consider setting the directives "public, max-age, immutable".</p>
+<h3 id="reference_12">Reference</h3>
+<ul>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#web-content-caching"> https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#web-content-caching </a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control"> https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control </a></li>
+<li><a href="https://grayduck.mn/2021/09/13/cache-control-recommendations/"> https://grayduck.mn/2021/09/13/cache-control-recommendations/ </a></li>
+</ul>
+<h4 id="cwe-id-525">CWE Id: <a href="https://cwe.mitre.org/data/definitions/525.html"> 525 </a></h4>
+<h4 id="wasc-id-13_4">WASC Id: 13</h4>
+<h4 id="source-id-3_10">Source ID: 3</h4>
+<h3 id="sec-fetch-dest-header-is-missing"><a href="https://www.zaproxy.org/docs/alerts/90005/"> Sec-Fetch-Dest Header is Missing </a></h3>
+<h5 id="informational-high">Informational (High)</h5>
+<h3 id="description_13">Description</h3>
+<p>Specifies how and where the data would be used. For instance, if the value is audio, then the requested resource must be audio data and not any other type of resource.</p>
+<ul>
+<li>URL: https://elz-staging.support-for-care-leavers.education.gov.uk/en/service-unavailable</li>
+<li>Node Name: <code>https://elz-staging.support-for-care-leavers.education.gov.uk/en/service-unavailable</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Sec-Fetch-Dest</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Sec-Fetch-Dest</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Sec-Fetch-Dest</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+</ul>
+<p>Instances: 3</p>
+<h3 id="solution_13">Solution</h3>
+<p>Ensure that Sec-Fetch-Dest header is included in request headers.</p>
+<h3 id="reference_13">Reference</h3>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Fetch-Dest"> https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Fetch-Dest </a></li>
+</ul>
+<h4 id="cwe-id-352">CWE Id: <a href="https://cwe.mitre.org/data/definitions/352.html"> 352 </a></h4>
+<h4 id="wasc-id-9">WASC Id: 9</h4>
+<h4 id="source-id-3_11">Source ID: 3</h4>
+<h3 id="sec-fetch-mode-header-is-missing"><a href="https://www.zaproxy.org/docs/alerts/90005/"> Sec-Fetch-Mode Header is Missing </a></h3>
+<h5 id="informational-high_1">Informational (High)</h5>
+<h3 id="description_14">Description</h3>
+<p>Allows to differentiate between requests for navigating between HTML pages and requests for loading resources like images, audio etc.</p>
+<ul>
+<li>URL: https://elz-staging.support-for-care-leavers.education.gov.uk/en/service-unavailable</li>
+<li>Node Name: <code>https://elz-staging.support-for-care-leavers.education.gov.uk/en/service-unavailable</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Sec-Fetch-Mode</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Sec-Fetch-Mode</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Sec-Fetch-Mode</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+</ul>
+<p>Instances: 3</p>
+<h3 id="solution_14">Solution</h3>
+<p>Ensure that Sec-Fetch-Mode header is included in request headers.</p>
+<h3 id="reference_14">Reference</h3>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Fetch-Mode"> https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Fetch-Mode </a></li>
+</ul>
+<h4 id="cwe-id-352_1">CWE Id: <a href="https://cwe.mitre.org/data/definitions/352.html"> 352 </a></h4>
+<h4 id="wasc-id-9_1">WASC Id: 9</h4>
+<h4 id="source-id-3_12">Source ID: 3</h4>
+<h3 id="sec-fetch-site-header-is-missing"><a href="https://www.zaproxy.org/docs/alerts/90005/"> Sec-Fetch-Site Header is Missing </a></h3>
+<h5 id="informational-high_2">Informational (High)</h5>
+<h3 id="description_15">Description</h3>
+<p>Specifies the relationship between request initiator's origin and target's origin.</p>
+<ul>
+<li>URL: https://elz-staging.support-for-care-leavers.education.gov.uk/en/service-unavailable</li>
+<li>Node Name: <code>https://elz-staging.support-for-care-leavers.education.gov.uk/en/service-unavailable</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Sec-Fetch-Site</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Sec-Fetch-Site</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Sec-Fetch-Site</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+</ul>
+<p>Instances: 3</p>
+<h3 id="solution_15">Solution</h3>
+<p>Ensure that Sec-Fetch-Site header is included in request headers.</p>
+<h3 id="reference_15">Reference</h3>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Fetch-Site"> https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Fetch-Site </a></li>
+</ul>
+<h4 id="cwe-id-352_2">CWE Id: <a href="https://cwe.mitre.org/data/definitions/352.html"> 352 </a></h4>
+<h4 id="wasc-id-9_2">WASC Id: 9</h4>
+<h4 id="source-id-3_13">Source ID: 3</h4>
+<h3 id="sec-fetch-user-header-is-missing"><a href="https://www.zaproxy.org/docs/alerts/90005/"> Sec-Fetch-User Header is Missing </a></h3>
+<h5 id="informational-high_3">Informational (High)</h5>
+<h3 id="description_16">Description</h3>
+<p>Specifies if a navigation request was initiated by a user.</p>
+<ul>
+<li>URL: https://elz-staging.support-for-care-leavers.education.gov.uk/en/service-unavailable</li>
+<li>Node Name: <code>https://elz-staging.support-for-care-leavers.education.gov.uk/en/service-unavailable</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Sec-Fetch-User</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Sec-Fetch-User</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Sec-Fetch-User</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+</ul>
+<p>Instances: 3</p>
+<h3 id="solution_16">Solution</h3>
+<p>Ensure that Sec-Fetch-User header is included in user initiated requests.</p>
+<h3 id="reference_16">Reference</h3>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Fetch-User"> https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Fetch-User </a></li>
+</ul>
+<h4 id="cwe-id-352_3">CWE Id: <a href="https://cwe.mitre.org/data/definitions/352.html"> 352 </a></h4>
+<h4 id="wasc-id-9_3">WASC Id: 9</h4>
+<h4 id="source-id-3_14">Source ID: 3</h4>
+<h3 id="session-management-response-identified"><a href="https://www.zaproxy.org/docs/alerts/10112/"> Session Management Response Identified </a></h3>
+<h5 id="informational-medium_2">Informational (Medium)</h5>
+<h3 id="description_17">Description</h3>
+<p>The given response has been identified as containing a session management token. The 'Other Info' field contains a set of header tokens that can be used in the Header Based Session Management Method. If the request is in a context which has a Session Management Method set to "Auto-Detect" then this rule will change the session management to use the tokens identified.</p>
+<ul>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>.AspNetCore.Antiforgery.VyLW6ORzMgk</code></li>
+<li>Attack: ``</li>
+<li>Evidence: <code>.AspNetCore.Antiforgery.VyLW6ORzMgk</code></li>
+<li>Other Info: <code>cookie:.AspNetCore.Antiforgery.VyLW6ORzMgk</code></li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>.AspNetCore.Antiforgery.VyLW6ORzMgk</code></li>
+<li>Attack: ``</li>
+<li>Evidence: <code>.AspNetCore.Antiforgery.VyLW6ORzMgk</code></li>
+<li>Other Info: <code>cookie:.AspNetCore.Antiforgery.VyLW6ORzMgk</code></li>
+</ul>
+<p>Instances: 2</p>
+<h3 id="solution_17">Solution</h3>
+<p>This is an informational alert rather than a vulnerability and so there is nothing to fix.</p>
+<h3 id="reference_17">Reference</h3>
+<ul>
+<li><a href="https://www.zaproxy.org/docs/desktop/addons/authentication-helper/session-mgmt-id/"> https://www.zaproxy.org/docs/desktop/addons/authentication-helper/session-mgmt-id/ </a></li>
+</ul>
+<h4 id="source-id-3_15">Source ID: 3</h4>
+<h3 id="storable-and-cacheable-content"><a href="https://www.zaproxy.org/docs/alerts/10049/"> Storable and Cacheable Content </a></h3>
+<h5 id="informational-medium_3">Informational (Medium)</h5>
+<h3 id="description_18">Description</h3>
+<p>The response contents are storable by caching components such as proxy servers, and may be retrieved directly from the cache, rather than from the origin server by the caching servers, in response to similar requests from other users. If the response data is sensitive, personal or user-specific, this may result in sensitive information being leaked. In some cases, this may even result in a user gaining complete control of the session of another user, depending on the configuration of the caching components in use in their environment. This is primarily an issue where "shared" caching servers such as "proxy" caches are configured on the local network. This configuration is typically found in corporate or educational environments, for instance.</p>
+<ul>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/robots.txt</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/robots.txt</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: ``</li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: <code>In the absence of an explicitly specified caching lifetime directive in the response, a liberal lifetime heuristic of 1 year was assumed. This is permitted by rfc7234.</code></li>
+</ul>
+<p>Instances: 1</p>
+<h3 id="solution_18">Solution</h3>
+<p>Validate that the response does not contain sensitive, personal or user-specific information. If it does, consider the use of the following HTTP response headers, to limit, or prevent the content being stored and retrieved from the cache by another user:
+Cache-Control: no-cache, no-store, must-revalidate, private
+Pragma: no-cache
+Expires: 0
+This configuration directs both HTTP 1.0 and HTTP 1.1 compliant caching servers to not store the response, and to not retrieve the response (without validation) from the cache, in response to a similar request.</p>
+<h3 id="reference_18">Reference</h3>
+<ul>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc7234"> https://datatracker.ietf.org/doc/html/rfc7234 </a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc7231"> https://datatracker.ietf.org/doc/html/rfc7231 </a></li>
+<li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html"> https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html </a></li>
+</ul>
+<h4 id="cwe-id-524_1">CWE Id: <a href="https://cwe.mitre.org/data/definitions/524.html"> 524 </a></h4>
+<h4 id="wasc-id-13_5">WASC Id: 13</h4>
+<h4 id="source-id-3_16">Source ID: 3</h4>
+<h3 id="user-agent-fuzzer"><a href="https://www.zaproxy.org/docs/alerts/10104/"> User Agent Fuzzer </a></h3>
+<h5 id="informational-medium_4">Informational (Medium)</h5>
+<h3 id="description_19">Description</h3>
+<p>Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</p>
+<ul>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/vi/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/vi/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Header User-Agent</code></li>
+<li>Attack: <code>Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)</code></li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/xh/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/xh/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Header User-Agent</code></li>
+<li>Attack: <code>Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)</code></li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/yo/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/yo/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Header User-Agent</code></li>
+<li>Attack: <code>Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)</code></li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/yua/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/yua/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Header User-Agent</code></li>
+<li>Attack: <code>Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)</code></li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/zu/</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/zu/</code></li>
+<li>Method: <code>GET</code></li>
+<li>Parameter: <code>Header User-Agent</code></li>
+<li>Attack: <code>Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)</code></li>
+<li>Evidence: ``</li>
+<li>Other Info: ``</li>
+</ul>
+<p>Instances: Systemic</p>
+<h3 id="solution_19">Solution</h3>
+<h3 id="reference_19">Reference</h3>
+<ul>
+<li><a href="https://owasp.org/wstg"> https://owasp.org/wstg </a></li>
+</ul>
+<h4 id="source-id-1_2">Source ID: 1</h4>
+<h3 id="user-controllable-html-element-attribute-potential-xss"><a href="https://www.zaproxy.org/docs/alerts/10031/"> User Controllable HTML Element Attribute (Potential XSS) </a></h3>
+<h5 id="informational-low_2">Informational (Low)</h5>
+<h3 id="description_20">Description</h3>
+<p>This check looks at user-supplied input in query string parameters and POST data to identify where certain HTML attribute values might be controlled. This provides hot-spot detection for XSS (cross-site scripting) that will require further review by a security analyst to determine exploitability.</p>
+<ul>
+<li>URL: https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy</li>
+<li>Node Name: <code>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy ()(AcceptCookies,__RequestVerificationToken)</code></li>
+<li>Method: <code>POST</code></li>
+<li>Parameter: <code>AcceptCookies</code></li>
+<li>Attack: ``</li>
+<li>Evidence: ``</li>
+<li>Other Info: `User-controlled HTML attribute values were found. Try injecting special characters to see if XSS might be possible. The page at the following URL:</li>
+</ul>
+<p>https://s272t01-uks-cl-web-fd-endpoint-b4avgyhdggbyd8er.a03.azurefd.net/en/cookie-policy</p>
+<p>appears to include user input in:
+a(n) [input] tag [data-val] attribute</p>
+<p>The user input found was:
+AcceptCookies=True</p>
+<p>The user-controlled value was:
+true`</p>
+<p>Instances: 1</p>
+<h3 id="solution_20">Solution</h3>
+<p>Validate all input and sanitize output it before writing to any HTML attributes.</p>
+<h3 id="reference_20">Reference</h3>
+<ul>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"> https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html </a></li>
+</ul>
+<h4 id="cwe-id-20">CWE Id: <a href="https://cwe.mitre.org/data/definitions/20.html"> 20 </a></h4>
+<h4 id="wasc-id-20">WASC Id: 20</h4>
+<h4 id="source-id-3_17">Source ID: 3</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+  <footer class="md-footer">
+    <div class="md-footer-meta__inner md-grid">
+
+      <div class="md-copyright">
+
+        
+
+        Made with 
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        <br><br>
+        <img src="../../assets/images/ogl.png" >
+        All content is available under the 
+        <a
+            href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+            target="_blank" rel="noopener"
+        >
+            Open Government Licence v3.0</a>
+        , except where otherwise stated
+      </div>
+
+      <div class="md-copyright">
+        <a 
+          href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/"
+          target="_blank" rel="noopener">
+          <img src="../../assets/images/govuk-crest.svg" width=125px height=102px;>
+          <br>
+          © Crown copyright
+        </a>
+      </div>
+
+    </div>
+  </footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "content.code.copy", "content.action.edit", "content.action.view", "toc.integrate"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>
