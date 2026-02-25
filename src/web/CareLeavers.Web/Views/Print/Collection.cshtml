@@ -39,7 +39,7 @@
 }
 
 <!DOCTYPE html>
-<html class="@(SiteConfiguration.Rebrand ? "govuk-template--rebranded" : "govuk-template")" dir="@language.Direction" lang="@languageCode">
+<html class="govuk-template" dir="@language.Direction" lang="@languageCode">
 
 <head>
     <meta charset="utf-8"/>
@@ -75,12 +75,14 @@
 <div id="collection-header">
     @if (SiteConfiguration.Rebrand)
     {
-        <header class="govuk-header" data-module="govuk-header">
-            <div class="govuk-header__container govuk-width-container">
-                <div class="govuk-header__logo">
-                    <a class="govuk-header__link govuk-header__link--homepage" href="~/@languageCode/@configViewModel.ContentfulConfiguration.HomePage?.Slug" aria-label="@configViewModel.ContentfulConfiguration.ServiceName homepage">
-                        <img src="/assets/department-for-education_black.png" alt="@configViewModel.ContentfulConfiguration.ServiceName homepage" class="govuk-header__logotype">
-                    </a>
+        <header class="govuk-template__header">
+            <div class="govuk-header" data-module="govuk-header">
+                <div class="govuk-header__container govuk-width-container">
+                    <div class="govuk-header__logo">
+                        <a class="govuk-header__link govuk-header__link--homepage" href="~/@languageCode/@configViewModel.ContentfulConfiguration.HomePage?.Slug" aria-label="@configViewModel.ContentfulConfiguration.ServiceName homepage">
+                            <img src="/assets/department-for-education_black.png" alt="@configViewModel.ContentfulConfiguration.ServiceName homepage" class="govuk-header__logotype">
+                        </a>
+                    </div>
                 </div>
             </div>
         </header>

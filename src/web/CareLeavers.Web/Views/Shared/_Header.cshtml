@@ -21,75 +21,17 @@
     <partial name="_CookieConsentPartial" model="@Model"/>
 }
 
-<div class="govuk-width-container">
-    <div class="govuk-phase-banner">
-        <div class="govuk-phase-banner__content">
-            <strong class="govuk-phase-banner__content__tag govuk-tag">
-                @Model.ContentfulConfiguration.Phase.ToString()
-            </strong>
-            <span class="govuk-phase-banner__text">
-                This is a new service.
-                @if (!string.IsNullOrEmpty(Model.ContentfulConfiguration.FeedbackText) && Model.ShowNavigation)
-                {
-                    <text>
-                        Help us improve it and <a class="govuk-link" href="@Model.ContentfulConfiguration.FeedbackUrl" target="_blank" rel="nofollow">
-                            @Model.ContentfulConfiguration.FeedbackText (opens in new tab)</a>. 
-                    </text>
-                }
-            </span>
-            @if (Model.ContentfulConfiguration.TranslationEnabled && Model.ShowLanguage)
-        {
-            var currentSlug = ViewContext.RouteData.Values["slug"]?.ToString() ?? Model.ContentfulConfiguration.HomePage?.Slug;
-            var currentLanguage = ViewContext.RouteData.Values["languageCode"]?.ToString() ?? "en";
-            var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
-            var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
-            <div class="translate">
-
-                @switch (currentController)
-                {
-                    case "Contentful" when currentLanguage != "en":
-                        @Html.ActionLink(Model.Language.NativeName,
-                            "GetContent",
-                            "Contentful",
-                            new { slug = currentSlug, languageCode = "en" },
-                            new { @class = "govuk-link", rel = "nofollow", hreflang = "en" })
-                        break;
-                    case "Pages" when currentLanguage != "en":
-                        @Html.ActionLink(Model.Language.NativeName,
-                            currentAction,
-                            "Pages",
-                            new { languageCode = "en" },
-                            new { @class = "govuk-link", rel = "nofollow", hreflang = "en" })
-                        break;
-                    case "Pages":
-                        @Html.ActionLink(Model.Language.NativeName,
-                            "Page",
-                            "Translation",
-                            new { page = currentAction },
-                            new { @class = "govuk-link", rel = "nofollow" })
-                        break;
-                    default:
-                        @Html.ActionLink(Model.Language.NativeName,
-                            "Index",
-                            "Translation",
-                            new { slug = currentSlug },
-                            new { @class = "govuk-link", rel = "nofollow" })
-                        break;
-                }
-            </div>
-        }
-        </div>
-    </div>
-</div>
-
 @if (SiteConfiguration.Rebrand)
 {
-    <header class="govuk-header" data-module="govuk-header">
-        <div class="govuk-header__container govuk-width-container">
-            <div class="govuk-header__logo">
-                <a class="govuk-header__link govuk-header__link--homepage" href="@Url.Action("GetContent", "Contentful", values: new { slug = Model.ContentfulConfiguration.HomePage?.Slug, languageCode })" aria-label="@Model.ContentfulConfiguration.ServiceName homepage">
-                    <img src="/assets/department-for-education_white.png" alt="@Model.ContentfulConfiguration.ServiceName homepage" class="govuk-header__logotype">
-                </a>
+    <header class="govuk-template__header">
+        @await Html.PartialAsync("_PhaseBanner", Model)
+        <div class="govuk-header" data-module="govuk-header">
+            <div class="govuk-header__container govuk-width-container">
+                <div class="govuk-header__logo">
+                    <a class="govuk-header__link govuk-header__link--homepage" href="@Url.Action("GetContent", "Contentful", values: new { slug = Model.ContentfulConfiguration.HomePage?.Slug, languageCode })" aria-label="@Model.ContentfulConfiguration.ServiceName homepage">
+                        <img src="/assets/department-for-education_white.png" alt="@Model.ContentfulConfiguration.ServiceName homepage" class="govuk-header__logotype">
+                    </a>
+                </div>
             </div>
         </div>
     </header>
@@ -97,6 +39,7 @@
 else
 {
     <header class="dfe-header" role="banner">
+        @await Html.PartialAsync("_PhaseBanner", Model)
         <div class="dfe-width-container dfe-header__container">
             <div class="dfe-header__logo">
                 <a class="dfe-header__link dfe-header__link--service " href="@Url.Action("GetContent", "Contentful", values: new { slug = Model.ContentfulConfiguration.HomePage?.Slug, languageCode })" aria-label="@Model.ContentfulConfiguration.ServiceName homepage">
