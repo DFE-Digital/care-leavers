@@ -1,9 +1,11 @@
 resource "azurerm_key_vault" "key-vault" {
   location            = local.location
-  name                = "${local.service_prefix}-keyvault"
+  name                = "${local.prefix}kv-uks-cl"
   resource_group_name = azurerm_resource_group.core-rg.name
   sku_name            = "standard"
   tenant_id           = data.azurerm_client_config.client.tenant_id
+
+  purge_protection_enabled = true
 
   network_acls {
     default_action = "Allow"
@@ -74,18 +76,18 @@ resource "azurerm_key_vault_secret" "application-insights-connection-string" {
   depends_on = [azurerm_key_vault_access_policy.github-kv-access]
 }
 
-resource "azurerm_key_vault_secret" "azure-translation-access-key" {
-  key_vault_id = azurerm_key_vault.key-vault.id
-  name         = "azure-translation-access-key"
-  value        = var.azure_translation_access_key
-
-  depends_on = [azurerm_key_vault_access_policy.github-kv-access]
-}
-
 resource "azurerm_key_vault_secret" "pdf-generation-api-key" {
   key_vault_id = azurerm_key_vault.key-vault.id
   name         = "pdf-generation-api-key"
   value        = var.pdf_generation_api_key
+
+  depends_on = [azurerm_key_vault_access_policy.github-kv-access]
+}
+
+resource "azurerm_key_vault_secret" "azure-translation-access-key" {
+  key_vault_id = azurerm_key_vault.key-vault.id
+  name         = "azure-translation-access-key"
+  value        = azurerm_cognitive_account.ai-translator.primary_access_key
 
   depends_on = [azurerm_key_vault_access_policy.github-kv-access]
 }
