@@ -54,7 +54,7 @@ oai-search|chatgpt|gptbot|cohere-ai|google-extended|amazonbot|applebot|duckassis
 ### DfE Tools
 
 A number of tools are used within DfE which allow Civil Servants and Contractors to share information.
-These tools are also hosted outside of the UK, so we have included exemptions to the geoblocking for the followign tools:
+These tools are also hosted outside of the UK, so we have included exemptions to the geoblocking for the following tools:
 
 - Slack
 - Office 365
