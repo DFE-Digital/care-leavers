@@ -45,7 +45,9 @@
     height: 80px !important;
   }
 
-  .govuk-template--rebranded {
+  .govuk-template {
+    background-color: inherit;
+    
     .govuk-header {
       background-color: #ffffff;
     }
@@ -59,6 +61,10 @@
     .govuk-header__link:focus .govuk-header__logotype {
       content: url(/assets/department-for-education_black.png);
       height: 30px;
+    }
+    
+    .govuk-footer {
+      display: none;
     }
   }
 
@@ -133,10 +139,6 @@
 
   .govuk-grid-column-two-thirds {
     width: 100%;
-  }
-
-  .govuk-template {
-    background-color: inherit;
   }
 
   p, ul, ol {
@@ -238,14 +240,6 @@
   //  font-size: inherit;
   //  word-wrap: inherit;
   //}
-
-  .govuk-template--rebranded .govuk-footer {
-    display: none;
-  }
-
-  .govuk-template--rebranded {
-    background-color: inherit;
-  }
 
   .dfe-card-link--header {
     text-decoration: none !important;

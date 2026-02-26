@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="govuk-template--rebranded" dir="ltr" lang="en">
+<html class="govuk-template" dir="ltr" lang="en">
 	<head>
 		<script nonce="mock-nonce">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","test-clarity");(function(){window.clarity('consent',false);}());</script>
 		<link rel="preload" href="https://cdn.shareaholic.net/assets/pub/shareaholic.js" as="script">
@@ -9,11 +9,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Find support for care leavers</title>
 		<style nonce="mock-nonce">:root{--generated:TODAY';--siteurl:'https://localhost/en/home'}</style>
-		<link rel="icon" sizes="48x48" href="/assets/rebrand/images/favicon.ico">
-		<link rel="icon" sizes="any" type="image/svg+xml" href="/assets/rebrand/images/favicon.svg">
-		<link rel="mask-icon" href="/assets/rebrand/images/govuk-icon-mask.svg" color="#0b0c0c">
-		<link rel="apple-touch-icon" sizes="180x180" href="/assets/rebrand/images/govuk-icon-180.png">
-		<link rel="manifest" href="/assets/rebrand/manifest.json">
+		<link rel="icon" sizes="48x48" href="/assets/images/favicon.ico">
+		<link rel="icon" sizes="any" type="image/svg+xml" href="/assets/images/favicon.svg">
+		<link rel="mask-icon" href="/assets/images/govuk-icon-mask.svg" color="#0b0c0c">
+		<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/govuk-icon-180.png">
+		<link rel="manifest" href="/assets/manifest.json">
 		<meta name="apple-mobile-web-app-title" content="Care leavers">
 		<link rel="stylesheet" href="/css/application.css">
 		<link rel="stylesheet" href="/css/print.css">
@@ -44,8 +44,8 @@
 				<strong>IntegrationTest</strong>
 				version of Care leavers website.</div>
 		</div>
-		<div class="govuk-width-container">
-			<div class="govuk-phase-banner">
+		<header class="govuk-template__header">
+			<div class="govuk-phase-banner govuk-width-container">
 				<div class="govuk-phase-banner__content">
 					<strong class="govuk-phase-banner__content__tag govuk-tag">
 						Beta
@@ -58,13 +58,13 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<header class="govuk-header" data-module="govuk-header">
-			<div class="govuk-header__container govuk-width-container">
-				<div class="govuk-header__logo">
-					<a class="govuk-header__link govuk-header__link--homepage" href="/en/home" aria-label="Care leavers homepage">
-						<img src="/assets/department-for-education_white.png" alt="Care leavers homepage" class="govuk-header__logotype">
-					</a>
+			<div class="govuk-header" data-module="govuk-header">
+				<div class="govuk-header__container govuk-width-container">
+					<div class="govuk-header__logo">
+						<a class="govuk-header__link govuk-header__link--homepage" href="/en/home" aria-label="Care leavers homepage">
+							<img src="/assets/department-for-education_white.png" alt="Care leavers homepage" class="govuk-header__logotype">
+						</a>
+					</div>
 				</div>
 			</div>
 		</header>
@@ -228,7 +228,7 @@
 						<h2 class="govuk-heading-l" id="Guides">Guides</h2>
 						<section class="dfe-section alternating-image-text">
 							<div class="govuk-!-margin-top-3 govuk-!-margin-bottom-5">
-								<div class="govuk-grid-row split-panel" style="background:#f3f2f1;vertical-align:text-top">
+								<div class="govuk-grid-row split-panel" style="background:#f3f3f3;vertical-align:text-top">
 									<div class="govuk-grid-column-one-half image-column">
 										<div class="image-container" style="background-image:url('//images.ctfassets.net/3y72rykjd1o5/3AJ5VJg0WfmJImY90KOpQU/39af1e2a663401b7607b9fac86c50d1e/image.png')"></div>
 									</div>
@@ -261,36 +261,38 @@
 				</div>
 			</div>
 		</section>
-		<footer class="govuk-footer" role="contentinfo">
-			<div class="govuk-width-container">
-				<div class="govuk-footer__meta">
-					<div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
-						<h2 class="govuk-visually-hidden">Support links</h2>
-						<ul class="govuk-footer__inline-list">
-							<li class="govuk-footer__inline-list-item">
-								<a class="govuk-footer__link" href="/en/cookie-policy">Cookie policy</a>
-							</li>
-							<li class="govuk-footer__inline-list-item">
-								<a class="govuk-footer__link" href="/en/accessibility-statement">Accessibility statement</a>
-							</li>
-							<li class="govuk-footer__inline-list-item">
-								<a class="govuk-footer__link" href="/en/privacy-policies">Privacy policies</a>
-							</li>
-						</ul>
-						<svg aria-hidden="true" focusable="false" class="govuk-footer__licence-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 483.2 195.7" height="17" width="41">
-							<path fill="currentColor" d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145"></path>
-						</svg>
-						<span class="govuk-footer__licence-description">
-							All content is available under the
-							<a class="govuk-footer__link" href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">
-								Open Government Licence v3.0
-							</a>, except where otherwise stated
-						</span>
-					</div>
-					<div class="govuk-footer__meta-item">
-						<a class="govuk-footer__link govuk-footer__copyright-logo" href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/">
-							© Crown copyright
-						</a>
+		<footer class="govuk-template__footer">
+			<div class="govuk-footer" role="contentinfo">
+				<div class="govuk-width-container">
+					<div class="govuk-footer__meta">
+						<div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+							<h2 class="govuk-visually-hidden">Support links</h2>
+							<ul class="govuk-footer__inline-list">
+								<li class="govuk-footer__inline-list-item">
+									<a class="govuk-footer__link" href="/en/cookie-policy">Cookie policy</a>
+								</li>
+								<li class="govuk-footer__inline-list-item">
+									<a class="govuk-footer__link" href="/en/accessibility-statement">Accessibility statement</a>
+								</li>
+								<li class="govuk-footer__inline-list-item">
+									<a class="govuk-footer__link" href="/en/privacy-policies">Privacy policies</a>
+								</li>
+							</ul>
+							<svg aria-hidden="true" focusable="false" class="govuk-footer__licence-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 483.2 195.7" height="17" width="41">
+								<path fill="currentColor" d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145"></path>
+							</svg>
+							<span class="govuk-footer__licence-description">
+								All content is available under the
+								<a class="govuk-footer__link" href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">
+									Open Government Licence v3.0
+								</a>, except where otherwise stated
+							</span>
+						</div>
+						<div class="govuk-footer__meta-item">
+							<a class="govuk-footer__link govuk-footer__copyright-logo" href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/">
+								© Crown copyright
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
