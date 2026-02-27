@@ -84,10 +84,11 @@
     <partial name="Breadcrumbs" model="@Model"/>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+            @await Html.PartialAsync("_TranslationNotificationBanner")
             <h1 class="govuk-heading-xl">
                 @Model.Title
             </h1>
-            
+
             @if (Model.Header != null)
             {
                 <gds-contentful-rich-text document="@Model.Header" larger-text="true"></gds-contentful-rich-text>
