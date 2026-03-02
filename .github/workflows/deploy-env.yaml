@@ -109,7 +109,7 @@ jobs:
     name: Deploying site to ${{ (github.event_name == 'release' && 'Production') || (github.event_name == 'push' && 'Test') || github.event.inputs.environment }}
     runs-on: ubuntu-latest
     needs: [package]
-    if: github.event_name == 'push' || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'push' || github.event_name == 'release' ||  github.event_name == 'workflow_dispatch' 
     permissions:
       contents: read
       id-token: write
@@ -164,11 +164,11 @@ jobs:
         uses: azure/cli@v2
         env:
           ENVIRONMENT_PREFIX: "s272${{ vars.ENVIRONMENT_PREFIX }}"
-          CIP_ENVIRONMENT: ${{ vars.CIP_ENVIRONMENT }}
+          ELZ_ENVIRONMENT: ${{ vars.ELZ_ENVIRONMENT }}
         with:
           azcliversion: latest
           inlineScript: |
-            az group create --name ${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate --location uksouth --output none --tags "Environment=${CIP_ENVIRONMENT}" "Product=Design Operations" "Service=Newly onboarded" "Service offering=Design operations"
+            az group create --name ${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate --location uksouth --output none --tags "Environment=${ELZ_ENVIRONMENT}" "Product=Support for care leavers" "Service offering=Support for care leavers"
             az storage account create --name ${ENVIRONMENT_PREFIX}cltfstate --resource-group ${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate --location uksouth --sku Standard_LRS --min-tls-version TLS1_2 --https-only true
             az storage container create --name tfstate --account-name ${ENVIRONMENT_PREFIX}cltfstate
 
@@ -190,7 +190,7 @@ jobs:
         env:
           TF_VAR_aspnetcore_environment: ${{ vars.ELZ_ENVIRONMENT }}
           TF_VAR_environment_prefix: ${{ vars.ENVIRONMENT_PREFIX }}
-          TF_VAR_elz_environment: ${{ vars.CIP_ENVIRONMENT }}
+          TF_VAR_elz_environment: ${{ vars.ENVIRONMENT_TAG }}
           TF_VAR_contentful_delivery_api_key: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
           TF_VAR_contentful_preview_api_key: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
           TF_VAR_contentful_management_api_key: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
