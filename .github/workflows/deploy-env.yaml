@@ -239,7 +239,7 @@ jobs:
 
       - name: Clear Cache
         id: clear-cache
-        uses: fjogeleit/http-request-action@v1
+        uses: fjogeleit/http-request-action@v2
         if: ${{ steps.vars.outputs.clear_cache == 'True' }}
         with:
           url: "https://${{ vars.CUSTOM_DOMAIN }}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f"
