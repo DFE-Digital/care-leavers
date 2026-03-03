@@ -32,8 +32,7 @@ export class BasePage {
     public readonly mobileMenuLinks: Locator;
     public readonly mobileMenuContainer: Locator;
 
-    // Locators for social media share buttons
-    public readonly shareButtonsContainer: Locator;
+    // Locators for print this page button
     public readonly printShareButton: Locator;
 
     // Locators for Metadata column
@@ -82,8 +81,7 @@ export class BasePage {
         this.mobileMenuContainer = page.locator('#navigation');
         this.mobileMenuLinks = page.locator('#navigation a');
 
-        // Locators for social media share buttons
-        this.shareButtonsContainer = page.locator('.shareaholic-share-buttons');
+        // Locators for print this page button
         this.printShareButton = page.locator('#print-link');
 
         // Locators for Metadata definitions
@@ -291,10 +289,9 @@ export class BasePage {
         }
     }
 
-    //Verify that the Social Media and Share buttons are visible 
+    //Verify that the Share button is visible 
     async verifyShareButtonsVisibility() {
         await Promise.all([
-            expect(this.shareButtonsContainer).toBeVisible(),
             expect(this.printShareButton).toBeVisible()
         ]);
     }
