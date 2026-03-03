@@ -7,11 +7,8 @@ on:
         type: choice
         description: "Environment to run scan against"
         required: true
-        default: "Test"
+        default: "elz-test"
         options:
-          - "Test"
-          - "Staging"
-          - "Production"
           - "elz-test"
           - "elz-staging"
           - "elz-production"
@@ -24,7 +21,7 @@ jobs:
     environment:
       name: ${{ github.event.inputs.environment }}
     steps:
-      - name: 'Checkout source'
+      - name: "Checkout source"
         uses: actions/checkout@v6
 
       - name: "Az CLI login"
@@ -52,13 +49,23 @@ jobs:
           rules_file_name: "src/rules.tsv"
           cmd_options: "-a -z -c src/zapscan.options"
           allow_issue_writing: "false"
+          artifact_name: "zap-action-report"
 
-      - name: Commit and Push Report
+      - name: Download ZAP report artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: zap-action-report
+          path: ./zap-report
+
+      - name: List all files in zap-report
+        run: find ./zap-report
+
+      - name: Output ZAP report to GitHub Step Summary
+        if: always()
         run: |
-          mv report_md.md docs/scans/Security-Scan-Report.md
-          git add docs/scans/Security-Scan-Report.md
-          git config --global user.name "Documentation Bot"
-          git config --global user.email "documentation-bot-bot@users.noreply.github.com"
-          git commit -am "Generated zap scan report"
-          git push
-        continue-on-error: true
+          if [ -f ./zap-report/report_md.md ]; then
+            echo "## 🔍 OWASP ZAP Security Scan Report" >> $GITHUB_STEP_SUMMARY
+            cat ./zap-report/report_md.md >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ ZAP report_md.md not found." >> $GITHUB_STEP_SUMMARY
+          fi
