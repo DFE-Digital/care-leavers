@@ -7,19 +7,22 @@ on:
         type: choice
         description: "Environment to run scan against"
         required: true
-        default: "elz-test"
+        default: "elz-staging"
         options:
           - "elz-test"
           - "elz-staging"
           - "elz-production"
 
-run-name: Running ZAP scan against ${{ github.event.inputs.environment }}
+  schedule:
+    - cron: "0 3 * * 1-5"
+
+run-name: Running ZAP scan against ${{ github.event.inputs.environment || 'elz-staging'}}
 jobs:
   zap_scan:
     name: "Run Zap Scan"
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.event.inputs.environment }}
+      name: ${{ github.event.inputs.environment || 'elz-staging' }}
     steps:
       - name: "Checkout source"
         uses: actions/checkout@v6
