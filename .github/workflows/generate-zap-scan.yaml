@@ -68,7 +68,7 @@ jobs:
             echo "⚠️ **Full report exceeds 1MB limit.**" >> $GITHUB_STEP_SUMMARY
             echo "[Download Full Report from Artifacts](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
             echo "---" >> $GITHUB_STEP_SUMMARY
-            grep -A 20 "Alerts" zap_report.md >> $GITHUB_STEP_SUMMARY
+            grep -A 20 "Alerts" ./zap-report/report_md.md >> $GITHUB_STEP_SUMMARY
           else
             echo "⚠️ ZAP report_md.md not found." >> $GITHUB_STEP_SUMMARY
           fi
