@@ -23,7 +23,7 @@ test.describe('Shared Website Functionalities', () => {
                 await basePage.navigateTo(path);
 
                 // Validate Website Name Link
-                await expect(basePage.WebsiteNameLink).toHaveText(/Department for/i);
+                await expect(basePage.WebsiteNameLink).toHaveText(/Support for/i);
                 await expect(basePage.WebsiteNameLink).toBeVisible();
                 
                 // Validate logo has accessible name
