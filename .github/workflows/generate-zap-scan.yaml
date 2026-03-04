@@ -7,24 +7,24 @@ on:
         type: choice
         description: "Environment to run scan against"
         required: true
-        default: "Test"
+        default: "elz-staging"
         options:
-          - "Test"
-          - "Staging"
-          - "Production"
           - "elz-test"
           - "elz-staging"
           - "elz-production"
 
-run-name: Running ZAP scan against ${{ github.event.inputs.environment }}
+  schedule:
+    - cron: "0 3 * * 1-5"
+
+run-name: Running ZAP scan against ${{ github.event.inputs.environment || 'elz-staging'}}
 jobs:
   zap_scan:
     name: "Run Zap Scan"
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.event.inputs.environment }}
+      name: ${{ github.event.inputs.environment || 'elz-staging' }}
     steps:
-      - name: 'Checkout source'
+      - name: "Checkout source"
         uses: actions/checkout@v6
 
       - name: "Az CLI login"
@@ -44,7 +44,7 @@ jobs:
           echo "FRONTDOOR_URL=$FRONTDOOR_URL" >>${GITHUB_ENV}
 
       - name: "Running ZAP scan against https://${{ env.FRONTDOOR_URL }}"
-        uses: zaproxy/action-full-scan@v0.12.0
+        uses: zaproxy/action-full-scan@v0.13.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           docker_name: "ghcr.io/zaproxy/zaproxy:stable"
@@ -52,13 +52,26 @@ jobs:
           rules_file_name: "src/rules.tsv"
           cmd_options: "-a -z -c src/zapscan.options"
           allow_issue_writing: "false"
+          artifact_name: "zap-action-report"
 
-      - name: Commit and Push Report
+      - name: Download ZAP report artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: zap-action-report
+          path: ./zap-report
+
+      - name: List all files in zap-report
+        run: find ./zap-report
+
+      - name: Output ZAP report to GitHub Step Summary
+        if: always()
         run: |
-          mv report_md.md docs/scans/Security-Scan-Report.md
-          git add docs/scans/Security-Scan-Report.md
-          git config --global user.name "Documentation Bot"
-          git config --global user.email "documentation-bot-bot@users.noreply.github.com"
-          git commit -am "Generated zap scan report"
-          git push
-        continue-on-error: true
+          if [ -f ./zap-report/report_md.md ]; then
+            echo "## 🛡️ ZAP Security Scan Summary" >> $GITHUB_STEP_SUMMARY
+            echo "⚠️ **Full report exceeds 1MB limit.**" >> $GITHUB_STEP_SUMMARY
+            echo "[Download Full Report from Artifacts](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+            echo "---" >> $GITHUB_STEP_SUMMARY
+            grep -A 20 "Alerts" ./zap-report/report_md.md >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ ZAP report_md.md not found." >> $GITHUB_STEP_SUMMARY
+          fi
