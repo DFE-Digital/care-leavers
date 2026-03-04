@@ -13,7 +13,7 @@
 |:--------------------:|:--------------------------------------------------|
 |  Azure App Service   | 99.95%                                            |
 |   Azure Front Door   | 99.95%                                            |
-|  Azure Redis Cache   | 99.99%                                            |
+|  Azure Managed Redis | 99.99%                                            |
 | Azure AI Translation | 99.99%                                            |
 |    Contentful API    | [99.99%](https://www.contentful.com/enterprise/)  |
 

@@ -382,3 +382,29 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
     }
   }
 }
+
+resource "azurerm_monitor_diagnostic_setting" "frontdoor_logging" {
+  name                       = "${var.environment_prefix}-frontdoor-to-log-analytics"
+  target_resource_id         = azurerm_cdn_frontdoor_profile.frontdoor-web-profile.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.log-analytics-workspace.id
+
+  # Front Door Access Logs
+  enabled_log {
+    category = "FrontDoorAccessLog"
+  }
+
+  # Web Application Firewall (WAF) Logs
+  enabled_log {
+    category = "FrontDoorWebApplicationFirewallLog"
+  }
+
+  # Health Probe Logs
+  enabled_log {
+    category = "FrontDoorHealthProbeLog"
+  }
+
+  # All Metrics
+  enabled_metric {
+    category = "AllMetrics"
+  }
+}
