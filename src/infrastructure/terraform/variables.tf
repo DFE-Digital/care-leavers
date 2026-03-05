@@ -1,5 +1,5 @@
-variable "cip_environment" {
-  description = "The CIP environment to match subscription (e.g. Dev)"
+variable "elz_environment" {
+  description = "The ELZ environment to match subscription (e.g. Dev)"
   type        = string
 }
 
@@ -75,19 +75,6 @@ variable "aspnetcore_environment" {
   type        = string
 }
 
-variable "azure_translation_access_key" {
-  description = "Azure Translation Access Key"
-  type        = string
-  sensitive   = true
-  default     = ""
-}
-
-variable "azure_translation_document_endpoint" {
-  description = "Azure Document Translation Endpoint"
-  type        = string
-  default     = ""
-}
-
 variable "azure_frontdoor_scale" {
   description = "Azure Front Door Scale"
   type        = string
@@ -102,13 +89,13 @@ variable "rebrand" {
 
 variable "gtaa_base_url" {
   description = "The base url for the 'Get-To-An-Answer' questionnaire service"
-  type = string
+  type        = string
 }
 
 variable "support_alert_email" {
   description = "Where to send alert emails to"
   type        = string
-  sensitive   = true 
+  sensitive   = true
 }
 
 variable "alerting" {
@@ -150,7 +137,7 @@ variable "alerting" {
         error        = 1
       }
     }
-    t02 = {
+    p01 = {
       name                 = "Production"
       alerts_enabled       = true
       email_alerts_enabled = true
