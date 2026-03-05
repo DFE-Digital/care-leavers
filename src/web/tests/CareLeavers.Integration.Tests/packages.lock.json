@@ -133,8 +133,8 @@
       },
       "contentful.aspnetcore": {
         "type": "Transitive",
-        "resolved": "8.4.1",
-        "contentHash": "rjyhjLEKmTxuVML1SYvczqGqxb8OS8dD34FPdghe34be+e02QOJZ0f2I6Wa8K2aFO+lgHqgy9zu/AvPCzDnFzA==",
+        "resolved": "8.6.0",
+        "contentHash": "l/MteQzh+7MHzZl8lUxV55IoUVdmAzgZlQDtZYxTbSR9y+0M3KiEFtax0Cr6DKqStolLZ/PQosTfhJ6ZhmHiKg==",
         "dependencies": {
           "Microsoft.AspNetCore.Http": "2.2.2",
           "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
@@ -145,13 +145,13 @@
           "Microsoft.Extensions.Http": "6.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "6.0.0",
           "System.Net.Http": "4.3.4",
-          "contentful.csharp": "8.4.1"
+          "contentful.csharp": "8.6.0"
         }
       },
       "contentful.csharp": {
         "type": "Transitive",
-        "resolved": "8.4.1",
-        "contentHash": "ROsSj4BL9h+V8GMbUZqpV3Gi3yWbVXVi+wp+2jeNTucreqkolIjWvBlxlc2A964ul3lJaLau2jlvEEg2Z5Se7Q==",
+        "resolved": "8.6.0",
+        "contentHash": "6REEDOdMYhp/bYQG5p6/xTs10VCsVDkbMIQOMEcdHgFtXEcWPbDK1cd3YBzH1vSvOuVN1rIkehmak8Ody7auVA==",
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
           "Newtonsoft.Json": "13.0.1"
@@ -2423,7 +2423,7 @@
           "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis": "[2.3.0, )",
           "ZiggyCreatures.FusionCache.OpenTelemetry": "[2.3.0, )",
           "ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson": "[2.3.0, )",
-          "contentful.aspnetcore": "[8.4.1, )"
+          "contentful.aspnetcore": "[8.6.0, )"
         }
       }
     }
