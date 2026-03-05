@@ -66,8 +66,6 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
             {
                 Clarity = "test-clarity",
                 GTM = "GTM-TEST",
-                ShareaholicSiteId = "abcdefghijk",
-                ShareaholicAppId = "12345678",
                 ShowCookieBanner = false,
                 AddCssVersion = false
             }));

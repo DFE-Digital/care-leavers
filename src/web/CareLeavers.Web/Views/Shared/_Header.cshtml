@@ -87,8 +87,8 @@
     <header class="govuk-header" data-module="govuk-header">
         <div class="govuk-header__container govuk-width-container">
             <div class="govuk-header__logo">
-                <a class="govuk-header__link govuk-header__link--homepage" href="@Url.Action("GetContent", "Contentful", values: new { slug = Model.ContentfulConfiguration.HomePage?.Slug, languageCode })" aria-label="@Model.ContentfulConfiguration.ServiceName homepage">
-                    <img src="/assets/department-for-education_white.png" alt="@Model.ContentfulConfiguration.ServiceName homepage" class="govuk-header__logotype">
+                <a class="govuk-header__link govuk-header__link--homepage" href="@Url.Action("GetContent", "Contentful", values: new { slug = Model.ContentfulConfiguration.HomePage?.Slug, languageCode })" aria-label="@Model.ContentfulConfiguration.DfELogoAltText">
+                    <img src="/assets/department-for-education_white.png" alt="@Model.ContentfulConfiguration.DfELogoAltText" class="govuk-header__logotype">
                 </a>
             </div>
         </div>
@@ -99,9 +99,9 @@ else
     <header class="dfe-header" role="banner">
         <div class="dfe-width-container dfe-header__container">
             <div class="dfe-header__logo">
-                <a class="dfe-header__link dfe-header__link--service " href="@Url.Action("GetContent", "Contentful", values: new { slug = Model.ContentfulConfiguration.HomePage?.Slug, languageCode })" aria-label="@Model.ContentfulConfiguration.ServiceName homepage">
-                    <img src="~/assets/dfe-logo.png" class="dfe-logo" alt="@Model.ContentfulConfiguration.ServiceName homepage">
-                    <img src="~/assets/dfe-logo-alt.png" class="dfe-logo-hover" alt="@Model.ContentfulConfiguration.ServiceName homepage">
+                <a class="dfe-header__link dfe-header__link--service " href="@Url.Action("GetContent", "Contentful", values: new { slug = Model.ContentfulConfiguration.HomePage?.Slug, languageCode })" aria-label="@Model.ContentfulConfiguration.DfELogoAltText">
+                    <img src="~/assets/dfe-logo.png" class="dfe-logo" alt="@Model.ContentfulConfiguration.DfELogoAltText">
+                    <img src="~/assets/dfe-logo-alt.png" class="dfe-logo-hover" alt="@Model.ContentfulConfiguration.DfELogoAltText">
                 </a>
             </div>
         </div>
