@@ -78,16 +78,6 @@ public class PagesController(IContentService contentService) : Controller
         return result;
     }
     
-    [Route("{languageCode}/accessibility-statement")]
-    [Translation(HardcodedSlug="accessibility-statement")]
-    public async Task<IActionResult> AccessibilityStatement()
-    {
-        var page = await contentService.GetPage("accessibility-statement");
-        
-        return View(page ?? new ());
-    }
-    
-    
     [HttpPost("/{languageCode}/cookie-policy")]
     public IActionResult PostCookiePolicy(
         [FromForm] CookiePolicyModel cookiePolicyModel,
