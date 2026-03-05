@@ -33,7 +33,8 @@ public class MockContentfulConfiguration : IContentfulConfiguration
                         ]
                     }
                 ]
-            }
+            },
+            DfELogoAltText = "Department for Education"
         });
     }
 }
