@@ -27,7 +27,7 @@ test.describe('Shared Website Functionalities', () => {
                 await expect(basePage.WebsiteNameLink).toBeVisible();
                 
                 // Validate logo has accessible name
-                await expect(basePage.logoLink).toHaveAccessibleName(/Support for/i)
+                await expect(basePage.logoLink).toHaveAccessibleName(/Department for/i)
                 await expect(basePage.logoLink).toBeVisible();
 
                 // Validate Navigation Bar
