@@ -11,10 +11,6 @@ public class ScriptOptions
 
     public string? Clarity { get; init; } = "";
     
-    public string? ShareaholicSiteId { get; init; } = "";
-    
-    public string? ShareaholicAppId { get; init; } = "";
-    
     public bool ShowCookieBanner { get; init; }
 
     public bool AddCssVersion { get; init; } = true;
