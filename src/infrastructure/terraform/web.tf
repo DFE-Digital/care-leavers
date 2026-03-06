@@ -69,6 +69,8 @@ resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
     identity_ids = local.managed_identity.identity_ids
   }
 
+  key_vault_reference_identity_id = local.managed_identity.identity_ids[0]
+
   app_settings = local.web_app_settings
 
   tags = local.common_tags
@@ -99,6 +101,8 @@ resource "azurerm_linux_web_app" "web-app-service" {
     type         = local.managed_identity.type
     identity_ids = local.managed_identity.identity_ids
   }
+
+  key_vault_reference_identity_id = local.managed_identity.identity_ids[0]
 
   app_settings = local.web_app_settings
 
