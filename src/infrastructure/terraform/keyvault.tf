@@ -15,12 +15,6 @@ resource "azurerm_key_vault" "key-vault" {
   }
 
   tags = local.common_tags
-
-  depends_on = [
-    azurerm_role_assignment.kv_officer,
-    azurerm_role_assignment.kv_administrator,
-    azurerm_role_assignment.kv_admin_sp
-  ]
 }
 
 # RBAC: allow app identity to read secrets (use object_id, not client_id)
