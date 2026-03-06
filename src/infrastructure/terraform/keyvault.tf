@@ -26,7 +26,7 @@ data "azurerm_role_definition" "kv_secrets_user" {
 
 data "azurerm_role_definition" "kv_secrets_officer" {
   name  = "Key Vault Secrets Officer"
-  scope = azurerm_key_vault.kv.id
+  scope = azurerm_key_vault.key-vault.id
 }
 
 
@@ -45,16 +45,16 @@ resource "azurerm_role_assignment" "kv_user" {
 }
 
 resource "azurerm_role_assignment" "kv_officer" {
-  scope              = azurerm_key_vault.kv.id
+  scope              = azurerm_key_vault.key-vault.id
   role_definition_id = data.azurerm_role_definition.kv_secrets_officer.role_definition_id
-  principal_id       = azurerm_user_assigned_identity.gtaa-identity.principal_id
+  principal_id       = azurerm_user_assigned_identity.cl-identity-administrator.principal_id
   principal_type     = "ServicePrincipal"
 }
 
 resource "azurerm_role_assignment" "kv_administrator" {
-  scope              = azurerm_key_vault.kv.id
+  scope              = azurerm_key_vault.key-vault.id
   role_definition_id = data.azurerm_role_definition.kv_admin.role_definition_id
-  principal_id       = azurerm_user_assigned_identity.gtaa-identity.principal_id
+  principal_id       = azurerm_user_assigned_identity.cl-identity-administrator.principal_id
   principal_type     = "ServicePrincipal"
 }
 
