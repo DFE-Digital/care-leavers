@@ -19,25 +19,25 @@ resource "azurerm_key_vault" "key-vault" {
 
 data "azurerm_role_definition" "kv_secrets_user" {
   name  = "Key Vault Secrets User"
-  scope = azurerm_key_vault.kv.id
+  scope = azurerm_key_vault.key-vault.id
 }
 
 data "azurerm_role_definition" "kv_admin" {
   name  = "Key Vault Administrator"
-  scope = azurerm_key_vault.kv.id
+  scope = azurerm_key_vault.key-vault.id
 }
 
 # Role assignments
 
 resource "azurerm_role_assignment" "kv_user" {
-  scope              = azurerm_key_vault.kv.id
+  scope              = azurerm_key_vault.key-vault.id
   role_definition_id = data.azurerm_role_definition.kv_secrets_user.role_definition_id
   principal_id       = azurerm_user_assigned_identity.cl-identity-reader.principal_id
   principal_type     = "ServicePrincipal"
 }
 
 resource "azurerm_role_assignment" "kv_admin_sp" {
-  scope              = azurerm_key_vault.kv.id
+  scope              = azurerm_key_vault.key-vault.id
   role_definition_id = data.azurerm_role_definition.kv_admin.role_definition_id
   principal_id       = data.azurerm_client_config.client.object_id
   principal_type     = "ServicePrincipal"
