@@ -1,19 +1,19 @@
-resource "azurerm_key_vault" "key-vault" {
-  location            = local.location
-  name                = "${local.prefix}kv-uks-cl"
-  resource_group_name = azurerm_resource_group.core-rg.name
-  sku_name            = "standard"
-  tenant_id           = data.azurerm_client_config.client.tenant_id
+# resource "azurerm_key_vault" "key-vault" {
+#   location            = local.location
+#   name                = "${local.prefix}kv-uks-cl"
+#   resource_group_name = azurerm_resource_group.core-rg.name
+#   sku_name            = "standard"
+#   tenant_id           = data.azurerm_client_config.client.tenant_id
 
-  purge_protection_enabled = true
+#   purge_protection_enabled = true
 
-  network_acls {
-    default_action = "Allow"
-    bypass         = "AzureServices"
-  }
+#   network_acls {
+#     default_action = "Allow"
+#     bypass         = "AzureServices"
+#   }
 
-  tags = local.common_tags
-}
+#   tags = local.common_tags
+# }
 
 resource "azurerm_key_vault" "kv" {
   location            = local.location
