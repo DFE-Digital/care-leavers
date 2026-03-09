@@ -47,16 +47,10 @@ export class MoneyAndBenefitsPage extends BasePage {
         
         await Promise.all([
             this.page.waitForURL(href!),
-            await this.cardExternalLink.click(), // Will navigate to another page
+            this.cardExternalLink.click(), // Will navigate to another page
         ]);
 
         // Assert that the URL matches the href
         expect(this.page.url()).toContain(href);
-        
-        // restore previous page for the next assertion
-        await Promise.all([
-            this.page.waitForLoadState('networkidle'),
-            this.page.goBack()
-        ]);
     }
 }

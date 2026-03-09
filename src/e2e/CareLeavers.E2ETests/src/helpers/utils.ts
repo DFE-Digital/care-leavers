@@ -9,9 +9,9 @@ export function convertColorToHex(color: string): string {
         const values = color.match(/\d+/g);
         if (!values || values.length < 3) return color;
 
-        const r = parseInt(values[0]);
-        const g = parseInt(values[1]);
-        const b = parseInt(values[2]);
+        const r = Number.parseInt(values[0]);
+        const g = Number.parseInt(values[1]);
+        const b = Number.parseInt(values[2]);
 
         return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
     }

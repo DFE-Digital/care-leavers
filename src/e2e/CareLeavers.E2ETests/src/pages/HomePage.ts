@@ -4,25 +4,25 @@ import { BasePage } from './BasePage';
 export class HomePage extends BasePage {
     
     // Phase Banner Section
-    private phaseBanner: Locator;
+    private readonly phaseBanner: Locator;
     
     //Sections Locators
-    private whoIsThisForSection: Locator;
-    private findSupportSection: Locator;
+    private readonly whoIsThisForSection: Locator;
+    private readonly findSupportSection: Locator;
 
     //Support cards Sections
-    private supportCards: Locator;
+    private readonly supportCards: Locator;
 
     //"Know what support you can get" section
-    private knowWhatSupportSection: Locator;
-    private supportLink: Locator;
-    private supportImage: Locator;
+    private readonly knowWhatSupportSection: Locator;
+    private readonly supportLink: Locator;
+    private readonly supportImage: Locator;
 
     //"Guide" section
-    private guidesSection: Locator;
-    private guidesHeading: Locator;
-    private guideImage: Locator;
-    private guideLink: Locator;
+    private readonly guidesSection: Locator;
+    private readonly guidesHeading: Locator;
+    private readonly guideImage: Locator;
+    private readonly guideLink: Locator;
 
 
     constructor(page: Page) {

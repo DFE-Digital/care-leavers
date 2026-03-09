@@ -50,31 +50,3 @@ export const supportCards = [
     { title: "Health and wellbeing", url: "/en/health-and-wellbeing" },
     { title: "Unaccompanied asylum-seeking young people", url: "/en/unaccompanied-asylum-seeking-young-people" }
 ];
-
-/*
-export const commonPagesToTest = [
-    '/en/home',  
-    '/en/all-support',
-    '/en/money-and-benefits',
-    '/en/housing-and-accommodation',
-    '/en/work-and-employment',
-    '/en/education-and-training',
-    '/en/health-and-wellbeing',
-    '/en/unaccompanied-asylum-seeking-young-people',
-    '/en/pathway-plan',
-    '/en/personal-adviser',
-    '/en/leaving-care-allowance',
-    '/en/higher-education-bursary',
-    '/en/local-offer-for-care-leavers',
-    '/en/eligible-child',
-    '/en/relevant-child',
-    '/en/former-relevant-child',
-    '/en/person-qualifying-for-advice-and-assistance',
-    '/en/what-happens-when-you-leave-care',
-    '/en/care-terms-explained',
-    '/en/your-rights',
-    '/en/leaving-care-guides',
-    '/en/helplines',
-];
- */
-

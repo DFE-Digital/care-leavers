@@ -32,7 +32,11 @@ test.describe('Shared Website Functionalities', () => {
 
                 // Validate Navigation Bar
                 const isDesktop = page.viewportSize()?.width ? page.viewportSize()!.width > 600 : false;
-                await basePage.verifyNavigation(isDesktop);
+                if (isDesktop) {
+                    await basePage.verifyNavigationDesktop();
+                } else {
+                    await basePage.verifyNavigationMobile();
+                }
 
                 // Validate Footer Links
                 await expect(basePage.footer).toContainText("Open Government Licence v3.0");
