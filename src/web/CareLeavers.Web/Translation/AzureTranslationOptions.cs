@@ -2,7 +2,7 @@ namespace CareLeavers.Web.Translation;
 
 public class AzureTranslationOptions
 {
-    public static string Name = "AzureTranslation";
+    public const string Name = "AzureTranslation";
     
     public string AccessKey { get; set; } = string.Empty;
     

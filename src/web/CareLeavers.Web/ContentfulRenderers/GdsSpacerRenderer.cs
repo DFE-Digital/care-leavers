@@ -7,18 +7,14 @@ namespace CareLeavers.Web.ContentfulRenderers;
 /// <summary>
 /// A renderer for a paragraph.
 /// </summary>
-public class GDSSpacerRenderer() : IContentRenderer
+public class GdsSpacerRenderer() : IContentRenderer
 {
     public bool SupportsContent(IContent content)
     {
         if (content is EntryStructure)
         {
             var structure = content as EntryStructure;
-            if (structure?.NodeType == "embedded-entry-block")
-            {
-                if (structure.Data.Target is Spacer)
-                    return true;
-            }
+            if (structure?.NodeType == "embedded-entry-block" && structure.Data.Target is Spacer) return true;
         }
 
         return content is Spacer;

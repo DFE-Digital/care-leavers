@@ -19,13 +19,11 @@ public class FakeMessageHandler : HttpClientHandler
         // If We only have a single piece of content, return that
         if (Content.Count == 1)
         {
-            response = Content.First().Content;
+            response = Content[0].Content;
         }
         // If we're requesting a page, just grab the first page
         else if (request.RequestUri != null && request.RequestUri.PathAndQuery.Contains("content_type=page"))
         {
-            var query = QueryHelpers.ParseQuery(request.RequestUri.Query);
-
             var matchingContent = Content.FirstOrDefault(c => c.ContentType == Page.ContentType);
             if (matchingContent != null)
             {

@@ -6,7 +6,7 @@ namespace CareLeavers.Web.ContentfulRenderers;
 /// <summary>
 /// A renderer for a paragraph.
 /// </summary>
-public class GDSStatusCheckerRenderer (IServiceProvider serviceProvider) : GDSRazorContentRenderer(serviceProvider)
+public class GdsStatusCheckerRenderer (IServiceProvider serviceProvider) : GdsRazorContentRenderer(serviceProvider)
 {
     /// <summary>
     /// Whether or not this renderer supports the provided content.
@@ -17,12 +17,9 @@ public class GDSStatusCheckerRenderer (IServiceProvider serviceProvider) : GDSRa
     {
         if (content is EntryStructure structure)
         {
-            if (structure.NodeType == "embedded-entry-block")
+            if (structure.NodeType == "embedded-entry-block" && structure.Data.Target is StatusChecker)
             {
-                if (structure.Data.Target is StatusChecker)
-                {
-                    return true;
-                }
+                return true;
             }
         }
 

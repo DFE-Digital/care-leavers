@@ -3,16 +3,13 @@ using Contentful.Core.Models;
 
 namespace CareLeavers.Web.ContentfulRenderers;
 
-public class GDSButtonRenderer(IServiceProvider serviceProvider) : GDSRazorContentRenderer(serviceProvider)
+public class GdsButtonRenderer(IServiceProvider serviceProvider) : GdsRazorContentRenderer(serviceProvider)
 {
     public override bool SupportsContent(IContent content)
     {
-        if (content is EntryStructure { NodeType: "embedded-entry-block" } embeddedEntryBlock)
+        if (content is EntryStructure { NodeType: "embedded-entry-block" } embeddedEntryBlock && embeddedEntryBlock.Data.Target is Button)
         {
-            if (embeddedEntryBlock.Data.Target is Button)
-            {
-                return true;
-            }
+            return true;
         }
 
         return content is Button;

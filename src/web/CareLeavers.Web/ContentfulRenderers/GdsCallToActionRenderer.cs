@@ -3,16 +3,13 @@ using Contentful.Core.Models;
 
 namespace CareLeavers.Web.ContentfulRenderers;
 
-public class GDSCallToActionRenderer(IServiceProvider serviceProvider) : GDSRazorContentRenderer(serviceProvider)
+public class GdsCallToActionRenderer(IServiceProvider serviceProvider) : GdsRazorContentRenderer(serviceProvider)
 {
     public override bool SupportsContent(IContent content)
     {
-        if (content is EntryStructure { NodeType: "embedded-entry-block" } entryStructure)
+        if (content is EntryStructure { NodeType: "embedded-entry-block" } entryStructure && entryStructure.Data.Target is CallToAction)
         {
-            if (entryStructure.Data.Target is CallToAction)
-            {
-                return true;
-            }
+            return true;
         }
 
         return content is CallToAction;

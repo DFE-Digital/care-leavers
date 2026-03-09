@@ -5,16 +5,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CareLeavers.Web.ContentfulRenderers;
 
-public class GDSDefinitionLinkRenderer(IServiceProvider serviceProvider) : IContentRenderer
+public class GdsDefinitionLinkRenderer(IServiceProvider serviceProvider) : IContentRenderer
 {
     public bool SupportsContent(IContent content)
     {
         if (content is EntryStructure { NodeType: "embedded-entry-inline" } entryStructure)
         {
-            if (entryStructure.Data.Target is DefinitionLink)
-            {
-                return true;
-            }
+            return entryStructure.Data.Target is DefinitionLink || content is DefinitionLink;
         }
 
         return content is DefinitionLink;

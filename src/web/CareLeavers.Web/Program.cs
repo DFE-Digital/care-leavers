@@ -6,6 +6,7 @@ using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Contentful.Webhooks;
 using CareLeavers.Web.ContentfulRenderers;
+using CareLeavers.Web.Controllers;
 using CareLeavers.Web.GetToAnAnswerRun;
 using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Telemetry;
@@ -126,6 +127,8 @@ try
     });
     
     #endregion
+
+    builder.Services.AddHttpClient<PrintController>();
     
     #region GetToAnAnswer
 
@@ -156,30 +159,30 @@ try
         });
 
         // Add custom renderers with no renderers or DI
-        renderer.AddRenderer(new GDSHorizontalRulerContentRenderer());
-        renderer.AddRenderer(new GDSSpacerRenderer());
-        renderer.AddRenderer(new GDSTableRenderer());
+        renderer.AddRenderer(new GdsHorizontalRulerContentRenderer());
+        renderer.AddRenderer(new GdsSpacerRenderer());
+        renderer.AddRenderer(new GdsTableRenderer());
         
         // Add custom renderers, passing renderer collection
-        renderer.AddRenderer(new GDSParagraphRenderer(renderer.Renderers));
-        renderer.AddRenderer(new GDSHeaderRenderer(renderer.Renderers));
-        renderer.AddRenderer(new GDSAssetRenderer(renderer.Renderers));
-        renderer.AddRenderer(new GDSListRenderer(renderer.Renderers));
+        renderer.AddRenderer(new GdsParagraphRenderer(renderer.Renderers));
+        renderer.AddRenderer(new GdsHeaderRenderer(renderer.Renderers));
+        renderer.AddRenderer(new GdsAssetRenderer(renderer.Renderers));
+        renderer.AddRenderer(new GdsListRenderer(renderer.Renderers));
         
         // Add custom renderers with DI
-        renderer.AddRenderer(new GDSDefinitionLinkRenderer(serviceProvider));
-        renderer.AddRenderer(new GDSGridRenderer(serviceProvider));
-        renderer.AddRenderer(new GDSRichContentRenderer(serviceProvider));
-        renderer.AddRenderer(new GDSStatusCheckerRenderer(serviceProvider));
-        renderer.AddRenderer(new GDSRiddleRenderer(serviceProvider));
-        renderer.AddRenderer(new GDSGetToAnAnswerRenderer(serviceProvider));
-        renderer.AddRenderer(new GDSBannerRenderer(serviceProvider));
-        renderer.AddRenderer(new GDSDefinitionRenderer(serviceProvider));
-        renderer.AddRenderer(new GDSCallToActionRenderer(serviceProvider));
-        renderer.AddRenderer(new GDSButtonRenderer(serviceProvider));
+        renderer.AddRenderer(new GdsDefinitionLinkRenderer(serviceProvider));
+        renderer.AddRenderer(new GdsGridRenderer(serviceProvider));
+        renderer.AddRenderer(new GdsRichContentRenderer(serviceProvider));
+        renderer.AddRenderer(new GdsStatusCheckerRenderer(serviceProvider));
+        renderer.AddRenderer(new GdsRiddleRenderer(serviceProvider));
+        renderer.AddRenderer(new GdsGetToAnAnswerRenderer(serviceProvider));
+        renderer.AddRenderer(new GdsBannerRenderer(serviceProvider));
+        renderer.AddRenderer(new GdsDefinitionRenderer(serviceProvider));
+        renderer.AddRenderer(new GdsCallToActionRenderer(serviceProvider));
+        renderer.AddRenderer(new GdsButtonRenderer(serviceProvider));
         
         // Add custom renderers with renderers and DI
-        renderer.AddRenderer(new GDSLinkRenderer(renderer.Renderers, serviceProvider));
+        renderer.AddRenderer(new GdsLinkRenderer(renderer.Renderers, serviceProvider));
 
         return renderer;
     });
@@ -211,7 +214,7 @@ try
 
     builder.Services.AddFusionCacheNewtonsoftJsonSerializer(new JsonSerializerSettings()
     {
-        Converters = [new GDSAssetJsonConverter()],
+        Converters = [new GdsAssetJsonConverter()],
         ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
         Formatting = Formatting.None,
         NullValueHandling = NullValueHandling.Ignore,
@@ -370,7 +373,7 @@ try
 
     var contentfulClient = app.Services.GetRequiredService<IContentfulClient>();
     contentfulClient.SerializerSettings.Converters.RemoveAt(0);
-    contentfulClient.SerializerSettings.Converters.Insert(0, new GDSAssetJsonConverter());
+    contentfulClient.SerializerSettings.Converters.Insert(0, new GdsAssetJsonConverter());
     contentfulClient.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     contentfulClient.SerializerSettings.Formatting = Formatting.Indented;
     contentfulClient.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;

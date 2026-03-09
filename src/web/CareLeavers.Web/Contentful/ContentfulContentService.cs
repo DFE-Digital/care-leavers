@@ -39,11 +39,11 @@ public class ContentfulContentService : IContentService
 
     public async Task<Page?> GetPage(string slug)
     {
-        _logger.LogInformation($"Getting page for slug: {slug}");
+        _logger.LogInformation("Getting page for slug: {Slug}", slug);
         
         var page = await _fusionCache.GetOrSetAsync($"content:{slug}", async token =>
         {
-            _logger.LogInformation($"Could not find cache entry for: {slug}, querying Contentful");
+            _logger.LogInformation("Could not find cache entry for: {Slug}, querying Contentful", slug);
             
             var pages = new QueryBuilder<Page>()
                 .ContentTypeIs(Page.ContentType)
@@ -58,13 +58,13 @@ public class ContentfulContentService : IContentService
         // If we get a page, but the slug doesn't match (used in tests), return null so we trigger our 404s
         if (page?.Slug != null && !(page.Slug).Equals(slug, StringComparison.InvariantCultureIgnoreCase))
         {
-            _logger.LogInformation($"Slug mismatch, expected {slug} but got {page.Slug}");
+            _logger.LogInformation("Slug mismatch, expected {Slug} but got {PageSlug}", slug, page.Slug);
             page = null;
         }
 
         if (page != null)
         {
-            _logger.LogInformation($"Setting cache for page id: {page.Sys.Id} & slug: {page.Slug}");
+            _logger.LogInformation("Setting cache for page id: {SysId} & slug: {PageSlug}", page.Sys.Id, page.Slug);
             await _fusionCache.SetAsync(page.Sys.Id, page);
         }
 
@@ -188,10 +188,9 @@ public class ContentfulContentService : IContentService
 
             while (parentPage != null)
             {
-                if (!breadcrumbs.Exists(b => b.Id == parentPage.Id))
+                if (!breadcrumbs.Exists(b => b.Id == parentPage.Id) && (includeHome || parentPage.Id != homePage.Id))
                 {
-                    if (includeHome || parentPage.Id != homePage.Id)
-                        breadcrumbs.Add(parentPage);
+                    breadcrumbs.Add(parentPage);
                 }
 
                 parentPage = hierarchy.Find(p => p.Slug == parentPage.Parent);
@@ -220,40 +219,40 @@ public class ContentfulContentService : IContentService
         return slugs[id];
     }
 
-    public async Task<T> Hydrate<T>(T content)
+    public async Task<T> Hydrate<T>(T entity)
     {
-        string? id = null;
-        string? contentType = null;
+        string? id;
+        string? contentType;
         var levels = 2;
-        switch (content)
+        switch (entity)
         {
             case Grid grid:
-                id = grid?.Sys.Id;
+                id = grid.Sys.Id;
                 contentType = Grid.ContentType;
                 break;
             case RichContentBlock block:
-                id = block?.Sys.Id;
+                id = block.Sys.Id;
                 contentType = RichContentBlock.ContentType;
                 levels = 3;
                 break;
             case Banner banner:
-                id = banner?.Sys.Id;
+                id = banner.Sys.Id;
                 contentType = Banner.ContentType;
                 break;
             case StatusChecker checker:
-                id = checker?.Sys.Id;
+                id = checker.Sys.Id;
                 contentType = StatusChecker.ContentType;
                 break;
             case GetToAnAnswer gtaa:
-                id = gtaa?.Sys.Id;
+                id = gtaa.Sys.Id;
                 contentType = GetToAnAnswer.ContentType;
                 break;
             default:
-                return content;
+                return entity;
         }
 
         if (id != null)
-            content = await _fusionCache.GetOrSetAsync(id, async token =>
+            entity = await _fusionCache.GetOrSetAsync(id, async token =>
             {
                 var query = new QueryBuilder<T>()
                     .ContentTypeIs(contentType)
@@ -262,9 +261,9 @@ public class ContentfulContentService : IContentService
                     .Limit(1);
 
                 return (await _contentfulClient.GetEntries(query, token)).FirstOrDefault();
-            }) ?? content;
+            }) ?? entity;
 
-        return content;
+        return entity;
     }
 
     public async Task<ContentfulConfigurationEntity?> GetConfiguration()
@@ -294,7 +293,7 @@ public class ContentfulContentService : IContentService
 
             return pageEntries
                 .Where(x => x.Sys.Id != null && x.Slug != null)
-                .Select(x => new KeyValuePair<string, string>(x.Sys.Id, x?.Slug ?? string.Empty))
+                .Select(x => new KeyValuePair<string, string>(x.Sys.Id, x.Slug ?? string.Empty))
                 .ToDictionary();
         }) ?? [];
     }

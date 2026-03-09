@@ -3,18 +3,14 @@ using Contentful.Core.Models;
 
 namespace CareLeavers.Web.ContentfulRenderers;
 
-public class GDSRichContentRenderer(IServiceProvider serviceProvider) : GDSRazorContentRenderer(serviceProvider)
+public class GdsRichContentRenderer(IServiceProvider serviceProvider) : GdsRazorContentRenderer(serviceProvider)
 {
     public override bool SupportsContent(IContent content)
     {
         if (content is EntryStructure)
         {
             var structure = content as EntryStructure;
-            if (structure?.NodeType == "embedded-entry-block")
-            {
-                if (structure.Data.Target is RichContentBlock)
-                    return true;
-            }
+            if (structure?.NodeType == "embedded-entry-block" && structure.Data.Target is RichContentBlock) return true;
         }
 
         return content is RichContentBlock;

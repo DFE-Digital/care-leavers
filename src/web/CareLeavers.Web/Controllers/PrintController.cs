@@ -9,7 +9,7 @@ using ZiggyCreatures.Caching.Fusion;
 
 namespace CareLeavers.Web.Controllers;
 
-public class PrintController(IContentService contentService, ITranslationService translationService, IOptions<PdfGenerationOptions> pdfOptions, IFusionCache fusionCache) : Controller
+public class PrintController(IContentService contentService, ITranslationService translationService, IOptions<PdfGenerationOptions> pdfOptions, IFusionCache fusionCache, IHttpClientFactory httpClientFactory) : Controller
 {
     [Route("/print/{identifier}")]
     [Route("/print/{languageCode}/{identifier}")]
@@ -89,7 +89,7 @@ public class PrintController(IContentService contentService, ITranslationService
                 if (config == null)
                     return [];
 
-                var client = new HttpClient();
+                using var client = httpClientFactory.CreateClient();
                 var request = new HttpRequestMessage();
 
                 request.Method = HttpMethod.Post;

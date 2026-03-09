@@ -17,6 +17,8 @@ public class ContentfulController(
     IHostEnvironment environment,
     ILogger<ContentfulController> logger) : Controller
 {
+    private const string GetContentConst = "GetContent";
+    
     [Route("/")]
     public async Task<IActionResult> Homepage(
         [FromServices] IContentfulConfiguration contentfulConfiguration,
@@ -24,7 +26,7 @@ public class ContentfulController(
     {
         languageCode ??= "en";
         var config = await contentfulConfiguration.GetConfiguration();
-        return RedirectToAction("GetContent", new { slug = config.HomePage?.Slug, languageCode });
+        return RedirectToAction(GetContentConst, new { slug = config.HomePage?.Slug, languageCode });
     }
 
     [Route("/en")]
@@ -33,26 +35,7 @@ public class ContentfulController(
         [FromServices] IContentfulConfiguration contentfulConfiguration)
     {
         var config = await contentfulConfiguration.GetConfiguration();
-        return RedirectToAction("GetContent", new { slug = config.HomePage?.Slug, languageCode = "en" });
-    }
-
-    [Route("/json/{**slug}")]
-    [ExcludeFromCodeCoverage(Justification = "Development only")]
-    public async Task<IActionResult> GetContentAsJson(string slug, [FromServices] IWebHostEnvironment environment)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
-
-        if (!environment.IsDevelopment())
-        {
-            return NotFound();
-        }
-
-        var page = await contentService.GetPage(slug);
-
-        return Content(JsonConvert.SerializeObject(page, Constants.SerializerSettings), "application/json");
+        return RedirectToAction(GetContentConst, new { slug = config.HomePage?.Slug, languageCode = "en" });
     }
 
     [Route("/json/configuration")]
@@ -72,6 +55,25 @@ public class ContentfulController(
         var configuration = await contentService.GetConfiguration();
 
         return Content(JsonConvert.SerializeObject(configuration, Constants.SerializerSettings), "application/json");
+    }
+    
+    [Route("/json/{**slug}")]
+    [ExcludeFromCodeCoverage(Justification = "Development only")]
+    public async Task<IActionResult> GetContentAsJson(string slug, [FromServices] IWebHostEnvironment environment)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        if (!environment.IsDevelopment())
+        {
+            return NotFound();
+        }
+
+        var page = await contentService.GetPage(slug);
+
+        return Content(JsonConvert.SerializeObject(page, Constants.SerializerSettings), "application/json");
     }
 
     [Route("/json/{contentType}/{id}")]
@@ -118,11 +120,11 @@ public class ContentfulController(
     [Translation]
     public async Task<IActionResult> GetContent(string slug, string? languageCode)
     {
-        logger.LogInformation($"Get content for slug {slug} and language {languageCode}");
+        logger.LogInformation("Get content for slug {Slug} and language {LanguageCode}", slug, languageCode);
         
         if (string.IsNullOrEmpty(languageCode))
         {
-            return RedirectToAction("GetContent", new { slug, languageCode = "en" });
+            return RedirectToAction(GetContentConst, new { slug, languageCode = "en" });
         }
 
         var config = await contentService.GetConfiguration();
@@ -134,11 +136,11 @@ public class ContentfulController(
 
         var redirectionRule = await contentService.GetRedirectionRules(slug);
         
-        logger.LogInformation($"Redirection rules for slug {slug}: {JsonConvert.SerializeObject(redirectionRule)}");
+        logger.LogInformation("Redirection rules for slug {Slug}: {SerializeObject}", slug, JsonConvert.SerializeObject(redirectionRule));
         
         if (redirectionRule?.Rules != null && redirectionRule.Rules.TryGetValue(slug, out var destinationSlug))
         {
-            return RedirectToAction("GetContent", new { slug = destinationSlug, languageCode });
+            return RedirectToAction(GetContentConst, new { slug = destinationSlug, languageCode });
         }
 
         var languages = new List<string>();
@@ -154,7 +156,7 @@ public class ContentfulController(
 
         if (!languages.Contains(languageCode))
         {
-            return RedirectToAction("GetContent", new { slug, languageCode = "en" });
+            return RedirectToAction(GetContentConst, new { slug, languageCode = "en" });
         }
 
         var page = await contentService.GetPage(slug);
