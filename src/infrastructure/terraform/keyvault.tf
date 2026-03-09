@@ -167,3 +167,16 @@ resource "azurerm_key_vault_secret" "azure-translation-access-key" {
     azurerm_role_assignment.kv_admin_sp
   ]
 }
+
+resource "azurerm_key_vault_secret" "redis-enterprise-connection-string" {
+  count        = lower(var.caching_type) == "redis" ? 1 : 0
+  key_vault_id = azurerm_key_vault.kv.id
+  name         = "redis-enterprise-connection-string"
+  value        = "${azurerm_managed_redis.redis-enterprise[0].hostname}:${azurerm_managed_redis.redis-enterprise[0].default_database[0].port},ssl=true,password=${azurerm_managed_redis.redis-enterprise[0].default_database[0].primary_access_key}"
+
+  depends_on = [
+    azurerm_role_assignment.kv_officer,
+    azurerm_role_assignment.kv_administrator,
+    azurerm_role_assignment.kv_admin_sp
+  ]
+}
