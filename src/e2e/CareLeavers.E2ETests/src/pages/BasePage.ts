@@ -282,7 +282,7 @@ export class BasePage {
 
             expect(actualText.trim()).toBe(expectedBreadcrumbs[i]);
 
-            const expectedURL = `/${expectedBreadcrumbs[i].toLowerCase().replace(/\s+/g, '-')}`;
+            const expectedURL = `/${expectedBreadcrumbs[i].toLowerCase().replaceAll(/\s+/g, '-')}`;
             const link = breadcrumbItems.nth(i);
             await link.click();
             await this.page.waitForURL(expectedURL);

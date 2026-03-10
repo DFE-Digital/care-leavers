@@ -199,7 +199,7 @@ async Task<bool> RunContentfulCommand(string args)
 
     while (!process.StandardOutput.EndOfStream)
     {
-        Console.WriteLine(process.StandardOutput.ReadLine());
+        Console.WriteLine(await process.StandardOutput.ReadLineAsync());
     }
 
     await process.WaitForExitAsync();
