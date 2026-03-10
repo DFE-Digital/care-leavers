@@ -8,7 +8,7 @@ This document details information on our disaster recovery plan for the Care Lea
 Aside from Contentful, all services are hosted on Azure. Including
 - Azure App Service
 - Azure Front Door
-- Azure Redis Cache
+- Azure Managed Redis
 - Azure AI Translation
 
 Due to the nature of these services, there are no services that could be considered "stateful" and therefore we 
@@ -26,4 +26,4 @@ and disaster recovery plans in place.
 - If Azure Front Door requires re-creation due to complete failure, we will need to contact ServiceNow to update the DNS
   records to point to the new Front Door instance.
 - For Contentful downtime, we will need to contact Contentful support to understand the issue and ETA for resolution. The 
-  site will continue to function with the Azure Redis Cache, but with potentially stale content.
+  site will continue to function with the Azure Managed Redis, but with potentially stale content.
