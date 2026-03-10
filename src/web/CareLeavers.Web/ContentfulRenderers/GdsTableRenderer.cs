@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CareLeavers.Web.ContentfulRenderers;
 
-public class GDSTableRenderer : IContentRenderer
+public class GdsTableRenderer : IContentRenderer
 {
     public bool SupportsContent(IContent content)
     {
