@@ -6,10 +6,8 @@ namespace CareLeavers.Web.ContentfulRenderers;
 /// <summary>
 /// A renderer for a paragraph.
 /// </summary>
-public class GDSGetToAnAnswerRenderer(IServiceProvider serviceProvider) : GDSRazorContentRenderer(serviceProvider)
+public class GdsStatusCheckerRenderer (IServiceProvider serviceProvider) : GdsRazorContentRenderer(serviceProvider)
 {
-    private readonly IConfiguration _configuration = serviceProvider.GetRequiredService<IConfiguration>();
-
     /// <summary>
     /// Whether or not this renderer supports the provided content.
     /// </summary>
@@ -17,17 +15,18 @@ public class GDSGetToAnAnswerRenderer(IServiceProvider serviceProvider) : GDSRaz
     /// <returns>Returns true if the content is a paragraph, otherwise false.</returns>
     public override bool SupportsContent(IContent content)
     {
-        if (content is EntryStructure)
+        if (content is EntryStructure structure)
         {
-            var structure = content as EntryStructure;
-            if (structure?.NodeType == "embedded-entry-block")
+            if (structure.NodeType == "embedded-entry-block")
             {
-                if (structure.Data.Target is GetToAnAnswer)
+                if (structure.Data.Target is StatusChecker)
+                {
                     return true;
+                }
             }
         }
 
-        return content is GetToAnAnswer;
+        return content is StatusChecker;
     }
 
     public override string Render(IContent content)
@@ -44,21 +43,16 @@ public class GDSGetToAnAnswerRenderer(IServiceProvider serviceProvider) : GDSRaz
     /// <returns>The p-tag as a string.</returns>
     public override Task<string> RenderAsync(IContent content)
     {
-        GetToAnAnswer? getToAnAnswer;
-        if (content is GetToAnAnswer)
+        StatusChecker? checker;
+        if (content is StatusChecker)
         {
-            getToAnAnswer = content as GetToAnAnswer;
+            checker = content as StatusChecker;
         }
         else
         {
-            getToAnAnswer = (content as EntryStructure)?.Data.Target as GetToAnAnswer;
-        }
-        
-        if (getToAnAnswer is not null)
-        {
-            getToAnAnswer.BaseUrl = _configuration["GetToAnAnswer:BaseUrl"];
+            checker = (content as EntryStructure)?.Data.Target as StatusChecker;
         }
 
-        return RenderToString("GetToAnAnswer", getToAnAnswer);
+        return RenderToString("StatusChecker", checker);
     }
 }

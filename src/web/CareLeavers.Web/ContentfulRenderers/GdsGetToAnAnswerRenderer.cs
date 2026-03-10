@@ -6,8 +6,10 @@ namespace CareLeavers.Web.ContentfulRenderers;
 /// <summary>
 /// A renderer for a paragraph.
 /// </summary>
-public class GDSRiddleRenderer(IServiceProvider serviceProvider) : GDSRazorContentRenderer(serviceProvider)
+public class GdsGetToAnAnswerRenderer(IServiceProvider serviceProvider) : GdsRazorContentRenderer(serviceProvider)
 {
+    private readonly IConfiguration _configuration = serviceProvider.GetRequiredService<IConfiguration>();
+
     /// <summary>
     /// Whether or not this renderer supports the provided content.
     /// </summary>
@@ -20,12 +22,12 @@ public class GDSRiddleRenderer(IServiceProvider serviceProvider) : GDSRazorConte
             var structure = content as EntryStructure;
             if (structure?.NodeType == "embedded-entry-block")
             {
-                if (structure.Data.Target is Riddle)
+                if (structure.Data.Target is GetToAnAnswer)
                     return true;
             }
         }
 
-        return content is Riddle;
+        return content is GetToAnAnswer;
     }
 
     public override string Render(IContent content)
@@ -42,16 +44,21 @@ public class GDSRiddleRenderer(IServiceProvider serviceProvider) : GDSRazorConte
     /// <returns>The p-tag as a string.</returns>
     public override Task<string> RenderAsync(IContent content)
     {
-        Riddle? riddle;
-        if (content is Riddle)
+        GetToAnAnswer? getToAnAnswer;
+        if (content is GetToAnAnswer)
         {
-            riddle = content as Riddle;
+            getToAnAnswer = content as GetToAnAnswer;
         }
         else
         {
-            riddle = (content as EntryStructure)?.Data.Target as Riddle;
+            getToAnAnswer = (content as EntryStructure)?.Data.Target as GetToAnAnswer;
+        }
+        
+        if (getToAnAnswer is not null)
+        {
+            getToAnAnswer.BaseUrl = _configuration["GetToAnAnswer:BaseUrl"];
         }
 
-        return RenderToString("Riddle", riddle);
+        return RenderToString("GetToAnAnswer", getToAnAnswer);
     }
 }
