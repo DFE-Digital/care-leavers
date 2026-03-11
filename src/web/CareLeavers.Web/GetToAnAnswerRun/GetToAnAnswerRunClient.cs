@@ -72,7 +72,8 @@ public class GetToAnAnswerRunClient(
 
     public async Task<(Stream fileStream, string contentType)> GetDecorativeImage(string questionnaireSlug)
     {
-        var response = await httpClient.GetAsync($"/questionnaires/{questionnaireSlug}/decorative-image");
+        var response = await httpClient.GetAsync(
+            HttpUtility.UrlEncode($"/questionnaires/{questionnaireSlug}/decorative-image"));
     
         if (!response.IsSuccessStatusCode)
         {
