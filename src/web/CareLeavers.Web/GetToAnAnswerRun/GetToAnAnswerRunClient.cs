@@ -1,4 +1,5 @@
 using System.Text;
+using System.Web;
 using HtmlAgilityPack;
 using Joonasw.AspNetCore.SecurityHeaders.Csp;
 using Microsoft.Extensions.Primitives;
@@ -16,7 +17,7 @@ public class GetToAnAnswerRunClient(
     public async Task<string> GetStartPageOrInitialState(string languageCode, string questionnaireSlug)
     {
         var responseMessage = await httpClient.GetAsync(
-            $"/questionnaires/{questionnaireSlug}/start?embed=true");
+            HttpUtility.UrlEncode($"/questionnaires/{questionnaireSlug}/start?embed=true"));
         
         if (!responseMessage.IsSuccessStatusCode)
         {
@@ -33,7 +34,7 @@ public class GetToAnAnswerRunClient(
     public async Task<string> GetInitialState(string languageCode, string questionnaireSlug)
     {
         var responseMessage = await httpClient.GetAsync(
-            $"/questionnaires/{questionnaireSlug}/next?embed=true");
+            HttpUtility.UrlEncode($"/questionnaires/{questionnaireSlug}/next?embed=true"));
         
         if (!responseMessage.IsSuccessStatusCode)
         {
@@ -54,7 +55,7 @@ public class GetToAnAnswerRunClient(
             .SelectMany(kvp => kvp.Value, (kvp, value) => new KeyValuePair<string, string>(kvp.Key, value ?? string.Empty));
 
         var responseMessage = await httpClient.PostAsync(
-            $"/questionnaires/{questionnaireSlug}/next?embed=true", 
+            HttpUtility.UrlEncode($"/questionnaires/{questionnaireSlug}/next?embed=true"), 
             new FormUrlEncodedContent(formContent));
         
         if (!responseMessage.IsSuccessStatusCode)
@@ -71,7 +72,8 @@ public class GetToAnAnswerRunClient(
 
     public async Task<(Stream fileStream, string contentType)> GetDecorativeImage(string questionnaireSlug)
     {
-        var response = await httpClient.GetAsync($"/questionnaires/{questionnaireSlug}/decorative-image");
+        var response = await httpClient.GetAsync(
+            HttpUtility.UrlEncode($"/questionnaires/{questionnaireSlug}/decorative-image"));
     
         if (!response.IsSuccessStatusCode)
         {
