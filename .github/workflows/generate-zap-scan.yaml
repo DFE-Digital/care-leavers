@@ -55,7 +55,7 @@ jobs:
           artifact_name: "zap-action-report"
 
       - name: Download ZAP report artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: zap-action-report
           path: ./zap-report
