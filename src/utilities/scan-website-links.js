@@ -37,7 +37,7 @@ const transformInternalUrl = (url) => {
         url = url.slice(0, -1)
     }
 
-    if (url.indexOf('?') > -1) {
+    if (url.includes('?')) {
         url = url.slice(0, url.indexOf('?'));
     }
     return url;
@@ -87,65 +87,66 @@ const addBrokenLink = (url, pages, type) => {
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
-const scanPage = async (url, parent='') => {
-
+const scanPage = async (url, parent = '') => {
     try {
-        // pause 5 seconds between page requests 
         await delay(5000);
 
-        // request the target website
-        const response = await axios.get(url, {
-            "User-Agent": "CL Link Checker"
-        });
-        const $ = cheerio.load(response.data);
-        const links = $('a[href]');
+        const { data } = await axios.get(url, { "User-Agent": "CL Link Checker" });
+        const $ = cheerio.load(data);
+        const links = $('a[href]').map((_, el) => $(el).attr('href')).get();
 
-        let childPagesToScan = [];
+        const childPagesToScan = processLinks(links, url);
 
-        for (const element of links) {
-            let linkHref = internalPageToScan($(element).attr('href'));
-
-            if (linkHref) {
-                if (scannedPages.indexOf(linkHref) == -1) {
-                    scannedPages.push(linkHref);
-                    childPagesToScan.push(linkHref);
-                }
-            }
-            else {
-                let externalLink = $(element).attr('href');
-
-                if (!ignoreUrl(externalLink)) {
-                    let idx = externalLinks.findIndex(x => x.url == externalLink);
-
-                    if (idx > -1) {
-                        externalLinks[idx].pages.push(url);
-                    }
-                    else {
-                        externalLinks.push({
-                            url: externalLink,
-                            pages: [
-                                url
-                            ]
-                        });
-                    }
-                }
-            }
+        for (const childUrl of childPagesToScan) {
+            await scanPage(childUrl, url);
         }
-
-        for (const childPageUrl of childPagesToScan) {
-            console.log("Scanning page: " + childPageUrl)
-            await scanPage(childPageUrl, url);
-        }
-
     } catch (error) {
-        if (error.response && error.response.status && error.response.status == 404) {
-            addBrokenLink(url, parent, 'internal');
+        handleScanError(error, url, parent);
+    }
+};
+
+const processLinks = (links, currentUrl) => {
+    const internalToScan = [];
+
+    links.forEach(href => {
+        const internalHref = internalPageToScan(href);
+
+        if (internalHref) {
+            if (!scannedPages.includes(internalHref)) {
+                scannedPages.push(internalHref);
+                internalToScan.push(internalHref);
+            }
+            return;
         }
+
+        // It's an external link
+        if (!ignoreUrl(href)) {
+            trackExternalLink(href, currentUrl);
+        }
+    });
+
+    return internalToScan;
+};
+
+const trackExternalLink = (url, sourcePage) => {
+    const existing = externalLinks.find(x => x.url === url);
+    if (existing) {
+        existing.pages.push(sourcePage);
+    } else {
+        externalLinks.push({ url, pages: [sourcePage] });
+    }
+};
+
+const handleScanError = (error, url, parent) => {
+    if (error.response?.status === 404) {
+        addBrokenLink(url, parent, 'internal');
+    } else {
+        console.error(`Error scanning ${url}: ${error.message}`);
     }
 };
 
 const checkLink = async (link) => {
-    var responseStatus;
+    let responseStatus;
     try {
         // wait 10 seconds - we don't want to flood servers with loads of requests
         await delay (10000);
@@ -188,13 +189,13 @@ const checkLinks = async (externalLinks) => {
         return 1;
     });
 
-    for (let count=0; count < externalLinks.length; count ++) {
-        let externalLink = externalLinks[count];
-        let status = await checkLink(externalLink.url);
-        if (status === 404) {
-            addBrokenLink(externalLink.url, externalLink.pages, 'external');
-        }
+    for (const externalLink of externalLinks) {
+    const status = await checkLink(externalLink.url);
+
+    if (status === 404) {
+        addBrokenLink(externalLink.url, externalLink.pages, 'external');
     }
+}
 };
 
 const reportOutput = () => {
