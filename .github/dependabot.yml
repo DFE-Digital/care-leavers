@@ -7,6 +7,10 @@ updates:
     commit-message:
       prefix: "[terraform] "
     open-pull-requests-limit: 5
+    groups:
+      terraform-deps:
+        patterns:
+          - "*"
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -15,6 +19,10 @@ updates:
     commit-message:
       prefix: "[github actions] "
     open-pull-requests-limit: 5
+    groups:
+      actions-deps:
+        patterns:
+          - "*"
 
   - package-ecosystem: "nuget"
     directory: "/src"
@@ -28,3 +36,7 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "Serilog.AspNetCore"
         update-types: [ "version-update:semver-major" ]
+    groups:
+      nuget-deps:
+        patterns:
+          - "*"
