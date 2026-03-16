@@ -18,7 +18,9 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
+          cache: "npm"
+          cache-dependency-path: "./src/utilities/package-lock.json"
 
       - name: Install npm packages used by util scripts
         working-directory: ./src/utilities
@@ -26,4 +28,9 @@ jobs:
 
       - name: Scan for broken links
         working-directory: ./src/utilities
-        run: node scan-website-links.js
+        run: |
+          if [ -z "$WEBSITE_ROOT" ]; then
+            echo "Error: WEBSITE_ROOT is not set."
+            exit 1
+          fi
+          node scan-website-links.js
