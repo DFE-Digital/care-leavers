@@ -1,0 +1,29 @@
+name: Link Validation Check
+permissions:
+  contents: read
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "00 02 * * 1-5"
+
+jobs:
+  scan-website-links:
+    runs-on: ubuntu-latest
+    environment: dev
+    env:
+      WEBSITE_ROOT: ${{ vars.APP_WEBSITE_ROOT }}
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install npm packages used by util scripts
+        working-directory: ./src/utilities
+        run: npm ci
+
+      - name: Scan for broken links
+        working-directory: ./src/utilities
+        run: node scan-website-links.js
