@@ -96,7 +96,7 @@ jobs:
         run: |
           docker build . -t ghcr.io/${{ env.REPO }}:${{ steps.set_tag.outputs.tag }} -f web/CareLeavers.Web/Dockerfile
 
-      - uses: docker/login-action@v3
+      - uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
