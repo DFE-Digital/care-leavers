@@ -1,4 +1,4 @@
-import {Page, Locator, expect, FrameLocator} from '@playwright/test';
+import {Page, Locator, expect} from '@playwright/test';
 import {QuestionnaireRunBasePage} from "./QuestionnaireRunBasePage";
 import {convertColorToHex, getElementInfo, waitForRedirectTo} from "../helpers/utils";
 
@@ -234,7 +234,7 @@ export class QuestionnaireNextPage extends QuestionnaireRunBasePage {
         expectedHexHoverColor?: string
     ): Promise<void> {
         const continueButtonColor = await this.continueButton.evaluate((el) =>
-            window.getComputedStyle(el).getPropertyValue('background-color')
+            globalThis.getComputedStyle(el).getPropertyValue('background-color')
         );
         expect(continueButtonColor.length).toBeGreaterThan(0);
         expect(convertColorToHex(continueButtonColor)).toBe(expectedHexColor);
@@ -242,7 +242,7 @@ export class QuestionnaireNextPage extends QuestionnaireRunBasePage {
         if (expectedHexHoverColor) {
             await this.continueButton.focus();
             const hoveredButtonColor = await this.continueButton.evaluate((el) =>
-                window.getComputedStyle(el).getPropertyValue('background-color')
+                globalThis.getComputedStyle(el).getPropertyValue('background-color')
             );
             expect(hoveredButtonColor.length).toBeGreaterThan(0);
             expect(convertColorToHex(hoveredButtonColor)).toBe(expectedHexHoverColor);
@@ -272,7 +272,7 @@ export class QuestionnaireNextPage extends QuestionnaireRunBasePage {
             }
 
             const color = await element.evaluate((el) =>
-                window.getComputedStyle(el).getPropertyValue('color')
+                globalThis.getComputedStyle(el).getPropertyValue('color')
             );
             expect(color.length).toBeGreaterThan(0);
 
@@ -289,28 +289,28 @@ export class QuestionnaireNextPage extends QuestionnaireRunBasePage {
     async assertErrorComponentsColor(expectedHexColor: string): Promise<void> {
         // Error summary should have same color as border of error field group
         const errorSummaryColor = await this.errorSummary.evaluate((el) =>
-            window.getComputedStyle(el).getPropertyValue('border-color')
+            globalThis.getComputedStyle(el).getPropertyValue('border-color')
         );
         expect(errorSummaryColor.length).toBeGreaterThan(0);
         expect(convertColorToHex(errorSummaryColor)).toBe(expectedHexColor);
 
         // Error field group should have same color as summary
         const errorFormGroupColor = await this.errorFormGroup.evaluate((el) =>
-            window.getComputedStyle(el).getPropertyValue('border-left-color')
+            globalThis.getComputedStyle(el).getPropertyValue('border-left-color')
         );
         expect(errorFormGroupColor.length).toBeGreaterThan(0);
         expect(convertColorToHex(errorFormGroupColor)).toBe(expectedHexColor);
 
         // Error field message should have same color as summary
         const errorFieldMessageColor = await this.errorFieldMessage.evaluate((el) =>
-            window.getComputedStyle(el).getPropertyValue('color')
+            globalThis.getComputedStyle(el).getPropertyValue('color')
         );
         expect(errorFieldMessageColor.length).toBeGreaterThan(0);
         expect(convertColorToHex(errorFieldMessageColor)).toBe(expectedHexColor);
 
         // Error summary list link should have same color as summary
         const errorSummaryListLinkColor = await this.errorSummaryListLink.evaluate((el) =>
-            window.getComputedStyle(el).getPropertyValue('color')
+            globalThis.getComputedStyle(el).getPropertyValue('color')
         );
         expect(errorSummaryListLinkColor.length).toBeGreaterThan(0);
         expect(convertColorToHex(errorSummaryListLinkColor)).toBe(expectedHexColor);

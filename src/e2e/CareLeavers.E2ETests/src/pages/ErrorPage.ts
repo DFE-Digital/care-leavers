@@ -33,6 +33,6 @@ export class ErrorPage extends BasePage {
     }
     
     private escapeRegexExpression(s: string): string {
-        return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return s.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
     }
 }
