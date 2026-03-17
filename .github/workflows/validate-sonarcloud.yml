@@ -2,17 +2,18 @@ name: Validate - SonarQube
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
-  pull-requests: read
+  pull-requests: write
+  contents: read
 
 env:
-  JAVA_VERSION: '21'
-  DOTNET_VERSION: '8.0.x'
+  JAVA_VERSION: "21"
+  DOTNET_VERSION: "8.0.x"
 
 jobs:
   build:
@@ -33,15 +34,15 @@ jobs:
         uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v4
         with:
           java-version: ${{ env.JAVA_VERSION }}
-          distribution: 'microsoft'
-  
+          distribution: "microsoft"
+
       - name: Cache SonarCloud packages
         uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v4
         with:
           path: ~/.sonar
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-  
+
       - name: Install dotnet reportgenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
@@ -56,7 +57,6 @@ jobs:
           dotnet sonarscanner begin \
             /o:"dfe-digital" \
             /k:"DFE-Digital_care-leavers" \
-            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.scanner.skipJreProvisioning=true \
             /s:${{ github.workspace }}/SonarQube.Analysis.xml
 
@@ -66,7 +66,7 @@ jobs:
             --framework net8.0 \
             /clp:NoSummary \
             /p:AutomatedRun=true
-            
+
       - name: Run unit tests
         run: |
           dotnet test ./src \
@@ -74,9 +74,9 @@ jobs:
             --collect "XPlat Code Coverage" \
             --logger "trx;LogFileName=TestResults.trx" \
             /p:AutomatedRun=true
-      
+
       - name: Report unit test results
-        uses: dorny/test-reporter@dc3a92680fcc15842eef52e8c4606ea7ce6bd3f3
+        uses: dorny/test-reporter@3d76b34a4535afbd0600d347b09a6ee5deb3ed7f
         if: ${{ !cancelled() }}
         with:
           name: .NET unit test results
@@ -84,6 +84,7 @@ jobs:
           reporter: dotnet-trx
 
       - name: Generate code coverage report
+        if: success()
         run: |
           reportgenerator \
             -reports:./**/coverage.cobertura.xml \
@@ -91,10 +92,10 @@ jobs:
             -reporttypes:SonarQube \
             -sourcedirs:./src \
             -filefilters:"-*/RegexGenerator.g.cs"
-          
+
       - name: Stop sonar scanner
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        if: success()
         run: |
-          dotnet sonarscanner end \
-            /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          dotnet sonarscanner end

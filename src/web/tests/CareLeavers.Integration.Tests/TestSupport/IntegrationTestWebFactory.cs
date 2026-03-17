@@ -42,7 +42,7 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
             var httpClient = new HttpClient(FakeMessageHandler);
             var contentfulClient = new ContentfulClient(httpClient, "test", "test", "test");
             contentfulClient.SerializerSettings.Converters.RemoveAt(0);
-            contentfulClient.SerializerSettings.Converters.Insert(0, new GDSAssetJsonConverter());
+            contentfulClient.SerializerSettings.Converters.Insert(0, new GdsAssetJsonConverter());
             contentfulClient.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             contentfulClient.SerializerSettings.ContractResolver = new DefaultContractResolver
             {
@@ -66,8 +66,6 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
             {
                 Clarity = "test-clarity",
                 GTM = "GTM-TEST",
-                ShareaholicSiteId = "abcdefghijk",
-                ShareaholicAppId = "12345678",
                 ShowCookieBanner = false,
                 AddCssVersion = false
             }));

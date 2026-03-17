@@ -3,7 +3,7 @@ using Contentful.Core.Models;
 
 namespace CareLeavers.Web.ContentfulRenderers;
 
-public class GDSGridRenderer(IServiceProvider serviceProvider) : GDSRazorContentRenderer(serviceProvider)
+public class GdsGridRenderer(IServiceProvider serviceProvider) : GdsRazorContentRenderer(serviceProvider)
 {
     public override bool SupportsContent(IContent content)
     {

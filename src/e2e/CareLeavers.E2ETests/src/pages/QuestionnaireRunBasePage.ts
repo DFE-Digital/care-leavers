@@ -1,4 +1,4 @@
-import {Page, Locator, expect, BrowserContext, Cookie, FrameLocator} from '@playwright/test';
+import {Page, Locator, expect, FrameLocator} from '@playwright/test';
 import {convertColorToHex} from "../helpers/utils";
 import {BasePage} from "./BasePage";
 
@@ -57,7 +57,7 @@ export class QuestionnaireRunBasePage extends BasePage {
     async assertBackgroundColor(expectedHexColor: string) {
         await expect(this.mainContent).toBeVisible();
         const backgroundColor = await this.mainContent.evaluate((el) =>
-            window.getComputedStyle(el).getPropertyValue('background-color')
+            globalThis.getComputedStyle(el).getPropertyValue('background-color')
         );
         expect(backgroundColor.length).toBeGreaterThan(0);
         expect(convertColorToHex(backgroundColor)).toBe(expectedHexColor);

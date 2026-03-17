@@ -608,13 +608,12 @@ html
 
 .gem-c-contents-list__link:focus,.gem-c-contents-list__link:active:focus,.gem-c-contents-list__link:link:focus,.gem-c-contents-list__link:visited:focus {
   outline: 3px solid rgba(0,0,0,0);
-  color: #0b0c0c;
+  color: #0b0c0c !important;
   background-color: #fd0;
   box-shadow: 0 -2px #fd0,0 4px #0b0c0c;
   text-decoration: none;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
-  color: #0b0c0c !important
 }
 
 .gem-c-contents-list__list-item--parent>.gem-c-contents-list__link {

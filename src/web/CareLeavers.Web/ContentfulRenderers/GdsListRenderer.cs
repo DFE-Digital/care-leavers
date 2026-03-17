@@ -7,7 +7,7 @@ namespace CareLeavers.Web.ContentfulRenderers;
 /// <summary>
 /// A renderer for a list.
 /// </summary>
-public class GDSListRenderer(ContentRendererCollection rendererCollection) : IContentRenderer
+public class GdsListRenderer(ContentRendererCollection rendererCollection) : IContentRenderer
 {
 
     /// <summary>

@@ -1,0 +1,36 @@
+name: Link Validation Check
+permissions:
+  contents: read
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "00 02 * * 1-5"
+
+jobs:
+  scan-website-links:
+    runs-on: ubuntu-latest
+    environment: dev
+    env:
+      WEBSITE_ROOT: ${{ vars.APP_WEBSITE_ROOT }}
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "npm"
+          cache-dependency-path: "./src/utilities/package-lock.json"
+
+      - name: Install npm packages used by util scripts
+        working-directory: ./src/utilities
+        run: npm install --ignore-scripts
+
+      - name: Scan for broken links
+        working-directory: ./src/utilities
+        run: |
+          if [ -z "$WEBSITE_ROOT" ]; then
+            echo "Error: WEBSITE_ROOT is not set."
+            exit 1
+          fi
+          node scan-website-links.js

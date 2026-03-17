@@ -8,7 +8,7 @@ namespace CareLeavers.Web.Contentful
     /// <summary>
     /// JsonConverter for converting Contentful assets into a simpler <see cref="Asset"/> structure.
     /// </summary>
-    public class GDSAssetJsonConverter : JsonConverter
+    public class GdsAssetJsonConverter : JsonConverter
     {
         /// <summary>
         /// Determines whether this instance can convert the specified object type.
