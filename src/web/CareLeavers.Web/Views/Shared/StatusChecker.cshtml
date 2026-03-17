@@ -17,9 +17,9 @@
                     @checker?.InitialQuestion
                 </h2>
             </legend>
-            @if (!string.IsNullOrEmpty(checker.Description))
+            @if (!string.IsNullOrEmpty(checker?.Description))
             {
-                <div id="@checker.Sys.Id-hint" class="govuk-hint">
+                <div id="@checker.Sys?.Id-hint" class="govuk-hint">
                     @checker.Description
                 </div>
             }

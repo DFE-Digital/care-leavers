@@ -6,6 +6,7 @@ using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Contentful.Webhooks;
 using CareLeavers.Web.ContentfulRenderers;
+using CareLeavers.Web.Controllers;
 using CareLeavers.Web.GetToAnAnswerRun;
 using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Telemetry;
@@ -137,6 +138,8 @@ try
     });
     
     #endregion
+
+    builder.Services.AddHttpClient<PrintController>();
     
     #region Contentful and Renderers
     
