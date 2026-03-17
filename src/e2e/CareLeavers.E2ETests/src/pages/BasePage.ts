@@ -194,52 +194,51 @@ export class BasePage {
             await expect(this.mobileMenuContainer).toBeVisible(); // Ensure it becomes visible
         }
     }
+    
+    async verifyNavigationDesktop() {
+        // Verify desktop navigation is visible
+        await expect(this.page.locator('#navigation')).toBeVisible();
 
-    //Verify Navigation Bar functionality
-    async verifyNavigation(isDesktop: boolean) {
-        if (isDesktop) {
-            // Verify desktop navigation is visible
-            await expect(this.page.locator('#navigation')).toBeVisible();
+        const navLinks = [this.navLinkHome, this.navLinkAllSupport /* add other nav links here */];
+        for (const link of navLinks) {
+            const href = await link.getAttribute('href');
+            if (!href) throw new Error('Link does not have an href attribute');
 
-            const navLinks = [this.navLinkHome, this.navLinkAllSupport /* add other nav links here */];
-            for (const link of navLinks) {
-                const href = await link.getAttribute('href');
-                if (!href) throw new Error('Link does not have an href attribute');
+            await link.click();
+            await this.page.waitForURL(new RegExp(href));
+        }
+    }
+    
+    async verifyNavigationMobile() {
+        // Click on the hamburger menu to open the mobile menu
+        await expect(this.menuToggle).toBeVisible();
+        await this.menuToggle.click();
 
-                await link.click();
-                await this.page.waitForURL(new RegExp(href));
-            }
-        } else {
-            // Click on the hamburger menu to open the mobile menu
-            await expect(this.menuToggle).toBeVisible();
-            await this.menuToggle.click();
+        // Wait and verify that the mobile menu is visible
+        await expect(this.mobileMenuContainer).toBeVisible();
+        await expect(this.menuToggle).toHaveAttribute("aria-expanded", "true");
 
-            // Wait and verify that the mobile menu is visible
-            await expect(this.mobileMenuContainer).toBeVisible();
-            await expect(this.menuToggle).toHaveAttribute("aria-expanded", "true");
+        // Verify the mobile menu links
+        const mobileLinksCount = await this.mobileMenuLinks.count();
+        expect(mobileLinksCount).toBeGreaterThan(0);
 
-            // Verify the mobile menu links
-            const mobileLinksCount = await this.mobileMenuLinks.count();
-            expect(mobileLinksCount).toBeGreaterThan(0);
+        // Close the mobile menu
+        await this.menuToggle.click();
 
-            // Close the mobile menu
-            await this.menuToggle.click();
+        // Ensure the menu is closed
+        await expect(this.mobileMenuContainer).not.toBeVisible();
 
-            // Ensure the menu is closed
-            await expect(this.mobileMenuContainer).not.toBeVisible();
+        // click each link and ensure the menu is visible each time
+        const links = [
+            {index: 0, href: '/en/all-support'},
+            {index: 1, href: '/en/your-rights'}
+        ];
 
-            // click each link and ensure the menu is visible each time
-            const links = [
-                {index: 0, href: '/en/all-support'},
-                {index: 1, href: '/en/your-rights'}
-            ];
-
-            for (const link of links) {
-                await this.ensureMenuIsVisible(); // Ensure the menu is visible before clicking
-                await expect(this.mobileMenuLinks.nth(link.index)).toHaveAttribute('href', link.href);
-                await this.mobileMenuLinks.nth(link.index).click();
-                await this.page.waitForURL(new RegExp(link.href));
-            }
+        for (const link of links) {
+            await this.ensureMenuIsVisible(); // Ensure the menu is visible before clicking
+            await expect(this.mobileMenuLinks.nth(link.index)).toHaveAttribute('href', link.href);
+            await this.mobileMenuLinks.nth(link.index).click();
+            await this.page.waitForURL(new RegExp(link.href));
         }
     }
 

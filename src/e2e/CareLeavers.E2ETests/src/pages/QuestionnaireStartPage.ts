@@ -1,5 +1,5 @@
 
-import {Page, Locator, expect, FrameLocator} from '@playwright/test';
+import {Page, Locator, expect} from '@playwright/test';
 import {QuestionnaireRunBasePage} from "./QuestionnaireRunBasePage";
 import {convertColorToHex, getElementInfo} from "../helpers/utils";
 
@@ -98,7 +98,7 @@ export class QuestionnaireStartPage extends QuestionnaireRunBasePage {
         expectedHexHoverColor?: string
     ): Promise<void> {
         const continueButtonColor = await this.startButton.evaluate((el) =>
-            window.getComputedStyle(el).getPropertyValue('background-color')
+            globalThis.getComputedStyle(el).getPropertyValue('background-color')
         );
         expect(continueButtonColor.length).toBeGreaterThan(0);
         expect(convertColorToHex(continueButtonColor)).toBe(expectedHexColor);
@@ -106,7 +106,7 @@ export class QuestionnaireStartPage extends QuestionnaireRunBasePage {
         if (expectedHexHoverColor) {
             await this.startButton.focus();
             const hoveredButtonColor = await this.startButton.evaluate((el) =>
-                window.getComputedStyle(el).getPropertyValue('background-color')
+                globalThis.getComputedStyle(el).getPropertyValue('background-color')
             );
             expect(hoveredButtonColor.length).toBeGreaterThan(0);
             expect(convertColorToHex(hoveredButtonColor)).toBe(expectedHexHoverColor);
@@ -136,7 +136,7 @@ export class QuestionnaireStartPage extends QuestionnaireRunBasePage {
             }
 
             const color = await element.evaluate((el) =>
-                window.getComputedStyle(el).getPropertyValue('color')
+                globalThis.getComputedStyle(el).getPropertyValue('color')
             );
             expect(color.length).toBeGreaterThan(0);
 
