@@ -1,0 +1,15 @@
+resource "azurerm_user_assigned_identity" "cl-identity-reader" {
+  name                = "${local.service_prefix}mid-uks-cl-r"
+  location            = local.location
+  resource_group_name = azurerm_resource_group.core-rg.name
+
+  tags = local.common_tags
+}
+
+resource "azurerm_user_assigned_identity" "cl-identity-administrator" {
+  name                = "${local.service_prefix}mid-uks-cl-a"
+  location            = local.location
+  resource_group_name = azurerm_resource_group.core-rg.name
+
+  tags = local.common_tags
+}
