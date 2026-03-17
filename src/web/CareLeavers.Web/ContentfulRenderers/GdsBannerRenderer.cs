@@ -3,33 +3,33 @@ using Contentful.Core.Models;
 
 namespace CareLeavers.Web.ContentfulRenderers;
 
-public class GDSCallToActionRenderer(IServiceProvider serviceProvider) : GDSRazorContentRenderer(serviceProvider)
+public class GdsBannerRenderer(IServiceProvider serviceProvider) : GdsRazorContentRenderer(serviceProvider)
 {
     public override bool SupportsContent(IContent content)
     {
         if (content is EntryStructure { NodeType: "embedded-entry-block" } entryStructure)
         {
-            if (entryStructure.Data.Target is CallToAction)
+            if (entryStructure.Data.Target is Banner)
             {
                 return true;
             }
         }
 
-        return content is CallToAction;
+        return content is Banner;
     }
 
     public override Task<string> RenderAsync(IContent content)
     {
-        CallToAction? cta;
+        Banner? banner;
         if (content is Banner)
         {
-            cta = content as CallToAction;
+            banner = content as Banner;
         }
         else
         {
-            cta = (content as EntryStructure)?.Data.Target as CallToAction;
+            banner = (content as EntryStructure)?.Data.Target as Banner;
         }
 
-        return RenderToString("Shared/CallToAction", cta);
+        return RenderToString("Shared/Banner", banner);
     }
 }

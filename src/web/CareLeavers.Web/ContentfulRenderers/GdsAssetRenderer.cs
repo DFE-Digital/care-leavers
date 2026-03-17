@@ -3,7 +3,7 @@ using Contentful.Core.Models;
 
 namespace CareLeavers.Web.ContentfulRenderers;
 
-public class GDSAssetRenderer(ContentRendererCollection rendererCollection) : IContentRenderer
+public class GdsAssetRenderer(ContentRendererCollection rendererCollection) : IContentRenderer
 {
     public bool SupportsContent(IContent content) => content is AssetStructure;
 

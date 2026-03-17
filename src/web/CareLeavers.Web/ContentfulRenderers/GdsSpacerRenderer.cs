@@ -7,7 +7,7 @@ namespace CareLeavers.Web.ContentfulRenderers;
 /// <summary>
 /// A renderer for a paragraph.
 /// </summary>
-public class GDSSpacerRenderer() : IContentRenderer
+public class GdsSpacerRenderer() : IContentRenderer
 {
     public bool SupportsContent(IContent content)
     {
