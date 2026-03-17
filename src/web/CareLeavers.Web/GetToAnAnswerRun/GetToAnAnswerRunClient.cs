@@ -17,7 +17,7 @@ public class GetToAnAnswerRunClient(
     public async Task<string> GetStartPageOrInitialState(string languageCode, string questionnaireSlug)
     {
         var responseMessage = await httpClient.GetAsync(
-            HttpUtility.UrlEncode($"/questionnaires/{questionnaireSlug}/start?embed=true"));
+            $"/questionnaires/{HttpUtility.UrlEncode(questionnaireSlug)}/start?embed=true");
         
         if (!responseMessage.IsSuccessStatusCode)
         {
@@ -34,7 +34,7 @@ public class GetToAnAnswerRunClient(
     public async Task<string> GetInitialState(string languageCode, string questionnaireSlug)
     {
         var responseMessage = await httpClient.GetAsync(
-            HttpUtility.UrlEncode($"/questionnaires/{questionnaireSlug}/next?embed=true"));
+            $"/questionnaires/{HttpUtility.UrlEncode(questionnaireSlug)}/next?embed=true");
         
         if (!responseMessage.IsSuccessStatusCode)
         {
@@ -55,7 +55,7 @@ public class GetToAnAnswerRunClient(
             .SelectMany(kvp => kvp.Value, (kvp, value) => new KeyValuePair<string, string>(kvp.Key, value ?? string.Empty));
 
         var responseMessage = await httpClient.PostAsync(
-            HttpUtility.UrlEncode($"/questionnaires/{questionnaireSlug}/next?embed=true"), 
+            $"/questionnaires/{HttpUtility.UrlEncode(questionnaireSlug)}/next?embed=true", 
             new FormUrlEncodedContent(formContent));
         
         if (!responseMessage.IsSuccessStatusCode)
@@ -73,7 +73,7 @@ public class GetToAnAnswerRunClient(
     public async Task<(Stream fileStream, string contentType)> GetDecorativeImage(string questionnaireSlug)
     {
         var response = await httpClient.GetAsync(
-            HttpUtility.UrlEncode($"/questionnaires/{questionnaireSlug}/decorative-image"));
+            $"/questionnaires/{HttpUtility.UrlEncode(questionnaireSlug)}/decorative-image");
     
         if (!response.IsSuccessStatusCode)
         {
