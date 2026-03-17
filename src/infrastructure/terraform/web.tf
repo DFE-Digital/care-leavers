@@ -17,6 +17,13 @@ locals {
     "Rebrand"                               = var.rebrand
     "GetToAnAnswer__BaseUrl"                = var.gtaa_base_url
   }
+
+  managed_identity = {
+    type = "UserAssigned"
+    identity_ids = [
+      azurerm_user_assigned_identity.cl-identity-reader.id
+    ]
+  }
 }
 
 resource "azurerm_resource_group" "web-rg" {
@@ -58,8 +65,11 @@ resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
   }
 
   identity {
-    type = "SystemAssigned"
+    type         = local.managed_identity.type
+    identity_ids = local.managed_identity.identity_ids
   }
+
+  key_vault_reference_identity_id = local.managed_identity.identity_ids[0]
 
   app_settings = local.web_app_settings
 
@@ -88,8 +98,11 @@ resource "azurerm_linux_web_app" "web-app-service" {
   }
 
   identity {
-    type = "SystemAssigned"
+    type         = local.managed_identity.type
+    identity_ids = local.managed_identity.identity_ids
   }
+
+  key_vault_reference_identity_id = local.managed_identity.identity_ids[0]
 
   app_settings = local.web_app_settings
 
