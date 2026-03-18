@@ -1,0 +1,19 @@
+{
+    "name": "synchronisation",
+    "version": "1.0.0",
+    "description": "This is a small utility tool that takes content from one environment and updates another.",
+    "scripts": {
+        "sync": "node synchronise.js"
+    },
+    "license": "MIT",
+    "type": "commonjs",
+    "dependencies": {
+        "contentful-export": "^7.22.4",
+        "contentful-import": "^9.4.135",
+        "contentful-management": "^11.74.0",
+        "dotenv": "^17.3.1"
+    },
+    "devDependencies": {
+        "prettier": "3.8.1"
+    }
+}

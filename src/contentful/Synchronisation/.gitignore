@@ -1,0 +1,4 @@
+.env
+environment.json
+contentful-import-error-*
+contentful-export-error-*
