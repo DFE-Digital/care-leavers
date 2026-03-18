@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CareLeavers.Web.ContentfulRenderers;
 
-public class GDSHeaderRenderer(ContentRendererCollection rendererCollection) : IContentRenderer
+public class GdsHeaderRenderer(ContentRendererCollection rendererCollection) : IContentRenderer
 {
     private readonly Dictionary<Type, (int size, string tag)> _heading = new()
     {

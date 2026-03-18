@@ -360,6 +360,21 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   }
 
   custom_rule {
+    name     = "allowteamsredirect"
+    enabled  = true
+    action   = "Allow"
+    type     = "MatchRule"
+    priority = 250
+
+    match_condition {
+      match_variable = "RequestHeader"
+      selector       = "Referer"
+      operator       = "Contains"
+      match_values   = ["statics.teams.cdn.office.net"]
+    }
+  }
+
+  custom_rule {
     name     = "blocknonuk"
     enabled  = true
     action   = "Redirect"

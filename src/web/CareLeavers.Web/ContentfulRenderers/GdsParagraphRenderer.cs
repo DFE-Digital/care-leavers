@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CareLeavers.Web.ContentfulRenderers;
 
-public class GDSParagraphRenderer(ContentRendererCollection rendererCollection) : IContentRenderer
+public class GdsParagraphRenderer(ContentRendererCollection rendererCollection) : IContentRenderer
 {
     public bool SupportsContent(IContent content) => content is Paragraph;
 
