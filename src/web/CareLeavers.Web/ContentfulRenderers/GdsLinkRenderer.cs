@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CareLeavers.Web.ContentfulRenderers;
 
-public class GDSLinkRenderer(ContentRendererCollection rendererCollection, IServiceProvider serviceProvider) : IContentRenderer
+public class GdsLinkRenderer(ContentRendererCollection rendererCollection, IServiceProvider serviceProvider) : IContentRenderer
 {
     public bool SupportsContent(IContent content)
     {

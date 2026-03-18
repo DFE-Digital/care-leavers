@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 namespace CareLeavers.Web.TagHelpers;
 
 [HtmlTargetElement("gds-contentful-contents", TagStructure = TagStructure.WithoutEndTag)]
-public class GDSContentfulContentsTagHelper : TagHelper
+public class GdsContentfulContentsTagHelper : TagHelper
 {
     private readonly HtmlRenderer _renderer;
     
@@ -21,7 +21,7 @@ public class GDSContentfulContentsTagHelper : TagHelper
 
     public HeadingType[] Levels { get; set; } = [HeadingType.H2];
     
-    public GDSContentfulContentsTagHelper(HtmlRenderer renderer)
+    public GdsContentfulContentsTagHelper(HtmlRenderer renderer)
     {
         _renderer = renderer;
     }

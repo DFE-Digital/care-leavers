@@ -2,7 +2,7 @@ using Contentful.Core.Models;
 
 namespace CareLeavers.Web.ContentfulRenderers;
 
-public class GDSHorizontalRulerContentRenderer : IContentRenderer
+public class GdsHorizontalRulerContentRenderer : IContentRenderer
 {
     public bool SupportsContent(IContent content) => content is HorizontalRuler;
 
