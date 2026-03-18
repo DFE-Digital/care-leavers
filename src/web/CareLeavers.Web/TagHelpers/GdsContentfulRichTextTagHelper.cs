@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 namespace CareLeavers.Web.TagHelpers;
 
 [HtmlTargetElement("gds-contentful-rich-text")]
-public class GDSContentfulRichTextTagHelper(HtmlRenderer renderer) : ContentfulRichTextTagHelper(renderer)
+public class GdsContentfulRichTextTagHelper(HtmlRenderer renderer) : ContentfulRichTextTagHelper(renderer)
 {
     public bool LargerText { get; set; } = false;
     

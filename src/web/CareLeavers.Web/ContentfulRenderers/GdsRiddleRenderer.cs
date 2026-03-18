@@ -6,7 +6,7 @@ namespace CareLeavers.Web.ContentfulRenderers;
 /// <summary>
 /// A renderer for a paragraph.
 /// </summary>
-public class GDSStatusCheckerRenderer (IServiceProvider serviceProvider) : GDSRazorContentRenderer(serviceProvider)
+public class GdsRiddleRenderer(IServiceProvider serviceProvider) : GdsRazorContentRenderer(serviceProvider)
 {
     /// <summary>
     /// Whether or not this renderer supports the provided content.
@@ -15,18 +15,17 @@ public class GDSStatusCheckerRenderer (IServiceProvider serviceProvider) : GDSRa
     /// <returns>Returns true if the content is a paragraph, otherwise false.</returns>
     public override bool SupportsContent(IContent content)
     {
-        if (content is EntryStructure structure)
+        if (content is EntryStructure)
         {
-            if (structure.NodeType == "embedded-entry-block")
+            var structure = content as EntryStructure;
+            if (structure?.NodeType == "embedded-entry-block")
             {
-                if (structure.Data.Target is StatusChecker)
-                {
+                if (structure.Data.Target is Riddle)
                     return true;
-                }
             }
         }
 
-        return content is StatusChecker;
+        return content is Riddle;
     }
 
     public override string Render(IContent content)
@@ -43,16 +42,16 @@ public class GDSStatusCheckerRenderer (IServiceProvider serviceProvider) : GDSRa
     /// <returns>The p-tag as a string.</returns>
     public override Task<string> RenderAsync(IContent content)
     {
-        StatusChecker? checker;
-        if (content is StatusChecker)
+        Riddle? riddle;
+        if (content is Riddle)
         {
-            checker = content as StatusChecker;
+            riddle = content as Riddle;
         }
         else
         {
-            checker = (content as EntryStructure)?.Data.Target as StatusChecker;
+            riddle = (content as EntryStructure)?.Data.Target as Riddle;
         }
 
-        return RenderToString("StatusChecker", checker);
+        return RenderToString("Riddle", riddle);
     }
 }

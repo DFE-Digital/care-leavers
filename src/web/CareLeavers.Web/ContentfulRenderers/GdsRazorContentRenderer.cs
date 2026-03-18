@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace CareLeavers.Web.ContentfulRenderers;
 
-public abstract class GDSRazorContentRenderer(
+public abstract class GdsRazorContentRenderer(
     IServiceProvider serviceProvider)
     : RazorContentRenderer(
         serviceProvider.GetRequiredService<IRazorViewEngine>(),
