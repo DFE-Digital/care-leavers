@@ -1,5 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Compression;
+using Azure;
+using Azure.AI.Translation.Document;
+using Azure.AI.Translation.Text;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using CareLeavers.Web;
 using CareLeavers.Web.Configuration;
@@ -18,6 +21,7 @@ using Contentful.Core.Models;
 using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OpenTelemetry.Metrics;
@@ -203,6 +207,18 @@ try
     }
     else
     {
+        builder.Services.AddTransient(service =>
+        {
+            AzureTranslationOptions options =  service.GetRequiredService<IOptions<AzureTranslationOptions>>().Value;
+            return new TextTranslationClient(new AzureKeyCredential(options.AccessKey), new Uri(options.Endpoint), options.Region);
+        });
+
+        builder.Services.AddTransient(service =>
+        {
+            AzureTranslationOptions options =  service.GetRequiredService<IOptions<AzureTranslationOptions>>().Value;
+            return new SingleDocumentTranslationClient(new Uri(options.DocumentEndpoint), new AzureKeyCredential(options.AccessKey));
+        });
+        
         builder.Services.AddScoped<ITranslationService, AzureTranslationService>();
     }
 
