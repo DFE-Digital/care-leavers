@@ -2350,24 +2350,24 @@
       },
       "WebMarkupMin.AspNet.Common": {
         "type": "Transitive",
-        "resolved": "2.20.2",
-        "contentHash": "uLNQS7jqD4alribbXskonaI9z4asqSboEL8UsBuOq62kDcfFWA/TRzBUGKK+quOYALXJs1gtTe+PDuh+uHHKcw==",
+        "resolved": "2.21.0",
+        "contentHash": "q2Y5Cej6UXTdT7zDA5d1XMnr8jZBRTwJxRjGui/faBPXYlvUWy4Qij2fqfpsTxprYc96A+vUoxl0belNNCEOcQ==",
         "dependencies": {
-          "WebMarkupMin.Core": "2.20.2"
+          "WebMarkupMin.Core": "2.21.0"
         }
       },
       "WebMarkupMin.AspNetCoreLatest": {
         "type": "Transitive",
-        "resolved": "2.20.2",
-        "contentHash": "vqI4h7vKm9Gpcw/beYkJu9x8qdh6R2yisDetLcyVTZu/yDXzRE9yZa+VvtnW/DzQ/gakXUjzo7Xuzt+9uvY/kg==",
+        "resolved": "2.21.0",
+        "contentHash": "k99gUEtoubvgYNx9xHlv2EE5ERva0yXz5Gpl2qeTjP0usq6hhyPVvPF9NCxo4g6e5Y3KonlJgsSdaUVuyeGxJw==",
         "dependencies": {
-          "WebMarkupMin.AspNet.Common": "2.20.2"
+          "WebMarkupMin.AspNet.Common": "2.21.0"
         }
       },
       "WebMarkupMin.Core": {
         "type": "Transitive",
-        "resolved": "2.20.2",
-        "contentHash": "VkOtB5hZDmXtcZpyQQIYrW8Wf948HafneTHi2B2Frwm/H0GAeNK2o9lTuVU+rwmxHx62pSbsbpheFW3KoUmNSw==",
+        "resolved": "2.21.0",
+        "contentHash": "/8zGdjDObXPadupzjV0iixXWgFTvh17n78ZFsWmnLy5us3i3ZaE5HD7P2HJFOe9ZiaWVxZOVQ3gDNvzMmG1VPQ==",
         "dependencies": {
           "AdvancedStringBuilder": "0.2.0"
         }
@@ -2434,7 +2434,7 @@
           "Serilog.AspNetCore": "[9.0.0, )",
           "Serilog.Sinks.ApplicationInsights": "[5.0.0, )",
           "WebMarkupMin.AspNet.Brotli": "[2.20.2, )",
-          "WebMarkupMin.AspNetCoreLatest": "[2.20.2, )",
+          "WebMarkupMin.AspNetCoreLatest": "[2.21.0, )",
           "ZiggyCreatures.FusionCache.Backplane.Memory": "[2.6.0, )",
           "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis": "[2.6.0, )",
           "ZiggyCreatures.FusionCache.OpenTelemetry": "[2.6.0, )",
