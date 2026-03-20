@@ -50,7 +50,9 @@ jobs:
 
       - name: Install Sonar Scanner
         shell: bash
-        run: dotnet tool install --global dotnet-sonarscanner
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          dotnet tool install --global dotnet-sonarscanner
 
       - name: Start Sonar Scanner
         shell: bash
@@ -59,9 +61,10 @@ jobs:
           /o:"dfe-digital" \
           /k:"DFE-Digital_care-leavers" \
           /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
-          /d:sonar.coverage.exclusions=**/Program.cs,**/LoggingConfigurationExtensions.cs,**/e2e/**,**/Migrations/** \
+          /d:sonar.coverage.exclusions=**/Program.cs,**/LoggingConfigurationExtensions.cs,**/Configuration/**,**/e2e/**,**/Migrations/** \
           /d:sonar.exclusions=**/Program.cs,**/LoggingConfigurationExtensions.cs,**/Migrations/** \
           /d:sonar.scanner.skipJreProvisioning=true \
+          /s:${{ github.workspace }}/SonarQube.Analysis.xml
 
       - name: Restore Solution
         shell: bash
@@ -83,6 +86,16 @@ jobs:
           --no-build \
           --collect "XPlat Code Coverage" \
           --logger "trx;LogFileName=TestResults.trx" \
+
+      - name: Generate Sonar Coverage Report
+        if: ${{ success() }}
+        run: |
+          reportgenerator \
+            -reports:./**/coverage.cobertura.xml \
+            -targetdir:./CoverageReport \
+            -reporttypes:SonarQube \
+            -sourcedirs:. \
+            -filefilters:"-*/RegexGenerator.g.cs"
 
       - name: Stop Sonar Scanner
         if: ${{ always() }}
