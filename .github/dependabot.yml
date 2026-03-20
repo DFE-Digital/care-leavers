@@ -40,3 +40,20 @@ updates:
       nuget-deps:
         patterns:
           - "*"
+  
+  - package-ecosystem: npm
+    directories:
+      - "/src/CareLeavers.E2ETests"
+      - "/src/pa11y"
+      - "/src/utilities"
+      - "/src/web/CareLeavers.Web"
+    schedule: 
+      interval: "weekly"
+    commit-message: 
+      prefix: "[npm] "
+    open-pull-requests-limit: 5
+    groups:
+      npm-deps:
+        group-by: dependency-name
+        patterns:
+          - "*"
