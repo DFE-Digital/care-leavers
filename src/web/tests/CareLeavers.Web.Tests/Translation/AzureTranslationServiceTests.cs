@@ -103,6 +103,20 @@ public class AzureTranslationServiceTests
         Assert.That(result, Is.EqualTo(translation));
     }
 
+    [Test]
+    public async Task TranslateHtml_WhenLanguageCodeIsUnsupported_Returns_English()
+    {
+        const string html = "<p>Test</p>";
+
+        await _fusionCache.SetAsync("translation:supported-languages", 
+            new List<TranslationLanguage> { new() { Code = "ZZ" } });
+
+        string? result = await _azureTranslationService.TranslateHtml(html, "Invalid");
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result, Is.EqualTo(html));
+    }
+
     [OneTimeTearDown]
     public void TearDown()
     {
