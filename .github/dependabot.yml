@@ -52,8 +52,12 @@ updates:
     commit-message: 
       prefix: "[npm] "
     open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: "govuk-frontend"
+        update-types: [ "version-update:semver-major" ]
+      - dependency-name: "dfe-frontend"
+        update-types: [ "version-update:semver-major" ]
     groups:
       npm-deps:
-        group-by: dependency-name
         patterns:
           - "*"
