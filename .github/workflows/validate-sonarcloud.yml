@@ -23,6 +23,7 @@ env:
 
 jobs:
   build-test-analyse:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     name: Build, Test & Analyse
     runs-on: ubuntu-24.04
     defaults:
