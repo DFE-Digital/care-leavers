@@ -9,7 +9,7 @@
     "type": "commonjs",
     "dependencies": {
         "contentful-export": "^7.22.4",
-        "contentful-import": "^9.4.135",
+        "contentful-import": "^9.4.139",
         "contentful-management": "^11.74.0",
         "dotenv": "^17.3.1"
     },
