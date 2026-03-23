@@ -1,0 +1,78 @@
+# Copies Content from one Environment (Source) to another (Target)
+
+name: Contentful - Synchronise Content
+run-name: Contentful - Synchronise ${{ inputs.source }} to ${{ inputs.target }}
+
+concurrency:
+  group: "${{ github.workflow }}-${{ inputs.target }}"
+  cancel-in-progress: false
+
+on:
+  workflow_dispatch: 
+    inputs: 
+      source:
+        description: Source Environment
+        required: true
+        options:
+          - "Production"
+          - "E2E"
+          - "Test"
+          - "Development"
+        default: "Test"
+      target:
+        description: Target Environment
+        required: true
+        options:
+          - "E2E"
+          - "Test"
+          - "Development"
+        default: "Development"
+
+jobs:
+  synchronise:
+    name: Synchronise
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.ref }}
+          
+      - name: Configure Runner Environment
+        shell: bash
+        run: |
+          SOURCE_LOWERCASE=`echo $SOURCE_INPUT | tr '[:upper:]' '[:lower:]'`
+          TARGET_LOWERCASE=`echo $TARGET_INPUT | tr '[:upper:]' '[:lower:]'`
+          echo "SOURCE=$SOURCE_LOWERCASE" >> $GITHUB_ENV
+          echo "TARGET=$TARGET_LOWERCASE" >> $GITHUB_ENV
+          echo "WORKING_DIRECTORY=src/contentful/Synchronisation" >> $GITHUB_ENV
+        env:
+          SOURCE_INPUT: ${{ inputs.source }}
+          TARGET_INPUT: ${{ inputs.target }}
+          
+      - name: Configure JavaScript Environment
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        shell: bash
+        run: |
+          touch .env
+          echo SPACE_ID=$CONTENTFUL_SPACE_ID >> .env
+          echo MANAGEMENT_TOKEN=$CONTENTFUL_MANAGEMENT_TOKEN >> .env
+          echo MIGRATION_TRACKER_ENTITY_ID=$CONTENTFUL_MIGRATION_TRACKER_ENTITY_ID >> .env
+          echo SOURCE_ENVIRONMENT=${{ env.SOURCE }} >> .env
+          echo TARGET_ENVIRONMENT=${{ env.TARGET }} >> .env
+        env:
+          CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
+          CONTENTFUL_MANAGEMENT_TOKEN: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
+          CONTENTFUL_MIGRATION_TRACKER_ENTITY_ID: ${{ vars.CONTENTFUL_MIGRATION_TRACKER_ENTITY_ID }}
+          
+      - name: Setup Node.JS
+        uses: actions/setup-node@v6
+        with:
+          node-version: 'lts/Krypton'
+          
+      - name: Copy ${{ inputs.source }} to ${{ inputs.target }}
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        shell: bash
+        run: |
+          npm install --ignore-scripts --omit=dev
+          npm run sync
