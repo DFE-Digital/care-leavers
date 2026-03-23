@@ -47,6 +47,7 @@ updates:
       - "/src/pa11y"
       - "/src/utilities"
       - "/src/web/CareLeavers.Web"
+      - "/src/contentful/Synchronisation"
     schedule: 
       interval: "weekly"
     commit-message: 
