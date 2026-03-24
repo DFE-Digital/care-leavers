@@ -43,6 +43,8 @@ resource "azurerm_service_plan" "web-app-service-plan" {
 }
 
 resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
+  count = var.elz_environment == "Prod" ? 1 : 0
+
   app_service_id = azurerm_linux_web_app.web-app-service.id
   name           = "staging"
   https_only     = true
