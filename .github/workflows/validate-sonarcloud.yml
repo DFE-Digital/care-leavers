@@ -1,101 +1,113 @@
 name: Validate - SonarQube
 
 on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
   workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+    branches:
+      - 'main'
+
+concurrency:
+  group: '${{ github.workflow }}-${{ github.ref }}'
+  cancel-in-progress: true
 
 permissions:
   pull-requests: write
   contents: read
 
 env:
-  JAVA_VERSION: "21"
-  DOTNET_VERSION: "8.0.x"
+  DOTNET_VERSION: '8.x'
+  JAVA_VERSION: '21'
 
 jobs:
-  build:
-    name: Build, Test and Analyse
-    runs-on: ubuntu-latest
-
+  build-test-analyse:
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    name: Build, Test & Analyse
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: './src'
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          ref: ${{ github.ref }}
+
       - name: Setup .NET ${{ env.DOTNET_VERSION }}
-        uses: actions/setup-dotnet@baa11fbfe1d6520db94683bd5c7a3818018e4309 # v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+          dotnet-quality: 'ga'
 
-      - name: Set up JDK ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v4
+      - name: Setup Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v5
         with:
-          java-version: ${{ env.JAVA_VERSION }}
           distribution: "microsoft"
+          java-version: ${{ env.JAVA_VERSION }}
 
-      - name: Cache SonarCloud packages
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v4
-        with:
-          path: ~/.sonar
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-      - name: Install dotnet reportgenerator
-        run: dotnet tool install --global dotnet-reportgenerator-globaltool
-
-      - name: Restore dependencies
-        run: dotnet restore ./src
-
-      - name: Start sonar scanner
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Install Sonar Scanner
+        shell: bash
         run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
           dotnet tool install --global dotnet-sonarscanner
-          dotnet sonarscanner begin \
-            /o:"dfe-digital" \
-            /k:"DFE-Digital_care-leavers" \
-            /d:sonar.scanner.skipJreProvisioning=true \
-            /s:${{ github.workspace }}/SonarQube.Analysis.xml
 
-      - name: Build project
+      - name: Start Sonar Scanner
+        shell: bash
         run: |
-          dotnet build ./src /maxcpucount:1 \
-            --framework net8.0 \
-            /clp:NoSummary \
-            /p:AutomatedRun=true
+          dotnet-sonarscanner begin \
+          /o:"dfe-digital" \
+          /k:"DFE-Digital_care-leavers" \
+          /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
+          /d:sonar.coverage.exclusions=**/Program.cs,**/LoggingConfigurationExtensions.cs,**/Configuration/**,**/e2e/**,**/contentful/Synchronisation/**,**/Migrations/** \
+          /d:sonar.exclusions=**/Program.cs,**/LoggingConfigurationExtensions.cs,**/Migrations/** \
+          /d:sonar.scanner.skipJreProvisioning=true \
+          /s:${{ github.workspace }}/SonarQube.Analysis.xml
 
-      - name: Run unit tests
+      - name: Restore Solution
+        shell: bash
+        run: dotnet restore
+
+      - name: Build Solution
+        shell: bash
         run: |
-          dotnet test ./src \
-            --no-build \
-            --collect "XPlat Code Coverage" \
-            --logger "trx;LogFileName=TestResults.trx" \
-            /p:AutomatedRun=true
+          dotnet build \
+          --configuration Release \
+          --no-restore
 
-      - name: Report unit test results
-        uses: dorny/test-reporter@3d76b34a4535afbd0600d347b09a6ee5deb3ed7f
-        if: ${{ !cancelled() }}
-        with:
-          name: .NET unit test results
-          path: "**/*.trx"
-          reporter: dotnet-trx
+      - name: Test Solution
+        shell: bash
+        run: |
+          dotnet test \
+          --configuration Release \
+          --no-restore \
+          --no-build \
+          --collect "XPlat Code Coverage" \
+          --logger "trx;LogFileName=TestResults.trx" \
 
-      - name: Generate code coverage report
-        if: success()
+      - name: Generate Sonar Coverage Report
+        if: ${{ success() }}
         run: |
           reportgenerator \
             -reports:./**/coverage.cobertura.xml \
             -targetdir:./CoverageReport \
             -reporttypes:SonarQube \
-            -sourcedirs:./src \
+            -sourcedirs:. \
             -filefilters:"-*/RegexGenerator.g.cs"
 
-      - name: Stop sonar scanner
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        if: success()
+      - name: Stop Sonar Scanner
+        if: ${{ always() }}
+        shell: bash
         run: |
-          dotnet sonarscanner end
+          dotnet-sonarscanner end \
+          /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
+      - name: Generate Test Report
+        uses: dorny/test-reporter@v2
+        if: ${{ !cancelled() }}
+        with:
+          name: .NET Test Results
+          path: "**/*.trx"
+          reporter: 'dotnet-trx'

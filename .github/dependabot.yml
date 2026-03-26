@@ -40,3 +40,25 @@ updates:
       nuget-deps:
         patterns:
           - "*"
+  
+  - package-ecosystem: npm
+    directories:
+      - "/src/CareLeavers.E2ETests"
+      - "/src/pa11y"
+      - "/src/utilities"
+      - "/src/web/CareLeavers.Web"
+      - "/src/contentful/Synchronisation"
+    schedule: 
+      interval: "weekly"
+    commit-message: 
+      prefix: "[npm] "
+    open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: "govuk-frontend"
+        update-types: [ "version-update:semver-major" ]
+      - dependency-name: "dfe-frontend"
+        update-types: [ "version-update:semver-major" ]
+    groups:
+      npm-deps:
+        patterns:
+          - "*"
