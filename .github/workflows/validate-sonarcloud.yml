@@ -61,7 +61,7 @@ jobs:
           /o:"dfe-digital" \
           /k:"DFE-Digital_care-leavers" \
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
-          /d:sonar.coverage.exclusions=**/Program.cs,**/LoggingConfigurationExtensions.cs,**.cshtml,**/Configuration/**,**/e2e/**,**/contentful/Synchronisation/**,**/utilities/**,**/Migrations/** \
+          /d:sonar.coverage.exclusions=**/Program.cs,**/LoggingConfigurationExtensions.cs,**/Gulpfile.js,**.cshtml,**/Configuration/**,**/e2e/**,**/contentful/Synchronisation/**,**/utilities/**,**/Migrations/** \
           /d:sonar.exclusions=**/Program.cs,**/LoggingConfigurationExtensions.cs,**/Migrations/** \
           /d:sonar.scanner.skipJreProvisioning=true \
           /s:${{ github.workspace }}/SonarQube.Analysis.xml
