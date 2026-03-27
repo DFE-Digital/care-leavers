@@ -105,7 +105,7 @@ jobs:
           /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
       - name: Generate Test Report
-        uses: dorny/test-reporter@v2
+        uses: dorny/test-reporter@v3
         if: ${{ !cancelled() }}
         with:
           name: .NET Test Results
