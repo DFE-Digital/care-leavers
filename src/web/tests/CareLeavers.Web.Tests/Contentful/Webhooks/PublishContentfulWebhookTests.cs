@@ -130,13 +130,14 @@ public class PublishContentfulWebhookTests
         _contentfulManagementClient.CreateOrUpdateEntry(Arg.Any<Entry<dynamic>>(), contentTypeId: Arg.Any<string>(),
                 version: Arg.Any<int?>())
             .ReturnsForAnyArgs(updatedEntryResponse);
-        
+
         await _publishContentfulWebhook.Consume(entry, "Topic");
 
         await _fusionCache.Received(1).RemoveAsync($"content:{pageSlug}");
         await _fusionCache.Received(1).RemoveAsync($"content:{oldPageSlug}");
         await _fusionCache.Received(1).RemoveByTagAsync(oldPageSlug);
-        await _contentfulManagementClient.ReceivedWithAnyArgs(1).CreateOrUpdateEntry(Arg.Any<Entry<dynamic>>(), contentTypeId: RedirectionRules.ContentType, version: 2);
+        await _contentfulManagementClient.ReceivedWithAnyArgs(1).CreateOrUpdateEntry(Arg.Any<Entry<dynamic>>(),
+            contentTypeId: RedirectionRules.ContentType, version: 2);
         await _contentfulManagementClient.Received(1).PublishEntry(redirectionRulesId, 2);
         await AssertDefaultCacheClears(entryId);
     }
@@ -151,8 +152,8 @@ public class PublishContentfulWebhookTests
         Page linkedPage = new Page { Sys = new SystemProperties { Id = pageId }, Slug = pageSlug };
 
         _contentfulClient.GetEntries(Arg.Any<QueryBuilder<ContentfulContent>>())
-            .Returns(new ContentfulCollection<ContentfulContent> { Items = [linkedPage]});
-        
+            .Returns(new ContentfulCollection<ContentfulContent> { Items = [linkedPage] });
+
         await _publishContentfulWebhook.Consume(entry, "Topic");
 
         await _fusionCache.Received(1).RemoveAsync(pageId);
@@ -168,17 +169,18 @@ public class PublishContentfulWebhookTests
         const string pageId = "PageId";
         const string pageSlug = "page-slug";
         Entry<ContentfulContent> entry = CreateEntry(RichContent.ContentType, entryId);
-        Page linkedPage = new Page { Sys = new SystemProperties { Id = pageId, PublishedVersion = 1 }, Slug = pageSlug };
-        
+        Page linkedPage = new Page
+            { Sys = new SystemProperties { Id = pageId, PublishedVersion = 1 }, Slug = pageSlug };
+
         _contentfulClient.GetEntries(Arg.Any<QueryBuilder<ContentfulContent>>())
-            .Returns(new ContentfulCollection<ContentfulContent> { Items = [linkedPage]});
-        
+            .Returns(new ContentfulCollection<ContentfulContent> { Items = [linkedPage] });
+
         await _publishContentfulWebhook.Consume(entry, "ContentManagement.Entry.publish");
 
         await _contentfulManagementClient.Received(1).PublishEntry(pageId, 2);
         await AssertDefaultCacheClears(entryId, pageId);
     }
-    
+
     private static Entry<ContentfulContent> CreateEntry(string contentType, string entryId) =>
         new()
         {
