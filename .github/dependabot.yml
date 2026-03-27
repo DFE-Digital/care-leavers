@@ -43,8 +43,8 @@ updates:
   
   - package-ecosystem: npm
     directories:
-      - "/src/CareLeavers.E2ETests"
-      - "/src/pa11y"
+      - "/src/e2e/CareLeavers.E2ETests"
+      - "/src/e2e/pa11y"
       - "/src/utilities"
       - "/src/web/CareLeavers.Web"
       - "/src/contentful/Synchronisation"
