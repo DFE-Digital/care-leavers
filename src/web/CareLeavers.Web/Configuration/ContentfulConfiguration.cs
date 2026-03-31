@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Models.Content;
 
 namespace CareLeavers.Web.Configuration;
 
+[ExcludeFromCodeCoverage(Justification = "Configuration")]
 public class ContentfulConfiguration(IContentService contentService) : IContentfulConfiguration
 {
     private readonly SemaphoreSlim _semaphore = new(1, 1);
