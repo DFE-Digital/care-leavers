@@ -90,4 +90,91 @@ public class RouteTelemetryProcessorTests
         // Assert
         Assert.Pass();
     }
+
+    [Test]
+    public void WhenSlugIsNullAndLanguageIsNotNullAndPathIsPresentThenLastSegmentIsAppended()
+    {
+        // Arrange
+        var httpContextAccessor = Substitute.For<IHttpContextAccessor>();
+        var httpContext = new DefaultHttpContext
+        {
+            Request =
+            {
+                Path = "/test"
+            }
+        };
+        var routeData = new RouteValueDictionary
+        {
+            { "languageCode", "sv" }
+        };
+        httpContext.Request.RouteValues = routeData;
+        httpContextAccessor.HttpContext.Returns(httpContext);
+        
+        var processor = new RouteTelemetryProcessor(httpContextAccessor);
+        var activity = new Activity("test");
+
+        // Act
+        processor.OnEnd(activity);
+
+        // Assert
+        Assert.That(activity.Tags.Single(x => x.Key == "http.route").Value, Is.EqualTo("/sv/test"));
+    }
+
+    [Test]
+    public void WhenSlugIsNullAndLanguageIsNotNullAndPathHasMultipleSegmentsThenLastSegmentIsAppended()
+    {
+        // Arrange
+        var httpContextAccessor = Substitute.For<IHttpContextAccessor>();
+        var httpContext = new DefaultHttpContext
+        {
+            Request =
+            {
+                Path = "/test/slug"
+            }
+        };
+        var routeData = new RouteValueDictionary
+        {
+            { "languageCode", "en" }
+        };
+        httpContext.Request.RouteValues = routeData;
+        httpContextAccessor.HttpContext.Returns(httpContext);
+        
+        var processor = new RouteTelemetryProcessor(httpContextAccessor);
+        var activity = new Activity("test");
+
+        // Act
+        processor.OnEnd(activity);
+
+        // Assert
+        Assert.That(activity.Tags.Single(x => x.Key == "http.route").Value, Is.EqualTo("/en/slug"));
+    }
+
+    [Test]
+    public void WhenSlugIsNullAndLanguageIsNotNullAndPathHasTrailingSlashThenEmptySegmentIsAppended()
+    {
+        // Arrange
+        var httpContextAccessor = Substitute.For<IHttpContextAccessor>();
+        var httpContext = new DefaultHttpContext
+        {
+            Request =
+            {
+                Path = "/test/"
+            }
+        };
+        var routeData = new RouteValueDictionary
+        {
+            { "languageCode", "en" }
+        };
+        httpContext.Request.RouteValues = routeData;
+        httpContextAccessor.HttpContext.Returns(httpContext);
+        
+        var processor = new RouteTelemetryProcessor(httpContextAccessor);
+        var activity = new Activity("test");
+
+        // Act
+        processor.OnEnd(activity);
+
+        // Assert
+        Assert.That(activity.Tags.Single(x => x.Key == "http.route").Value, Is.EqualTo("/en/"));
+    }
 }
