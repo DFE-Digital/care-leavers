@@ -60,8 +60,8 @@ jobs:
           dotnet-sonarscanner begin \
           /o:"dfe-digital" \
           /k:"DFE-Digital_care-leavers" \
-          /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
-          /d:sonar.coverage.exclusions=**/Program.cs,**/LoggingConfigurationExtensions.cs,**/Configuration/**,**/e2e/**,**/contentful/Synchronisation/**,**/Migrations/** \
+          /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+          /d:sonar.coverage.exclusions=**/Program.cs,**/LoggingConfigurationExtensions.cs,**/Gulpfile.js,**.cshtml,**/Configuration/**,**/e2e/**,**/contentful/Synchronisation/**,**/utilities/**,**/Migrations/** \
           /d:sonar.exclusions=**/Program.cs,**/LoggingConfigurationExtensions.cs,**/Migrations/** \
           /d:sonar.scanner.skipJreProvisioning=true \
           /s:${{ github.workspace }}/SonarQube.Analysis.xml
@@ -102,7 +102,7 @@ jobs:
         shell: bash
         run: |
           dotnet-sonarscanner end \
-          /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
       - name: Generate Test Report
         uses: dorny/test-reporter@v3
