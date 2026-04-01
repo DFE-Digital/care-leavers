@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace CareLeavers.Web.Translation;
 
+[ExcludeFromCodeCoverage(Justification = "Configuration")]
 public class AzureTranslationOptions
 {
     public static string Name = "AzureTranslation";
