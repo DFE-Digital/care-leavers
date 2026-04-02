@@ -1,0 +1,36 @@
+.feedback-cta-block {
+  display: flex;
+  column-gap: 20px;
+
+  margin-top: govuk-spacing(-4);
+
+  @include govuk-responsive-margin(7, "bottom");
+}
+
+@media (max-width: 40.0525em) {
+  .govuk-grid-row .govuk-grid-column-one-third:last-child {
+    margin-bottom: 0;
+  }
+
+  .feedback-cta-block {
+    margin-top: 0;
+    margin-bottom: govuk-spacing(6);
+    flex-direction: column;
+    row-gap: govuk-spacing(2);
+  }
+}
+
+.feedback-cta-icon {
+  background: tint(govuk-organisation-colour('department-for-education'), 90%);
+  display: inline-flex;
+  padding: 10px;
+  border-radius: 50%;
+
+  path {
+    fill: govuk-organisation-colour('department-for-education');
+  }
+}
+
+main:has(.gtaa-wrapper) .feedback-cta-block {
+  display: none;
+}
