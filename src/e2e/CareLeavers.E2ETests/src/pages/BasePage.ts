@@ -15,6 +15,10 @@ export class BasePage {
     public readonly acceptButton: Locator;
     public readonly rejectButton: Locator;
 
+    // Locators for the feedback component
+    public readonly feedbackBanner: Locator;
+    public readonly feedbackLink: Locator;
+
     // Main Header Sections Locators 
     public readonly mainHeading: Locator;
     public readonly firstHeaderParagraph: Locator;
@@ -61,6 +65,10 @@ export class BasePage {
         this.cookieBanner = page.locator('.govuk-cookie-banner');
         this.acceptButton = page.locator('#accept-cookie');
         this.rejectButton = page.locator('#reject-cookie');
+
+        // Locators for the feedback component
+        this.feedbackBanner = page.locator('.feedback-cta-block');
+        this.feedbackLink = this.feedbackBanner.locator('a');
 
         // Main Header section  
         this.mainHeading = page.locator('h1');
@@ -182,6 +190,16 @@ export class BasePage {
         await expect(this.firstHeaderParagraph).toBeVisible();
         await expect(this.firstHeaderParagraph).toContainText(expectedParagraph.trim());
         await expect(this.supportHeading).toBeVisible();
+    }
+
+    async verifyFeedbackBanner() {
+        await expect(this.feedbackBanner).toBeVisible();
+        await expect(this.feedbackLink).toBeVisible();
+        await expect(this.feedbackLink).toContainText('completing a short feedback form');
+        await expect(this.feedbackLink).toHaveAttribute('rel', 'nofollow');
+        const href = await this.feedbackLink.getAttribute('href');
+        expect(href).not.toBeNull();
+        expect(href).not.toBe('');
     }
 
     // Navigation Bar functionality
