@@ -32,8 +32,8 @@
                 @if (!string.IsNullOrEmpty(Model.ContentfulConfiguration.FeedbackText) && Model.ShowNavigation)
                 {
                     <text>
-                        Help us improve it and <a class="govuk-link" href="@Model.ContentfulConfiguration.FeedbackUrl" target="_blank" rel="nofollow">
-                            @Model.ContentfulConfiguration.FeedbackText (opens in new tab)</a>. 
+                        Help us improve it and <a class="govuk-link" href="@Model.ContentfulConfiguration.FeedbackUrl" rel="nofollow">
+                            @Model.ContentfulConfiguration.FeedbackText</a>. 
                     </text>
                 }
             </span>
