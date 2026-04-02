@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "dfe-frontend": "^2.0.1",
-    "govuk-frontend": "^5.14.0"
+    "govuk-frontend": "^6.1.0"
   },
   "devDependencies": {
     "gulp": "^5.0.1",
