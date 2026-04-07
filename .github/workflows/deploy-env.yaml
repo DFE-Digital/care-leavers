@@ -158,7 +158,7 @@ jobs:
             }
 
       - name: Create TF State dependencies
-        uses: azure/cli@v2
+        uses: azure/cli@v3
         env:
           ENVIRONMENT_PREFIX: "s272${{ vars.ENVIRONMENT_PREFIX }}"
           ENVIRONMENT_TAG: ${{ vars.ENVIRONMENT_TAG }}

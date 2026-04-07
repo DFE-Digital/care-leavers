@@ -29,7 +29,10 @@ test.describe('Shared Website Functionalities', () => {
                 // Validate logo has accessible name
                 await expect(basePage.logoLink).toHaveAccessibleName(/Department for/i)
                 await expect(basePage.logoLink).toBeVisible();
-
+                
+                // Validate feedback component
+                await basePage.verifyFeedbackBanner();
+                
                 // Validate Navigation Bar
                 const isDesktop = page.viewportSize()?.width ? page.viewportSize()!.width > 600 : false;
                 if (isDesktop) {

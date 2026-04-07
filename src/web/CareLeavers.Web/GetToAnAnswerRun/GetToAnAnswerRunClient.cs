@@ -187,20 +187,6 @@ public class GetToAnAnswerRunClient(
             }
         }
         
-        // Add nonce to all style tags that don't already have one
-        var imgTags = doc.DocumentNode.SelectNodes("//img");
-        if (imgTags != null)
-        {
-            foreach (var img in imgTags)
-            {
-                if (img.Attributes.Contains("src") && img.Attributes["src"].Value.Contains("/decorative-image"))
-                {
-                    img.SetAttributeValue("src", img.Attributes["src"].Value
-                        .Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires"));
-                }
-            }
-        }
-        
         // if the external link is this site, change the language code 
         var externalLinkInput = doc.DocumentNode.SelectSingleNode("//input[@id='external-link-dest']");
         if (externalLinkInput != null && thisOrigin != null)
