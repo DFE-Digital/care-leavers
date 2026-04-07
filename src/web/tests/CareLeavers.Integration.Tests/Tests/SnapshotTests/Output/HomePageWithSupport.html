@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html class="govuk-template--rebranded" dir="ltr" lang="en">
+<html class="govuk-template" dir="ltr" lang="en">
 	<head>
 		<script nonce="mock-nonce">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","test-clarity");(function(){window.clarity('consent',false);}());</script>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Find support for care leavers</title>
 		<style nonce="mock-nonce">:root{--generated:TODAY';--siteurl:'https://localhost/en/home'}</style>
-		<link rel="icon" sizes="48x48" href="/assets/rebrand/images/favicon.ico">
-		<link rel="icon" sizes="any" type="image/svg+xml" href="/assets/rebrand/images/favicon.svg">
-		<link rel="mask-icon" href="/assets/rebrand/images/govuk-icon-mask.svg" color="#0b0c0c">
-		<link rel="apple-touch-icon" sizes="180x180" href="/assets/rebrand/images/govuk-icon-180.png">
-		<link rel="manifest" href="/assets/rebrand/manifest.json">
+		<link rel="icon" sizes="48x48" href="/assets/images/favicon.ico">
+		<link rel="icon" sizes="any" type="image/svg+xml" href="/assets/images/favicon.svg">
+		<link rel="mask-icon" href="/assets/images/govuk-icon-mask.svg" color="#0b0c0c">
+		<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/govuk-icon-180.png">
+		<link rel="manifest" href="/assets/manifest.json">
 		<meta name="apple-mobile-web-app-title" content="Care leavers">
 		<link rel="stylesheet" href="/css/application.css">
 		<link rel="stylesheet" href="/css/print.css">
@@ -41,8 +41,8 @@
 				<strong>IntegrationTest</strong>
 				version of Care leavers website.</div>
 		</div>
-		<div class="govuk-width-container">
-			<div class="govuk-phase-banner">
+		<header class="govuk-template__header">
+			<div class="govuk-phase-banner govuk-width-container">
 				<div class="govuk-phase-banner__content">
 					<strong class="govuk-phase-banner__content__tag govuk-tag">
 						Beta
@@ -55,13 +55,13 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<header class="govuk-header" data-module="govuk-header">
-			<div class="govuk-header__container govuk-width-container">
-				<div class="govuk-header__logo">
-					<a class="govuk-header__link govuk-header__link--homepage" href="/en/home" aria-label="Department for Education">
-						<img src="/assets/department-for-education_white.png" alt="Department for Education" class="govuk-header__logotype">
-					</a>
+			<div class="govuk-header" data-module="govuk-header">
+				<div class="govuk-header__container govuk-width-container">
+					<div class="govuk-header__logo">
+						<a class="govuk-header__link govuk-header__link--homepage" href="/en/home" aria-label="Department for Education">
+							<img src="/assets/department-for-education_white.png" alt="Department for Education" class="govuk-header__logotype">
+						</a>
+					</div>
 				</div>
 			</div>
 		</header>
@@ -74,7 +74,7 @@
 						</a>
 					</span>
 					<nav aria-label="Menu" class="govuk-service-navigation__wrapper">
-						<button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle" aria-controls="navigation" hidden="">
+						<button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle" aria-controls="navigation" aria-hidden="true" hidden="">
 							Menu
 						</button>
 						<ul class="govuk-service-navigation__list" id="navigation"></ul>
@@ -94,6 +94,24 @@
 		</section>
 		<div class="govuk-width-container" id="main-content-container">
 			<main class="govuk-main-wrapper" id="main-content" role="main">
+				<div class="govuk-grid-row">
+					<div class="govuk-grid-column-full">
+						<div class="feedback-cta-block">
+							<div>
+								<div class="feedback-cta-icon">
+									<svg height="24" viewBox="0 0 512 512" width="24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M123.6 391.3c12.9-9.4 29.6-11.8 44.6-6.4c26.5 9.6 56.2 15.1 87.8 15.1c124.7 0 208-80.5 208-160s-83.3-160-208-160S48 160.5 48 240c0 32 12.4 62.8 35.7 89.2c8.6 9.7 12.8 22.5 11.8 35.5c-1.4 18.1-5.7 34.7-11.3 49.4c17-7.9 31.1-16.7 39.4-22.7zM21.2 431.9c1.8-2.7 3.5-5.4 5.1-8.1c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208s-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6c-15.1 6.6-32.3 12.6-50.1 16.1c-.8 .2-1.6 .3-2.4 .5c-4.4 .8-8.7 1.5-13.2 1.9c-.2 0-.5 .1-.7 .1c-5.1 .5-10.2 .8-15.3 .8c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4c4.1-4.2 7.8-8.7 11.3-13.5c1.7-2.3 3.3-4.6 4.8-6.9c.1-.2 .2-.3 .3-.5z"></path>
+									</svg>
+								</div>
+							</div>
+							<div class="govuk-!-padding-top-2">
+								<p class="govuk-body govuk-!-font-weight-bold" govuk-!-font-size-16="">Help improve this website by
+									<a class="govuk-link" href="" rel="nofollow">completing a short feedback form</a>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="govuk-grid-row" data-last-fetched="2025-03-26T10:21:16">
 					<div class="govuk-grid-column-full" id="primary-content">
 						<div class="govuk-grid-row">
@@ -225,7 +243,7 @@
 						<h2 class="govuk-heading-l" id="Guides">Guides</h2>
 						<section class="dfe-section alternating-image-text">
 							<div class="govuk-!-margin-top-3 govuk-!-margin-bottom-5">
-								<div class="govuk-grid-row split-panel" style="background:#f3f2f1;vertical-align:text-top">
+								<div class="govuk-grid-row split-panel" style="background:#f3f3f3;vertical-align:text-top">
 									<div class="govuk-grid-column-one-half image-column">
 										<div class="image-container" style="background-image:url('//images.ctfassets.net/3y72rykjd1o5/3AJ5VJg0WfmJImY90KOpQU/39af1e2a663401b7607b9fac86c50d1e/image.png')"></div>
 									</div>
@@ -258,36 +276,38 @@
 				</div>
 			</div>
 		</section>
-		<footer class="govuk-footer" role="contentinfo">
-			<div class="govuk-width-container">
-				<div class="govuk-footer__meta">
-					<div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
-						<h2 class="govuk-visually-hidden">Support links</h2>
-						<ul class="govuk-footer__inline-list">
-							<li class="govuk-footer__inline-list-item">
-								<a class="govuk-footer__link" href="/en/cookie-policy">Cookie policy</a>
-							</li>
-							<li class="govuk-footer__inline-list-item">
-								<a class="govuk-footer__link" href="https://accessibility-statements.education.gov.uk/s/65">Accessibility statement</a>
-							</li>
-							<li class="govuk-footer__inline-list-item">
-								<a class="govuk-footer__link" href="/en/privacy-policies">Privacy policies</a>
-							</li>
-						</ul>
-						<svg aria-hidden="true" focusable="false" class="govuk-footer__licence-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 483.2 195.7" height="17" width="41">
-							<path fill="currentColor" d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145"></path>
-						</svg>
-						<span class="govuk-footer__licence-description">
-							All content is available under the
-							<a class="govuk-footer__link" href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">
-								Open Government Licence v3.0
-							</a>, except where otherwise stated
-						</span>
-					</div>
-					<div class="govuk-footer__meta-item">
-						<a class="govuk-footer__link govuk-footer__copyright-logo" href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/">
-							© Crown copyright
-						</a>
+		<footer class="govuk-template__footer">
+			<div class="govuk-footer" role="contentinfo">
+				<div class="govuk-width-container">
+					<div class="govuk-footer__meta">
+						<div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+							<h2 class="govuk-visually-hidden">Support links</h2>
+							<ul class="govuk-footer__inline-list">
+								<li class="govuk-footer__inline-list-item">
+									<a class="govuk-footer__link" href="/en/cookie-policy">Cookie policy</a>
+								</li>
+								<li class="govuk-footer__inline-list-item">
+									<a class="govuk-footer__link" href="https://accessibility-statements.education.gov.uk/s/65">Accessibility statement</a>
+								</li>
+								<li class="govuk-footer__inline-list-item">
+									<a class="govuk-footer__link" href="/en/privacy-policies">Privacy policies</a>
+								</li>
+							</ul>
+							<svg aria-hidden="true" focusable="false" class="govuk-footer__licence-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 483.2 195.7" height="17" width="41">
+								<path fill="currentColor" d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145"></path>
+							</svg>
+							<span class="govuk-footer__licence-description">
+								All content is available under the
+								<a class="govuk-footer__link" href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">
+									Open Government Licence v3.0
+								</a>, except where otherwise stated
+							</span>
+						</div>
+						<div class="govuk-footer__meta-item">
+							<a class="govuk-footer__link govuk-footer__copyright-logo" href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/">
+								© Crown copyright
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
