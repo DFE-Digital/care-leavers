@@ -202,26 +202,6 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       version = "2.1"
       action  = "Block"
 
-      override {
-        rule_group_name = "SQLI"
-
-        rule {
-          rule_id = "942390"
-          enabled = true
-          action  = "Log"
-        }
-      }
-
-      override {
-        rule_group_name = "PROTOCOL-ENFORCEMENT"
-
-        rule {
-          rule_id = "920300"
-          enabled = true
-          action  = "Log"
-        }
-      }
-
       /* Get into Teaching may set this snapchat cookie at the .education.gov.uk level, which contains a suspicious but safe body */
       exclusion {
         match_variable = "RequestCookieNames"
