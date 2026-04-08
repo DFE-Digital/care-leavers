@@ -9,7 +9,7 @@ on:
 jobs:
   scan-website-links:
     runs-on: ubuntu-latest
-    environment: dev
+    environment: elz-test
     env:
       WEBSITE_ROOT: ${{ vars.APP_WEBSITE_ROOT }}
 
