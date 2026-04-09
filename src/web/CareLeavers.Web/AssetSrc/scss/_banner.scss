@@ -4,6 +4,10 @@
   @include govuk-responsive-margin(6, "bottom");
   margin-inline: min(-1 * var(--m), var(--w) / 2 - 50cqw);
 
+  &.banner-blue {
+    background-color: #EAF5FF;
+  }
+
   a {
     font-weight: bold;
     text-decoration: none;
@@ -29,12 +33,12 @@
       &:hover,
       &:focus-within {
         background-color: $color_dfe-blue;
-        
+
         a, p, .govuk-heading-l {
           color: $color_dfe-white;
         }
       }
-      
+
       &:focus-within {
         outline: 3px solid $color_dfe-yellow;
       }
