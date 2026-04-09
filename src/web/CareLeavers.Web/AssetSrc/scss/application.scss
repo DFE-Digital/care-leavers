@@ -5,6 +5,7 @@
 @import '../../node_modules/dfe-frontend/packages/dfefrontend';
 
 @import 'feedback-cta';
+@import 'banner';
 
 // Override font
 @import url('https://rsms.me/inter/inter.css');
@@ -296,27 +297,6 @@ html
   --w: 1200px;
   --m: 1em;
   margin-inline: max(   var(--m),50cqw - var(--w)/2);
-}
-
-.banner {
-  @include govuk-responsive-padding(7, "top");
-  @include govuk-responsive-padding(6, "bottom");
-  @include govuk-responsive-margin(6, "bottom");
-  margin-inline: min(-1*var(--m),var(--w)/2 - 50cqw);
-}
-
-.banner a { font-weight: bold; }
-
-.banner-blue {
-  background-color: #EAF5FF;
-}
-
-.banner > .banner-content {
-  margin-inline: max(   var(--m),50cqw - var(--w)/2);
-}
-
-.banner .full-width-image {
-  max-height: 300px;
 }
 
 .alternating-image-text {
