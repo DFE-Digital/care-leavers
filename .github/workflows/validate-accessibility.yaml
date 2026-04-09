@@ -31,5 +31,5 @@ jobs:
       - name: Run Accessibility Scan
         working-directory: ./src/e2e/pa11y
         run: |
-          yarn install --ignore-scripts --production=true
+          yarn install --production=true
           yarn pa11y-ci --config pa11y.json --sitemap https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml
