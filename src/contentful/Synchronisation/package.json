@@ -8,12 +8,12 @@
     "license": "MIT",
     "type": "commonjs",
     "dependencies": {
-        "contentful-export": "^7.22.4",
-        "contentful-import": "^9.4.139",
+        "contentful-export": "^8.0.0",
+        "contentful-import": "^9.4.140",
         "contentful-management": "^12.0.0",
-        "dotenv": "^17.3.1"
+        "dotenv": "^17.4.1"
     },
     "devDependencies": {
-        "prettier": "3.8.1"
+        "prettier": "3.8.2"
     }
 }
