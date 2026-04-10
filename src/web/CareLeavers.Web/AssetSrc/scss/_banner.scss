@@ -58,5 +58,10 @@
     
     margin-top: -1.5625em;
     margin-bottom: -1.5625em;
+    
+    @media (max-width: 40.0525em) {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
   }
 }
