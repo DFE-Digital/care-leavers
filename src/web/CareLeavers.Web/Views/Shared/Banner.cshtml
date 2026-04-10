@@ -28,13 +28,11 @@
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full govuk-!-margin-top-5 govuk-!-margin-bottom-5">
                 <div class="govuk-grid-row @bgClass">
-
                     <div class="govuk-grid-column-one-half text-column">
-                        <h2 class="govuk-heading-l">@banner?.Title</h2>
+                        <h2 class="govuk-heading-l">
+                            <a href="@link" class="govuk-link">@banner?.Title</a>
+                        </h2>
                         <p class="govuk-body">@banner?.Text</p>
-                        <p class="govuk-body">
-                            <a href="@link" class="govuk-link">@banner?.LinkText</a>
-                        </p>
                     </div>
                     <div class="govuk-grid-column-one-half image-column">
                         <div class="image-container" style="background-image: url('@banner?.Image?.File?.Url');"></div>
