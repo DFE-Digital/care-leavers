@@ -12,6 +12,10 @@
     font-weight: bold;
     text-decoration: none;
   }
+  
+  a:visited {
+    color: $govuk-link-colour;
+  }
 
   .full-width-image {
     max-height: 300px;
@@ -34,13 +38,16 @@
       &:focus-within {
         background-color: $color_dfe-blue;
 
-        a, p, .govuk-heading-l {
+        a, p {
           color: $color_dfe-white;
         }
       }
 
       &:focus-within {
         outline: 3px solid $color_dfe-yellow;
+        a {
+          color: $color_dfe-black;
+        }
       }
     }
   }
