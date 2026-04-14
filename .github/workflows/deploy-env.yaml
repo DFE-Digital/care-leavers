@@ -1,9 +1,11 @@
-name: Deploy - Environment
+name: Deploy
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'src/**'
   workflow_dispatch:
     inputs:
       environment:
@@ -15,138 +17,73 @@ on:
           - "elz-test"
           - "elz-staging"
           - "elz-production"
-      clear-cache:
-        type: choice
-        description: "Clear the cache?"
-        required: true
-        default: "False"
-        options:
-          - "True"
-          - "False"
 
-run-name: ${{ github.event_name == 'push' && 'Build & Deploy to Test' || format('Deploy to {0}', github.event.inputs.environment) }}
+run-name: ${{ github.event_name == 'push' && 'Deploy to Test' || format('Deploy to {0}', github.event.inputs.environment) }}
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}"
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  TAG_NAME: "${{ github.ref_name }}-${{ github.sha }}"
+  ENVIRONMENT_PREFIX: "s272${{ vars.ENVIRONMENT_PREFIX}}"
 
 jobs:
-  validate_web:
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-    name: Validate Web
-    uses: ./.github/workflows/validate-web.yaml
-
-  tag_release:
-    name: Create New Tag
-    runs-on: ubuntu-latest
-    needs: [validate_web]
-    outputs:
-      new_tag: ${{ steps.tag_version.outputs.new_tag }}
-    steps:
-      - uses: actions/checkout@v6
-        if: github.event_name == 'push'
-        with:
-          fetch-depth: 0
-      - name: Bump version and push tag
-        id: tag_version
-        if: github.event_name == 'push'
-        uses: mathieudutour/github-tag-action@v6.2
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          release_branches: main
-
   package:
-    name: "Package Web in Docker"
+    name: Package Web in Docker
     runs-on: ubuntu-latest
-    needs: [validate_web, tag_release]
-    if: always() &&
-      (github.event_name == 'push' && needs.tag_release.result == 'success') ||
-      (github.event_name == 'workflow_dispatch' && needs.validate_web.result == 'success')
-
     defaults:
       run:
         working-directory: ./src
-    permissions:
-      contents: read
-      packages: write
-    outputs:
-      image_tag: ${{ steps.set_tag.outputs.tag }}
-
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.ref }}
 
-      - name: Lowercase the repo name and username
-        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
-
-      # Set docker image tag based on event type - release tag, new tag from push, or commit SHA for manual run
-      - name: Set Docker image tag
-        id: set_tag
-        run: |
-          if [[ "${{ github.event_name }}" == "release" ]]; then
-            echo "Using release tag for versioning: ${{ github.ref_name }}"
-            echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.event_name }}" == "push" ]]; then
-            echo "Using new auto-generated tag for versioning: ${{ needs.tag_release.outputs.new_tag }}"
-            echo "tag=${{ needs.tag_release.outputs.new_tag }}" >> $GITHUB_OUTPUT
-          else
-            echo "Using commit SHA for versioning for manual run"
-            echo "tag=${{ github.sha }}" >> $GITHUB_OUTPUT
-          fi
-
+      - name: Lowercase Repository Name
+        id: lowercase
+        uses: ./.github/actions/lowercase
+        with:
+          value: ${{ github.repository }}
+        
       - name: Build Web Docker Image
         run: |
-          docker build . -t ghcr.io/${{ env.REPO }}:${{ steps.set_tag.outputs.tag }} -f web/CareLeavers.Web/Dockerfile
-
-      - uses: docker/login-action@v4
+          docker build -t ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ env.TAG_NAME }} -f web/CareLeavers.Web/Dockerfile
+      
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
+      
       - name: Push Web Docker Image
-        run: docker push ghcr.io/${{ env.REPO }}:${{ steps.set_tag.outputs.tag }}
-
-  deploy_environment:
-    name: Deploying site to ${{ (github.event_name == 'push' && 'Test') || github.event.inputs.environment }}
-    runs-on: ubuntu-latest
-    needs: [package]
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-    permissions:
-      contents: read
-      id-token: write
-    environment:
-      name: ${{ (github.event_name == 'push' && 'elz-test') || github.event.inputs.environment }}
-    env:
-      ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
-      ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-      ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
-      ARM_CLIENT_SECRET: "${{ secrets.AZURE_CLIENT_SECRET }}"
-
-    steps:
-      #Set dynamic variables based on deployment type - push to main, release or manual run
-      - name: Set dynamic variables
-        id: vars
         run: |
-          ENV_NAME="${{ (github.event_name == 'push' && 'elz-test') || github.event.inputs.environment }}"
-          echo "ENV_NAME=$ENV_NAME" >> $GITHUB_ENV
-          echo "Deployment Environment: $ENV_NAME"
+          docker push ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ env.TAG_NAME }}
 
-          if [[ "${{ github.event_name }}" == "release" ]]; then
-            BODY="${{ github.event.release.body }}"
-            CACHE_VALUE=$(echo "$BODY" | grep 'clear-cache:' | awk -F': ' '{print $2}' | tr -d '[:space:]')
-            echo "clear_cache=${CACHE_VALUE:-False}" >> $GITHUB_OUTPUT
-            echo "Clear Cache: ${CACHE_VALUE:-False}"
-          elif [[ "${{ github.event_name }}" == "push" ]]; then
-            echo "clear_cache=False" >> $GITHUB_OUTPUT
-            echo "Clear Cache: False"
-          else
-            echo "clear_cache=${{ github.event.inputs.clear-cache }}" >> $GITHUB_OUTPUT
-            echo "Clear Cache: ${{ github.event.inputs.clear-cache }}"
-          fi
-
-      - uses: actions/checkout@v6
-      - uses: hashicorp/setup-terraform@v4
+  deploy:
+    name: Deploying to ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
+    needs: [package]
+    runs-on: ubuntu-latest
+    environment: ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
         with:
-          terraform_wrapper: false
-          terraform_version: 1.10.4
+          ref: ${{ github.ref }}
 
-      - name: "Az CLI login"
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.10.4
+          terraform_wrapper: false
+
+      - name: Azure CLI Login
         uses: azure/login@v3
         with:
           creds: |
@@ -156,34 +93,45 @@ jobs:
                 "tenantId": "${{ secrets.AZURE_TENANT_ID }}",
                 "subscriptionId": "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
             }
-
-      - name: Create TF State dependencies
-        uses: azure/cli@v3
-        env:
-          ENVIRONMENT_PREFIX: "s272${{ vars.ENVIRONMENT_PREFIX }}"
-          ENVIRONMENT_TAG: ${{ vars.ENVIRONMENT_TAG }}
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az group create --name ${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate --location uksouth --output none --tags "Environment=${ENVIRONMENT_TAG}" "Product=Support for care leavers" "Service offering=Support for care leavers"
-            az storage account create --name ${ENVIRONMENT_PREFIX}cltfstate --resource-group ${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate --location uksouth --sku Standard_LRS --min-tls-version TLS1_2 --https-only true
-            az storage container create --name tfstate --account-name ${ENVIRONMENT_PREFIX}cltfstate
-
-      - name: Add Alert Mgmt Provider
+      
+      - name: Add Alert Management Provider
         run: |
           az provider register --namespace Microsoft.AlertsManagement
 
-      - name: "Terraform Init"
+      - name: Lowercase Repository Name
+        id: lowercase
+        uses: ./.github/actions/lowercase
+        with:
+          value: ${{ github.repository }}
+
+      - name: Echo GitHub Runner IP
+        id: echo_ip
+        uses: ./.github/actions/get-runner-ip-address
+
+      - name: Unlock Terraform State
+        id: terraform_unlock
+        uses: ./.github/actions/manage-storage-network-access
+        with:
+          storage-account-name: ${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}
+          resource-group-name: ${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}
+          github-runner-ip: ${{ steps.echo_ip.outputs.ip_address }}
+          enable-network-access: true
+      
+      - name: Terraform Init
         id: terraform_init
         working-directory: ./src/infrastructure/terraform
-        env:
-          ENVIRONMENT_PREFIX: "s272${{ vars.ENVIRONMENT_PREFIX }}"
-        run: terraform init -upgrade -backend-config="resource_group_name=${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate" -backend-config="storage_account_name=${ENVIRONMENT_PREFIX}cltfstate" -backend-config="container_name=tfstate" -backend-config="key=terraform.tfstate"
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-tfstate" \
+            -backend-config="storage_account_name=${{ env.ENVIRONMENT_PREFIX }}cltfstate" \
+            -backend-config="container_name=tfstate" \
+            -backend-config="key=terraform.tfstate"
 
-      - name: "Terraform Plan"
+      - name: Terraform Plan
         id: terraform_plan
         working-directory: ./src/infrastructure/terraform
-        run: terraform plan -out plan.plan
+        run: |
+          terraform plan -out plan.plan
         env:
           TF_VAR_aspnetcore_environment: ${{ vars.ELZ_ENVIRONMENT }}
           TF_VAR_environment_prefix: ${{ vars.ENVIRONMENT_PREFIX }}
@@ -203,41 +151,42 @@ jobs:
           TF_VAR_rebrand: ${{ vars.REBRAND }}
           TF_VAR_support_alert_email: ${{ secrets.SUPPORT_ALERT_EMAIL }}
           TF_VAR_gtaa_base_url: ${{ vars.GTAA_BASE_URL }}
-
-      - name: "Terraform Apply"
+      
+      - name: Terraform Apply
         id: terraform_apply
         working-directory: ./src/infrastructure/terraform
-        run: terraform apply plan.plan
-
-      - name: Lowercase the repo name and username
-        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+        run: |
+          terraform apply plan.plan
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
-        env:
-          ENVIRONMENT_PREFIX: "s272${{vars.ENVIRONMENT_PREFIX}}"
         with:
-          app-name: "${{env.ENVIRONMENT_PREFIX}}-uks-cl-web-app-service"
+          app-name: "${{ env.ENVIRONMENT_PREFIX }}-uks-cl-web-app-service"
           slot-name: "${{vars.WEB_APP_SLOT}}"
-          images: "ghcr.io/${{ env.REPO }}:${{ needs.package.outputs.image_tag }}"
-
-      - name: Swap slot to production
+          images: "ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ env.TAG_NAME }}"
+      
+      - name: Swap Slot to Production
         if: github.event.inputs.environment == 'elz-production'
-        env:
-          ENVIRONMENT_PREFIX: "s272${{vars.ENVIRONMENT_PREFIX}}"
-        run: az webapp deployment slot swap --name ${{ env.ENVIRONMENT_PREFIX }}-uks-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-web --slot staging --target-slot production
+        run: |
+          az webapp deployment slot swap --name ${{ env.ENVIRONMENT_PREFIX }}-uks-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-web --slot staging --target-slot production
 
-      - name: Delete staging slot
+      - name: Delete Staging Slot
         if: github.event.inputs.environment == 'elz-production' 
-        env:
-          ENVIRONMENT_PREFIX: "s272${{vars.ENVIRONMENT_PREFIX}}"
-        run: az webapp deployment slot delete --name ${{ env.ENVIRONMENT_PREFIX }}-uks-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-web --slot staging
+        run: |
+          az webapp deployment slot delete --name ${{ env.ENVIRONMENT_PREFIX }}-uks-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-web --slot staging 
+      
+      - name: Lock Terraform State
+        if: ${{ always() }}
+        id: terraform_lock
+        uses: ./.github/actions/manage-storage-network-access
+        with:
+          storage-account-name: ${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}
+          resource-group-name: ${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}
+          github-runner-ip: ${{ steps.echo_ip.outputs.ip_address }}
+          enable-network-access: false
 
       - name: Clear Cache
-        id: clear-cache
-        uses: fjogeleit/http-request-action@v2
-        if: ${{ steps.vars.outputs.clear_cache == 'True' }}
-        with:
-          url: "https://${{ vars.CUSTOM_DOMAIN }}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f"
-          method: "POST"
+        shell: bash
+        run: |
+          curl -X POST "https://${{ vars.CUSTOM_DOMAIN }}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f"
