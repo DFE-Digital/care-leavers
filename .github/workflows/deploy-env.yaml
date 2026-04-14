@@ -110,17 +110,12 @@ jobs:
         with:
           value: ${{ github.repository }}
 
-      - name: Echo GitHub Runner IP
-        id: echo_ip
-        uses: ./.github/actions/get-runner-ip-address
-
       - name: Unlock Terraform State
         id: terraform_unlock
         uses: ./.github/actions/manage-storage-network-access
         with:
           storage_account_name: ${{ env.ENVIRONMENT_PREFIX }}cltfstate
           resource_group_name: ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-tfstate
-          github_runner_ip: ${{ steps.echo_ip.outputs.ip_address }}
           enable_network_access: true
       
       - name: Terraform Init
@@ -189,7 +184,6 @@ jobs:
         with:
           storage_account_name: ${{ env.ENVIRONMENT_PREFIX }}cltfstate
           resource_group_name: ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-tfstate
-          github_runner_ip: ${{ steps.echo_ip.outputs.ip_address }}
           enable_network_access: false
 
       - name: Clear Cache

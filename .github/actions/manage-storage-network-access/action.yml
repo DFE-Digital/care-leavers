@@ -9,9 +9,6 @@ inputs:
   resource_group_name:
     description: The name of the resource group containing the storage account
     required: true
-  github_runner_ip:
-    description: The IP address of the GitHub runner
-    required: true
   enable_network_access:
     description: Whether to enable or disable network access for the storage account (true/false)
     required: true
@@ -26,17 +23,7 @@ runs:
         az storage account update \
           --name ${{ inputs.storage_account_name }} \
           --resource-group ${{ inputs.resource_group_name }} \
-          --public-network-access Enabled \
-          --default-action Deny > /dev/null
-
-    - name: Add Network Rule for GitHub Runner IP
-      if: ${{ inputs.enable_network_access == 'true' }}
-      shell: bash
-      run: |
-        az storage account network-rule add \
-          --account-name ${{ inputs.storage_account_name }} \
-          --resource-group ${{ inputs.resource_group_name }} \
-          --ip-address ${{ inputs.github_runner_ip }} > /dev/null
+          --public-network-access Enabled > /dev/null
     
     - name: Disable Public Network Access to Storage Account
       if: ${{ inputs.enable_network_access == 'false' }}
@@ -49,15 +36,3 @@ runs:
           --name ${{ inputs.storage_account_name }} \
           --resource-group ${{ inputs.resource_group_name }} \
           --public-network-access Disabled > /dev/null
-
-    - name: Remove Network Rule for GitHub Runner IP
-      if: ${{ inputs.enable_network_access == 'false' }}
-      shell: bash
-      run: |
-        if [ $? -ne 0 ]; then
-          echo "Removing network rule for GitHub runner IP due to workflow failure or cancellation."
-        fi
-        az storage account network-rule remove \
-          --account-name ${{ inputs.storage_account_name }} \
-          --resource-group ${{ inputs.resource_group_name }} \
-          --ip-address ${{ inputs.github_runner_ip }} > /dev/null 
