@@ -159,6 +159,15 @@ jobs:
         run: |
           terraform apply plan.plan
 
+      - name: Lock Terraform State
+        if: ${{ always() }}
+        id: terraform_lock
+        uses: ./.github/actions/manage-storage-network-access
+        with:
+          storage_account_name: ${{ env.ENVIRONMENT_PREFIX }}cltfstate
+          resource_group_name: ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-tfstate
+          enable_network_access: false
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
@@ -176,15 +185,6 @@ jobs:
         if: github.event.inputs.environment == 'elz-production' 
         run: |
           az webapp deployment slot delete --name ${{ env.ENVIRONMENT_PREFIX }}-uks-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-web --slot staging 
-      
-      - name: Lock Terraform State
-        if: ${{ always() }}
-        id: terraform_lock
-        uses: ./.github/actions/manage-storage-network-access
-        with:
-          storage_account_name: ${{ env.ENVIRONMENT_PREFIX }}cltfstate
-          resource_group_name: ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-tfstate
-          enable_network_access: false
 
       - name: Clear Cache
         shell: bash
