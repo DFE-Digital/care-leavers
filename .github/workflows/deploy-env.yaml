@@ -72,6 +72,11 @@ jobs:
     needs: [package]
     runs-on: ubuntu-latest
     environment: ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
+    env:
+      ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+      ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+      ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+      ARM_CLIENT_SECRET: "${{ secrets.AZURE_CLIENT_SECRET }}"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v6
