@@ -23,7 +23,8 @@ runs:
         az storage account update \
           --name ${{ inputs.storage_account_name }} \
           --resource-group ${{ inputs.resource_group_name }} \
-          --public-network-access Enabled > /dev/null
+          --public-network-access Enabled 
+          --default-action Allow > /dev/null
     
     - name: Disable Public Network Access to Storage Account
       if: ${{ inputs.enable_network_access == 'false' }}
