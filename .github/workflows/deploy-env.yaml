@@ -113,10 +113,10 @@ jobs:
         id: terraform_unlock
         uses: ./.github/actions/manage-storage-network-access
         with:
-          storage-account-name: ${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}
-          resource-group-name: ${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}
-          github-runner-ip: ${{ steps.echo_ip.outputs.ip_address }}
-          enable-network-access: true
+          storage_account_name: ${{ env.ENVIRONMENT_PREFIX }}cltfstate
+          resource_group_name: ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-tfstate
+          github_runner_ip: ${{ steps.echo_ip.outputs.ip_address }}
+          enable_network_access: true
       
       - name: Terraform Init
         id: terraform_init
@@ -182,10 +182,10 @@ jobs:
         id: terraform_lock
         uses: ./.github/actions/manage-storage-network-access
         with:
-          storage-account-name: ${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}
-          resource-group-name: ${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}
-          github-runner-ip: ${{ steps.echo_ip.outputs.ip_address }}
-          enable-network-access: false
+          storage_account_name: ${{ env.ENVIRONMENT_PREFIX }}cltfstate
+          resource_group_name: ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-tfstate
+          github_runner_ip: ${{ steps.echo_ip.outputs.ip_address }}
+          enable_network_access: false
 
       - name: Clear Cache
         shell: bash
