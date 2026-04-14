@@ -36,3 +36,8 @@ runs:
           --name ${{ inputs.storage_account_name }} \
           --resource-group ${{ inputs.resource_group_name }} \
           --public-network-access Disabled > /dev/null
+    
+    - name: Sleep for 30s
+      shell: bash
+      run: |
+        sleep 30
