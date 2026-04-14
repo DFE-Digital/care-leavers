@@ -27,6 +27,7 @@ concurrency:
 permissions:
   contents: read
   id-token: write
+  packages: write
 
 env:
   TAG_NAME: "${{ github.sha }}"
