@@ -92,7 +92,7 @@ public class SnapshotTests
         var doc = parser.ParseDocument(response);
 
         await using var sw = new StringWriter();
-        doc.ToHtml(sw, new PrettyMarkupFormatter());
+        doc.ToHtml(sw, new PrettyMarkupFormatter { Indentation = "    " });
         
         return ReplaceDate(sw.ToString());
     }
