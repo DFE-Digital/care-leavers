@@ -1,0 +1,22 @@
+name: Lowercase Value
+description: Action to convert a value to lowercase and set it as an output
+
+inputs:
+  value:
+    description: The value to convert to lowercase
+    required: true
+
+outputs:
+  lowercased_value:
+    description: The input value converted to lowercase
+    value: ${{ steps.lowercase.outputs.lowercased_value }}
+
+runs:
+  using: composite
+  steps:
+    - name: Convert Value to Lowercase
+      id: lowercase
+      shell: bash
+      run: |
+        LOWERCASED_VALUE=$(echo "${{ inputs.value }}" | tr '[:upper:]' '[:lower:]')
+        echo "lowercased_value=$LOWERCASED_VALUE" >> $GITHUB_OUTPUT

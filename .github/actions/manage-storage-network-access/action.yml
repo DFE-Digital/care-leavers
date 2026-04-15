@@ -1,0 +1,44 @@
+name: Manage Storage Network Access
+
+description: Manage Storage Network Access for the Terraform State Storage Account
+
+inputs:
+  storage_account_name:
+    description: The name of the storage account to manage network access for
+    required: true
+  resource_group_name:
+    description: The name of the resource group containing the storage account
+    required: true
+  enable_network_access:
+    description: Whether to enable or disable network access for the storage account (true/false)
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Enable Public Network Access to Storage Account
+      if: ${{ inputs.enable_network_access == 'true' }}
+      shell: bash
+      run: |
+        az storage account update \
+          --name ${{ inputs.storage_account_name }} \
+          --resource-group ${{ inputs.resource_group_name }} \
+          --public-network-access Enabled \
+          --default-action Allow > /dev/null
+    
+    - name: Disable Public Network Access to Storage Account
+      if: ${{ inputs.enable_network_access == 'false' }}
+      shell: bash
+      run: |
+        if [ $? -ne 0 ]; then
+          echo "Disabling public network access due to workflow failure or cancellation."
+        fi
+        az storage account update \
+          --name ${{ inputs.storage_account_name }} \
+          --resource-group ${{ inputs.resource_group_name }} \
+          --public-network-access Disabled > /dev/null
+    
+    - name: Sleep for 10s
+      shell: bash
+      run: |
+        sleep 10
