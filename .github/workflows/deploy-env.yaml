@@ -24,11 +24,6 @@ concurrency:
   group: "${{ github.workflow }}-${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}"
   cancel-in-progress: false
 
-permissions:
-  contents: read
-  id-token: write
-  packages: write
-
 env:
   TAG_NAME: "${{ github.sha }}"
   ENVIRONMENT_PREFIX: "s272${{ vars.ENVIRONMENT_PREFIX}}"
@@ -40,6 +35,9 @@ jobs:
     defaults:
       run:
         working-directory: ./src
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v6
@@ -71,6 +69,9 @@ jobs:
     name: Deploying to ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
     needs: [package]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     environment: ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
     env:
       ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
