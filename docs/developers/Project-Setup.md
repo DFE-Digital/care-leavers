@@ -60,6 +60,8 @@ pipeline.
 
 - [README Here](../../src/infrastructure/terraform/README.md)
 
+If a new environment is provided, the resources relating to Terraform state will need to be externally provisioned. Instructions on how to do this can be found in the above README.
+
 ## Contentful Migration
 
 Contentful models are tracked code first and can be migrated to a Contentful space using this project and the Contentful CLI.
