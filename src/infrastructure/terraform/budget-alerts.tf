@@ -14,10 +14,10 @@ locals {
 resource "azurerm_monitor_action_group" "budget-alert-action-group" {
   name                = "${local.service_prefix}-ai-budget-alert-action-group"
   resource_group_name = azurerm_resource_group.core-rg.name
-  short_name          = "${local.service_prefix}BudgetAlert"
+  short_name          = "CLBdgtAlert"
 
   email_receiver {
-    name          = "BudgetAlertEmail"
+    name          = "CLBudgetAlertEmail"
     email_address = var.support_alert_email
   }
 }
