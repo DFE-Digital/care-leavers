@@ -311,7 +311,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       selector       = "User-Agent"
       operator       = "RegEx"
       transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["facebookbot|facebookexternalhit|facebookscraper|twitterbot|meta-externalagent|meta-externalfetcher|microsoftpreview|linkedinbot|pinterest|redditbot|telegrambot|mastadon|duckduckbot"]
+      match_values   = ["facebookbot|facebookexternalhit|facebookscraper|twitterbot|meta-externalfetcher|microsoftpreview|linkedinbot|pinterest|redditbot|telegrambot|mastadon|duckduckbot"]
     }
   }
 
