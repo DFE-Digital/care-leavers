@@ -204,6 +204,8 @@ public class PublishContentfulWebhook(
         }
 
         await RepublishPagesLinkedToEntry(entry, topic);
+        
+        logger.LogInformation("--TEST-- | PublishContentfulWebhook | Scanned IDs: {Ids} | Pages: {Pages} | --TEST--", _idsScanned.Count, _linkedPageEntries?.Count);
     }
 
     private async Task RepublishPagesLinkedToEntry(Entry<ContentfulContent> entry, string? topic)
