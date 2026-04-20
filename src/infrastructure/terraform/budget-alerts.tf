@@ -14,7 +14,7 @@ locals {
 resource "azurerm_monitor_action_group" "budget-alert-action-group" {
   name                = "${local.service_prefix}-ai-budget-alert-action-group"
   resource_group_name = azurerm_resource_group.core-rg.name
-  short_name          = "CLBdgtAlert"
+  short_name          = "ALERT"
 
   email_receiver {
     name          = "CLBudgetAlertEmail"
@@ -27,7 +27,7 @@ data "azurerm_subscription" "current" {}
 
 resource "azurerm_consumption_budget_subscription" "subscription-budget" {
   name            = "${local.service_prefix}-subscription-budget"
-  subscription_id = data.azurerm_subscription.current.subscription_id
+  subscription_id = data.azurerm_subscription.current.id
   amount          = local.environment_subscription_budgets[var.environment_prefix]
   time_grain      = "Monthly"
 
@@ -64,7 +64,7 @@ resource "azurerm_consumption_budget_subscription" "subscription-budget" {
 # Budget alerts for AI translator services
 resource "azurerm_consumption_budget_subscription" "translator-budget" {
   name            = "${local.service_prefix}-translator-budget"
-  subscription_id = data.azurerm_subscription.current.subscription_id
+  subscription_id = data.azurerm_subscription.current.id
   amount          = local.environment_translator_budgets[var.environment_prefix]
   time_grain      = "Monthly"
 
