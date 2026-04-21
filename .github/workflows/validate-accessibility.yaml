@@ -30,6 +30,8 @@ jobs:
 
       - name: Run Accessibility Scan
         working-directory: ./src/e2e/pa11y
+        env:
+          AUTH_HEADER: ${{ github.event.inputs.domain_prefix != 'www' && format('--header "Authorization: {0}"', secrets.BASIC_AUTH_CREDS) || '' }}
         run: |
           yarn install --production=true
-          yarn pa11y-ci --config pa11y.json --sitemap https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml
+          yarn pa11y-ci ${{ env.AUTH_HEADER }} --config pa11y.json --sitemap https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml
