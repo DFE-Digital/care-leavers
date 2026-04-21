@@ -20,6 +20,8 @@ resource "azurerm_monitor_action_group" "budget-alert-action-group" {
     name          = "CLBudgetAlertEmail"
     email_address = var.support_alert_email
   }
+
+  tags = local.common_tags
 }
 
 # Budget for the entire subscription
