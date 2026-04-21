@@ -385,6 +385,27 @@ try
 
     #endregion
     
+    #region Setup basic authentication
+
+    var requiredCreds = builder.Configuration["BasicAuth:EncodedCreds"];
+
+    app.Use(async (context, next) => {
+        // Only run if we actually have a password configured in the environment
+        if (!string.IsNullOrEmpty(requiredCreds)) 
+        {
+            var authHeader = context.Request.Headers["Authorization"].ToString();
+            if (authHeader != requiredCreds) 
+            {
+                context.Response.Headers.Append("WWW-Authenticate", "Basic realm=\"Protected\"");
+                context.Response.StatusCode = 401;
+                return;
+            }
+        }
+        await next();
+    });
+
+    #endregion
+    
     #region Contentful Setup
 
     var contentfulClient = app.Services.GetRequiredService<IContentfulClient>();
