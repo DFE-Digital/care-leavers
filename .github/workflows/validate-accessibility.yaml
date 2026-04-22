@@ -52,14 +52,16 @@ jobs:
         run: |
           yarn install --production=true
 
-          cp pa11y.json temp-pa11y.json
-
           if [ "${{ github.event.inputs.domain_prefix }}" != "www" ]; then
-            # jq --arg auth "$BA_CREDS" '.defaults.headers = {"Authorization": $auth}' pa11y.json > temp-pa11y.json
-            RAW_USER_PASS=$(echo "$BA_CREDS" | sed 's/Basic //g' | base64 -d)
-            SITEMAP_URL="https://${RAW_USER_PASS}@${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml"
+            RAW_USER_PASS=$(echo "$BA_CREDS" | sed 's/Basic //g' | base64 -d | tr -d '\n\r')
+
+            curl -s -H "Authorization: $BA_CREDS" "https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml" > local-sitemap.xml
+
+            sed -i "s|https://|https://${RAW_USER_PASS}@|g" local-sitemap.xml
+
+            SITEMAP_PATH="./local-sitemap.xml"
           else
-            SITEMAP_URL="https://www.support-for-care-leavers.education.gov.uk/sitemap.xml"
+            SITEMAP_PATH="https://www.support-for-care-leavers.education.gov.uk/sitemap.xml"
           fi
 
-          yarn pa11y-ci --config temp-pa11y.json --sitemap "$SITEMAP_URL"
+          yarn pa11y-ci --config pa11y.json --sitemap "$SITEMAP_PATH"
