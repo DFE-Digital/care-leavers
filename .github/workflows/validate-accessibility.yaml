@@ -17,6 +17,8 @@ jobs:
   accessibility-scan:
     name: "Run Pa11y Accessibility Scan"
     runs-on: ubuntu-24.04
+    env:
+      BA_CREDS: ${{ secrets.BASIC_AUTH_CREDS }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v6
@@ -33,9 +35,9 @@ jobs:
         run: |
           yarn install --production=true
 
-          AUTH_FLAG=""
           if [ "${{ github.event.inputs.domain_prefix }}" != "www" ]; then
             AUTH_FLAG="--headers 'Authorization: ${{ secrets.BASIC_AUTH_CREDS }}'"
+            yarn pa11y-ci --headers "{\"Authorization\":\"$BA_CREDS\"}" --config pa11y.json --sitemap https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml
+          else
+            yarn pa11y-ci --config pa11y.json --sitemap https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml
           fi
-
-          yarn pa11y-ci $AUTH_FLAG --config pa11y.json --sitemap https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml
