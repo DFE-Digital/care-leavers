@@ -52,12 +52,13 @@ jobs:
         run: |
           yarn install --production=true
 
+          cp pa11y.json temp-pa11y.json
+
           if [ "${{ github.event.inputs.domain_prefix }}" != "www" ]; then
-            jq --arg auth "$BA_CREDS" '.defaults.headers = {"Authorization": $auth}' pa11y.json > temp-pa11y.json
+            # jq --arg auth "$BA_CREDS" '.defaults.headers = {"Authorization": $auth}' pa11y.json > temp-pa11y.json
             RAW_USER_PASS=$(echo "$BA_CREDS" | sed 's/Basic //g' | base64 -d)
             SITEMAP_URL="https://${RAW_USER_PASS}@${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml"
           else
-            cp pa11y.json temp-pa11y.json
             SITEMAP_URL="https://www.support-for-care-leavers.education.gov.uk/sitemap.xml"
           fi
 
