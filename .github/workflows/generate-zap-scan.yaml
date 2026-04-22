@@ -40,13 +40,10 @@ jobs:
 
       - name: Get Azure Frontdoor URL
         run: |
-          ENDPOINT_NAME=$(az afd endpoint list -g s272${{ vars.ENVIRONMENT_PREFIX }}rg-uks-cl-web \
+          FRONTDOOR_URL=$(az afd custom-domain list \
+            -g s272${{ vars.ENVIRONMENT_PREFIX }}rg-uks-cl-web \
             --profile-name s272${{ vars.ENVIRONMENT_PREFIX }}-uks-cl-web-fd-profile \
-            --query "[0].name" -o tsv)
-
-          FRONTDOOR_URL=$(az afd custom-domain list -g s272${{ vars.ENVIRONMENT_PREFIX }}rg-uks-cl-web \
-            --profile-name s272${{ vars.ENVIRONMENT_PREFIX }}-uks-cl-web-fd-profile \
-            --query "[?endpointName=='$ENDPOINT_NAME'].hostName | [0]" -o tsv)
+            --query "[0].hostName" -o tsv)
 
           echo "FRONTDOOR_URL=$FRONTDOOR_URL" >> ${GITHUB_ENV}
 
