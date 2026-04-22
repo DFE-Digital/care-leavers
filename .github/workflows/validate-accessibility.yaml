@@ -31,6 +31,7 @@ jobs:
 
   accessibility-scan:
     name: "Run Pa11y Accessibility Scan"
+    needs: set-env
     runs-on: ubuntu-24.04
     environment: ${{ needs.set-env.outputs.target_env }}
     env:
