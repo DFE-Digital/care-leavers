@@ -35,9 +35,10 @@ jobs:
         run: |
           yarn install --production=true
 
+          cp pa11y.json temp-pa11y.json
+
           if [ "${{ github.event.inputs.domain_prefix }}" != "www" ]; then
-            AUTH_FLAG="--headers 'Authorization: ${{ secrets.BASIC_AUTH_CREDS }}'"
-            yarn pa11y-ci --headers "{\"Authorization\":\"$BA_CREDS\"}" --config pa11y.json --sitemap https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml
-          else
-            yarn pa11y-ci --config pa11y.json --sitemap https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml
+            jq --arg auth "$BA_CREDS" '.defaults.headers = {"Authorization": $auth}' pa11y.json > temp-pa11y.json
           fi
+
+          yarn pa11y-ci --config temp-pa11y.json --sitemap https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml
