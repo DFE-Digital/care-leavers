@@ -5,20 +5,18 @@ on:
     inputs:
       domain_prefix:
         type: choice
-        description: 'Domain prefix to run against'
+        description: "Domain prefix to run against"
         required: true
-        default: 'test'
+        default: "test"
         options:
-          - 'test'
-          - 'staging'
-          - 'www'
+          - "test"
+          - "staging"
+          - "www"
 
 jobs:
   accessibility-scan:
-    name: 'Run Pa11y Accessibility Scan'
+    name: "Run Pa11y Accessibility Scan"
     runs-on: ubuntu-24.04
-    env:
-      AUTH_HEADER: ${{ github.event.inputs.domain_prefix != 'www' && format('--header "Authorization: {0}"', secrets.BASIC_AUTH_CREDS) || '' }}  
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v6
@@ -28,10 +26,16 @@ jobs:
       - name: Setup Node.JS
         uses: actions/setup-node@v6
         with:
-          node-version: 'lts/Krypton'
+          node-version: "lts/Krypton"
 
       - name: Run Accessibility Scan
         working-directory: ./src/e2e/pa11y
         run: |
           yarn install --production=true
-          yarn pa11y-ci ${{ env.AUTH_HEADER }} --config pa11y.json --sitemap https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml
+
+          AUTH_FLAG=""
+          if [ "${{ github.event.inputs.domain_prefix }}" != "www" ]; then
+            AUTH_FLAG="--header 'Authorization: ${{ secrets.BASIC_AUTH_CREDS }}'"
+          fi
+
+          yarn pa11y-ci $AUTH_FLAG --config pa11y.json --sitemap https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml
