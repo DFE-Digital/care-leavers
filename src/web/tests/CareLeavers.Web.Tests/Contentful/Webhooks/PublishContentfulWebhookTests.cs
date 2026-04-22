@@ -1,4 +1,5 @@
 using CareLeavers.Web.Contentful.Webhooks;
+using CareLeavers.Web.Contentful.Webhooks.Helpers;
 using CareLeavers.Web.Models.Content;
 using Contentful.Core;
 using Contentful.Core.Models;
@@ -25,7 +26,9 @@ public class PublishContentfulWebhookTests
         _contentfulManagementClient = Substitute.For<IContentfulManagementClient>();
 
         _publishContentfulWebhook = new PublishContentfulWebhook(_contentfulClient, _fusionCache,
-            _contentfulManagementClient, Substitute.For<ILogger<PublishContentfulWebhook>>());
+            _contentfulManagementClient,
+            new LinkedPageFinder(_contentfulClient, Substitute.For<ILogger<LinkedPageFinder>>()),
+            Substitute.For<ILogger<PublishContentfulWebhook>>());
     }
 
     [Test]

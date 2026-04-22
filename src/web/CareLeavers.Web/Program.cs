@@ -8,6 +8,7 @@ using CareLeavers.Web;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Contentful.Webhooks;
+using CareLeavers.Web.Contentful.Webhooks.Helpers;
 using CareLeavers.Web.ContentfulRenderers;
 using CareLeavers.Web.Controllers;
 using CareLeavers.Web.GetToAnAnswerRun;
@@ -431,6 +432,8 @@ try
     contentfulClient.SerializerSettings.MaxDepth = 128;
     contentfulClient.Serializer.MaxDepth = 128;
 
+    contentfulClient.ContentTypeResolver = new ContentfulEntityResolver();
+
     Constants.Serializer = contentfulClient.Serializer;
     Constants.SerializerSettings = contentfulClient.SerializerSettings;
 
@@ -438,13 +441,14 @@ try
     {
         consumers.AddConsumer<Entry<ContentfulContent>>("*", "Entry", "*", async (entry, httpContext) =>
         {
-            var topic = httpContext.Request.Headers["X-Contentful-Topic"].FirstOrDefault();
+            string? topic = httpContext.Request.Headers["X-Contentful-Topic"].FirstOrDefault();
             
-            var webhookConsumer = new PublishContentfulWebhook(
-                app.Services.GetRequiredService<IContentfulClient>(),
-                app.Services.GetRequiredService<IFusionCache>(),
-                app.Services.GetRequiredService<IContentfulManagementClient>(),
-                app.Services.GetRequiredService<ILogger<PublishContentfulWebhook>>());
+            PublishContentfulWebhook webhookConsumer = 
+                new(contentfulClient, 
+                    app.Services.GetRequiredService<IFusionCache>(), 
+                    app.Services.GetRequiredService<IContentfulManagementClient>(), 
+                    new LinkedPageFinder(contentfulClient, app.Services.GetRequiredService<ILogger<LinkedPageFinder>>()), 
+                    app.Services.GetRequiredService<ILogger<PublishContentfulWebhook>>());
 
             await webhookConsumer.Consume(entry, topic);
             
@@ -453,10 +457,11 @@ try
 
         consumers.AddConsumer<Asset>("*", "Asset", "*", async asset =>
         {
-            var webhookConsumer = new PublishAssetWebhook(
-                app.Services.GetRequiredService<IContentfulClient>(),
-                app.Services.GetRequiredService<IFusionCache>(),
-                app.Services.GetRequiredService<ILogger<PublishAssetWebhook>>());
+            PublishAssetWebhook webhookConsumer = 
+                new(app.Services.GetRequiredService<IFusionCache>(), 
+                    new LinkedPageFinder(contentfulClient, 
+                        app.Services.GetRequiredService<ILogger<LinkedPageFinder>>()), 
+                    app.Services.GetRequiredService<ILogger<PublishAssetWebhook>>());
 
             await webhookConsumer.Consume(asset);
 

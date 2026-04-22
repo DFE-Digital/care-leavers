@@ -1,4 +1,5 @@
 using CareLeavers.Web.Contentful.Webhooks;
+using CareLeavers.Web.Contentful.Webhooks.Helpers;
 using CareLeavers.Web.Models.Content;
 using Contentful.Core;
 using Contentful.Core.Models;
@@ -22,7 +23,8 @@ public class PublishAssetWebhookTests
         _contentfulClient = Substitute.For<IContentfulClient>();
         _fusionCache = Substitute.For<IFusionCache>();
 
-        _publishAssetWebhook = new PublishAssetWebhook(_contentfulClient, _fusionCache,
+        _publishAssetWebhook = new PublishAssetWebhook(_fusionCache,
+            new LinkedPageFinder(_contentfulClient, Substitute.For<ILogger<LinkedPageFinder>>()),
             Substitute.For<ILogger<PublishAssetWebhook>>());
     }
 
@@ -82,19 +84,20 @@ public class PublishAssetWebhookTests
             .GetEntries(
                 Arg.Is<QueryBuilder<ContentfulContent>>(qB => qB.Build() == $"?links_to_asset={assetId}&include=0"))
             .Returns(Task.FromResult(assetLinkedContent));
-        
+
         _contentfulClient
             .GetEntries(
-                Arg.Is<QueryBuilder<ContentfulContent>>(qB => qB.Build() == $"?links_to_entry={richContentId}&include=0"))
+                Arg.Is<QueryBuilder<ContentfulContent>>(qB =>
+                    qB.Build() == $"?links_to_entry={richContentId}&include=0"))
             .Returns(Task.FromResult(pageLinkedContent));
-        
+
         _contentfulClient
             .GetEntries(
                 Arg.Is<QueryBuilder<ContentfulContent>>(qB => qB.Build() == $"?links_to_entry={pageId}&include=0"))
-            .Returns(Task.FromResult(new ContentfulCollection<ContentfulContent>()));
+            .Returns(Task.FromResult(new ContentfulCollection<ContentfulContent> { Items = [] }));
 
         await _publishAssetWebhook.Consume(asset);
-        
+
         await _fusionCache.Received(1).RemoveAsync(pageId);
         await _fusionCache.Received(1).RemoveAsync($"content:{pageSlug}");
     }
@@ -109,13 +112,17 @@ public class PublishAssetWebhookTests
         const string pageSlug = "page-one-slug";
 
         Asset asset = new Asset { SystemProperties = new SystemProperties { Id = assetId } };
-        RichContentBlock richContentBlockOne = new RichContentBlock { Sys = new SystemProperties { Id = richContentIdOne } };
-        RichContentBlock richContentBlockTwo = new RichContentBlock { Sys = new SystemProperties { Id = richContentIdTwo } };
+        RichContentBlock richContentBlockOne = new RichContentBlock
+            { Sys = new SystemProperties { Id = richContentIdOne } };
+        RichContentBlock richContentBlockTwo = new RichContentBlock
+            { Sys = new SystemProperties { Id = richContentIdTwo } };
         Page page = new Page { Sys = new SystemProperties { Id = pageId }, Slug = pageSlug };
 
         ContentfulCollection<ContentfulContent> assetLinkedContent = new() { Items = [richContentBlockOne] };
-        ContentfulCollection<ContentfulContent> richContentBlockOneLinkedContent = new() { Items = [richContentBlockTwo, page] };
-        ContentfulCollection<ContentfulContent> richContentBlockTwoLinkedContent = new() { Items = [richContentBlockOne] };
+        ContentfulCollection<ContentfulContent> richContentBlockOneLinkedContent =
+            new() { Items = [richContentBlockTwo, page] };
+        ContentfulCollection<ContentfulContent> richContentBlockTwoLinkedContent =
+            new() { Items = [richContentBlockOne] };
 
         _contentfulClient
             .GetEntries(
@@ -124,18 +131,20 @@ public class PublishAssetWebhookTests
 
         _contentfulClient
             .GetEntries(
-                Arg.Is<QueryBuilder<ContentfulContent>>(qB => qB.Build() == $"?links_to_entry={richContentIdOne}&include=0"))
+                Arg.Is<QueryBuilder<ContentfulContent>>(qB =>
+                    qB.Build() == $"?links_to_entry={richContentIdOne}&include=0"))
             .Returns(Task.FromResult(richContentBlockOneLinkedContent));
 
         _contentfulClient
             .GetEntries(
-                Arg.Is<QueryBuilder<ContentfulContent>>(qB => qB.Build() == $"?links_to_entry={richContentIdTwo}&include=0"))
+                Arg.Is<QueryBuilder<ContentfulContent>>(qB =>
+                    qB.Build() == $"?links_to_entry={richContentIdTwo}&include=0"))
             .Returns(Task.FromResult(richContentBlockTwoLinkedContent));
-        
+
         _contentfulClient
             .GetEntries(
                 Arg.Is<QueryBuilder<ContentfulContent>>(qB => qB.Build() == $"?links_to_entry={pageId}&include=0"))
-            .Returns(Task.FromResult(new ContentfulCollection<ContentfulContent>()));
+            .Returns(Task.FromResult(new ContentfulCollection<ContentfulContent> { Items = [] }));
 
         await _publishAssetWebhook.Consume(asset);
 

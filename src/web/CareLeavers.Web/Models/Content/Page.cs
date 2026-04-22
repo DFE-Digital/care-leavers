@@ -5,7 +5,7 @@ namespace CareLeavers.Web.Models.Content;
 
 public class Page : ContentfulContent
 {
-    public static string ContentType { get; } = "page";
+    public const string ContentType = "page";
     
     public Page? Parent { get; set; }
     
