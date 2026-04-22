@@ -35,7 +35,7 @@ jobs:
 
           AUTH_FLAG=""
           if [ "${{ github.event.inputs.domain_prefix }}" != "www" ]; then
-            AUTH_FLAG="--header 'Authorization: ${{ secrets.BASIC_AUTH_CREDS }}'"
+            AUTH_FLAG="--headers 'Authorization: ${{ secrets.BASIC_AUTH_CREDS }}'"
           fi
 
           yarn pa11y-ci $AUTH_FLAG --config pa11y.json --sitemap https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml
