@@ -14,9 +14,25 @@ on:
           - "www"
 
 jobs:
+  set-env:
+    runs-on: ubuntu-latest
+    outputs:
+      target_env: ${{ steps.map.outputs.env_name }}
+    steps:
+      - id: map
+        run: |
+          if [ "${{ github.event.inputs.domain_prefix }}" == "www" ]; then
+            echo "env_name=elz-production" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event.inputs.domain_prefix }}" == "test" ]; then
+            echo "env_name=elz-test" >> $GITHUB_OUTPUT
+          else
+            echo "env_name=elz-staging" >> $GITHUB_OUTPUT
+          fi
+
   accessibility-scan:
     name: "Run Pa11y Accessibility Scan"
     runs-on: ubuntu-24.04
+    environment: ${{ needs.set-env.outputs.target_env }}
     env:
       BA_CREDS: ${{ secrets.BASIC_AUTH_CREDS }}
     steps:
