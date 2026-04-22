@@ -59,7 +59,7 @@ jobs:
 
             sed -i "s|https://|https://${RAW_USER_PASS}@|g" local-sitemap.xml
 
-            SITEMAP_PATH="./local-sitemap.xml"
+            SITEMAP_PATH="file://$(pwd)/local-sitemap.xml"
           else
             SITEMAP_PATH="https://www.support-for-care-leavers.education.gov.uk/sitemap.xml"
           fi
