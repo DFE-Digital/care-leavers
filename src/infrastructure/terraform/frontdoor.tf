@@ -221,6 +221,31 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
     }
   }
 
+  dynamic "custom_rule" {
+    for_each = var.enable_basic_auth ? [1] : []
+    content {
+      name     = "EnforceBasicAuth"
+      action   = "Block"
+      priority = 50
+      type     = "MatchRule"
+
+      match_condition {
+        match_variable = "RequestHeader"
+        selector       = "Authorization"
+        operator       = "GreaterThan"
+        match_values   = ["0"]
+      }
+
+      match_condition {
+        match_variable     = "RequestHeader"
+        selector           = "Authorization"
+        operator           = "Equal"
+        negation_condition = true
+        match_values       = [var.basic_auth_credentials]
+      }
+    }
+  }
+
   custom_rule {
     name     = "allowcontentful"
     enabled  = true
@@ -374,31 +399,6 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       negation_condition = true
       transforms         = ["Lowercase", "UrlDecode"]
       match_values       = ["\\/(robots\\.txt|error|service-unavailable|accessibility-statement|page-not-found|cookie-policy|privacy-policies|assets\\/|css\\/|js\\/|sitemap)"]
-    }
-  }
-
-  dynamic "custom_rule" {
-    for_each = var.enable_basic_auth ? [1] : []
-    content {
-      name     = "EnforceBasicAuth"
-      action   = "Block"
-      priority = 1
-      type     = "MatchRule"
-
-      match_condition {
-        match_variable = "RequestHeader"
-        selector       = "Authorization"
-        operator       = "GreaterThan"
-        match_values   = ["0"]
-      }
-
-      match_condition {
-        match_variable     = "RequestHeader"
-        selector           = "Authorization"
-        operator           = "Equal"
-        negation_condition = true
-        match_values       = [var.basic_auth_credentials]
-      }
     }
   }
 }
