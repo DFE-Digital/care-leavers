@@ -390,6 +390,13 @@ try
     var requiredCreds = builder.Configuration["BasicAuth:EncodedCreds"];
 
     app.Use(async (context, next) => {
+        // Don't need the auth header for health check 
+        if (context.Request.Path.StartsWithSegments("/health"))
+        {
+            await next.Invoke();
+            return;
+        }
+        
         // Only run if we actually have a password configured in the environment
         if (!string.IsNullOrEmpty(requiredCreds)) 
         {
