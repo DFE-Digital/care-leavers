@@ -14,28 +14,9 @@ on:
           - "www"
 
 jobs:
-  set-env:
-    runs-on: ubuntu-latest
-    outputs:
-      target_env: ${{ steps.map.outputs.env_name }}
-    steps:
-      - id: map
-        run: |
-          if [ "${{ github.event.inputs.domain_prefix }}" == "www" ]; then
-            echo "env_name=elz-production" >> $GITHUB_OUTPUT
-          elif [ "${{ github.event.inputs.domain_prefix }}" == "test" ]; then
-            echo "env_name=elz-test" >> $GITHUB_OUTPUT
-          else
-            echo "env_name=elz-staging" >> $GITHUB_OUTPUT
-          fi
-
   accessibility-scan:
     name: "Run Pa11y Accessibility Scan"
-    needs: set-env
     runs-on: ubuntu-24.04
-    environment: ${{ needs.set-env.outputs.target_env }}
-    env:
-      BA_CREDS: ${{ secrets.BASIC_AUTH_CREDS }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v6
@@ -51,17 +32,4 @@ jobs:
         working-directory: ./src/e2e/pa11y
         run: |
           yarn install --production=true
-
-          if [ "${{ github.event.inputs.domain_prefix }}" != "www" ]; then
-            RAW_USER_PASS=$(echo "$BA_CREDS" | sed 's/Basic //g' | base64 -d | tr -d '\n\r')
-
-            curl -s -H "Authorization: $BA_CREDS" "https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml" > local-sitemap.xml
-
-            sed -i "s|https://|https://${RAW_USER_PASS}@|g" local-sitemap.xml
-
-            SITEMAP_PATH="file://$(pwd)/local-sitemap.xml"
-          else
-            SITEMAP_PATH="https://www.support-for-care-leavers.education.gov.uk/sitemap.xml"
-          fi
-
-          yarn pa11y-ci --config pa11y.json --sitemap "$SITEMAP_PATH"
+          yarn pa11y-ci --config pa11y.json --sitemap https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml
