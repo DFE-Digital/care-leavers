@@ -5,17 +5,17 @@ on:
     inputs:
       domain_prefix:
         type: choice
-        description: 'Domain prefix to run against'
+        description: "Domain prefix to run against"
         required: true
-        default: 'test'
+        default: "test"
         options:
-          - 'test'
-          - 'staging'
-          - 'www'
+          - "test"
+          - "staging"
+          - "www"
 
 jobs:
   accessibility-scan:
-    name: 'Run Pa11y Accessibility Scan'
+    name: "Run Pa11y Accessibility Scan"
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout Repository
@@ -26,7 +26,7 @@ jobs:
       - name: Setup Node.JS
         uses: actions/setup-node@v6
         with:
-          node-version: 'lts/Krypton'
+          node-version: "lts/Krypton"
 
       - name: Run Accessibility Scan
         working-directory: ./src/e2e/pa11y
