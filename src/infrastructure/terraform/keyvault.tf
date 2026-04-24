@@ -29,9 +29,13 @@ data "azurerm_role_definition" "kv_secrets_officer" {
   scope = azurerm_key_vault.kv.id
 }
 
-
 data "azurerm_role_definition" "kv_admin" {
   name  = "Key Vault Administrator"
+  scope = azurerm_key_vault.kv.id
+}
+
+data "azurerm_role_definition" "kv_reader" {
+  name  = "Key Vault Reader"
   scope = azurerm_key_vault.kv.id
 }
 
@@ -62,6 +66,13 @@ resource "azurerm_role_assignment" "kv_admin_sp" {
   scope              = azurerm_key_vault.kv.id
   role_definition_id = data.azurerm_role_definition.kv_admin.role_definition_id
   principal_id       = data.azurerm_client_config.client.object_id
+  principal_type     = "ServicePrincipal"
+}
+
+resource "azurerm_role_assignment" "kv_reader_devs" {
+  scope              = azurerm_key_vault.kv.id
+  role_definition_id = data.azurerm_role_definition.kv_reader.role_definition_id
+  principal_id       = data.azuread_group.cl_dev_team.object_id
   principal_type     = "ServicePrincipal"
 }
 

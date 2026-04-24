@@ -151,3 +151,8 @@ variable "alerting" {
     }
   }
 }
+
+variable "cl_dev_team_group_name" {
+  description = "The name of the EntraID group name for Care Leavers"
+  type        = string
+}
