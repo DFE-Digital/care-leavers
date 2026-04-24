@@ -156,3 +156,14 @@ variable "cl_dev_team_group_name" {
   description = "The name of the EntraID group name for Care Leavers"
   type        = string
 }
+
+variable "enable_basic_auth" {
+  type    = bool
+  default = false
+}
+
+variable "basic_auth_credentials" {
+  type        = string
+  sensitive   = true
+  description = "Basic authentication credentials"
+}

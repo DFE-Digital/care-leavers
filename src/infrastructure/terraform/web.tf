@@ -16,6 +16,7 @@ locals {
     "PdfGeneration__Sandbox"                = var.pdf_generation_use_sandbox
     "Rebrand"                               = var.rebrand
     "GetToAnAnswer__BaseUrl"                = var.gtaa_base_url
+    "BasicAuth__EncodedCreds"               = var.basic_auth_credentials
   }
 
   managed_identity = {
