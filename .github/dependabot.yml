@@ -2,6 +2,8 @@ version: 2
 updates:
   - package-ecosystem: "terraform"
     directory: "/src/infrastructure/terraform"
+    cooldown: 
+      default-days: 7
     schedule:
       interval: "weekly"
     commit-message:
@@ -14,6 +16,8 @@ updates:
 
   - package-ecosystem: "github-actions"
     directory: "/"
+    cooldown:
+      default-days: 7
     schedule:
       interval: "weekly"
     commit-message:
@@ -26,6 +30,8 @@ updates:
 
   - package-ecosystem: "nuget"
     directory: "/src"
+    cooldown:
+      default-days: 7
     schedule:
       interval: "weekly"
     commit-message:
@@ -48,6 +54,8 @@ updates:
       - "/src/utilities"
       - "/src/web/CareLeavers.Web"
       - "/src/contentful/Synchronisation"
+    cooldown:
+      default-days: 7
     schedule: 
       interval: "weekly"
     commit-message: 
