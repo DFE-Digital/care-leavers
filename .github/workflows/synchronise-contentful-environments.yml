@@ -66,7 +66,7 @@ jobs:
           CONTENTFUL_MIGRATION_TRACKER_ENTITY_ID: ${{ vars.CONTENTFUL_MIGRATION_TRACKER_ENTITY_ID }}
           
       - name: Setup Node.JS
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v6.3.0
         with:
           node-version: 'lts/Krypton'
           
