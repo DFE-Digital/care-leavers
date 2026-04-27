@@ -5,7 +5,7 @@ namespace CareLeavers.Web.Models.Content;
 public class PrintableCollection : ContentfulContent
 {
     
-    public static string ContentType { get; } = "printableCollection";
+    public const string ContentType = "printableCollection";
 
     public required string Title { get; set; }
     

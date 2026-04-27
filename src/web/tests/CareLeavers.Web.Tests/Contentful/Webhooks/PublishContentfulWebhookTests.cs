@@ -1,6 +1,8 @@
 using CareLeavers.Web.Contentful.Webhooks;
+using CareLeavers.Web.Contentful.Webhooks.Helpers;
 using CareLeavers.Web.Models.Content;
 using Contentful.Core;
+using Contentful.Core.Errors;
 using Contentful.Core.Models;
 using Contentful.Core.Search;
 using Microsoft.Extensions.Logging;
@@ -14,6 +16,7 @@ public class PublishContentfulWebhookTests
     private IContentfulClient _contentfulClient;
     private IFusionCache _fusionCache;
     private IContentfulManagementClient _contentfulManagementClient;
+    private ILogger<PublishContentfulWebhook> _logger;
 
     private PublishContentfulWebhook _publishContentfulWebhook;
 
@@ -23,9 +26,12 @@ public class PublishContentfulWebhookTests
         _contentfulClient = Substitute.For<IContentfulClient>();
         _fusionCache = Substitute.For<IFusionCache>();
         _contentfulManagementClient = Substitute.For<IContentfulManagementClient>();
+        _logger = Substitute.For<ILogger<PublishContentfulWebhook>>();
 
         _publishContentfulWebhook = new PublishContentfulWebhook(_contentfulClient, _fusionCache,
-            _contentfulManagementClient, Substitute.For<ILogger<PublishContentfulWebhook>>());
+            _contentfulManagementClient,
+            new LinkedPageFinder(_contentfulClient, Substitute.For<ILogger<LinkedPageFinder>>()),
+            _logger);
     }
 
     [Test]
@@ -179,6 +185,79 @@ public class PublishContentfulWebhookTests
 
         await _contentfulManagementClient.Received(1).PublishEntry(pageId, 2);
         await AssertDefaultCacheClears(entryId, pageId);
+    }
+
+    [Test]
+    public async Task Consume_WhenPageSlugChanged_And_PublishingRedirectionRulesFails_LogsError()
+    {
+        const string entryId = "EntryId";
+        const string pageSlug = "page-slug";
+        const string oldPageSlug = "old-page-slug";
+        const string redirectionRulesId = "RedirectionRulesId";
+        Entry<ContentfulContent> entry = CreateEntry(Page.ContentType, entryId);
+
+        RedirectionRules redirectionRules = new RedirectionRules
+        {
+            Sys = new SystemProperties { Id = redirectionRulesId, Version = 1, PublishedVersion = 1 },
+            Rules = []
+        };
+
+        Entry<dynamic> updatedEntryResponse = new()
+        {
+            SystemProperties = new SystemProperties { Id = redirectionRulesId, Version = 2 }
+        };
+
+        Page pageFromContentful = new Page { Sys = new SystemProperties { Id = entryId }, Slug = pageSlug };
+        Page outdatedPageInCache = new Page { Sys = new SystemProperties { Id = entryId }, Slug = oldPageSlug };
+
+        _contentfulClient.GetEntry<Page>(entryId).Returns(Task.FromResult(pageFromContentful));
+        _fusionCache.TryGetAsync<Page>(entryId).Returns(MaybeValue<Page>.FromValue(outdatedPageInCache));
+        _contentfulClient.GetEntries(Arg.Any<QueryBuilder<RedirectionRules>>()).Returns(
+            new ContentfulCollection<RedirectionRules>
+            {
+                Items = [redirectionRules]
+            });
+        _contentfulManagementClient.CreateOrUpdateEntry(Arg.Any<Entry<dynamic>>(), contentTypeId: Arg.Any<string>(),
+                version: Arg.Any<int?>())
+            .ReturnsForAnyArgs(updatedEntryResponse);
+
+        _contentfulManagementClient.PublishEntry(redirectionRulesId, 2)
+            .Returns(Task.FromException<Entry<dynamic>>(new ContentfulException(500, "Error")));
+
+        await _publishContentfulWebhook.Consume(entry, "Topic");
+
+        _logger.Received(1).Log(
+            LogLevel.Error,
+            Arg.Any<EventId>(),
+            Arg.Is<object>(v => v.ToString()!.Contains("Error Publishing Redirection Rules")),
+            Arg.Is<ContentfulException>(e => e.Message == "Error"),
+            Arg.Any<Func<object, Exception?, string>>());
+    }
+
+    [Test]
+    public async Task Consume_WhenRepublishingLinkedPagesFails_LogsError()
+    {
+        const string entryId = "EntryId";
+        const string pageId = "PageId";
+        const string pageSlug = "page-slug";
+        Entry<ContentfulContent> entry = CreateEntry(RichContent.ContentType, entryId);
+        Page linkedPage = new Page
+            { Sys = new SystemProperties { Id = pageId, PublishedVersion = 1 }, Slug = pageSlug };
+
+        _contentfulClient.GetEntries(Arg.Any<QueryBuilder<ContentfulContent>>())
+            .Returns(new ContentfulCollection<ContentfulContent> { Items = [linkedPage] });
+
+        _contentfulManagementClient.PublishEntry(pageId, 2)
+            .Returns(Task.FromException<Entry<dynamic>>(new ContentfulException(500, "Error")));
+
+        await _publishContentfulWebhook.Consume(entry, "ContentManagement.Entry.publish");
+
+        _logger.Received(1).Log(
+            LogLevel.Error,
+            Arg.Any<EventId>(),
+            Arg.Is<object>(v => v.ToString()!.Contains($"Error Publishing Linked Page: {pageSlug}")),
+            Arg.Is<ContentfulException>(e => e.Message == "Error"),
+            Arg.Any<Func<object, Exception?, string>>());
     }
 
     private static Entry<ContentfulContent> CreateEntry(string contentType, string entryId) =>

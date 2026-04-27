@@ -11,8 +11,7 @@ public class ContentfulConfigurationEntity : ContentfulContent
         Live
     }
     
-    public static string ContentType { get; } = "configuration";
-
+    public const string ContentType = "configuration";
     
     public string ServiceName { get; set; } = string.Empty;
 
