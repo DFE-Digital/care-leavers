@@ -170,15 +170,18 @@ jobs:
           storage_account_name: ${{ env.ENVIRONMENT_PREFIX }}cltfstate
           resource_group_name: ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-tfstate
           enable_network_access: false
+          
+      - name: Prepare Docker Container
+        run: |
+          export CARE_LEAVERS_WEB_IMAGE='ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ env.TAG_NAME }}'
+          envsubst < src/infrastructure/docker/docker-compose.yml > docker-compose.yml
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: "${{ env.ENVIRONMENT_PREFIX }}-uks-cl-web-app-service"
           slot-name: "${{vars.WEB_APP_SLOT}}"
-          configuration-file: "./src/infrastructure/docker/docker-compose.yml"
-        env:
-          CARE_LEAVERS_WEB_IMAGE: "ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ env.TAG_NAME }}"
+          configuration-file: "docker-compose.yml"
 
       - name: Swap Slot to Production
         if: github.event.inputs.environment == 'elz-production'
