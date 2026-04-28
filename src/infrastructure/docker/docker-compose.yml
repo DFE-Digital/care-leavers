@@ -6,5 +6,3 @@ services:
       - "7050:8080"
   gotenberg:
     image: gotenberg/gotenberg:8-chromium
-    ports:
-      - "127.0.0.1:3000:3000"
