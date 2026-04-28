@@ -17,6 +17,7 @@ locals {
     "Rebrand"                               = var.rebrand
     "GetToAnAnswer__BaseUrl"                = var.gtaa_base_url
     "BasicAuth__EncodedCreds"               = var.basic_auth_credentials
+    "Scripts__GTM"                          = var.scripts_gtm 
   }
 
   managed_identity = {
