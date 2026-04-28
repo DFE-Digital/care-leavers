@@ -64,6 +64,11 @@ variable "scripts_clarity" {
   type        = string
 }
 
+variable "scripts_gtm" {
+  description = "Google Tag Manager code"
+  type        = string
+}
+
 variable "custom_domain" {
   description = "Custom front-door domain"
   type        = string
