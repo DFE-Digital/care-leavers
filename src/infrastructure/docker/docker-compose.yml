@@ -1,8 +1,12 @@
 name: 'care-leavers'
 services:
   care-leavers-web:
-    build:
-      context: ../../
-      dockerfile: web/CareLeavers.Web/Dockerfile
+    image: ${CARE_LEAVERS_WEB_IMAGE}
     ports:
       - "7050:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+  gotenberg:
+    image: gotenberg/gotenberg:8-chromium
+    ports:
+      - "127.0.0.1:3000:3000"

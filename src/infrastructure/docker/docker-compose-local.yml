@@ -1,0 +1,18 @@
+name: 'care-leavers'
+services:
+  care-leavers-web:
+    build:
+      context: ../../
+      dockerfile: web/CareLeavers.Web/Dockerfile
+    ports:
+      - "7050:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+  gotenberg:
+    image: gotenberg/gotenberg:8-chromium
+    command:
+      - "gotenberg"
+      - '--chromium-allow-list="^https?://host\.docker\.internal:7050(/.*)?$"'
+      - "--chromium-ignore-certificate-errors"
+    ports:
+      - "127.0.0.1:3000:3000"

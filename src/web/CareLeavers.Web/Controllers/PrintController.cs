@@ -1,15 +1,17 @@
-using System.Net.Http.Headers;
-using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Filters;
+using CareLeavers.Web.Models.Content;
+using CareLeavers.Web.Pdf;
 using CareLeavers.Web.Translation;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using ZiggyCreatures.Caching.Fusion;
 
 namespace CareLeavers.Web.Controllers;
 
-public class PrintController(IHttpClientFactory httpClientFactory, IContentService contentService, ITranslationService translationService, IOptions<PdfGenerationOptions> pdfOptions, IFusionCache fusionCache) : Controller
+public class PrintController(
+    IContentService contentService,
+    ITranslationService translationService,
+    IConfiguration configuration,
+    ILogger<PrintController> logger) : Controller
 {
     [Route("/print/{identifier}")]
     [Route("/print/{languageCode}/{identifier}")]
@@ -27,110 +29,64 @@ public class PrintController(IHttpClientFactory httpClientFactory, IContentServi
         {
             return NotFound();
         }
-        
 
         var languages = new List<string>();
         if (config is { TranslationEnabled: true })
         {
             languages.AddRange((await translationService.GetLanguages()).Select(l => l.Code));
         }
+
         if (languages.Count == 0)
         {
             languages.Add("en");
         }
-        
+
         if (!languages.Contains(languageCode))
         {
             return RedirectToAction("GetPrintableCollection", new { identifier, languageCode = "en" });
         }
-        
+
         var collection = await contentService.GetPrintableCollection(identifier);
 
         if (collection == null)
         {
             return NotFound();
         }
-        
+
         return View("Collection", collection);
     }
 
     [Route("/pdf/{languageCode}/{identifier}")]
-    public async Task<IActionResult> DownloadPdf(string identifier, string languageCode)
+    public async Task<IActionResult> DownloadPdf([FromServices] IPdfGenerator pdfGenerator, string identifier,
+        string languageCode)
     {
+        string? url = Url.ActionLink("GetPrintableCollection", "Print", new { identifier, languageCode },
+            host: configuration["Pdf:CallbackHost"] ?? Request.Host.Value);
+        if (string.IsNullOrWhiteSpace(url)) return BadRequest();
 
+        PrintableCollection? collection = await contentService.GetPrintableCollection(identifier);
+        if (collection is null) return NotFound();
 
-        var collection = await contentService.GetPrintableCollection(identifier);
-        if (collection == null)
-            return NotFound();
+        List<string> tags = [$"pc-{identifier}"];
+        tags.AddRange(collection.Content.Select(p => p.Slug).Where(slug => !string.IsNullOrWhiteSpace(slug))
+            .OfType<string>());
 
-        // Add tags for each page in the collection, so we expire it if a page changes
-        var tags = collection.Content.Select(p => p.Slug!).ToList();
-        
-        // Also add our printable collection identifier as a tag too
-        tags.Add($"pc-{identifier}");
-        var filename = identifier;
-        if (languageCode != "en")
-        {
-            filename += "-" + languageCode;
-        }
-        filename += ".pdf";
+        string fileName = $"{identifier}{(languageCode.Equals("en") ? "" : $"-{languageCode}")}.pdf";
+        byte[] pdfBytes;
 
         try
         {
-            var pdf = await fusionCache.GetOrSetAsync<byte[]>($"pdf:{identifier}:{languageCode}", async token =>
-            {
-                var config = await contentService.GetConfiguration();
-
-                var url = Url.ActionLink("GetPrintableCollection", "Print", new { identifier, languageCode }, protocol: "https");
-                
-                var sandbox = pdfOptions.Value.Sandbox.ToString().ToLower();
-                var apiKey = pdfOptions.Value.ApiKey;
-                
-                if (config == null)
-                    return [];
-
-                var client = httpClientFactory.CreateClient();
-                var request = new HttpRequestMessage();
-
-                request.Method = HttpMethod.Post;
-                request.RequestUri = new Uri("https://api.pdfendpoint.com/v1/convert");
-                request.Headers.Authorization =
-                    AuthenticationHeaderValue.Parse($"Bearer {apiKey}");
-                var requestContent = $$"""
-                                       {
-                                           "url": "{{url}}",
-                                           "sandbox": {{sandbox}}, 
-                                           "delivery_mode": "inline", 
-                                           "title": "{{collection.Title}}", 
-                                           "author": "{{config?.ServiceName}}",
-                                           "filename": "{{filename}}",
-                                           "print_media": true,
-                                           "user_agent": "PDF Renderer - twitterbot"
-                                       }
-                                       """;
-                request.Content = new StringContent(requestContent);
-
-                request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
-
-                using var response = await client.SendAsync(request, token);
-                response.EnsureSuccessStatusCode();
-
-                return await response.Content.ReadAsByteArrayAsync(token);
-            }, tags: tags);
-
-            if (pdf.Length > 0)
-            {
-                Response.Headers.Append("Content-Disposition",$"inline;{filename}");
-                return File(pdf, contentType: "application/pdf");
-            }
+            pdfBytes = await pdfGenerator.Generate(url, identifier, languageCode, tags);
         }
-        catch (HttpRequestException)
+        catch (HttpRequestException e)
         {
-            // If we can't generate our printable PDF, redirect to the print page instead
+            logger.LogError(e, "Error Generating PDF - Redirecting to Print Page Instead..");
             return RedirectToAction("GetPrintableCollection", new { identifier, languageCode });
         }
 
-        return NotFound();
+        if (pdfBytes.Length == 0) return NotFound();
 
+        Response.Headers.Append("Content-Disposition", $"inline;{fileName}");
+        return File(pdfBytes, contentType: "application/pdf");
     }
 }

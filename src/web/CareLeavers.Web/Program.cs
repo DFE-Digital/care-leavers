@@ -10,9 +10,9 @@ using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Contentful.Webhooks;
 using CareLeavers.Web.Contentful.Webhooks.Helpers;
 using CareLeavers.Web.ContentfulRenderers;
-using CareLeavers.Web.Controllers;
 using CareLeavers.Web.GetToAnAnswerRun;
 using CareLeavers.Web.Models.Content;
+using CareLeavers.Web.Pdf;
 using CareLeavers.Web.Telemetry;
 using CareLeavers.Web.Translation;
 using Contentful.AspNetCore;
@@ -30,7 +30,6 @@ using OpenTelemetry.Trace;
 using Serilog;
 using WebMarkupMin.AspNet.Common.Compressors;
 using WebMarkupMin.AspNetCoreLatest;
-using WebMarkupMin.Core;
 using ZiggyCreatures.Caching.Fusion;
 using static System.TimeSpan;
 
@@ -144,7 +143,14 @@ try
     
     #endregion
 
-    builder.Services.AddHttpClient<PrintController>();
+    #region Pdf
+    
+    builder.Services.AddHttpClient<IPdfGenerator, PdfGenerator>(client =>
+    {
+        client.BaseAddress = new Uri("http://gotenberg:3000");
+    });
+    
+    #endregion
     
     #region Contentful and Renderers
     
@@ -198,7 +204,6 @@ try
 
     builder.Services.AddOptions<ScriptOptions>().BindConfiguration(ScriptOptions.Name);
     builder.Services.AddOptions<CachingOptions>().BindConfiguration(CachingOptions.Name);
-    builder.Services.AddOptions<PdfGenerationOptions>().BindConfiguration(PdfGenerationOptions.Name);
     builder.Services.AddOptions<AzureTranslationOptions>().BindConfiguration(AzureTranslationOptions.Name);
     
     if (string.IsNullOrEmpty(builder.Configuration.GetValue<string>("AzureTranslation:AccessKey")))
