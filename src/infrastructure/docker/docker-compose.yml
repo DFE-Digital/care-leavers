@@ -2,7 +2,5 @@ name: 'care-leavers'
 services:
   care-leavers-web:
     image: ${CARE_LEAVERS_WEB_IMAGE}
-    ports:
-      - "7050:8080"
   gotenberg:
     image: gotenberg/gotenberg:8-chromium
