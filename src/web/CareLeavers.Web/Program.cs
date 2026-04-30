@@ -407,8 +407,7 @@ try
     
     #region Setup basic authentication
 
-    // var requiredCreds = builder.Configuration["BasicAuth:EncodedCreds"];
-    string? requiredCreds = null;
+    var requiredCreds = builder.Configuration["BasicAuth:EncodedCreds"];
 
     app.Use(async (context, next) => {
         // Don't need the auth header for health check 
