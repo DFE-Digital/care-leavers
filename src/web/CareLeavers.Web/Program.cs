@@ -275,7 +275,12 @@ try
                 .WithDefaultEntryOptions(new FusionCacheEntryOptions()
                 {
                     Duration = cachingOptions?.Duration ?? FromDays(30),
-                    DistributedCacheDuration = cachingOptions?.Duration ?? FromDays(30)
+                    DistributedCacheDuration = cachingOptions?.Duration ?? FromDays(30),
+                    MemoryCacheDuration = cachingOptions?.MemoryCacheDuration ?? FromMinutes(30),
+                    LockTimeout = FromSeconds(10),
+                    DistributedCacheSoftTimeout = FromMilliseconds(100),
+                    IsFailSafeEnabled = true,
+                    FailSafeMaxDuration = FromHours(2)
                 });
             break;
         default:

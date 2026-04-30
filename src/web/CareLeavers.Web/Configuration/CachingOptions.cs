@@ -15,4 +15,6 @@ public class CachingOptions
     public string? ConnectionString { get; init; }
 
     public TimeSpan Duration { get; set; } = TimeSpan.FromDays(30);
+    
+    public TimeSpan MemoryCacheDuration { get; set; } = TimeSpan.FromMinutes(30);
 }
