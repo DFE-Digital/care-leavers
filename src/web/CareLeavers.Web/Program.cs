@@ -13,6 +13,7 @@ using CareLeavers.Web.ContentfulRenderers;
 using CareLeavers.Web.Controllers;
 using CareLeavers.Web.GetToAnAnswerRun;
 using CareLeavers.Web.Models.Content;
+using CareLeavers.Web.Session;
 using CareLeavers.Web.Telemetry;
 using CareLeavers.Web.Translation;
 using Contentful.AspNetCore;
@@ -130,6 +131,19 @@ try
             "*.support-for-care-leavers.education.gov.uk"
         };
     });
+    
+    #endregion
+    
+    #region Session State & Cookies
+    
+    builder.Services.AddSession(options =>
+    {
+        options.Cookie.Name = ".SupportForCareLeavers.Session";
+        options.Cookie.IsEssential = true;
+        options.IdleTimeout = FromDays(1);
+    });
+    
+    builder.Services.AddTransient<SessionUsageService>();
     
     #endregion
     
@@ -562,6 +576,7 @@ try
         }
     });
     app.UseRouting();
+    app.UseSession();
     app.MapHealthChecks("/health");
     app.MapControllerRoute(
         name: "default",

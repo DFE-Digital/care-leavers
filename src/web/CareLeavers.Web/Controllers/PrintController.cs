@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Filters;
+using CareLeavers.Web.Session;
 using CareLeavers.Web.Translation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -55,10 +56,9 @@ public class PrintController(IHttpClientFactory httpClientFactory, IContentServi
     }
 
     [Route("/pdf/{languageCode}/{identifier}")]
-    public async Task<IActionResult> DownloadPdf(string identifier, string languageCode)
+    public async Task<IActionResult> DownloadPdf([FromServices] SessionUsageService sessionUsageService, 
+        string identifier, string languageCode)
     {
-
-
         var collection = await contentService.GetPrintableCollection(identifier);
         if (collection == null)
             return NotFound();
@@ -79,6 +79,9 @@ public class PrintController(IHttpClientFactory httpClientFactory, IContentServi
         {
             var pdf = await fusionCache.GetOrSetAsync<byte[]>($"pdf:{identifier}:{languageCode}", async token =>
             {
+                if (sessionUsageService.GetUsage(SessionState.PdfUsage) == SessionUsageLimits.PdfLimit) return [];
+                sessionUsageService.IncrementUsage(SessionState.PdfUsage);
+                
                 var config = await contentService.GetConfiguration();
 
                 var url = Url.ActionLink("GetPrintableCollection", "Print", new { identifier, languageCode }, protocol: "https");
