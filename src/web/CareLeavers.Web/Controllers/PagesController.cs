@@ -1,6 +1,7 @@
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Filters;
 using CareLeavers.Web.Models;
+using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
@@ -94,5 +95,14 @@ public class PagesController(IContentService contentService) : Controller
         cookiePolicyModel.ShowSuccessBanner = true;
         
         return View("CookiePolicy", cookiePolicyModel);
+    }
+
+    [Route("/{languageCode}/translation-limit-reached")]
+    [Route("/translation-limit-reached")]
+    public async Task<IActionResult> TranslationLimitReached(string? languageCode)
+    {
+        Page? page = await contentService.GetPage("translation-limit-reached");
+
+        return page is not null ? View(page) : NotFound();
     }
 }
