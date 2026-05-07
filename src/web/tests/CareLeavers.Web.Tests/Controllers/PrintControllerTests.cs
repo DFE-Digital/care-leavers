@@ -1,3 +1,4 @@
+using CareLeavers.Web.CircuitBreaker;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Controllers;
@@ -21,8 +22,11 @@ public class PrintControllerTests
     private IOptions<PdfGenerationOptions> _options;
     private IFusionCache _fusionCache;
     private IUrlHelper _urlHelper;
+    private IHttpContextAccessor _httpContextAccessor;
+    private IOptions<CircuitBreakerOptions> _circuitBreakerOptions;
 
     private PrintController _printController;
+    private CircuitBreakerService _circuitBreakerService;
 
     [SetUp]
     public void Init()
@@ -33,6 +37,13 @@ public class PrintControllerTests
         _options = Options.Create(new PdfGenerationOptions { ApiKey = "test-key", Sandbox = true });
         _fusionCache = Substitute.For<IFusionCache>();
         _urlHelper = Substitute.For<IUrlHelper>();
+        
+        _httpContextAccessor = Substitute.For<IHttpContextAccessor>();
+        _httpContextAccessor.HttpContext = new DefaultHttpContext();
+        _httpContextAccessor.HttpContext.Session = new MockSession();
+        _circuitBreakerOptions = Options.Create(new CircuitBreakerOptions { PdfGeneratorLimit = int.MaxValue });
+
+        _circuitBreakerService = new CircuitBreakerService(_httpContextAccessor, _circuitBreakerOptions);
 
         _printController = new PrintController(_httpClientFactory, _contentService, _translationService, _options,
             _fusionCache)
@@ -40,7 +51,7 @@ public class PrintControllerTests
             Url = _urlHelper,
             ControllerContext = new ControllerContext
             {
-                HttpContext = new DefaultHttpContext()
+                HttpContext = _httpContextAccessor.HttpContext
             }
         };
     }
@@ -134,7 +145,7 @@ public class PrintControllerTests
             Arg.Any<CancellationToken>()
         ).Returns(pdfBytes);
 
-        IActionResult result = await _printController.DownloadPdf(id, "en");
+        IActionResult result = await _printController.DownloadPdf(_circuitBreakerService, id, "en");
         
         Assert.That(result, Is.TypeOf<FileContentResult>());
         FileContentResult? fileContent = result as FileContentResult;
@@ -167,7 +178,7 @@ public class PrintControllerTests
             Arg.Any<CancellationToken>()
         ).Returns(pdfBytes);
 
-        IActionResult result = await _printController.DownloadPdf(id, languageCode);
+        IActionResult result = await _printController.DownloadPdf(_circuitBreakerService, id, languageCode);
         
         Assert.That(result, Is.TypeOf<FileContentResult>());
         string? contentDispositionHeader = _printController.Response.Headers.ContentDisposition;
@@ -192,7 +203,7 @@ public class PrintControllerTests
             Arg.Any<CancellationToken>()
         ).ThrowsAsync(new HttpRequestException());
         
-        IActionResult result = await _printController.DownloadPdf(id, languageCode);
+        IActionResult result = await _printController.DownloadPdf(_circuitBreakerService, id, languageCode);
         
         Assert.That(result, Is.TypeOf<RedirectToActionResult>());
         RedirectToActionResult? redirectResult = result as RedirectToActionResult;
@@ -208,6 +219,31 @@ public class PrintControllerTests
             Assert.That(redirectResult.RouteValues["identifier"], Is.EqualTo(id));
             Assert.That(redirectResult.RouteValues["languageCode"], Is.EqualTo(languageCode));
         }
+    }
+
+    [Test]
+    public async Task DownloadPdf_WhenCircuitIsBroken_Returns_NotFound()
+    {
+        const string id = "test-id";
+        const string languageCode = "en";
+        PrintableCollection collection = new PrintableCollection { Title = "Test", Identifier = id };
+        _contentService.GetPrintableCollection(id).Returns(collection);
+        _circuitBreakerOptions.Value.PdfGeneratorLimit = 1;
+        
+        _httpContextAccessor.HttpContext?.Session.SetInt32(CircuitBreakerOptions.PdfGeneratorKey, 2);
+
+        _fusionCache.GetOrSetAsync(
+            Arg.Any<string>(),
+            Arg.Any<Func<FusionCacheFactoryExecutionContext<byte[]>, CancellationToken, Task<byte[]>>>(),
+            Arg.Any<MaybeValue<byte[]>>(),
+            Arg.Any<FusionCacheEntryOptions>(),
+            Arg.Any<IEnumerable<string>>(),
+            Arg.Any<CancellationToken>()
+        ).Returns([]);
+
+        IActionResult result = await _printController.DownloadPdf(_circuitBreakerService, id, languageCode);
+        
+        Assert.That(result, Is.TypeOf<NotFoundResult>());
     }
 
     [TearDown]

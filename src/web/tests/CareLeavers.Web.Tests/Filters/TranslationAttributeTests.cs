@@ -1,4 +1,6 @@
 using System.Text;
+using System.Text.Json;
+using CareLeavers.Web.CircuitBreaker;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Filters;
 using CareLeavers.Web.Models.Content;
@@ -9,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using ZiggyCreatures.Caching.Fusion;
 
@@ -16,12 +19,15 @@ namespace CareLeavers.Web.Tests.Filters;
 
 public class TranslationAttributeTests
 {
+    private IHttpContextAccessor _httpContextAccessor;
+    private HttpContext _httpContext;
+    private IOptions<CircuitBreakerOptions> _circuitBreakerOptions;
+    
     private IFusionCache _fusionCache;
     private ITranslationService _translationService;
+    private CircuitBreakerService _circuitBreakerService;
     private IContentfulConfiguration _contentfulConfiguration;
-
-    private HttpContext _httpContext;
-
+    
     private ActionExecutingContext _actionExecutingContext;
     private ResultExecutingContext _resultExecutingContext;
 
@@ -34,13 +40,22 @@ public class TranslationAttributeTests
         _translationService = Substitute.For<ITranslationService>();
         _contentfulConfiguration = Substitute.For<IContentfulConfiguration>();
 
+        _httpContextAccessor = Substitute.For<IHttpContextAccessor>();
+        _httpContextAccessor.HttpContext = new DefaultHttpContext();
+        _httpContextAccessor.HttpContext.Session = new MockSession();
+        _circuitBreakerOptions = Options.Create(new CircuitBreakerOptions { AzureTranslationLimit = int.MaxValue });
+        
+        _circuitBreakerService = new CircuitBreakerService(_httpContextAccessor, _circuitBreakerOptions);
+
         ServiceCollection serviceCollection = [];
         serviceCollection.AddSingleton(_fusionCache);
         serviceCollection.AddSingleton(_translationService);
+        serviceCollection.AddSingleton(_circuitBreakerService);
         serviceCollection.AddSingleton(_contentfulConfiguration);
         ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
-        _httpContext = new DefaultHttpContext { RequestServices = serviceProvider };
+        _httpContextAccessor.HttpContext.RequestServices = serviceProvider;
+        _httpContext = _httpContextAccessor.HttpContext;
 
         ActionContext actionContext = new ActionContext(_httpContext, new RouteData(), new ActionDescriptor());
 
@@ -154,6 +169,7 @@ public class TranslationAttributeTests
             Assert.That(nextCalled, Is.False);
             Assert.That(_actionExecutingContext.Result, Is.TypeOf<ContentResult>());
         }
+
         ContentResult? contentResult = (ContentResult)_actionExecutingContext.Result;
         Assert.That(contentResult.Content, Is.Not.Null);
         using (Assert.EnterMultipleScope())
@@ -192,6 +208,7 @@ public class TranslationAttributeTests
             Assert.That(nextCalled, Is.True);
             Assert.That(_httpContext.Response.Body, Is.Not.SameAs(originalBody));
         }
+
         Assert.That(_httpContext.Response.Body, Is.TypeOf<MemoryStream>());
 
         return;
@@ -243,6 +260,40 @@ public class TranslationAttributeTests
 
         Task<ActionExecutedContext> Next() =>
             Task.FromResult(new ActionExecutedContext(_actionExecutingContext, [], Substitute.For<Controller>()));
+    }
+
+    [Test]
+    public async Task OnActionExecutionAsync_WhenCircuitIsBroke_Returns_TranslationLimitReachedPage()
+    {
+        _contentfulConfiguration.GetConfiguration()
+            .Returns(new ContentfulConfigurationEntity { TranslationEnabled = true });
+        _translationService.GetLanguages().Returns(new List<TranslationLanguage> { new() { Code = "sv" } });
+        _actionExecutingContext.RouteData.Values["slug"] = "test-slug";
+        _actionExecutingContext.RouteData.Values["languageCode"] = "sv";
+        _httpContext.Request.RouteValues["languageCode"] = "sv";
+        _circuitBreakerOptions.Value.AzureTranslationLimit = 1;
+        bool nextCalled = false;
+
+        List<string> translatedLanguages = ["Test", "Test"];
+        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey, 
+            JsonSerializer.Serialize(translatedLanguages, new JsonSerializerOptions(JsonSerializerDefaults.Web)));
+
+        await _translationAttribute.OnActionExecutionAsync(_actionExecutingContext, Next);
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(nextCalled, Is.False);
+            Assert.That(_actionExecutingContext.Result, Is.TypeOf<RedirectToActionResult>());
+        }
+
+        return;
+
+        Task<ActionExecutedContext> Next()
+        {
+            nextCalled = true;
+            return Task.FromResult(new ActionExecutedContext(_actionExecutingContext, [],
+                Substitute.For<Controller>()));
+        }
     }
 
     [Test]
@@ -301,10 +352,11 @@ public class TranslationAttributeTests
         };
 
         _fusionCache.TryGetAsync<byte[]?>("collection:test-identifier:language:sv").Returns(MaybeValue<byte[]?>.None);
-        _fusionCache.TryGetAsync<PrintableCollection>("collection:test-identifier").Returns(MaybeValue<PrintableCollection>.FromValue(collection));
-        
+        _fusionCache.TryGetAsync<PrintableCollection>("collection:test-identifier")
+            .Returns(MaybeValue<PrintableCollection>.FromValue(collection));
+
         await _translationAttribute.OnActionExecutionAsync(_actionExecutingContext, Next);
-        
+
         await _translationAttribute.OnResultExecutionAsync(_resultExecutingContext, ResultNext);
 
         await _fusionCache.Received(1).SetAsync(
@@ -312,7 +364,7 @@ public class TranslationAttributeTests
             Arg.Any<byte[]>(),
             Arg.Any<FusionCacheEntryOptions>(),
             Arg.Is<IEnumerable<string>>(tags => tags.Contains("page-one") && tags.Contains("page-two"))
-            );
+        );
 
         return;
 
