@@ -167,3 +167,9 @@ variable "basic_auth_credentials" {
   sensitive   = true
   description = "Basic authentication credentials"
 }
+
+variable "list_of_social_media_bots" {
+  type        = list(string)
+  description = "A list of social media bots that are explicitly allowed or refed to within the site"
+  default     = ["facebookbot|facebookexternalhit|facebookscraper|twitterbot|meta-externalfetcher|microsoftpreview|linkedinbot|pinterest|redditbot|telegrambot|mastadon|duckduckbot"]
+}
