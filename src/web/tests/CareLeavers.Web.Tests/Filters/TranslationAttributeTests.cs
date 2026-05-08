@@ -19,6 +19,8 @@ namespace CareLeavers.Web.Tests.Filters;
 
 public class TranslationAttributeTests
 {
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new(JsonSerializerDefaults.Web);
+    
     private IHttpContextAccessor _httpContextAccessor;
     private HttpContext _httpContext;
     private IOptions<CircuitBreakerOptions> _circuitBreakerOptions;
@@ -276,7 +278,7 @@ public class TranslationAttributeTests
 
         List<string> translatedLanguages = ["Test", "Test"];
         _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey, 
-            JsonSerializer.Serialize(translatedLanguages, new JsonSerializerOptions(JsonSerializerDefaults.Web)));
+            JsonSerializer.Serialize(translatedLanguages, JsonSerializerOptions));
 
         await _translationAttribute.OnActionExecutionAsync(_actionExecutingContext, Next);
 
