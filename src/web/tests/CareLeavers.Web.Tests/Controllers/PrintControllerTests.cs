@@ -231,7 +231,7 @@ public class PrintControllerTests
         _circuitBreakerOptions.Value.PdfGeneratorLimit = 1;
         
         _httpContextAccessor.HttpContext?.Session.SetInt32(CircuitBreakerOptions.PdfGeneratorKey, 2);
-
+        
         _fusionCache.GetOrSetAsync(
             Arg.Any<string>(),
             Arg.Any<Func<FusionCacheFactoryExecutionContext<byte[]>, CancellationToken, Task<byte[]>>>(),
@@ -239,7 +239,10 @@ public class PrintControllerTests
             Arg.Any<FusionCacheEntryOptions>(),
             Arg.Any<IEnumerable<string>>(),
             Arg.Any<CancellationToken>()
-        ).Returns([]);
+        ).Returns((Func<NSubstitute.Core.CallInfo, ValueTask<byte[]>>)(callInfo => {
+            var factory = callInfo.ArgAt<Func<FusionCacheFactoryExecutionContext<byte[]>, CancellationToken, Task<byte[]>>>(1);
+            return new ValueTask<byte[]>(factory(null!, CancellationToken.None));
+        }));
 
         IActionResult result = await _printController.DownloadPdf(_circuitBreakerService, id, languageCode);
         
