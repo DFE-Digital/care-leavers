@@ -174,7 +174,7 @@ jobs:
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
+        uses: azure/webapps-deploy@v3.0.8
         with:
           app-name: "${{ env.ENVIRONMENT_PREFIX }}-uks-cl-web-app-service"
           slot-name: "${{vars.WEB_APP_SLOT}}"
