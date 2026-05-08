@@ -1,3 +1,4 @@
+using System.Net;
 using CareLeavers.Web.CircuitBreaker;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
@@ -6,7 +7,9 @@ using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Translation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
@@ -41,6 +44,16 @@ public class PrintControllerTests
         _httpContextAccessor = Substitute.For<IHttpContextAccessor>();
         _httpContextAccessor.HttpContext = new DefaultHttpContext();
         _httpContextAccessor.HttpContext.Session = new MockSession();
+
+        ActionContext actionContext = new ActionContext
+        {
+            HttpContext = _httpContextAccessor.HttpContext,
+            RouteData = new RouteData(),
+            ActionDescriptor = new ActionDescriptor()
+        };
+        
+        _urlHelper.ActionContext.Returns(actionContext);
+        
         _circuitBreakerOptions = Options.Create(new CircuitBreakerOptions { PdfGeneratorLimit = int.MaxValue });
 
         _circuitBreakerService = new CircuitBreakerService(_httpContextAccessor, _circuitBreakerOptions);
@@ -247,6 +260,44 @@ public class PrintControllerTests
         IActionResult result = await _printController.DownloadPdf(_circuitBreakerService, id, languageCode);
         
         Assert.That(result, Is.TypeOf<NotFoundResult>());
+    }
+    
+    [Test]
+    public async Task DownloadPdf_WhenCircuitIsNotBroken_Continues_In_Factory()
+    {
+        const string id = "test-id";
+        const string languageCode = "en";
+        PrintableCollection collection = new PrintableCollection { Title = "Test", Identifier = id };
+        _contentService.GetPrintableCollection(id).Returns(collection);
+        _contentService.GetConfiguration().Returns(new ContentfulConfigurationEntity());
+        
+        _httpContextAccessor.HttpContext?.Session.SetInt32(CircuitBreakerOptions.PdfGeneratorKey, 0);
+
+        _urlHelper.Action(Arg.Any<UrlActionContext>()).Returns("https://localhost:1234");
+        
+        MockHttpMessageHandler handler = new();
+        handler.StatusCode = HttpStatusCode.OK;
+        handler.Content = new ByteArrayContent([1, 2, 3]);
+        _httpClientFactory.CreateClient().Returns(new HttpClient(handler));
+        
+        _fusionCache.GetOrSetAsync(
+            Arg.Any<string>(),
+            Arg.Any<Func<FusionCacheFactoryExecutionContext<byte[]>, CancellationToken, Task<byte[]>>>(),
+            Arg.Any<MaybeValue<byte[]>>(),
+            Arg.Any<FusionCacheEntryOptions>(),
+            Arg.Any<IEnumerable<string>>(),
+            Arg.Any<CancellationToken>()
+        ).Returns((Func<NSubstitute.Core.CallInfo, ValueTask<byte[]>>)(callInfo => {
+            var factory = callInfo.ArgAt<Func<FusionCacheFactoryExecutionContext<byte[]>, CancellationToken, Task<byte[]>>>(1);
+            return new ValueTask<byte[]>(factory(null!, CancellationToken.None));
+        }));
+
+        IActionResult result = await _printController.DownloadPdf(_circuitBreakerService, id, languageCode);
+        
+        Assert.That(result, Is.TypeOf<FileContentResult>());
+        FileContentResult? fileResult = result as FileContentResult;
+        Assert.That(fileResult, Is.Not.Null);
+        Assert.That(fileResult.FileContents, Is.EqualTo(new byte[] { 1, 2, 3 }));
     }
 
     [TearDown]
