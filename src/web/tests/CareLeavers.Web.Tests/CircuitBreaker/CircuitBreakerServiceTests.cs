@@ -32,27 +32,29 @@ public class CircuitBreakerServiceTests
     }
 
     [Test]
-    public void ShouldBreakCircuit_When_HttpContextIsNull_Throws_ArgumentNullException()
+    public void ShouldBreakCircuit_When_HttpContextIsNull_Throws_InvalidOperationException()
     {
         _httpContextAccessor.HttpContext = null;
 
-        Assert.Throws<ArgumentNullException>(() =>
-            _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation));
+        Assert.That(() => _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation),
+            Throws.TypeOf<InvalidOperationException>().With.Message.EqualTo("HttpContext is NULL"));
     }
 
     [Test]
     public void ShouldBreakCircuit_When_CircuitBreakerType_IsNull_Throws_ArgumentOutOfRangeException()
     {
-        Assert.Throws<ArgumentOutOfRangeException>(() => _circuitBreakerService.ShouldBreakCircuit((CircuitBreakerType)2));
+        Assert.That(() => _circuitBreakerService.ShouldBreakCircuit((CircuitBreakerType)2),
+            Throws.TypeOf<ArgumentOutOfRangeException>().With.Message
+                .EqualTo("Specified argument was out of the range of valid values. (Parameter 'circuit')"));
     }
 
     [Test]
     public void ShouldBreakCircuit_AzureTranslation_When_LanguageCode_IsNull_Returns_False()
     {
         _httpContext.Request.RouteValues["languageCode"] = null;
-        
+
         bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
-        
+
         Assert.That(result, Is.False);
     }
 
@@ -60,9 +62,9 @@ public class CircuitBreakerServiceTests
     public void ShouldBreakCircuit_AzureTranslation_When_LanguageCode_IsEnglish_Returns_False()
     {
         _httpContext.Request.RouteValues["languageCode"] = "en";
-        
+
         bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
-        
+
         Assert.That(result, Is.False);
     }
 
@@ -70,13 +72,14 @@ public class CircuitBreakerServiceTests
     public void ShouldBreakCircuit_AzureTranslation_When_JsonIsNull_Returns_False()
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
-        
+
         bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
-        
+
         using (Assert.EnterMultipleScope())
         {
             Assert.That(result, Is.False);
-            Assert.That(_httpContext.Session.GetString(CircuitBreakerOptions.AzureTranslationKey), Is.EqualTo(JsonSerializer.Serialize(new List<string> { "sv" })));
+            Assert.That(_httpContext.Session.GetString(CircuitBreakerOptions.AzureTranslationKey),
+                Is.EqualTo(JsonSerializer.Serialize(new List<string> { "sv" })));
         }
     }
 
@@ -85,13 +88,14 @@ public class CircuitBreakerServiceTests
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
         _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey, "null");
-        
+
         bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
-        
+
         using (Assert.EnterMultipleScope())
         {
             Assert.That(result, Is.False);
-            Assert.That(_httpContext.Session.GetString(CircuitBreakerOptions.AzureTranslationKey), Is.EqualTo(JsonSerializer.Serialize(new List<string> { "sv" })));
+            Assert.That(_httpContext.Session.GetString(CircuitBreakerOptions.AzureTranslationKey),
+                Is.EqualTo(JsonSerializer.Serialize(new List<string> { "sv" })));
         }
     }
 
@@ -99,21 +103,23 @@ public class CircuitBreakerServiceTests
     public void ShouldBreakCircuit_AzureTranslation_When_LanguagePreviouslyTranslated_Returns_False()
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
-        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey, JsonSerializer.Serialize(new List<string> { "sv" }));
-        
+        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey,
+            JsonSerializer.Serialize(new List<string> { "sv" }));
+
         bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
-        
+
         Assert.That(result, Is.False);
     }
-    
+
     [Test]
     public void ShouldBreakCircuit_AzureTranslation_When_AtLimit_But_LanguagePreviouslyTranslated_Returns_False()
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
-        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey, JsonSerializer.Serialize(new List<string> { "sv", "fr" }));
-        
+        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey,
+            JsonSerializer.Serialize(new List<string> { "sv", "fr" }));
+
         bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
-        
+
         Assert.That(result, Is.False);
     }
 
@@ -121,10 +127,11 @@ public class CircuitBreakerServiceTests
     public void ShouldBreakCircuit_AzureTranslation_When_LimitIsReached_Returns_True()
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
-        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey, JsonSerializer.Serialize(new List<string> { "es", "fr" }));
-        
+        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey,
+            JsonSerializer.Serialize(new List<string> { "es", "fr" }));
+
         bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
-        
+
         Assert.That(result, Is.True);
     }
 
@@ -132,14 +139,16 @@ public class CircuitBreakerServiceTests
     public void ShouldBreakCircuit_AzureTranslation_When_LimitIsNotReached_Returns_False_And_UpdatesSession()
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
-        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey, JsonSerializer.Serialize(new List<string> { "es" }));
-        
+        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey,
+            JsonSerializer.Serialize(new List<string> { "es" }));
+
         bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
-        
+
         using (Assert.EnterMultipleScope())
         {
             Assert.That(result, Is.False);
-            Assert.That(_httpContext.Session.GetString(CircuitBreakerOptions.AzureTranslationKey), Is.EqualTo(JsonSerializer.Serialize(new List<string> { "es", "sv" })));
+            Assert.That(_httpContext.Session.GetString(CircuitBreakerOptions.AzureTranslationKey),
+                Is.EqualTo(JsonSerializer.Serialize(new List<string> { "es", "sv" })));
         }
     }
 
@@ -147,7 +156,7 @@ public class CircuitBreakerServiceTests
     public void ShouldBreakCircuit_PdfGenerator_When_FirstUsage_Returns_False_And_UpdatesSession()
     {
         bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.PdfGenerator);
-        
+
         using (Assert.EnterMultipleScope())
         {
             Assert.That(result, Is.False);
@@ -159,7 +168,7 @@ public class CircuitBreakerServiceTests
     public void ShouldBreakCircuit_PdfGenerator_When_BelowLimit_Returns_False_And_UpdatesSession()
     {
         _httpContext.Session.SetInt32(CircuitBreakerOptions.PdfGeneratorKey, 1);
-        
+
         bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.PdfGenerator);
 
         using (Assert.EnterMultipleScope())
@@ -173,9 +182,9 @@ public class CircuitBreakerServiceTests
     public void ShouldBreakCircuit_PdfGenerator_When_LimitIsReached_Returns_True()
     {
         _httpContext.Session.SetInt32(CircuitBreakerOptions.PdfGeneratorKey, 2);
-        
+
         bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.PdfGenerator);
-        
+
         Assert.That(result, Is.True);
     }
 }
