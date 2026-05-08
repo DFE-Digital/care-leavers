@@ -10,40 +10,40 @@ public sealed class CircuitBreakerService(IHttpContextAccessor accessor, IOption
 
     public bool ShouldBreakCircuit(CircuitBreakerType circuit)
     {
-        if (accessor.HttpContext is null) throw new ArgumentNullException(nameof(accessor.HttpContext));
+        if (accessor.HttpContext is null) throw new InvalidOperationException("HttpContext is NULL");
+        HttpContext httpContext = accessor.HttpContext;
 
         return circuit switch
         {
-            CircuitBreakerType.AzureTranslation => ShouldBreakCircuitAzureTranslation(),
-            CircuitBreakerType.PdfGenerator => ShouldBreakCircuitPdfGenerator(),
-            _ => throw new ArgumentOutOfRangeException(nameof(circuit), circuit, "Invalid Circuit Breaker Option")
+            CircuitBreakerType.AzureTranslation => ShouldBreakCircuitAzureTranslation(httpContext),
+            CircuitBreakerType.PdfGenerator => ShouldBreakCircuitPdfGenerator(httpContext),
+            _ => throw new ArgumentOutOfRangeException(nameof(circuit))
         };
     }
 
-    private bool ShouldBreakCircuitAzureTranslation()
+    private bool ShouldBreakCircuitAzureTranslation(HttpContext httpContext)
     {
-        string? languageCode = accessor.HttpContext?.Request.RouteValues["languageCode"]?.ToString();
+        string? languageCode = httpContext.Request.RouteValues["languageCode"]?.ToString();
 
         if (languageCode is null or "en") return false;
 
-        string? json = accessor.HttpContext?.Session.GetString(CircuitBreakerOptions.AzureTranslationKey);
+        string? json = httpContext.Session.GetString(CircuitBreakerOptions.AzureTranslationKey);
         List<string> translatedLanguages = json is null ? [] : JsonSerializer.Deserialize<List<string>>(json) ?? [];
 
         if (translatedLanguages.Contains(languageCode)) return false;
         if (translatedLanguages.Count >= options.Value.AzureTranslationLimit) return true;
 
-        translatedLanguages.Add(languageCode);
-        accessor.HttpContext?.Session.SetString(CircuitBreakerOptions.AzureTranslationKey,
-            JsonSerializer.Serialize(translatedLanguages, JsonSerializerOptions));
+        translatedLanguages.Add(languageCode); 
+        httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey, JsonSerializer.Serialize(translatedLanguages, JsonSerializerOptions));
 
         return false;
     }
 
-    private bool ShouldBreakCircuitPdfGenerator()
+    private bool ShouldBreakCircuitPdfGenerator(HttpContext httpContext)
     {
-        int timesUsed = accessor.HttpContext?.Session.GetInt32(CircuitBreakerOptions.PdfGeneratorKey) ?? 0;
+        int timesUsed = httpContext.Session.GetInt32(CircuitBreakerOptions.PdfGeneratorKey) ?? 0;
         if (timesUsed >= options.Value.PdfGeneratorLimit) return true;
-        accessor.HttpContext?.Session.SetInt32(CircuitBreakerOptions.PdfGeneratorKey, timesUsed + 1);
+        httpContext.Session.SetInt32(CircuitBreakerOptions.PdfGeneratorKey, timesUsed + 1);
         return false;
     }
 }
