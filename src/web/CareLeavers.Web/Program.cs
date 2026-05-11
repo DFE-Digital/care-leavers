@@ -139,6 +139,7 @@ try
     {
         options.Cookie.Name = ".SupportForCareLeavers.Session";
         options.Cookie.IsEssential = true;
+        options.Cookie.MaxAge = FromDays(1);
         options.IdleTimeout = FromDays(1);
     });
     
