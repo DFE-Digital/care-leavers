@@ -1,0 +1,55 @@
+@model CareLeavers.Web.Models.ViewModels.AnalyticsViewModel
+
+@inject IWebHostEnvironment WebHostEnvironment
+
+@* Google Analytics *@
+@if (WebHostEnvironment.IsProduction() && !string.IsNullOrWhiteSpace(Model.GoogleAnalyticsTag))
+{
+    <script asp-add-nonce="true" async
+            src="https://www.googletagmanager.com/gtag/js?id=@Model.GoogleAnalyticsTag"></script>
+    <script asp-add-nonce="true">
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', '@Model.GoogleAnalyticsTag');
+
+        gtag('consent', 'default', {
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'analytics_storage': 'denied',
+        });
+
+        gtag('consent', 'update', {
+            'analytics_storage': '@(Model.Consent ? "granted" : "denied")',
+        });
+    </script>
+}
+@* Google Analytics *@
+
+@* Microsoft Clarity *@
+@if (!string.IsNullOrWhiteSpace(Model.MicrosoftClarityTag))
+{
+    <script type="text/javascript" asp-add-nonce="true">
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () {
+                (c[a].q = c[a].q || []).push(arguments)
+            };
+            t = l.createElement(r);
+            t.async = 1;
+            t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0];
+            y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "@Model.MicrosoftClarityTag");
+
+        (function () {
+            window.clarity('consent', @(Model.Consent.ToString().ToLower()));
+        }());
+    </script>
+}
+@* Microsoft Clarity *@
