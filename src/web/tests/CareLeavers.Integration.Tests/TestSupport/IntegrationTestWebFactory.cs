@@ -65,6 +65,7 @@ public class IntegrationTestWebFactory : WebApplicationFactory<Program>
             services.AddScoped<IOptions<ScriptOptions>>(x => Options.Create(new ScriptOptions
             {
                 Clarity = "test-clarity",
+                GA4 = "G-TEST",
                 GTM = "GTM-TEST",
                 ShowCookieBanner = false,
                 AddCssVersion = false
