@@ -17,7 +17,7 @@ public sealed class AnalyticsViewComponent(IOptions<ScriptOptions> options, IHtt
     {
         ITrackingConsentFeature? consentFeature = accessor.HttpContext?.Features.Get<ITrackingConsentFeature>();
 
-        GoogleAnalyticsTag = options.Value.Ga4;
+        GoogleAnalyticsTag = options.Value.GA4;
         GoogleTagManagerTag = options.Value.GTM;
         MicrosoftClarityTag = options.Value.Clarity;
         Consent = consent ?? consentFeature?.HasConsent ?? false;

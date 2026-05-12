@@ -7,7 +7,7 @@ public class ScriptOptions
 {
     public static string Name => "Scripts";
     
-    public string? Ga4 { get; init; } = "";
+    public string? GA4 { get; init; } = "";
     
     public string? GTM { get; init; } = "";
 
