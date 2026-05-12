@@ -1,7 +1,6 @@
 ﻿@using CareLeavers.Web.Configuration
 @using CareLeavers.Web.Models.ViewModels
 @using CareLeavers.Web.Translation
-@using Microsoft.AspNetCore.Http.Features
 @using Microsoft.Extensions.Options
 
 @inject IContentfulConfiguration ContentfulConfiguration
@@ -11,7 +10,6 @@
 @{
     var config = await ContentfulConfiguration.GetConfiguration();
     var scriptConfig = ScriptOptions.Value;
-    var consentFeature = Context.Features.Get<ITrackingConsentFeature>() ?? throw new NullReferenceException();
     
     var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
     if (string.IsNullOrEmpty(languageCode))
@@ -35,14 +33,8 @@
 <html class="govuk-template" dir="@language.Direction" lang="@languageCode">
 
 <head>
-    @await Html.PartialAsync("Analytics/_Analytics", 
-        new AnalyticsViewModel 
-        {
-            GoogleAnalyticsTag = scriptConfig.GTM, 
-            MicrosoftClarityTag = scriptConfig.Clarity, 
-            Consent = consentFeature.HasConsent
-        })
-    
+    @await Component.InvokeAsync("Analytics")
+
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"]</title>

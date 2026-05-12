@@ -2,11 +2,8 @@
 @using CareLeavers.Web.Configuration
 @using CareLeavers.Web.Models.ViewModels
 @using CareLeavers.Web.Translation
-@using Joonasw.AspNetCore.SecurityHeaders.Csp
 @using Microsoft.Extensions.Options
 
-@inject IWebHostEnvironment WebHostEnvironment
-@inject ICspNonceService CspNonceService
 @inject IContentfulConfiguration ContentfulConfiguration
 @inject IOptions<ScriptOptions> ScriptOptions
 @inject ITranslationService TranslationService
@@ -32,14 +29,8 @@
 <html class="govuk-template" dir="@language.Direction" lang="@languageCode">
 
 <head>
-    @await Html.PartialAsync("Analytics/_Analytics", 
-        new AnalyticsViewModel 
-        {
-            GoogleAnalyticsTag = scriptConfig.GTM, 
-            MicrosoftClarityTag = scriptConfig.Clarity, 
-            Consent = false
-        })
-    
+    @await Component.InvokeAsync("Analytics", new { consent = false })
+
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"]</title>
