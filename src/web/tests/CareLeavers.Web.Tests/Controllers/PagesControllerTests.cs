@@ -87,8 +87,11 @@ public class PagesControllerTests
     public void CookiePolicy_WhenTrackingConsentFeatureIsUnavailable_Throws_InvalidOperationException()
     {
         _httpContext.Features.Returns(new FeatureCollection());
-        
-        Assert.ThrowsAsync<InvalidOperationException>(() => _pagesController.CookiePolicy());
+
+        Assert.ThrowsAsync<InvalidOperationException>((Func<Task>)CookieTask);
+        return;
+
+        async Task CookieTask() => await _pagesController.CookiePolicy();
     }
 
     [Test]

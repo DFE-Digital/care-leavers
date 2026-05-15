@@ -36,16 +36,22 @@ public class CircuitBreakerServiceTests
     {
         _httpContextAccessor.HttpContext = null;
 
-        Assert.That(() => _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation),
+        Assert.That((Func<bool>)CircuitBreaker,
             Throws.TypeOf<InvalidOperationException>().With.Message.EqualTo("HttpContext is NULL"));
+        return;
+
+        bool CircuitBreaker() => _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
     }
 
     [Test]
     public void ShouldBreakCircuit_When_CircuitBreakerType_IsNull_Throws_ArgumentOutOfRangeException()
     {
-        Assert.That(() => _circuitBreakerService.ShouldBreakCircuit((CircuitBreakerType)2),
+        Assert.That((Func<bool>)CircuitBreaker,
             Throws.TypeOf<ArgumentOutOfRangeException>().With.Message
                 .EqualTo("Specified argument was out of the range of valid values. (Parameter 'circuit')"));
+        return;
+
+        bool CircuitBreaker() => _circuitBreakerService.ShouldBreakCircuit((CircuitBreakerType)2);
     }
 
     [Test]
