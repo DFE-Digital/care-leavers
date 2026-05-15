@@ -3,6 +3,7 @@ using CareLeavers.Web.Controllers;
 using CareLeavers.Web.Models;
 using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Models.ViewModels;
+using Contentful.Core.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
@@ -236,12 +237,15 @@ public class PagesControllerTests
     }
 
     [Test]
-    public async Task TranslationLimitReached_With_LanguageCode_Returns_View()
+    public async Task TranslationUnavailable_With_LanguageCode_Returns_View()
     {
-        Page page = new Page { Title = "Translation Limit Reached Page" };
-        _contentService.GetPage("translation-limit-reached").Returns(page);
+        Page page = new Page { Title = "Test", MainContent = new Document
+        {
+            Content = [ new Paragraph() ]
+        }};
+        _contentService.GetPage("translation-unavailable").Returns(page);
 
-        IActionResult result = await _pagesController.TranslationLimitReached("en");
+        IActionResult result = await _pagesController.TranslationUnavailable("en");
         
         Assert.That(result, Is.TypeOf<ViewResult>());
         ViewResult? viewResult = result as ViewResult;
@@ -250,28 +254,65 @@ public class PagesControllerTests
     }
     
     [Test]
-    public async Task TranslationLimitReached_Without_LanguageCode_Returns_View()
+    public async Task TranslationUnavailable_Without_LanguageCode_Returns_View()
     {
-        Page page = new Page { Title = "Translation Limit Reached Page" };
-        _contentService.GetPage("translation-limit-reached").Returns(page);
+        Page page = new Page { Title = "Test", MainContent = new Document
+        {
+            Content = [ new Paragraph() ]
+        }};
+        _contentService.GetPage("translation-unavailable").Returns(page);
 
-        IActionResult result = await _pagesController.TranslationLimitReached(null);
+        IActionResult result = await _pagesController.TranslationUnavailable(null);
         
         Assert.That(result, Is.TypeOf<ViewResult>());
         ViewResult? viewResult = result as ViewResult;
         Assert.That(viewResult, Is.Not.Null);
         Assert.That(viewResult.Model, Is.EqualTo(page));
     }
-    
+
     [Test]
-    public async Task TranslationLimitReached_If_PageDoesNotExistInCms_Returns_NotFound()
+    public async Task TranslationUnavailable_WhenPageIsNull_Returns_Fallback_View()
     {
         Page? page = null;
-        _contentService.GetPage("translation-limit-reached").Returns(page);
+        _contentService.GetPage("translation-unavailable").Returns(page);
 
-        IActionResult result = await _pagesController.TranslationLimitReached(null);
+        IActionResult result = await _pagesController.TranslationUnavailable(null);
         
-        Assert.That(result, Is.TypeOf<NotFoundResult>());
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+    }
+    
+    [Test]
+    public async Task TranslationUnavailable_WhenMainContentIsNull_Returns_Fallback_View()
+    {
+        Page page = new Page { Title = "Test", MainContent = null };
+        _contentService.GetPage("translation-unavailable").Returns(page);
+
+        IActionResult result = await _pagesController.TranslationUnavailable(null);
+        
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+        Page? pageResult = viewResult.Model as Page;
+        Assert.That(pageResult, Is.Not.Null);
+        Assert.That(pageResult.Title, Is.Not.EqualTo("Test"));
+    }
+    
+    [Test]
+    public async Task TranslationUnavailable_WhenMainContentIsEmpty_Returns_Fallback_View()
+    {
+        Page page = new Page { Title = "Test", MainContent = new Document { Content = [] } };
+        _contentService.GetPage("translation-unavailable").Returns(page);
+
+        IActionResult result = await _pagesController.TranslationUnavailable(null);
+        
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+        Page? pageResult = viewResult.Model as Page;
+        Assert.That(pageResult, Is.Not.Null);
+        Assert.That(pageResult.Title, Is.Not.EqualTo("Test"));
     }
 
     [TearDown]
