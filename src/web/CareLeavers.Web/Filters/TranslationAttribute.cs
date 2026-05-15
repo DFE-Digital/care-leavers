@@ -30,7 +30,7 @@ public class TranslationAttribute : ActionFilterAttribute
 
         if (circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation))
         {
-            context.Result = new RedirectToActionResult("TranslationLimitReached", "Pages", null);
+            context.Result = new RedirectToActionResult("TranslationUnavailable", "Pages", null);
             await base.OnActionExecutionAsync(context, next);
             return;
         }
