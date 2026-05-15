@@ -1,0 +1,32 @@
+@model CareLeavers.Web.Models.Content.Page
+@{
+    ViewBag.Title = Model.Title ?? "Sorry, translation into new languages is not available";
+    Layout = "_ErrorLayout";
+}
+
+@section Head
+{
+    <meta name="robots" content="noindex, nofollow"/>
+}
+
+@section BeforeGDSContent
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">
+                @ViewBag.Title
+            </h1>
+        </div>
+    </div>
+}
+
+@if (Model.MainContent is not null && Model.MainContent.Content.Any())
+{
+    <gds-contentful-rich-text document="@Model.MainContent" dynamic-time="true"/>
+}
+else
+{
+    <p class="govuk-body">You will be able to translate into a new language in 24 hours.</p>
+    <p class="govuk-body">You can <a class="govuk-link" href="/translate-this-website/home">continue to translate the
+        site</a> into a language you have selected already.</p>
+}
