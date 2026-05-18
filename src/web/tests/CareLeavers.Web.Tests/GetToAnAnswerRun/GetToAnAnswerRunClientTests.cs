@@ -45,8 +45,11 @@ public class GetToAnAnswerRunClientTests
     {
         _httpMessageHandlerMock.StatusCode = HttpStatusCode.BadRequest;
         _httpMessageHandlerMock.Content = new StringContent("");
-
-        Assert.ThrowsAsync<Exception>(() => _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test"));
+        
+        Assert.ThrowsAsync<Exception>((Func<Task>)GtaaTask);
+        return;
+        
+        async Task GtaaTask() => await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
     }
 
     [Test]
@@ -133,7 +136,10 @@ public class GetToAnAnswerRunClientTests
         _httpMessageHandlerMock.StatusCode = HttpStatusCode.BadRequest;
         _httpMessageHandlerMock.Content = new StringContent("");
         
-        Assert.ThrowsAsync<Exception>(() => _getToAnAnswerRunClient.GetInitialState("en", "/test"));
+        Assert.ThrowsAsync<Exception>((Func<Task>)GtaaTask);
+        return;
+        
+        async Task GtaaTask() => await _getToAnAnswerRunClient.GetInitialState("en", "/test");
     }
 
     [Test]
@@ -157,8 +163,12 @@ public class GetToAnAnswerRunClientTests
         _httpMessageHandlerMock.StatusCode = HttpStatusCode.BadRequest;
         _httpMessageHandlerMock.Content = new StringContent("");
 
-        Assert.ThrowsAsync<Exception>(() =>
-            _getToAnAnswerRunClient.GetNextState("localhost", "en", "/test", new Dictionary<string, StringValues>()));
+        Assert.ThrowsAsync<Exception>((Func<Task>)GtaaTask);
+        return;
+        
+        async Task GtaaTask() =>
+            await _getToAnAnswerRunClient.GetNextState("localhost", "en", "/test",
+                new Dictionary<string, StringValues>());
     }
 
     [Test]
@@ -185,7 +195,10 @@ public class GetToAnAnswerRunClientTests
         _httpMessageHandlerMock.StatusCode = HttpStatusCode.BadRequest;
         _httpMessageHandlerMock.Content = new StringContent("");
         
-        Assert.ThrowsAsync<Exception>(() => _getToAnAnswerRunClient.GetDecorativeImage("/test"));
+        Assert.ThrowsAsync<Exception>((Func<Task>)GtaaTask);
+        return;
+
+        async Task GtaaTask() => await _getToAnAnswerRunClient.GetDecorativeImage("/test");
     }
 
     [OneTimeTearDown]

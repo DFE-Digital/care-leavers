@@ -64,6 +64,11 @@ variable "scripts_clarity" {
   type        = string
 }
 
+variable "scripts_ga4" {
+  description = "Google Analytics code"
+  type        = string
+}
+
 variable "scripts_gtm" {
   description = "Google Tag Manager code"
   type        = string

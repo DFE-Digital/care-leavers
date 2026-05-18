@@ -5,6 +5,7 @@ using Azure.AI.Translation.Document;
 using Azure.AI.Translation.Text;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using CareLeavers.Web;
+using CareLeavers.Web.CircuitBreaker;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Contentful.Webhooks;
@@ -30,7 +31,6 @@ using OpenTelemetry.Trace;
 using Serilog;
 using WebMarkupMin.AspNet.Common.Compressors;
 using WebMarkupMin.AspNetCoreLatest;
-using WebMarkupMin.Core;
 using ZiggyCreatures.Caching.Fusion;
 using static System.TimeSpan;
 
@@ -133,6 +133,20 @@ try
     
     #endregion
     
+    #region Session State & Circuit Breaking
+    
+    builder.Services.AddSession(options =>
+    {
+        options.Cookie.Name = ".SupportForCareLeavers.Session";
+        options.Cookie.IsEssential = true;
+        options.Cookie.MaxAge = FromDays(1);
+        options.IdleTimeout = FromDays(1);
+    });
+    
+    builder.Services.AddTransient<CircuitBreakerService>();
+    
+    #endregion
+    
     #region GetToAnAnswer
 
     var gtaaBaseUrl = builder.Configuration.GetSection("GetToAnAnswer:BaseUrl").Value!;
@@ -200,6 +214,7 @@ try
     builder.Services.AddOptions<CachingOptions>().BindConfiguration(CachingOptions.Name);
     builder.Services.AddOptions<PdfGenerationOptions>().BindConfiguration(PdfGenerationOptions.Name);
     builder.Services.AddOptions<AzureTranslationOptions>().BindConfiguration(AzureTranslationOptions.Name);
+    builder.Services.AddOptions<CircuitBreakerOptions>().BindConfiguration(CircuitBreakerOptions.Name);
     
     if (string.IsNullOrEmpty(builder.Configuration.GetValue<string>("AzureTranslation:AccessKey")))
     {
@@ -562,6 +577,7 @@ try
         }
     });
     app.UseRouting();
+    app.UseSession();
     app.MapHealthChecks("/health");
     app.MapControllerRoute(
         name: "default",

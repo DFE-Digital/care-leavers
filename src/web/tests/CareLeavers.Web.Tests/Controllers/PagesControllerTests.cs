@@ -87,8 +87,11 @@ public class PagesControllerTests
     public void CookiePolicy_WhenTrackingConsentFeatureIsUnavailable_Throws_InvalidOperationException()
     {
         _httpContext.Features.Returns(new FeatureCollection());
-        
-        Assert.ThrowsAsync<InvalidOperationException>(() => _pagesController.CookiePolicy());
+
+        Assert.ThrowsAsync<InvalidOperationException>((Func<Task>)CookieTask);
+        return;
+
+        async Task CookieTask() => await _pagesController.CookiePolicy();
     }
 
     [Test]
@@ -230,6 +233,45 @@ public class PagesControllerTests
             Assert.That(cookiePolicyModel.ShowSuccessBanner, Is.True);
         }
         _httpContext.Response.Cookies.Received(1).Append("consent-cookie", "no", Arg.Any<CookieOptions>());
+    }
+
+    [Test]
+    public async Task TranslationLimitReached_With_LanguageCode_Returns_View()
+    {
+        Page page = new Page { Title = "Translation Limit Reached Page" };
+        _contentService.GetPage("translation-limit-reached").Returns(page);
+
+        IActionResult result = await _pagesController.TranslationLimitReached("en");
+        
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+        Assert.That(viewResult.Model, Is.EqualTo(page));
+    }
+    
+    [Test]
+    public async Task TranslationLimitReached_Without_LanguageCode_Returns_View()
+    {
+        Page page = new Page { Title = "Translation Limit Reached Page" };
+        _contentService.GetPage("translation-limit-reached").Returns(page);
+
+        IActionResult result = await _pagesController.TranslationLimitReached(null);
+        
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+        Assert.That(viewResult.Model, Is.EqualTo(page));
+    }
+    
+    [Test]
+    public async Task TranslationLimitReached_If_PageDoesNotExistInCms_Returns_NotFound()
+    {
+        Page? page = null;
+        _contentService.GetPage("translation-limit-reached").Returns(page);
+
+        IActionResult result = await _pagesController.TranslationLimitReached(null);
+        
+        Assert.That(result, Is.TypeOf<NotFoundResult>());
     }
 
     [TearDown]

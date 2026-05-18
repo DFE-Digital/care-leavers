@@ -1,4 +1,5 @@
 using System.Text;
+using CareLeavers.Web.CircuitBreaker;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Translation;
@@ -23,6 +24,16 @@ public class TranslationAttribute : ActionFilterAttribute
     {
         _memoryStream = null;
         _originalBodyStream = null;
+        
+        CircuitBreakerService circuitBreakerService = 
+            context.HttpContext.RequestServices.GetRequiredService<CircuitBreakerService>();
+
+        if (circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation))
+        {
+            context.Result = new RedirectToActionResult("TranslationLimitReached", "Pages", null);
+            await base.OnActionExecutionAsync(context, next);
+            return;
+        }
 
         var fusionCache = context.HttpContext.RequestServices.GetRequiredService<IFusionCache>();
         var translationService = context.HttpContext.RequestServices.GetRequiredService<ITranslationService>();

@@ -41,13 +41,13 @@ public class ContentfulControllerTests
         var urls = xml.GetElementsByTagName("loc");
         
         Assert.That(urls.Count, Is.EqualTo(4));
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(urls[0]?.InnerText, Is.EqualTo("https://localhost/en/home"));
             Assert.That(urls[1]?.InnerText, Is.EqualTo("https://localhost/en/about"));
             Assert.That(urls[2]?.InnerText, Is.EqualTo("https://localhost/en/cookie-policy"));
             Assert.That(urls[3]?.InnerText, Is.EqualTo("https://localhost/en/privacy-policies"));
-        });
+        }
     }
 
     [Test]
