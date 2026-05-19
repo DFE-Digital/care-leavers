@@ -31,6 +31,6 @@ I consulted the dev team on the approach, and it was agreed that it'd be a sensi
 
 I then consulted the content & interaction designers and got their sign-off on the approach, and finally the project manager approved the approach.
 
-There is one minor risk with this approach, which is the "Print this Page" button requires JavaScript to function. However, this button is just for convenience and just opens your devices print PDF dialogue for you - the user can still manually trigger this (e.g., CMD + P on macOS, CTRL + P on Windows, Share → Print on iOS, etc.) even if they have JavaScript disabled.
+There is one minor risk with this approach, which is the "Print this Page" button requires JavaScript to function. However, this button is just for convenience and just opens your devices print PDF dialogue for you - the user can still manually trigger this (e.g., CMD + P on macOS, CTRL + P on Windows, Share → Print on iOS, etc.) even if they have JavaScript disabled. There is also precedent for this button as it already exists on the site in other places.
 
 In the long term, we still intend to resume exploring a locally generated approach, but we are happy for this solution to be in place for the short-medium term to manage risk.
