@@ -325,9 +325,9 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   }
 
   custom_rule {
-    name     = "allowsocialmedia"
+    name     = "denybotstranslating"
     enabled  = true
-    action   = "Allow"
+    action   = "Block"
     type     = "MatchRule"
     priority = 220
 
@@ -337,6 +337,14 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       operator       = "RegEx"
       transforms     = ["Lowercase", "UrlDecode"]
       match_values   = var.list_of_social_media_bots
+    }
+
+    match_condition {
+      match_variable     = "RequestUri"
+      operator           = "Contains"
+      negation_condition = true
+      transforms         = ["Lowercase", "UrlDecode"]
+      match_values       = ["/en/", "/robots.txt", "/sitemap"]
     }
   }
 
@@ -365,9 +373,9 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   }
 
   custom_rule {
-    name     = "denybotstranslating"
+    name     = "allowsocialmedia"
     enabled  = true
-    action   = "Block"
+    action   = "Allow"
     type     = "MatchRule"
     priority = 240
 
@@ -377,14 +385,6 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       operator       = "RegEx"
       transforms     = ["Lowercase", "UrlDecode"]
       match_values   = var.list_of_social_media_bots
-    }
-
-    match_condition {
-      match_variable     = "RequestUri"
-      operator           = "Contains"
-      negation_condition = true
-      transforms         = ["Lowercase", "UrlDecode"]
-      match_values       = ["/en/", "/robots.txt", "/sitemap"]
     }
   }
 
