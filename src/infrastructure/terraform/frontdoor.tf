@@ -380,10 +380,11 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
     }
 
     match_condition {
-      match_variable = "RequestUri"
-      operator       = "DoesNotContain"
-      transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["/en/"]
+      match_variable     = "RequestUri"
+      operator           = "Contains"
+      negation_condition = true
+      transforms         = ["Lowercase", "UrlDecode"]
+      match_values       = ["/en/"]
     }
   }
 
