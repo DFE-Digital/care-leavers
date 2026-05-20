@@ -381,10 +381,10 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
 
     match_condition {
       match_variable     = "RequestUri"
-      operator           = "RegEx"
+      operator           = "Contains"
       negation_condition = true
       transforms         = ["Lowercase", "UrlDecode"]
-      match_values       = ["\\/(robots\\.txt|sitemap|en\\/)"]
+      match_values       = ["/en/", "/robots.txt", "/sitemap"]
     }
   }
 
