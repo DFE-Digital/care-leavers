@@ -13,13 +13,16 @@ $govuk-font-family: 'Inter', sans-serif; // Override govuk font
 * {
   font-family: $govuk-font-family !important; // Override all fonts to match
 }
-.govuk-phase-banner__content
-{
-  width: 100%;
+
+.govuk-phase-banner__content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .translate {
   display: block;
+  margin-left: auto;
   text-align: right;
   min-width: 90px;
   float: right;

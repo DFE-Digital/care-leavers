@@ -97,12 +97,14 @@ public class PagesController(IContentService contentService) : Controller
         return View("CookiePolicy", cookiePolicyModel);
     }
 
-    [Route("/{languageCode}/translation-limit-reached")]
-    [Route("/translation-limit-reached")]
-    public async Task<IActionResult> TranslationLimitReached(string? languageCode)
+    [Route("/error/{languageCode}/translation-unavailable")]
+    [Route("/error/translation-unavailable")]
+    public async Task<IActionResult> TranslationUnavailable(string? languageCode)
     {
-        Page? page = await contentService.GetPage("translation-limit-reached");
+        Page? page = await contentService.GetPage("translation-unavailable");
 
-        return page is not null ? View(page) : NotFound();
+        if (page?.MainContent is null || page.MainContent.Content.Count == 0) return View(new Page());
+
+        return View(page);
     }
 }

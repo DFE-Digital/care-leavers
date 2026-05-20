@@ -9,7 +9,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.69.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.71.0 |
 
 ## Modules
 
@@ -105,6 +105,7 @@ No modules.
 | <a name="input_pdf_generation_use_sandbox"></a> [pdf\_generation\_use\_sandbox](#input\_pdf\_generation\_use\_sandbox) | Generate PDFs in Sandbox Mode? | `bool` | n/a | yes |
 | <a name="input_rebrand"></a> [rebrand](#input\_rebrand) | Force DfE Rebrand before 25th June 2025 | `bool` | `false` | no |
 | <a name="input_scripts_clarity"></a> [scripts\_clarity](#input\_scripts\_clarity) | Clarity code | `string` | n/a | yes |
+| <a name="input_scripts_ga4"></a> [scripts\_ga4](#input\_scripts\_ga4) | Google Analytics code | `string` | n/a | yes |
 | <a name="input_scripts_gtm"></a> [scripts\_gtm](#input\_scripts\_gtm) | Google Tag Manager code | `string` | n/a | yes |
 | <a name="input_support_alert_email"></a> [support\_alert\_email](#input\_support\_alert\_email) | Where to send alert emails to | `string` | n/a | yes |
 
