@@ -336,7 +336,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       selector       = "User-Agent"
       operator       = "RegEx"
       transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["facebookbot|facebookexternalhit|facebookscraper|twitterbot|meta-externalfetcher|microsoftpreview|linkedinbot|pinterest|redditbot|telegrambot|mastadon|duckduckbot"]
+      match_values   = var.list_of_social_media_bots
     }
   }
 
@@ -361,6 +361,29 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       negation_condition = true
       transforms         = ["Lowercase", "UrlDecode"]
       match_values       = ["/pdf/", "/translate-this-website/"]
+    }
+  }
+
+  custom_rule {
+    name     = "denybotstranslating"
+    enabled  = true
+    action   = "Block"
+    type     = "MatchRule"
+    priority = 240
+
+    match_condition {
+      match_variable = "RequestHeader"
+      selector       = "User-Agent"
+      operator       = "RegEx"
+      transforms     = ["Lowercase", "UrlDecode"]
+      match_values   = var.list_of_social_media_bots
+    }
+
+    match_condition {
+      match_variable = "RequestUri"
+      operator       = "DoesNotContain"
+      transforms     = ["Lowercase", "UrlDecode"]
+      match_values   = ["/en/"]
     }
   }
 
