@@ -29,10 +29,9 @@
 <html class="govuk-template" dir="@language.Direction" lang="@languageCode">
 
 <head>
-    @await Component.InvokeAsync("Analytics", new { consent = false })
-
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    @await Component.InvokeAsync("Analytics", new { consent = false })
     <title>@ViewData["Title"]</title>
     <style asp-add-nonce="true">
         :root {
