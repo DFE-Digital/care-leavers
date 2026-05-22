@@ -8,9 +8,9 @@
     "license": "MIT",
     "type": "commonjs",
     "dependencies": {
-        "contentful-export": "^8.0.0",
-        "contentful-import": "^10.0.4",
-        "contentful-management": "^12.3.2",
+        "contentful-export": "^8.0.1",
+        "contentful-import": "^10.0.5",
+        "contentful-management": "^12.5.0",
         "dotenv": "^17.4.2"
     },
     "resolutions": {
