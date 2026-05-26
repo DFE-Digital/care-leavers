@@ -1,4 +1,10 @@
 locals {
+  environment_character_limits = {
+    d01 = 1000000
+    t01 = 1000000
+    p01 = 15000000
+  }
+
   web_app_settings = {
     "ASPNETCORE_ENVIRONMENT"                = var.aspnetcore_environment
     "ContentfulOptions__DeliveryApiKey"     = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-delivery-api-key.versionless_id})"
@@ -12,6 +18,9 @@ locals {
     "Caching__ConnectionString"             = lower(var.caching_type) == "redis" ? "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-enterprise-connection-string[0].versionless_id})" : ""
     "Scripts__Clarity"                      = var.scripts_clarity
     "AzureTranslation__AccessKey"           = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.azure-translation-access-key.versionless_id})"
+    "AzureTranslation__CharacterLimit"      = local.environment_character_limits[var.elz_environment]
+    "BlobStorage__AccessKey"                = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.blob-storage-access-key.versionless_id})"
+    "BlobStorage__Endpoint"                 = azurerm_storage_container.translator_storage_account.primary_blob_endpoint
     "PdfGeneration__ApiKey"                 = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.pdf-generation-api-key.versionless_id})"
     "PdfGeneration__Sandbox"                = var.pdf_generation_use_sandbox
     "Rebrand"                               = var.rebrand
@@ -140,4 +149,27 @@ resource "azurerm_monitor_diagnostic_setting" "webapp_logs" {
   enabled_metric {
     category = "AllMetrics"
   }
+}
+
+resource "azurerm_storage_account" "translator_storage_account" {
+  name                     = "${local.service_prefix}-translator-storage"
+  resource_group_name      = azurerm_resource_group.web-rg.name
+  location                 = local.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+
+  tags = local.common_tags
+}
+
+resource "azurerm_storage_container" "translator_storage_container" {
+  name                  = "${local.service_prefix}-translation-container"
+  storage_account_id    = azurerm_storage_account.translator_storage_account.id
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_blob" "translate_counter_blob" {
+  name                   = "${local.service_prefix}-translation-character-count"
+  storage_account_name   = azurerm_storage_account.translator_storage_account.name
+  storage_container_name = azurerm_storage_container.translator_storage_container.name
+  type                   = "Block"
 }
