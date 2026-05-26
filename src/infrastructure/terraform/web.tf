@@ -159,6 +159,10 @@ resource "azurerm_storage_account" "translator_storage_account" {
   account_replication_type = "LRS"
 
   tags = local.common_tags
+
+  identity {
+    type = "SystemAssigned"
+  }
 }
 
 resource "azurerm_storage_container" "translator_storage_container" {
