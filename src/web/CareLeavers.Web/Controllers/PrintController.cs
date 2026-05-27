@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using CareLeavers.Web.CircuitBreaker;
+using CareLeavers.Web.CircuitBreaker.FairUsage;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Filters;
@@ -56,7 +57,7 @@ public class PrintController(IHttpClientFactory httpClientFactory, IContentServi
     }
 
     [Route("/pdf/{languageCode}/{identifier}")]
-    public async Task<IActionResult> DownloadPdf([FromServices] CircuitBreakerService circuitBreakerService, 
+    public async Task<IActionResult> DownloadPdf([FromServices] FairUsageService fairUsageService, 
         string identifier, string languageCode)
     {
         var collection = await contentService.GetPrintableCollection(identifier);
@@ -79,7 +80,7 @@ public class PrintController(IHttpClientFactory httpClientFactory, IContentServi
         {
             var pdf = await fusionCache.GetOrSetAsync<byte[]>($"pdf:{identifier}:{languageCode}", async token =>
             {
-                if (circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.PdfGenerator)) return [];
+                if (fairUsageService.ShouldLimitUsage(FairUsageType.PdfGenerator)) return [];
                 
                 var config = await contentService.GetConfiguration();
 

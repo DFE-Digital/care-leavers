@@ -38,7 +38,7 @@ public class GdsContentfulRichTextTagHelper(HtmlRenderer renderer, IHttpContextA
         if (DynamicTime)
         {
             string? timeout =
-                accessor.HttpContext?.Session.GetString(CircuitBreakerOptions.AzureTranslationTimeoutKey);
+                accessor.HttpContext?.Session.GetString(FairUsageOptions.AzureTranslationTimeoutKey);
 
             content = timeout is not null && content.Contains("((time))")
                 ? content.Replace("((time))", timeout)

@@ -1,5 +1,6 @@
 using System.Text;
 using CareLeavers.Web.CircuitBreaker;
+using CareLeavers.Web.CircuitBreaker.FairUsage;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Translation;
@@ -25,10 +26,10 @@ public class TranslationAttribute : ActionFilterAttribute
         _memoryStream = null;
         _originalBodyStream = null;
         
-        CircuitBreakerService circuitBreakerService = 
-            context.HttpContext.RequestServices.GetRequiredService<CircuitBreakerService>();
+        FairUsageService fairUsageService = 
+            context.HttpContext.RequestServices.GetRequiredService<FairUsageService>();
 
-        if (circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation))
+        if (fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation))
         {
             context.Result = new RedirectToActionResult("TranslationUnavailable", "Pages", null);
             await base.OnActionExecutionAsync(context, next);

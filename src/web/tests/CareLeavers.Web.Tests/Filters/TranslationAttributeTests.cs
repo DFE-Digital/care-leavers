@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using CareLeavers.Web.CircuitBreaker;
+using CareLeavers.Web.CircuitBreaker.FairUsage;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Filters;
 using CareLeavers.Web.Models.Content;
@@ -23,11 +24,11 @@ public class TranslationAttributeTests
     
     private IHttpContextAccessor _httpContextAccessor;
     private HttpContext _httpContext;
-    private IOptions<CircuitBreakerOptions> _circuitBreakerOptions;
+    private IOptions<FairUsageOptions> _circuitBreakerOptions;
     
     private IFusionCache _fusionCache;
     private ITranslationService _translationService;
-    private CircuitBreakerService _circuitBreakerService;
+    private FairUsageService _fairUsageService;
     private IContentfulConfiguration _contentfulConfiguration;
     
     private ActionExecutingContext _actionExecutingContext;
@@ -45,14 +46,14 @@ public class TranslationAttributeTests
         _httpContextAccessor = Substitute.For<IHttpContextAccessor>();
         _httpContextAccessor.HttpContext = new DefaultHttpContext();
         _httpContextAccessor.HttpContext.Session = new MockSession();
-        _circuitBreakerOptions = Options.Create(new CircuitBreakerOptions { AzureTranslationLimit = int.MaxValue });
+        _circuitBreakerOptions = Options.Create(new FairUsageOptions { AzureTranslationLimit = int.MaxValue });
         
-        _circuitBreakerService = new CircuitBreakerService(_httpContextAccessor, _circuitBreakerOptions);
+        _fairUsageService = new FairUsageService(_httpContextAccessor, _circuitBreakerOptions);
 
         ServiceCollection serviceCollection = [];
         serviceCollection.AddSingleton(_fusionCache);
         serviceCollection.AddSingleton(_translationService);
-        serviceCollection.AddSingleton(_circuitBreakerService);
+        serviceCollection.AddSingleton(_fairUsageService);
         serviceCollection.AddSingleton(_contentfulConfiguration);
         ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
@@ -277,7 +278,7 @@ public class TranslationAttributeTests
         bool nextCalled = false;
 
         List<string> translatedLanguages = ["Test", "Test"];
-        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey, 
+        _httpContext.Session.SetString(FairUsageOptions.AzureTranslationKey, 
             JsonSerializer.Serialize(translatedLanguages, JsonSerializerOptions));
 
         await _translationAttribute.OnActionExecutionAsync(_actionExecutingContext, Next);

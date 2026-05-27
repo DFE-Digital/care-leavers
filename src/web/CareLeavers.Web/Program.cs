@@ -6,6 +6,7 @@ using Azure.AI.Translation.Text;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using CareLeavers.Web;
 using CareLeavers.Web.CircuitBreaker;
+using CareLeavers.Web.CircuitBreaker.FairUsage;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Contentful.Webhooks;
@@ -143,7 +144,7 @@ try
         options.IdleTimeout = FromDays(1);
     });
     
-    builder.Services.AddTransient<CircuitBreakerService>();
+    builder.Services.AddTransient<FairUsageService>();
     
     #endregion
     
@@ -214,7 +215,7 @@ try
     builder.Services.AddOptions<CachingOptions>().BindConfiguration(CachingOptions.Name);
     builder.Services.AddOptions<PdfGenerationOptions>().BindConfiguration(PdfGenerationOptions.Name);
     builder.Services.AddOptions<AzureTranslationOptions>().BindConfiguration(AzureTranslationOptions.Name);
-    builder.Services.AddOptions<CircuitBreakerOptions>().BindConfiguration(CircuitBreakerOptions.Name);
+    builder.Services.AddOptions<FairUsageOptions>().BindConfiguration(FairUsageOptions.Name);
     
     if (string.IsNullOrEmpty(builder.Configuration.GetValue<string>("AzureTranslation:AccessKey")))
     {
