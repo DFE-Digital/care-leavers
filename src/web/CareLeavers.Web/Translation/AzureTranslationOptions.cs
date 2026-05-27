@@ -14,4 +14,6 @@ public class AzureTranslationOptions
     public string DocumentEndpoint { get; set; } = string.Empty;
     
     public string Region { get; set; } = string.Empty;
+
+    public int CharacterLimit { get; set; }
 }
