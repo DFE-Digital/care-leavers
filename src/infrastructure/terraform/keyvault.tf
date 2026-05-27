@@ -167,7 +167,7 @@ resource "azurerm_key_vault_secret" "redis-enterprise-connection-string" {
 resource "azurerm_key_vault_secret" "blob-storage-access-key" {
   key_vault_id = azurerm_key_vault.kv.id
   name         = "blob-storage-access-key"
-  value        = azurerm_storage_account.translator_storage_account.primary_access_key
+  value        = azurerm_storage_account.web_storage_account.primary_access_key
 
   depends_on = [
     azurerm_role_assignment.kv_officer,

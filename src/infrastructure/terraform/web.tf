@@ -20,7 +20,7 @@ locals {
     "AzureTranslation__AccessKey"           = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.azure-translation-access-key.versionless_id})"
     "AzureTranslation__CharacterLimit"      = local.environment_character_limits[var.elz_environment]
     "BlobStorage__AccessKey"                = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.blob-storage-access-key.versionless_id})"
-    "BlobStorage__Endpoint"                 = azurerm_storage_account.translator_storage_account.primary_blob_endpoint
+    "BlobStorage__Endpoint"                 = azurerm_storage_account.web_storage_account.primary_blob_endpoint
     "PdfGeneration__ApiKey"                 = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.pdf-generation-api-key.versionless_id})"
     "PdfGeneration__Sandbox"                = var.pdf_generation_use_sandbox
     "Rebrand"                               = var.rebrand
@@ -151,8 +151,8 @@ resource "azurerm_monitor_diagnostic_setting" "webapp_logs" {
   }
 }
 
-resource "azurerm_storage_account" "translator_storage_account" {
-  name                     = "${local.service_prefix}-translator-storage"
+resource "azurerm_storage_account" "web_storage_account" {
+  name                     = "${local.prefix}webstorage"
   resource_group_name      = azurerm_resource_group.web-rg.name
   location                 = local.location
   account_tier             = "Standard"
@@ -166,14 +166,14 @@ resource "azurerm_storage_account" "translator_storage_account" {
 }
 
 resource "azurerm_storage_container" "translator_storage_container" {
-  name                  = "${local.service_prefix}-translation-container"
-  storage_account_id    = azurerm_storage_account.translator_storage_account.id
+  name                  = "${local.service_prefix}-char-container"
+  storage_account_id    = azurerm_storage_account.web_storage_account.id
   container_access_type = "private"
 }
 
 resource "azurerm_storage_blob" "translate_counter_blob" {
-  name                   = "${local.service_prefix}-translation-character-count"
-  storage_account_name   = azurerm_storage_account.translator_storage_account.name
+  name                   = "${local.service_prefix}-char-count-blob"
+  storage_account_name   = azurerm_storage_account.web_storage_account.name
   storage_container_name = azurerm_storage_container.translator_storage_container.name
   type                   = "Block"
 }
