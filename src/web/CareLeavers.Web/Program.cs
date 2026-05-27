@@ -5,7 +5,6 @@ using Azure.AI.Translation.Document;
 using Azure.AI.Translation.Text;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using CareLeavers.Web;
-using CareLeavers.Web.CircuitBreaker;
 using CareLeavers.Web.CircuitBreaker.FairUsage;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;

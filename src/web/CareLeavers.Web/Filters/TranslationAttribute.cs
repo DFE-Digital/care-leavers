@@ -1,5 +1,4 @@
 using System.Text;
-using CareLeavers.Web.CircuitBreaker;
 using CareLeavers.Web.CircuitBreaker.FairUsage;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Models.Content;

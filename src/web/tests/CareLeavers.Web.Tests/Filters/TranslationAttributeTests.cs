@@ -1,6 +1,5 @@
 using System.Text;
 using System.Text.Json;
-using CareLeavers.Web.CircuitBreaker;
 using CareLeavers.Web.CircuitBreaker.FairUsage;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Filters;
