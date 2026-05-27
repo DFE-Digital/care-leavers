@@ -18,7 +18,7 @@ locals {
     "Caching__ConnectionString"             = lower(var.caching_type) == "redis" ? "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-enterprise-connection-string[0].versionless_id})" : ""
     "Scripts__Clarity"                      = var.scripts_clarity
     "AzureTranslation__AccessKey"           = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.azure-translation-access-key.versionless_id})"
-    "AzureTranslation__CharacterLimit"      = local.environment_character_limits[var.elz_environment]
+    "AzureTranslation__CharacterLimit"      = local.environment_character_limits[var.environment_prefix]
     "BlobStorage__AccessKey"                = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.blob-storage-access-key.versionless_id})"
     "BlobStorage__Endpoint"                 = azurerm_storage_account.web_storage_account.primary_blob_endpoint
     "PdfGeneration__ApiKey"                 = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.pdf-generation-api-key.versionless_id})"
