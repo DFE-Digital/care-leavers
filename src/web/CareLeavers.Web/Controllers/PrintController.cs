@@ -14,7 +14,7 @@ public class PrintController(IHttpClientFactory httpClientFactory, IContentServi
 {
     [Route("/print/{identifier}")]
     [Route("/print/{languageCode}/{identifier}")]
-    [Translation]
+    [TranslationFilter]
     public async Task<IActionResult> GetPrintableCollection(string identifier, string languageCode)
     {
         if (string.IsNullOrEmpty(languageCode))

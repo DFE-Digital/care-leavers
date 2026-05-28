@@ -115,8 +115,7 @@ public class ContentfulController(
 
     [Route("/{slug}")]
     [Route("/{languageCode}/{slug}")]
-    [Translation]
-    [TypeFilter(typeof(TranslationFilter))]
+    [TranslationFilter]
     public async Task<IActionResult> GetContent(string slug, string? languageCode)
     {
         logger.LogInformation($"Get content for slug {slug} and language {languageCode}");
