@@ -56,7 +56,7 @@ public class PrintController(IHttpClientFactory httpClientFactory, IContentServi
     }
 
     [Route("/pdf/{languageCode}/{identifier}")]
-    public async Task<IActionResult> DownloadPdf([FromServices] FairUsageService fairUsageService, 
+    public async Task<IActionResult> DownloadPdf([FromServices] IFairUsageService fairUsageService, 
         string identifier, string languageCode)
     {
         var collection = await contentService.GetPrintableCollection(identifier);
