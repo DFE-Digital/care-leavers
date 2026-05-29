@@ -5,7 +5,13 @@ using Microsoft.Extensions.Options;
 
 namespace CareLeavers.Web.CircuitBreaker.FairUsage;
 
-public sealed class FairUsageService(IHttpContextAccessor accessor, IOptions<FairUsageOptions> options)
+public interface IFairUsageService
+{
+    public bool ShouldLimitUsage(FairUsageType circuit);
+}
+
+public sealed class FairUsageService(IHttpContextAccessor accessor, IOptions<FairUsageOptions> options) 
+    : IFairUsageService
 {
     private static readonly JsonSerializerOptions JsonSerializerOptions = new(JsonSerializerDefaults.Web);
 

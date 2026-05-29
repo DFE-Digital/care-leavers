@@ -11,8 +11,8 @@ namespace CareLeavers.Web.Filters;
 public sealed class TranslationFilter(
     IFusionCache fusionCache,
     ITranslationService translationService,
-    FairUsageService fairUsageService,
-    TranslatorCircuitBreakerService translatorCircuitBreakerService,
+    IFairUsageService fairUsageService,
+    ITranslatorCircuitBreakerService translatorCircuitBreakerService,
     bool noCache = false) : IAsyncResultFilter
 {
     public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)

@@ -13,10 +13,12 @@ public sealed class TranslatorCircuitBreakerData
     public DateTime TimeStamp { get; set; }
 };
 
+
+
 public sealed class TranslatorCircuitBreakerService(
     BlobServiceClient blobServiceClient,
     IOptions<BlobStorageOptions> blobStorageOptions,
-    IOptions<AzureTranslationOptions> azureTranslationOptions)
+    IOptions<AzureTranslationOptions> azureTranslationOptions) : ITranslatorCircuitBreakerService
 {
     private static readonly JsonSerializerOptions JsonSerializerOptions = new(JsonSerializerDefaults.Web);
 

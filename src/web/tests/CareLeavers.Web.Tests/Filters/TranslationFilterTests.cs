@@ -1,6 +1,6 @@
 using System.Text;
+using CareLeavers.Web.CircuitBreaker;
 using CareLeavers.Web.CircuitBreaker.FairUsage;
-using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Filters;
 using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Translation;
@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using NSubstitute;
 using ZiggyCreatures.Caching.Fusion;
 
@@ -23,8 +22,9 @@ public class TranslationFilterTests
 
     private IHttpContextAccessor _httpContextAccessor;
     private HttpContext _httpContext;
-    private IOptions<FairUsageOptions> _fairUsageOptions;
-    private FairUsageService _fairUsageService;
+    private IFairUsageService _fairUsageService;
+
+    private ITranslatorCircuitBreakerService _translatorCircuitBreakerService;
 
     private ResultExecutingContext _resultExecutingContext;
     private TranslationFilter _translationFilter;
@@ -38,8 +38,10 @@ public class TranslationFilterTests
         _httpContextAccessor = Substitute.For<IHttpContextAccessor>();
         _httpContextAccessor.HttpContext = new DefaultHttpContext();
         _httpContextAccessor.HttpContext.Session = new MockSession();
-        _fairUsageOptions = Options.Create(new FairUsageOptions { AzureTranslationLimit = int.MaxValue });
-        _fairUsageService = new FairUsageService(_httpContextAccessor, _fairUsageOptions);
+        
+        _fairUsageService = Substitute.For<IFairUsageService>();
+        
+        _translatorCircuitBreakerService = Substitute.For<ITranslatorCircuitBreakerService>();
         
         ServiceCollection serviceCollection = [];
         serviceCollection.AddSingleton(_fusionCache);
@@ -54,7 +56,7 @@ public class TranslationFilterTests
         _resultExecutingContext =
             new ResultExecutingContext(actionContext, [], new OkResult(), Substitute.For<Controller>());
 
-        _translationFilter = new TranslationFilter(_fusionCache, _translationService, _fairUsageService);
+        _translationFilter = new TranslationFilter(_fusionCache, _translationService, _fairUsageService, _translatorCircuitBreakerService);
     }
 
     [Test]
@@ -106,15 +108,17 @@ public class TranslationFilterTests
     [Test]
     public async Task OnResultExecutionAsync_When_FairUsage_Is_Exceeded_ShouldNotTranslate()
     {
-        _httpContext.Request.RouteValues["languageCode"] = "sv";
         _resultExecutingContext.RouteData.Values["languageCode"] = "sv";
         
         _translationService.GetLanguage(Arg.Any<string>()).Returns(new TranslationLanguage { Code = "sv" });
-        _fairUsageOptions.Value.AzureTranslationLimit = 0;
+        _fairUsageService.ShouldLimitUsage(Arg.Any<FairUsageType>()).Returns(true);
         
         await _translationFilter.OnResultExecutionAsync(_resultExecutingContext, Next);
         
         Assert.That(_resultExecutingContext.Result, Is.TypeOf<RedirectToActionResult>());
+        RedirectToActionResult? redirectToActionResult = _resultExecutingContext.Result as RedirectToActionResult;
+        Assert.That(redirectToActionResult, Is.Not.Null);
+        Assert.That(redirectToActionResult.ActionName, Is.EqualTo("TranslationUnavailable"));
         await _translationService.DidNotReceiveWithAnyArgs().TranslateHtml(Arg.Any<string>(), Arg.Any<string>());
         
         return;
@@ -125,12 +129,11 @@ public class TranslationFilterTests
     [Test]
     public async Task OnResultExecutionAsync_When_NoCache_Translates_Without_Caching()
     {
-        _translationFilter = new TranslationFilter(_fusionCache, _translationService, _fairUsageService, true);
+        _translationFilter = new TranslationFilter(_fusionCache, _translationService, _fairUsageService, _translatorCircuitBreakerService, true);
         
         const string originalHtml = "<p>Hello</p>";
         const string translatedHtml = "<p>Hej</p>";
         
-        _httpContext.Request.RouteValues["languageCode"] = "sv";
         _resultExecutingContext.RouteData.Values["languageCode"] = "sv";
         
         _resultExecutingContext.RouteData.Values["slug"] = "test-page";
@@ -162,7 +165,6 @@ public class TranslationFilterTests
         const string originalHtml = "<p>Hello</p>";
         const string translatedHtml = "<p>Hej</p>";
         
-        _httpContext.Request.RouteValues["languageCode"] = "sv";
         _resultExecutingContext.RouteData.Values["languageCode"] = "sv";
         _resultExecutingContext.RouteData.Values["slug"] = "test-page";
         
@@ -204,7 +206,6 @@ public class TranslationFilterTests
         const string translatedHtml = "<p>Hej</p>";
         const string collectionId = "test-collection";
         
-        _httpContext.Request.RouteValues["languageCode"] = "sv";
         _resultExecutingContext.RouteData.Values["languageCode"] = "sv";
         _resultExecutingContext.RouteData.Values["identifier"] = collectionId;
 
@@ -247,6 +248,27 @@ public class TranslationFilterTests
             return new ResultExecutedContext(_resultExecutingContext,
                 [], _resultExecutingContext.Result, Substitute.For<Controller>());
         }
+    }
+
+    [Test]
+    public async Task OnResultExecutionAsync_When_Circuit_Is_Open_ShouldNotTranslate()
+    {
+        _resultExecutingContext.RouteData.Values["languageCode"] = "sv";
+        
+        _translationService.GetLanguage(Arg.Any<string>()).Returns(new TranslationLanguage { Code = "sv" });
+        _translatorCircuitBreakerService.ShouldOpenCircuit(Arg.Any<string>()).Returns(Task.FromResult(true));
+        
+        await _translationFilter.OnResultExecutionAsync(_resultExecutingContext, Next);
+        
+        Assert.That(_resultExecutingContext.Result, Is.TypeOf<RedirectToActionResult>());
+        RedirectToActionResult? redirectToActionResult = _resultExecutingContext.Result as RedirectToActionResult;
+        Assert.That(redirectToActionResult, Is.Not.Null);
+        Assert.That(redirectToActionResult.ActionName, Is.EqualTo("TranslationServiceUnavailable"));
+        await _translationService.DidNotReceiveWithAnyArgs().TranslateHtml(Arg.Any<string>(), Arg.Any<string>());
+        
+        return;
+        Task<ResultExecutedContext> Next() => Task.FromResult(new ResultExecutedContext(_resultExecutingContext,
+            [], _resultExecutingContext.Result, Substitute.For<Controller>()));
     }
 
     [TearDown]
