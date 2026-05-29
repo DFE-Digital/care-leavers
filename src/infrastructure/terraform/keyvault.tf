@@ -163,3 +163,15 @@ resource "azurerm_key_vault_secret" "redis-enterprise-connection-string" {
     azurerm_role_assignment.kv_admin_sp
   ]
 }
+
+resource "azurerm_key_vault_secret" "blob-storage-connection-string" {
+  key_vault_id = azurerm_key_vault.kv.id
+  name         = "blob-storage-connection-string"
+  value        = azurerm_storage_account.web_storage_account.primary_connection_string
+
+  depends_on = [
+    azurerm_role_assignment.kv_officer,
+    azurerm_role_assignment.kv_administrator,
+    azurerm_role_assignment.kv_admin_sp
+  ]
+}
