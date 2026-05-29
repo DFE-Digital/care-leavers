@@ -177,4 +177,10 @@ resource "azurerm_storage_blob" "translate_counter_blob" {
   storage_account_name   = azurerm_storage_account.web_storage_account.name
   storage_container_name = azurerm_storage_container.translator_storage_container.name
   type                   = "Block"
+
+  lifecycle {
+    ignore_changes = [
+      content
+    ]
+  }
 }
