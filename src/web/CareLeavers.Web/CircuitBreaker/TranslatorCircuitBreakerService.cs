@@ -11,9 +11,7 @@ public sealed class TranslatorCircuitBreakerData
 {
     public int CharacterCount { get; set; }
     public DateTime TimeStamp { get; set; }
-};
-
-
+}
 
 public sealed class TranslatorCircuitBreakerService(
     BlobServiceClient blobServiceClient,
