@@ -180,7 +180,7 @@ resource "azurerm_storage_blob" "translate_counter_blob" {
 
   lifecycle {
     ignore_changes = [
-      content
+      content_md5
     ]
   }
 }
