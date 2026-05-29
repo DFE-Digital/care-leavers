@@ -108,4 +108,15 @@ public class PagesController(IContentService contentService) : Controller
 
         return View(page);
     }
+
+    [Route("/error/{languageCode}/translation-service-unavailable")]
+    [Route("/error/translation-service-unavailable")]
+    public async Task<IActionResult> TranslationServiceUnavailable(string? languageCode)
+    {
+        Page? page = await contentService.GetPage("translation-service-unavailable");
+
+        if (page?.MainContent is null || page.MainContent.Content.Count == 0) return View(new Page());
+
+        return View(page);
+    }
 }

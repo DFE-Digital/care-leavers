@@ -5,6 +5,7 @@ using Azure.AI.Translation.Document;
 using Azure.AI.Translation.Text;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using CareLeavers.Web;
+using CareLeavers.Web.CircuitBreaker;
 using CareLeavers.Web.CircuitBreaker.FairUsage;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
@@ -23,6 +24,7 @@ using Contentful.Core.Models;
 using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -143,7 +145,13 @@ try
         options.IdleTimeout = FromDays(1);
     });
     
+    builder.Services.AddAzureClients(azure =>
+    {
+        azure.AddBlobServiceClient(builder.Configuration.GetSection("BlobStorage:ConnectionString").Value);
+    });
+    
     builder.Services.AddTransient<FairUsageService>();
+    builder.Services.AddTransient<TranslatorCircuitBreakerService>();
     
     #endregion
     
@@ -214,6 +222,7 @@ try
     builder.Services.AddOptions<CachingOptions>().BindConfiguration(CachingOptions.Name);
     builder.Services.AddOptions<PdfGenerationOptions>().BindConfiguration(PdfGenerationOptions.Name);
     builder.Services.AddOptions<AzureTranslationOptions>().BindConfiguration(AzureTranslationOptions.Name);
+    builder.Services.AddOptions<BlobStorageOptions>().BindConfiguration(BlobStorageOptions.Name);
     builder.Services.AddOptions<FairUsageOptions>().BindConfiguration(FairUsageOptions.Name);
     
     if (string.IsNullOrEmpty(builder.Configuration.GetValue<string>("AzureTranslation:AccessKey")))

@@ -1,3 +1,4 @@
+using CareLeavers.Web.CircuitBreaker;
 using CareLeavers.Web.CircuitBreaker.FairUsage;
 using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Translation;
@@ -11,19 +12,20 @@ public sealed class TranslationFilter(
     IFusionCache fusionCache,
     ITranslationService translationService,
     FairUsageService fairUsageService,
+    TranslatorCircuitBreakerService translatorCircuitBreakerService,
     bool noCache = false) : IAsyncResultFilter
 {
     public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
     {
         string languageCode = context.RouteData.Values["languageCode"]?.ToString() ?? "en";
 
-        if (await ShouldNotTranslate(languageCode))
+        if (await IsLanguageEnglish(languageCode))
         {
             await next();
             return;
         }
 
-        if (fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation))
+        if (IsFairUsageLimitReached())
         {
             context.Result = new RedirectToActionResult("TranslationUnavailable", "Pages", null);
             await next();
@@ -40,22 +42,29 @@ public sealed class TranslationFilter(
         using StreamReader reader = new(memoryStream);
 
         string originalHtml = await reader.ReadToEndAsync();
-        string? translatedHtml;
 
         (string? cacheKey, List<string> tags) = await ComputeCacheKeyAndTags(context.RouteData.Values, languageCode);
 
-        if (!string.IsNullOrWhiteSpace(cacheKey))
-            translatedHtml = await fusionCache.GetOrSetAsync<string?>(cacheKey,
-                async _ => await translationService.TranslateHtml(originalHtml, languageCode), tags: tags);
-        else translatedHtml = await translationService.TranslateHtml(originalHtml, languageCode);
+        string? translatedHtml = string.IsNullOrWhiteSpace(cacheKey)
+            ? await GetTranslatedHtml(originalHtml, languageCode)
+            : await fusionCache.GetOrSetAsync<string?>(cacheKey, async _ => await GetTranslatedHtml(originalHtml, languageCode), tags: tags);
+
+        if (string.IsNullOrWhiteSpace(translatedHtml))
+        {
+            context.Result = new RedirectToActionResult("TranslationServiceUnavailable", "Pages", null);
+            await next();
+            return;
+        }
 
         context.HttpContext.Response.ContentLength = null;
         context.HttpContext.Response.Body = originalBody;
-        await context.HttpContext.Response.WriteAsync(translatedHtml ?? originalHtml);
+        await context.HttpContext.Response.WriteAsync(translatedHtml);
     }
 
-    private async Task<bool> ShouldNotTranslate(string languageCode)
+    private async Task<bool> IsLanguageEnglish(string languageCode)
         => languageCode.Equals("en") || (await translationService.GetLanguage(languageCode)).Code.Equals("en");
+
+    private bool IsFairUsageLimitReached() => fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
 
     private async Task<(string? CacheKey, List<string> Tags)> ComputeCacheKeyAndTags(RouteValueDictionary routeData,
         string languageCode)
@@ -74,4 +83,9 @@ public sealed class TranslationFilter(
         if (collection.HasValue) tags.AddRange(collection.Value.Content.Select(page => page.Slug).OfType<string>());
         return ($"collection:{identifier}:language:{languageCode}", tags);
     }
+
+    private async Task<string?> GetTranslatedHtml(string html, string languageCode)
+        => await translatorCircuitBreakerService.ShouldOpenCircuit(html)
+            ? null
+            : await translationService.TranslateHtml(html, languageCode);
 }
