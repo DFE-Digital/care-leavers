@@ -19,8 +19,9 @@ locals {
     "Scripts__Clarity"                      = var.scripts_clarity
     "AzureTranslation__AccessKey"           = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.azure-translation-access-key.versionless_id})"
     "AzureTranslation__CharacterLimit"      = local.environment_character_limits[var.environment_prefix]
-    "BlobStorage__AccessKey"                = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.blob-storage-access-key.versionless_id})"
-    "BlobStorage__Endpoint"                 = azurerm_storage_account.web_storage_account.primary_blob_endpoint
+    "BlobStorage__ConnectionString"         = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.blob-storage-connection-string.versionless_id})"
+    "BlobStorage__ContainerName"            = azurerm_storage_container.translator_storage_container.name
+    "BlobStorage__BlobName"                 = azurerm_storage_blob.translate_counter_blob.name
     "PdfGeneration__ApiKey"                 = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.pdf-generation-api-key.versionless_id})"
     "PdfGeneration__Sandbox"                = var.pdf_generation_use_sandbox
     "Rebrand"                               = var.rebrand
