@@ -34,7 +34,7 @@ public class GetToAnAnswerController (
     }
     
     [HttpGet("/{languageCode}/get-to-an-answer-questionnaires/{slug}/start")]
-    [TranslationFilter(noCache: true)]
+    [Translation(noCache: true)]
     public async Task<IActionResult> GetStartPageOrInitialState(string languageCode, string slug)
     {
         try
@@ -50,7 +50,7 @@ public class GetToAnAnswerController (
     }
     
     [HttpGet("/{languageCode}/get-to-an-answer-questionnaires/{slug}/next")]
-    [TranslationFilter(noCache: true)]
+    [Translation(noCache: true)]
     public async Task<IActionResult> GetInitialState(string languageCode, string slug)
     {
         try
@@ -67,7 +67,7 @@ public class GetToAnAnswerController (
     }
     
     [HttpPost("/{languageCode}/get-to-an-answer-questionnaires/{slug}/next")]
-    [TranslationFilter(noCache: true)]
+    [Translation(noCache: true)]
     public async Task<IActionResult> GetNextState(string languageCode, string slug)
     {
         try
