@@ -159,6 +159,8 @@ resource "azurerm_storage_account" "web_storage_account" {
   account_tier             = "Standard"
   account_replication_type = "LRS"
 
+  allow_nested_items_to_be_public = false
+
   tags = local.common_tags
 
   identity {
