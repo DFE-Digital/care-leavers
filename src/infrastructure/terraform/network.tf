@@ -26,6 +26,10 @@ resource "azapi_resource" "web-subnet" {
       }
     }
   }
+
+  depends_on = [
+    azurerm_network_security_group.web-nsg
+  ]
 }
 
 resource "azapi_resource" "private-endpoint-subnet" {
@@ -35,8 +39,15 @@ resource "azapi_resource" "private-endpoint-subnet" {
 
   body = {
     properties = {
-      addressPrefixes                = ["10.0.2.0/24"]
+      addressPrefixes = ["10.0.2.0/24"]
+      networkSecurityGroup = {
+        id = azurerm_network_security_group.private-endpoint-nsg.id
+      }
       privateEndpointNetworkPolicies = "NetworkSecurityGroupEnabled"
     }
   }
+
+  depends_on = [
+    azurerm_network_security_group.private-endpoint-nsg
+  ]
 }

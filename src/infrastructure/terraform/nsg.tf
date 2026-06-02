@@ -18,3 +18,11 @@ resource "azurerm_network_security_group" "web-nsg" {
 
   tags = local.common_tags
 }
+
+resource "azurerm_network_security_group" "private-endpoint-nsg" {
+  name                = "${local.service_prefix}-pe-nsg"
+  resource_group_name = azurerm_resource_group.web-rg.name
+  location            = local.location
+
+  tags = local.common_tags
+}
