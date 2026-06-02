@@ -16,7 +16,8 @@ public sealed class TranslatorCircuitBreakerData
 public sealed class TranslatorCircuitBreakerService(
     BlobServiceClient blobServiceClient,
     IOptions<BlobStorageOptions> blobStorageOptions,
-    IOptions<AzureTranslationOptions> azureTranslationOptions) : ITranslatorCircuitBreakerService
+    IOptions<AzureTranslationOptions> azureTranslationOptions,
+    ILogger<TranslatorCircuitBreakerService> logger) : ITranslatorCircuitBreakerService
 {
     private static readonly JsonSerializerOptions JsonSerializerOptions = new(JsonSerializerDefaults.Web);
 
@@ -26,6 +27,8 @@ public sealed class TranslatorCircuitBreakerService(
 
     public async Task<bool> ShouldOpenCircuit(string html)
     {
+        logger.LogInformation("Connecting to Blob @ URI = {Uri}", blobServiceClient.Uri);
+        
         BlobClient blobClient = blobServiceClient.GetBlobContainerClient(_containerName).GetBlobClient(_blobName);
         DateTime dateNow = DateTime.UtcNow;
         
