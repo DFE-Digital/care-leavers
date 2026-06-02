@@ -27,8 +27,6 @@ public sealed class TranslatorCircuitBreakerService(
 
     public async Task<bool> ShouldOpenCircuit(string html)
     {
-        logger.LogInformation("Connecting to Blob @ URI = {Uri}", blobServiceClient.Uri);
-        
         BlobClient blobClient = blobServiceClient.GetBlobContainerClient(_containerName).GetBlobClient(_blobName);
         DateTime dateNow = DateTime.UtcNow;
         
@@ -49,8 +47,12 @@ public sealed class TranslatorCircuitBreakerService(
         return false;
     }
 
-    private static async Task<TranslatorCircuitBreakerData?> DownloadBlob(BlobClient blobClient)
+    private async Task<TranslatorCircuitBreakerData?> DownloadBlob(BlobClient blobClient)
     {
+        logger.LogInformation("blobClient URI = {BlobClientUri}", blobClient.Uri);
+        logger.LogInformation("blobClient ContainerName = {ContainerName}", blobClient.BlobContainerName);
+        logger.LogInformation("blobClient BlobName = {BlobName}", blobClient.Name);
+        
         if (!await blobClient.ExistsAsync()) return null;
         
         using MemoryStream memoryStream = new();
