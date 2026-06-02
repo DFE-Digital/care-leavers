@@ -97,7 +97,7 @@ resource "azurerm_linux_web_app" "web-app-service" {
   resource_group_name = azurerm_resource_group.web-rg.name
   https_only          = true
 
-  virtual_network_subnet_id = azurerm_subnet.web-subnet.id
+  virtual_network_subnet_id = azapi_resource.web-subnet.id
 
   site_config {
     always_on = true

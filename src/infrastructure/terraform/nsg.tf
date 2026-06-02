@@ -18,8 +18,3 @@ resource "azurerm_network_security_group" "web-nsg" {
 
   tags = local.common_tags
 }
-
-resource "azurerm_subnet_network_security_group_association" "web-subnet-nsg-association" {
-  subnet_id                 = azurerm_subnet.web-subnet.id
-  network_security_group_id = azurerm_network_security_group.web-nsg.id
-}

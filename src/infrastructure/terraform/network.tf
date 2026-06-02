@@ -7,30 +7,43 @@ resource "azurerm_virtual_network" "careleavers-web-vnet" {
   tags = local.common_tags
 }
 
-resource "azurerm_subnet" "web-subnet" {
-  name                 = "${local.service_prefix}-webapp-subnet"
-  resource_group_name  = azurerm_resource_group.web-rg.name
-  virtual_network_name = azurerm_virtual_network.careleavers-web-vnet.name
-  address_prefixes     = ["10.0.1.0/24"]
+resource "azapi_resource" "web-subnet" {
+  type      = "Microsoft.Network/virtualNetworks/subnets@2024-05-01"
+  name      = "${local.service_prefix}-webapp-subnet"
+  parent_id = azurerm_virtual_network.careleavers-web-vnet.id
 
-  service_endpoints = ["Microsoft.Storage", "Microsoft.Web"]
-
-  delegation {
-    name = "delegation"
-    service_delegation {
-      name = "Microsoft.Web/serverFarms"
-      actions = [
-        "Microsoft.Network/virtualNetworks/subnets/join/action"
-      ]
+  body = {
+    properties = {
+      addressPrefixes = ["10.0.1.0/24"]
+      delegations = [{
+        name = "asp-delegation"
+        properties = {
+          serviceName = "Microsoft.Web/serverFarms"
+          actions = [
+            "Microsoft.Network/virtualNetworks/subnets/join/action"
+          ]
+        }
+      }]
+      networkSecurityGroup = {
+        id = azurerm_network_security_group.web-nsg.id
+      }
     }
   }
+
+  tags = local.common_tags
 }
 
-resource "azurerm_subnet" "private-endpoint-subnet" {
-  name                 = "${local.service_prefix}-private-endpoint-subnet"
-  resource_group_name  = azurerm_resource_group.web-rg.name
-  virtual_network_name = azurerm_virtual_network.careleavers-web-vnet.name
-  address_prefixes     = ["10.0.2.0/24"]
+resource "azapi_resource" "private-endpoint-subnet" {
+  type      = "Microsoft.Network/virtualNetworks/subnets@2024-05-01"
+  name      = "${local.service_prefix}-private-endpoint-subnet"
+  parent_id = azurerm_virtual_network.careleavers-web-vnet.id
 
-  private_endpoint_network_policies = "NetworkSecurityGroupEnabled"
+  body = {
+    properties = {
+      addressPrefixes                = ["10.0.2.0/24"]
+      privateEndpointNetworkPolicies = "NetworkSecurityGroupEnabled"
+    }
+  }
+
+  tags = local.common_tags
 }

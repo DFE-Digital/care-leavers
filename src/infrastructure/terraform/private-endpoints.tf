@@ -2,7 +2,7 @@ resource "azurerm_private_endpoint" "webapp-private-endpoint" {
   name                = "${local.service_prefix}-webapp-pe"
   resource_group_name = azurerm_resource_group.web-rg.name
   location            = local.location
-  subnet_id           = azurerm_subnet.private-endpoint-subnet.id
+  subnet_id           = azapi_resource.private-endpoint-subnet.id
 
   private_service_connection {
     name                           = "${local.service_prefix}-webapp-psc"
