@@ -29,8 +29,6 @@ resource "azapi_resource" "web-subnet" {
       }
     }
   }
-
-  tags = local.common_tags
 }
 
 resource "azapi_resource" "private-endpoint-subnet" {
@@ -44,6 +42,4 @@ resource "azapi_resource" "private-endpoint-subnet" {
       privateEndpointNetworkPolicies = "NetworkSecurityGroupEnabled"
     }
   }
-
-  tags = local.common_tags
 }
