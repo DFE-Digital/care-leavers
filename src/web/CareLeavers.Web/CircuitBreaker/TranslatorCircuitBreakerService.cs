@@ -16,8 +16,7 @@ public sealed class TranslatorCircuitBreakerData
 public sealed class TranslatorCircuitBreakerService(
     BlobServiceClient blobServiceClient,
     IOptions<BlobStorageOptions> blobStorageOptions,
-    IOptions<AzureTranslationOptions> azureTranslationOptions,
-    ILogger<TranslatorCircuitBreakerService> logger) : ITranslatorCircuitBreakerService
+    IOptions<AzureTranslationOptions> azureTranslationOptions) : ITranslatorCircuitBreakerService
 {
     private static readonly JsonSerializerOptions JsonSerializerOptions = new(JsonSerializerDefaults.Web);
 
@@ -29,46 +28,46 @@ public sealed class TranslatorCircuitBreakerService(
     {
         BlobClient blobClient = blobServiceClient.GetBlobContainerClient(_containerName).GetBlobClient(_blobName);
         DateTime dateNow = DateTime.UtcNow;
-        
-        TranslatorCircuitBreakerData circuitBreakerData = await DownloadBlob(blobClient) ?? new TranslatorCircuitBreakerData { CharacterCount = 0, TimeStamp = dateNow };
+
+        TranslatorCircuitBreakerData circuitBreakerData = await DownloadBlob(blobClient) ??
+                                                          new TranslatorCircuitBreakerData
+                                                              { CharacterCount = 0, TimeStamp = dateNow };
 
         if (ShouldResetCircuit(dateNow, circuitBreakerData.TimeStamp))
         {
             circuitBreakerData.CharacterCount = 0;
             circuitBreakerData.TimeStamp = dateNow;
         }
-        
+
         if (circuitBreakerData.CharacterCount >= _characterLimit) return true;
-        
+
         circuitBreakerData.CharacterCount += html.Length;
-        
+
         await UploadBlob(circuitBreakerData, blobClient);
-        
+
         return false;
     }
 
     private async Task<TranslatorCircuitBreakerData?> DownloadBlob(BlobClient blobClient)
     {
-        logger.LogInformation("blobClient URI = {BlobClientUri}", blobClient.Uri);
-        logger.LogInformation("blobClient ContainerName = {ContainerName}", blobClient.BlobContainerName);
-        logger.LogInformation("blobClient BlobName = {BlobName}", blobClient.Name);
-        
         if (!await blobClient.ExistsAsync()) return null;
-        
+
         using MemoryStream memoryStream = new();
         await blobClient.DownloadToAsync(memoryStream);
-        
+
         if (memoryStream.Length == 0) return null;
-        
+
         memoryStream.Seek(0, SeekOrigin.Begin);
         return await JsonSerializer.DeserializeAsync<TranslatorCircuitBreakerData>(memoryStream, JsonSerializerOptions);
     }
 
     private static async Task UploadBlob(TranslatorCircuitBreakerData data, BlobClient blobClient)
     {
-        using MemoryStream memoryStream = new(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data, JsonSerializerOptions)));
+        using MemoryStream memoryStream =
+            new(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data, JsonSerializerOptions)));
         await blobClient.UploadAsync(memoryStream, overwrite: true);
     }
-    
-    private static bool ShouldResetCircuit(DateTime dateNow, DateTime blobDate) => dateNow.Month != blobDate.Month || dateNow.Year != blobDate.Year;
+
+    private static bool ShouldResetCircuit(DateTime dateNow, DateTime blobDate) =>
+        dateNow.Month != blobDate.Month || dateNow.Year != blobDate.Year;
 }
