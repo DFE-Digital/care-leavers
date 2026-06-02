@@ -8,6 +8,6 @@ resource "azurerm_private_endpoint" "webapp-private-endpoint" {
     name                           = "${local.service_prefix}-webapp-psc"
     is_manual_connection           = false
     private_connection_resource_id = azurerm_storage_account.web_storage_account.id
-    subresource_names              = ["sites"]
+    subresource_names              = ["blob"]
   }
 }
