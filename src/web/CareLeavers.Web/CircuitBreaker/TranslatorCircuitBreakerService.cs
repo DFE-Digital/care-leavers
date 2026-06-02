@@ -48,7 +48,7 @@ public sealed class TranslatorCircuitBreakerService(
         return false;
     }
 
-    private async Task<TranslatorCircuitBreakerData?> DownloadBlob(BlobClient blobClient)
+    private static async Task<TranslatorCircuitBreakerData?> DownloadBlob(BlobClient blobClient)
     {
         if (!await blobClient.ExistsAsync()) return null;
 
