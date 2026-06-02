@@ -1,4 +1,4 @@
-resource "azurerm_security_group" "web-nsg" {
+resource "azurerm_network_security_group" "web-nsg" {
   name                = "${local.service_prefix}-web-nsg"
   resource_group_name = azurerm_resource_group.web-rg.name
   location            = local.location
@@ -21,5 +21,5 @@ resource "azurerm_security_group" "web-nsg" {
 
 resource "azurerm_subnet_network_security_group_association" "web-subnet-nsg-association" {
   subnet_id                 = azurerm_subnet.web-subnet.id
-  network_security_group_id = azurerm_security_group.web-nsg.id
+  network_security_group_id = azurerm_network_security_group.web-nsg.id
 }
