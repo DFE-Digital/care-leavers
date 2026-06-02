@@ -19,9 +19,6 @@ resource "azapi_resource" "web-subnet" {
         name = "asp-delegation"
         properties = {
           serviceName = "Microsoft.Web/serverFarms"
-          actions = [
-            "Microsoft.Network/virtualNetworks/subnets/join/action"
-          ]
         }
       }]
       networkSecurityGroup = {
