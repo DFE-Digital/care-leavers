@@ -28,7 +28,8 @@ resource "azapi_resource" "web-subnet" {
   }
 
   depends_on = [
-    azurerm_network_security_group.web-nsg
+    azurerm_network_security_group.web-nsg,
+    azurerm_virtual_network.careleavers-web-vnet
   ]
 }
 
@@ -48,6 +49,7 @@ resource "azapi_resource" "private-endpoint-subnet" {
   }
 
   depends_on = [
-    azurerm_network_security_group.private-endpoint-nsg
+    azurerm_network_security_group.private-endpoint-nsg,
+    azurerm_virtual_network.careleavers-web-vnet
   ]
 }
