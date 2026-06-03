@@ -51,6 +51,6 @@ resource "azapi_resource" "private-endpoint-subnet" {
   depends_on = [
     azurerm_network_security_group.private-endpoint-nsg,
     azurerm_virtual_network.careleavers-web-vnet,
-    az_api_resource.web-subnet
+    azapi_resource.web-subnet
   ]
 }
