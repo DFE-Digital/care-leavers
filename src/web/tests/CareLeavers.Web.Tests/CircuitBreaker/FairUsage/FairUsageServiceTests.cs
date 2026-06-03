@@ -1,18 +1,18 @@
 using System.Text.Json;
-using CareLeavers.Web.CircuitBreaker;
+using CareLeavers.Web.CircuitBreaker.FairUsage;
 using CareLeavers.Web.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 
-namespace CareLeavers.Web.Tests.CircuitBreaker;
+namespace CareLeavers.Web.Tests.CircuitBreaker.FairUsage;
 
-public class CircuitBreakerServiceTests
+public class FairUsageServiceTests
 {
     private IHttpContextAccessor _httpContextAccessor;
     private HttpContext _httpContext;
-    private IOptions<CircuitBreakerOptions> _circuitBreakerOptions;
-    private CircuitBreakerService _circuitBreakerService;
+    private IOptions<FairUsageOptions> _circuitBreakerOptions;
+    private FairUsageService _fairUsageService;
 
     [SetUp]
     public void Init()
@@ -22,13 +22,13 @@ public class CircuitBreakerServiceTests
         _httpContext.Session = new MockSession();
         _httpContextAccessor.HttpContext = _httpContext;
 
-        _circuitBreakerOptions = Options.Create(new CircuitBreakerOptions
+        _circuitBreakerOptions = Options.Create(new FairUsageOptions
         {
             AzureTranslationLimit = 2,
             PdfGeneratorLimit = 2
         });
 
-        _circuitBreakerService = new CircuitBreakerService(_httpContextAccessor, _circuitBreakerOptions);
+        _fairUsageService = new FairUsageService(_httpContextAccessor, _circuitBreakerOptions);
     }
 
     [Test]
@@ -40,7 +40,7 @@ public class CircuitBreakerServiceTests
             Throws.TypeOf<InvalidOperationException>().With.Message.EqualTo("HttpContext is NULL"));
         return;
 
-        bool CircuitBreaker() => _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
+        bool CircuitBreaker() => _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
     }
 
     [Test]
@@ -51,7 +51,7 @@ public class CircuitBreakerServiceTests
                 .EqualTo("Specified argument was out of the range of valid values. (Parameter 'circuit')"));
         return;
 
-        bool CircuitBreaker() => _circuitBreakerService.ShouldBreakCircuit((CircuitBreakerType)2);
+        bool CircuitBreaker() => _fairUsageService.ShouldLimitUsage((FairUsageType)2);
     }
 
     [Test]
@@ -59,7 +59,7 @@ public class CircuitBreakerServiceTests
     {
         _httpContext.Request.RouteValues["languageCode"] = null;
 
-        bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
+        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
 
         Assert.That(result, Is.False);
     }
@@ -69,7 +69,7 @@ public class CircuitBreakerServiceTests
     {
         _httpContext.Request.RouteValues["languageCode"] = "en";
 
-        bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
+        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
 
         Assert.That(result, Is.False);
     }
@@ -79,12 +79,12 @@ public class CircuitBreakerServiceTests
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
 
-        bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
+        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
 
         using (Assert.EnterMultipleScope())
         {
             Assert.That(result, Is.False);
-            Assert.That(_httpContext.Session.GetString(CircuitBreakerOptions.AzureTranslationKey),
+            Assert.That(_httpContext.Session.GetString(FairUsageOptions.AzureTranslationKey),
                 Is.EqualTo(JsonSerializer.Serialize(new List<string> { "sv" })));
         }
     }
@@ -93,14 +93,14 @@ public class CircuitBreakerServiceTests
     public void ShouldBreakCircuit_AzureTranslation_When_JsonValueIsNull_Returns_False()
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
-        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey, "null");
+        _httpContext.Session.SetString(FairUsageOptions.AzureTranslationKey, "null");
 
-        bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
+        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
 
         using (Assert.EnterMultipleScope())
         {
             Assert.That(result, Is.False);
-            Assert.That(_httpContext.Session.GetString(CircuitBreakerOptions.AzureTranslationKey),
+            Assert.That(_httpContext.Session.GetString(FairUsageOptions.AzureTranslationKey),
                 Is.EqualTo(JsonSerializer.Serialize(new List<string> { "sv" })));
         }
     }
@@ -109,10 +109,10 @@ public class CircuitBreakerServiceTests
     public void ShouldBreakCircuit_AzureTranslation_When_LanguagePreviouslyTranslated_Returns_False()
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
-        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey,
+        _httpContext.Session.SetString(FairUsageOptions.AzureTranslationKey,
             JsonSerializer.Serialize(new List<string> { "sv" }));
 
-        bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
+        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
 
         Assert.That(result, Is.False);
     }
@@ -121,10 +121,10 @@ public class CircuitBreakerServiceTests
     public void ShouldBreakCircuit_AzureTranslation_When_AtLimit_But_LanguagePreviouslyTranslated_Returns_False()
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
-        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey,
+        _httpContext.Session.SetString(FairUsageOptions.AzureTranslationKey,
             JsonSerializer.Serialize(new List<string> { "sv", "fr" }));
 
-        bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
+        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
 
         Assert.That(result, Is.False);
     }
@@ -133,10 +133,10 @@ public class CircuitBreakerServiceTests
     public void ShouldBreakCircuit_AzureTranslation_When_LimitIsReached_Returns_True()
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
-        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey,
+        _httpContext.Session.SetString(FairUsageOptions.AzureTranslationKey,
             JsonSerializer.Serialize(new List<string> { "es", "fr" }));
 
-        bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
+        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
 
         Assert.That(result, Is.True);
     }
@@ -145,15 +145,15 @@ public class CircuitBreakerServiceTests
     public void ShouldBreakCircuit_AzureTranslation_When_LimitIsNotReached_Returns_False_And_UpdatesSession()
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
-        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationKey,
+        _httpContext.Session.SetString(FairUsageOptions.AzureTranslationKey,
             JsonSerializer.Serialize(new List<string> { "es" }));
 
-        bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.AzureTranslation);
+        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
 
         using (Assert.EnterMultipleScope())
         {
             Assert.That(result, Is.False);
-            Assert.That(_httpContext.Session.GetString(CircuitBreakerOptions.AzureTranslationKey),
+            Assert.That(_httpContext.Session.GetString(FairUsageOptions.AzureTranslationKey),
                 Is.EqualTo(JsonSerializer.Serialize(new List<string> { "es", "sv" })));
         }
     }
@@ -161,35 +161,35 @@ public class CircuitBreakerServiceTests
     [Test]
     public void ShouldBreakCircuit_PdfGenerator_When_FirstUsage_Returns_False_And_UpdatesSession()
     {
-        bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.PdfGenerator);
+        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.PdfGenerator);
 
         using (Assert.EnterMultipleScope())
         {
             Assert.That(result, Is.False);
-            Assert.That(_httpContext.Session.GetInt32(CircuitBreakerOptions.PdfGeneratorKey), Is.EqualTo(1));
+            Assert.That(_httpContext.Session.GetInt32(FairUsageOptions.PdfGeneratorKey), Is.EqualTo(1));
         }
     }
 
     [Test]
     public void ShouldBreakCircuit_PdfGenerator_When_BelowLimit_Returns_False_And_UpdatesSession()
     {
-        _httpContext.Session.SetInt32(CircuitBreakerOptions.PdfGeneratorKey, 1);
+        _httpContext.Session.SetInt32(FairUsageOptions.PdfGeneratorKey, 1);
 
-        bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.PdfGenerator);
+        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.PdfGenerator);
 
         using (Assert.EnterMultipleScope())
         {
             Assert.That(result, Is.False);
-            Assert.That(_httpContext.Session.GetInt32(CircuitBreakerOptions.PdfGeneratorKey), Is.EqualTo(2));
+            Assert.That(_httpContext.Session.GetInt32(FairUsageOptions.PdfGeneratorKey), Is.EqualTo(2));
         }
     }
 
     [Test]
     public void ShouldBreakCircuit_PdfGenerator_When_LimitIsReached_Returns_True()
     {
-        _httpContext.Session.SetInt32(CircuitBreakerOptions.PdfGeneratorKey, 2);
+        _httpContext.Session.SetInt32(FairUsageOptions.PdfGeneratorKey, 2);
 
-        bool result = _circuitBreakerService.ShouldBreakCircuit(CircuitBreakerType.PdfGenerator);
+        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.PdfGenerator);
 
         Assert.That(result, Is.True);
     }

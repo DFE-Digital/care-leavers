@@ -19,7 +19,7 @@ resource "azurerm_private_endpoint" "web-storage-private-endpoint" {
 }
 
 resource "azurerm_private_dns_zone" "web-sa-dns-zone" {
-  name                = "${local.service_prefix}-privatelink.blob.core.windows.net"
+  name                = "privatelink.blob.core.windows.net"
   resource_group_name = azurerm_resource_group.web-rg.name
 
   tags = local.common_tags

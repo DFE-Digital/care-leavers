@@ -134,7 +134,7 @@ public class GdsContentfulRichTextTagHelperTests
     [Test]
     public void Process_ModifiesContent_ReplacesWildcard_If_DynamicTimeIsTrue()
     {
-        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationTimeoutKey, "1:28pm");
+        _httpContext.Session.SetString(FairUsageOptions.AzureTranslationTimeoutKey, "1:28pm");
         
         _tagHelper.DynamicTime = true;
         
@@ -197,7 +197,7 @@ public class GdsContentfulRichTextTagHelperTests
     [Test]
     public void Process_ModifiesContent_UsesFallback_If_DynamicTimeIsTrue_And_ContentDoesNotContainWildcard()
     {
-        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationTimeoutKey, "1:28pm");
+        _httpContext.Session.SetString(FairUsageOptions.AzureTranslationTimeoutKey, "1:28pm");
         
         _tagHelper.DynamicTime = true;
         
@@ -238,7 +238,7 @@ public class GdsContentfulRichTextTagHelperTests
     [Test]
     public async Task ProcessAsync_ModifiesContent_ReplacesWildcard_If_DynamicTimeIsTrue()
     {
-        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationTimeoutKey, "1:28pm");
+        _httpContext.Session.SetString(FairUsageOptions.AzureTranslationTimeoutKey, "1:28pm");
         
         _tagHelper.DynamicTime = true;
         
@@ -301,7 +301,7 @@ public class GdsContentfulRichTextTagHelperTests
     [Test]
     public async Task ProcessAsync_ModifiesContent_UsesFallback_If_DynamicTimeIsTrue_And_ContentDoesNotContainWildcard()
     {
-        _httpContext.Session.SetString(CircuitBreakerOptions.AzureTranslationTimeoutKey, "1:28pm");
+        _httpContext.Session.SetString(FairUsageOptions.AzureTranslationTimeoutKey, "1:28pm");
         
         _tagHelper.DynamicTime = true;
         

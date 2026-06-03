@@ -12,7 +12,7 @@ namespace CareLeavers.Web.Controllers;
 public class PagesController(IContentService contentService) : Controller
 {
     [HttpGet("{languageCode}/privacy-policies")]
-    [Translation(HardcodedSlug="privacy-policies")]
+    [Translation]
     public async Task<IActionResult> PrivacyPolicies()
     {
         var page = await contentService.GetPage("privacy-policies");
@@ -21,7 +21,7 @@ public class PagesController(IContentService contentService) : Controller
     }
     
     [HttpGet("{languageCode}/cookie-policy")]
-    [Translation(HardcodedSlug="cookie-policy")]
+    [Translation]
     public async Task<IActionResult> CookiePolicy()
     {
         var consent = HttpContext.Features.Get<ITrackingConsentFeature>() ??
@@ -39,7 +39,7 @@ public class PagesController(IContentService contentService) : Controller
     }
     
     [Route("{languageCode}/error")]
-    [Translation(HardcodedSlug="error")]
+    [Translation]
     public async Task<IActionResult> Error(int statusCode)
     {
         if (statusCode == 404)
@@ -59,7 +59,7 @@ public class PagesController(IContentService contentService) : Controller
     }
     
     [Route("{languageCode}/service-unavailable")]
-    [Translation(HardcodedSlug="service-unavailable")]
+    [Translation]
     public async Task<IActionResult> ServiceUnavailable()
     {
         var page = await contentService.GetPage("service-unavailable");
@@ -68,7 +68,7 @@ public class PagesController(IContentService contentService) : Controller
     }
     
     [Route("{languageCode}/page-not-found")]
-    [Translation(HardcodedSlug="page-not-found")]
+    [Translation]
     public async Task<IActionResult> PageNotFound()
     {
         var page = await contentService.GetPage("page-not-found");
@@ -80,6 +80,7 @@ public class PagesController(IContentService contentService) : Controller
     }
     
     [HttpPost("/{languageCode}/cookie-policy")]
+    [Translation]
     public IActionResult PostCookiePolicy(
         [FromForm] CookiePolicyModel cookiePolicyModel,
         [FromServices] IOptions<CookiePolicyOptions> cookiePolicyOptions)
@@ -102,6 +103,17 @@ public class PagesController(IContentService contentService) : Controller
     public async Task<IActionResult> TranslationUnavailable(string? languageCode)
     {
         Page? page = await contentService.GetPage("translation-unavailable");
+
+        if (page?.MainContent is null || page.MainContent.Content.Count == 0) return View(new Page());
+
+        return View(page);
+    }
+
+    [Route("/error/{languageCode}/translation-service-unavailable")]
+    [Route("/error/translation-service-unavailable")]
+    public async Task<IActionResult> TranslationServiceUnavailable(string? languageCode)
+    {
+        Page? page = await contentService.GetPage("translation-service-unavailable");
 
         if (page?.MainContent is null || page.MainContent.Content.Count == 0) return View(new Page());
 

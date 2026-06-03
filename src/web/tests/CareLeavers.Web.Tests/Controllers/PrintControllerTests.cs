@@ -1,5 +1,5 @@
 using System.Net;
-using CareLeavers.Web.CircuitBreaker;
+using CareLeavers.Web.CircuitBreaker.FairUsage;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Controllers;
@@ -26,10 +26,10 @@ public class PrintControllerTests
     private IFusionCache _fusionCache;
     private IUrlHelper _urlHelper;
     private IHttpContextAccessor _httpContextAccessor;
-    private IOptions<CircuitBreakerOptions> _circuitBreakerOptions;
+    private IOptions<FairUsageOptions> _circuitBreakerOptions;
 
     private PrintController _printController;
-    private CircuitBreakerService _circuitBreakerService;
+    private FairUsageService _fairUsageService;
 
     [SetUp]
     public void Init()
@@ -54,9 +54,9 @@ public class PrintControllerTests
         
         _urlHelper.ActionContext.Returns(actionContext);
         
-        _circuitBreakerOptions = Options.Create(new CircuitBreakerOptions { PdfGeneratorLimit = int.MaxValue });
+        _circuitBreakerOptions = Options.Create(new FairUsageOptions { PdfGeneratorLimit = int.MaxValue });
 
-        _circuitBreakerService = new CircuitBreakerService(_httpContextAccessor, _circuitBreakerOptions);
+        _fairUsageService = new FairUsageService(_httpContextAccessor, _circuitBreakerOptions);
 
         _printController = new PrintController(_httpClientFactory, _contentService, _translationService, _options,
             _fusionCache)
@@ -158,7 +158,7 @@ public class PrintControllerTests
             Arg.Any<CancellationToken>()
         ).Returns(pdfBytes);
 
-        IActionResult result = await _printController.DownloadPdf(_circuitBreakerService, id, "en");
+        IActionResult result = await _printController.DownloadPdf(_fairUsageService, id, "en");
         
         Assert.That(result, Is.TypeOf<FileContentResult>());
         FileContentResult? fileContent = result as FileContentResult;
@@ -191,7 +191,7 @@ public class PrintControllerTests
             Arg.Any<CancellationToken>()
         ).Returns(pdfBytes);
 
-        IActionResult result = await _printController.DownloadPdf(_circuitBreakerService, id, languageCode);
+        IActionResult result = await _printController.DownloadPdf(_fairUsageService, id, languageCode);
         
         Assert.That(result, Is.TypeOf<FileContentResult>());
         string? contentDispositionHeader = _printController.Response.Headers.ContentDisposition;
@@ -216,7 +216,7 @@ public class PrintControllerTests
             Arg.Any<CancellationToken>()
         ).ThrowsAsync(new HttpRequestException());
         
-        IActionResult result = await _printController.DownloadPdf(_circuitBreakerService, id, languageCode);
+        IActionResult result = await _printController.DownloadPdf(_fairUsageService, id, languageCode);
         
         Assert.That(result, Is.TypeOf<RedirectToActionResult>());
         RedirectToActionResult? redirectResult = result as RedirectToActionResult;
@@ -243,7 +243,7 @@ public class PrintControllerTests
         _contentService.GetPrintableCollection(id).Returns(collection);
         _circuitBreakerOptions.Value.PdfGeneratorLimit = 1;
         
-        _httpContextAccessor.HttpContext?.Session.SetInt32(CircuitBreakerOptions.PdfGeneratorKey, 2);
+        _httpContextAccessor.HttpContext?.Session.SetInt32(FairUsageOptions.PdfGeneratorKey, 2);
         
         _fusionCache.GetOrSetAsync(
             Arg.Any<string>(),
@@ -257,7 +257,7 @@ public class PrintControllerTests
             return new ValueTask<byte[]>(factory(null!, CancellationToken.None));
         }));
 
-        IActionResult result = await _printController.DownloadPdf(_circuitBreakerService, id, languageCode);
+        IActionResult result = await _printController.DownloadPdf(_fairUsageService, id, languageCode);
         
         Assert.That(result, Is.TypeOf<NotFoundResult>());
     }
@@ -271,7 +271,7 @@ public class PrintControllerTests
         _contentService.GetPrintableCollection(id).Returns(collection);
         _contentService.GetConfiguration().Returns(new ContentfulConfigurationEntity());
         
-        _httpContextAccessor.HttpContext?.Session.SetInt32(CircuitBreakerOptions.PdfGeneratorKey, 0);
+        _httpContextAccessor.HttpContext?.Session.SetInt32(FairUsageOptions.PdfGeneratorKey, 0);
 
         _urlHelper.Action(Arg.Any<UrlActionContext>()).Returns("https://localhost:1234");
         
@@ -292,7 +292,7 @@ public class PrintControllerTests
             return new ValueTask<byte[]>(factory(null!, CancellationToken.None));
         }));
 
-        IActionResult result = await _printController.DownloadPdf(_circuitBreakerService, id, languageCode);
+        IActionResult result = await _printController.DownloadPdf(_fairUsageService, id, languageCode);
         
         Assert.That(result, Is.TypeOf<FileContentResult>());
         FileContentResult? fileResult = result as FileContentResult;

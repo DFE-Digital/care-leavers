@@ -3,9 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 namespace CareLeavers.Web.Configuration;
 
 [ExcludeFromCodeCoverage(Justification = "Configuration")]
-public class CircuitBreakerOptions
+public class FairUsageOptions
 {
-    public const string Name = "CircuitBreaker";
+    public const string Name = "FairUsage";
 
     public const string AzureTranslationKey = "_AzureTranslation";
     public const string AzureTranslationTimeoutKey = "_AzureTranslationTimeout";

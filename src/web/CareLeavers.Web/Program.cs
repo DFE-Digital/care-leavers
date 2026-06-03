@@ -6,6 +6,7 @@ using Azure.AI.Translation.Text;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using CareLeavers.Web;
 using CareLeavers.Web.CircuitBreaker;
+using CareLeavers.Web.CircuitBreaker.FairUsage;
 using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Contentful.Webhooks;
@@ -23,6 +24,7 @@ using Contentful.Core.Models;
 using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -133,7 +135,7 @@ try
     
     #endregion
     
-    #region Session State & Circuit Breaking
+    #region Session State & Fair Usage
     
     builder.Services.AddSession(options =>
     {
@@ -143,7 +145,46 @@ try
         options.IdleTimeout = FromDays(1);
     });
     
-    builder.Services.AddTransient<CircuitBreakerService>();
+    builder.Services.AddOptions<FairUsageOptions>().BindConfiguration(FairUsageOptions.Name);
+    builder.Services.AddTransient<IFairUsageService, FairUsageService>();
+    
+    #endregion
+    
+    #region Translation & Circuit Breaking
+    
+    builder.Services.AddOptions<AzureTranslationOptions>().BindConfiguration(AzureTranslationOptions.Name);
+    builder.Services.AddOptions<BlobStorageOptions>().BindConfiguration(BlobStorageOptions.Name);
+    
+    string? blobStorageConnectionString = builder.Configuration.GetSection("BlobStorage:ConnectionString").Value;
+    string? azureTranslationAccessKey = builder.Configuration.GetValue<string>("AzureTranslation:AccessKey");
+
+    if (!string.IsNullOrWhiteSpace(blobStorageConnectionString) && !string.IsNullOrWhiteSpace(azureTranslationAccessKey))
+    {
+        builder.Services.AddAzureClients(azure => 
+            { azure.AddBlobServiceClient(builder.Configuration.GetSection("BlobStorage:ConnectionString").Value); });
+    
+        builder.Services.AddTransient<ITranslatorCircuitBreakerService, TranslatorCircuitBreakerService>();
+        
+        builder.Services.AddTransient(service =>
+        {
+            AzureTranslationOptions options =  service.GetRequiredService<IOptions<AzureTranslationOptions>>().Value;
+            return new TextTranslationClient(new AzureKeyCredential(options.AccessKey), new Uri(options.Endpoint), options.Region);
+        });
+
+        builder.Services.AddTransient(service =>
+        {
+            AzureTranslationOptions options =  service.GetRequiredService<IOptions<AzureTranslationOptions>>().Value;
+            return new SingleDocumentTranslationClient(new Uri(options.DocumentEndpoint), new AzureKeyCredential(options.AccessKey));
+        });
+        
+        builder.Services.AddScoped<ITranslationService, AzureTranslationService>();
+    }
+    else
+    {
+        Log.Logger.Information("Azure Translation Access Key or Blob Storage Connection String Not Found - Disabling Translation Service..");
+        builder.Services.AddSingleton<ITranslationService, NoTranslationService>();
+        builder.Services.AddTransient<ITranslatorCircuitBreakerService, NoTranslatorCircuitBreakerService>();
+    }
     
     #endregion
     
@@ -213,30 +254,6 @@ try
     builder.Services.AddOptions<ScriptOptions>().BindConfiguration(ScriptOptions.Name);
     builder.Services.AddOptions<CachingOptions>().BindConfiguration(CachingOptions.Name);
     builder.Services.AddOptions<PdfGenerationOptions>().BindConfiguration(PdfGenerationOptions.Name);
-    builder.Services.AddOptions<AzureTranslationOptions>().BindConfiguration(AzureTranslationOptions.Name);
-    builder.Services.AddOptions<CircuitBreakerOptions>().BindConfiguration(CircuitBreakerOptions.Name);
-    
-    if (string.IsNullOrEmpty(builder.Configuration.GetValue<string>("AzureTranslation:AccessKey")))
-    {
-        Log.Logger.Information("Azure Translation subscription key not found, translation service will be disabled");
-        builder.Services.AddSingleton<ITranslationService, NoTranslationService>();
-    }
-    else
-    {
-        builder.Services.AddTransient(service =>
-        {
-            AzureTranslationOptions options =  service.GetRequiredService<IOptions<AzureTranslationOptions>>().Value;
-            return new TextTranslationClient(new AzureKeyCredential(options.AccessKey), new Uri(options.Endpoint), options.Region);
-        });
-
-        builder.Services.AddTransient(service =>
-        {
-            AzureTranslationOptions options =  service.GetRequiredService<IOptions<AzureTranslationOptions>>().Value;
-            return new SingleDocumentTranslationClient(new Uri(options.DocumentEndpoint), new AzureKeyCredential(options.AccessKey));
-        });
-        
-        builder.Services.AddScoped<ITranslationService, AzureTranslationService>();
-    }
 
     #endregion
     
