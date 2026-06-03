@@ -25,7 +25,9 @@ resource "azurerm_private_dns_zone" "web-sa-dns-zone" {
   tags = local.common_tags
 
   depends_on = [
-    azurerm_storage_account.web_storage_account
+    azurerm_storage_account.web_storage_account,
+    azapi_resource.web-subnet,
+    azapi_resource.private-endpoint-subnet
   ]
 }
 
@@ -36,4 +38,9 @@ resource "azurerm_private_dns_zone_virtual_network_link" "web-sa-dns-link" {
   virtual_network_id    = azurerm_virtual_network.careleavers-web-vnet.id
 
   tags = local.common_tags
+
+  depends_on = [
+    azapi_resource.web-subnet,
+    azapi_resource.private-endpoint-subnet
+  ]
 }
