@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CareLeavers.Web.Controllers;
 
+[Route("print/{identifier}")]
+[Route("print/{languageCode}/{identifier}")]
 public class PrintController(IContentService contentService, ITranslationService translationService) : Controller
 {
-    [Route("/print/{identifier}")]
-    [Route("/print/{languageCode}/{identifier}")]
     [Translation]
     public async Task<IActionResult> GetPrintableCollection(string identifier, string languageCode)
     {
