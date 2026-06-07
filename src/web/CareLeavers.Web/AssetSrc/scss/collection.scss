@@ -7,13 +7,13 @@
     font-size: 9pt;
     content: "Page " counter(page) " of " counter(pages);
   }
-  
+
   @bottom-left {
     content: "Generated: " var(--generated);
     font-size: 9pt;
     margin-left: 10pt;
   }
-  
+
   @bottom-center {
     font-size: 9pt;
     content: var(--siteurl)
@@ -37,55 +37,19 @@ table, tr, td, th, thead, tbody, tfoot, thead th {
   font-size: 9pt;
 }
 
-.govuk-footer, #main-content-footer { display: none !important; }
-
 #generated {
   position: running(generated);
   margin: 10pt 10pt 30pt 10pt;
   font-size: 9pt;
 }
 
-.dfe-header {
-  padding: 0;
-  background-color: #ffffff;
-}
-
-.govuk-template {
+.govuk-template__header {
   background-color: inherit;
-  
-  .govuk-header {
-    background-color: #ffffff;
-  }
-
-  .govuk-header__link--homepage:not(:focus),
-  .govuk-header__link--homepage
-  {
-    background-color: #ffffff;
-  }
 
   .govuk-header__link:not(:focus) .govuk-header__logotype,
-  .govuk-header__link:focus .govuk-header__logotype{
-    content: url(/assets/department-for-education_black.png);
-    height: 30px;
+  .govuk-header__link:focus .govuk-header__logotype {
+    height: 1.875rem;
   }
-  
-  .govuk-footer {
-    display: none;
-  }
-}
-
-.gem-c-print-link {
-  display: none;
-}
-
-.dfe-header__link .dfe-logo {
-  display: none !important;
-}
-
-.dfe-header__link .dfe-logo-hover {
-  display: inherit !important;
-  width: 136px !important;
-  height: 80px !important;
 }
 
 .dfe-page-grey {
@@ -180,8 +144,7 @@ p, ul, ol {
   list-style-type: none
 }
 
-#collection-header, #collection-header-space
-{
+#collection-header, #collection-header-space {
   height: 190px;
 }
 
@@ -218,11 +181,11 @@ p, ul, ol {
   display: none;
 }
 
-p
-{
+p {
   widows: 5;
   orphans: 5;
 }
+
 .govuk-grid-row {
   break-before: avoid;
   page-break-before: avoid;
@@ -233,19 +196,21 @@ p
   -webkit-column-break-after: avoid;
 }
 
-#last-updated .govuk-grid-column-two-thirds { 
-  width: 100%; 
+#last-updated .govuk-grid-column-two-thirds {
+  width: 100%;
   margin-top: 1rem;
   -webkit-column-break-inside: avoid;
   page-break-inside: avoid;
   break-inside: avoid;
-  
+
   break-before: avoid;
   page-break-before: avoid;
   -webkit-column-break-before: avoid;
 }
 
-.print-only { display: inherit; }
+.print-only {
+  display: inherit;
+}
 
 // Make link text black and remove underline
 [href^="/"].govuk-link::after, [href^="http://"].govuk-link::after, [href^="https://"].govuk-link::after {
@@ -255,7 +220,7 @@ p
 }
 
 // Hide link for relative URLs (same site) and WhatsApp links
-[href^="/"].govuk-link::after, [href^="https://wa.me/"].govuk-link::after{
+[href^="/"].govuk-link::after, [href^="https://wa.me/"].govuk-link::after {
   content: "";
   font-size: inherit;
   word-wrap: inherit;
@@ -284,4 +249,26 @@ p
 .dfe-card-link--no-url-after::after {
   content: none !important;
   display: none !important;
+}
+
+@media print {
+  .environment-banner,
+  .govuk-phase-banner,
+  .govuk-cookie-banner,
+  .govuk-service-navigation__wrapper,
+  .govuk-template__footer {
+    display: none;
+  }
+
+  tr:has([data-module="print-link"]) {
+    display: none;
+  }
+
+  .govuk-header__logotype {
+    content: url(/assets/department-for-education_black.png);
+  }
+
+  html {
+    background-color: transparent !important;
+  }
 }
