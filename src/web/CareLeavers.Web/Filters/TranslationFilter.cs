@@ -64,7 +64,7 @@ public sealed class TranslationFilter(
     private async Task<bool> IsLanguageEnglish(string languageCode)
         => languageCode.Equals("en") || (await translationService.GetLanguage(languageCode)).Code.Equals("en");
 
-    private bool IsFairUsageLimitReached() => fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
+    private bool IsFairUsageLimitReached() => fairUsageService.ShouldLimitUsage();
 
     private async Task<(string? CacheKey, List<string> Tags)> ComputeCacheKeyAndTags(RouteValueDictionary routeData,
         string languageCode)

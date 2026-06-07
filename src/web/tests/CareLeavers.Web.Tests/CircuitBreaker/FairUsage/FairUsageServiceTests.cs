@@ -24,15 +24,14 @@ public class FairUsageServiceTests
 
         _circuitBreakerOptions = Options.Create(new FairUsageOptions
         {
-            AzureTranslationLimit = 2,
-            PdfGeneratorLimit = 2
+            AzureTranslationLimit = 2
         });
 
         _fairUsageService = new FairUsageService(_httpContextAccessor, _circuitBreakerOptions);
     }
 
     [Test]
-    public void ShouldBreakCircuit_When_HttpContextIsNull_Throws_InvalidOperationException()
+    public void ShouldLimitUsage_When_HttpContextIsNull_Throws_InvalidOperationException()
     {
         _httpContextAccessor.HttpContext = null;
 
@@ -40,46 +39,35 @@ public class FairUsageServiceTests
             Throws.TypeOf<InvalidOperationException>().With.Message.EqualTo("HttpContext is NULL"));
         return;
 
-        bool CircuitBreaker() => _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
+        bool CircuitBreaker() => _fairUsageService.ShouldLimitUsage();
     }
 
     [Test]
-    public void ShouldBreakCircuit_When_CircuitBreakerType_IsNull_Throws_ArgumentOutOfRangeException()
-    {
-        Assert.That((Func<bool>)CircuitBreaker,
-            Throws.TypeOf<ArgumentOutOfRangeException>().With.Message
-                .EqualTo("Specified argument was out of the range of valid values. (Parameter 'circuit')"));
-        return;
-
-        bool CircuitBreaker() => _fairUsageService.ShouldLimitUsage((FairUsageType)2);
-    }
-
-    [Test]
-    public void ShouldBreakCircuit_AzureTranslation_When_LanguageCode_IsNull_Returns_False()
+    public void ShouldLimitUsage_AzureTranslation_When_LanguageCode_IsNull_Returns_False()
     {
         _httpContext.Request.RouteValues["languageCode"] = null;
 
-        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
+        bool result = _fairUsageService.ShouldLimitUsage();
 
         Assert.That(result, Is.False);
     }
 
     [Test]
-    public void ShouldBreakCircuit_AzureTranslation_When_LanguageCode_IsEnglish_Returns_False()
+    public void ShouldLimitUsage_AzureTranslation_When_LanguageCode_IsEnglish_Returns_False()
     {
         _httpContext.Request.RouteValues["languageCode"] = "en";
 
-        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
+        bool result = _fairUsageService.ShouldLimitUsage();
 
         Assert.That(result, Is.False);
     }
 
     [Test]
-    public void ShouldBreakCircuit_AzureTranslation_When_JsonIsNull_Returns_False()
+    public void ShouldLimitUsage_AzureTranslation_When_JsonIsNull_Returns_False()
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
 
-        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
+        bool result = _fairUsageService.ShouldLimitUsage();
 
         using (Assert.EnterMultipleScope())
         {
@@ -90,12 +78,12 @@ public class FairUsageServiceTests
     }
 
     [Test]
-    public void ShouldBreakCircuit_AzureTranslation_When_JsonValueIsNull_Returns_False()
+    public void ShouldLimitUsage_AzureTranslation_When_JsonValueIsNull_Returns_False()
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
         _httpContext.Session.SetString(FairUsageOptions.AzureTranslationKey, "null");
 
-        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
+        bool result = _fairUsageService.ShouldLimitUsage();
 
         using (Assert.EnterMultipleScope())
         {
@@ -106,49 +94,49 @@ public class FairUsageServiceTests
     }
 
     [Test]
-    public void ShouldBreakCircuit_AzureTranslation_When_LanguagePreviouslyTranslated_Returns_False()
+    public void ShouldLimitUsage_AzureTranslation_When_LanguagePreviouslyTranslated_Returns_False()
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
         _httpContext.Session.SetString(FairUsageOptions.AzureTranslationKey,
             JsonSerializer.Serialize(new List<string> { "sv" }));
 
-        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
+        bool result = _fairUsageService.ShouldLimitUsage();
 
         Assert.That(result, Is.False);
     }
 
     [Test]
-    public void ShouldBreakCircuit_AzureTranslation_When_AtLimit_But_LanguagePreviouslyTranslated_Returns_False()
+    public void ShouldLimitUsage_AzureTranslation_When_AtLimit_But_LanguagePreviouslyTranslated_Returns_False()
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
         _httpContext.Session.SetString(FairUsageOptions.AzureTranslationKey,
             JsonSerializer.Serialize(new List<string> { "sv", "fr" }));
 
-        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
+        bool result = _fairUsageService.ShouldLimitUsage();
 
         Assert.That(result, Is.False);
     }
 
     [Test]
-    public void ShouldBreakCircuit_AzureTranslation_When_LimitIsReached_Returns_True()
+    public void ShouldLimitUsage_AzureTranslation_When_LimitIsReached_Returns_True()
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
         _httpContext.Session.SetString(FairUsageOptions.AzureTranslationKey,
             JsonSerializer.Serialize(new List<string> { "es", "fr" }));
 
-        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
+        bool result = _fairUsageService.ShouldLimitUsage();
 
         Assert.That(result, Is.True);
     }
 
     [Test]
-    public void ShouldBreakCircuit_AzureTranslation_When_LimitIsNotReached_Returns_False_And_UpdatesSession()
+    public void ShouldLimitUsage_AzureTranslation_When_LimitIsNotReached_Returns_False_And_UpdatesSession()
     {
         _httpContext.Request.RouteValues["languageCode"] = "sv";
         _httpContext.Session.SetString(FairUsageOptions.AzureTranslationKey,
             JsonSerializer.Serialize(new List<string> { "es" }));
 
-        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.AzureTranslation);
+        bool result = _fairUsageService.ShouldLimitUsage();
 
         using (Assert.EnterMultipleScope())
         {
@@ -156,41 +144,5 @@ public class FairUsageServiceTests
             Assert.That(_httpContext.Session.GetString(FairUsageOptions.AzureTranslationKey),
                 Is.EqualTo(JsonSerializer.Serialize(new List<string> { "es", "sv" })));
         }
-    }
-
-    [Test]
-    public void ShouldBreakCircuit_PdfGenerator_When_FirstUsage_Returns_False_And_UpdatesSession()
-    {
-        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.PdfGenerator);
-
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(result, Is.False);
-            Assert.That(_httpContext.Session.GetInt32(FairUsageOptions.PdfGeneratorKey), Is.EqualTo(1));
-        }
-    }
-
-    [Test]
-    public void ShouldBreakCircuit_PdfGenerator_When_BelowLimit_Returns_False_And_UpdatesSession()
-    {
-        _httpContext.Session.SetInt32(FairUsageOptions.PdfGeneratorKey, 1);
-
-        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.PdfGenerator);
-
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(result, Is.False);
-            Assert.That(_httpContext.Session.GetInt32(FairUsageOptions.PdfGeneratorKey), Is.EqualTo(2));
-        }
-    }
-
-    [Test]
-    public void ShouldBreakCircuit_PdfGenerator_When_LimitIsReached_Returns_True()
-    {
-        _httpContext.Session.SetInt32(FairUsageOptions.PdfGeneratorKey, 2);
-
-        bool result = _fairUsageService.ShouldLimitUsage(FairUsageType.PdfGenerator);
-
-        Assert.That(result, Is.True);
     }
 }
