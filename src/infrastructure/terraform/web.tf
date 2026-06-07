@@ -21,8 +21,6 @@ locals {
     "AzureTranslation__CharacterLimit"      = local.environment_character_limits[var.environment_prefix]
     "BlobStorage__ConnectionString"         = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.blob-storage-connection-string.versionless_id})"
     "BlobStorage__ContainerName"            = azurerm_storage_container.translator_storage_container.name
-    "PdfGeneration__ApiKey"                 = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.pdf-generation-api-key.versionless_id})"
-    "PdfGeneration__Sandbox"                = var.pdf_generation_use_sandbox
     "Rebrand"                               = var.rebrand
     "GetToAnAnswer__BaseUrl"                = var.gtaa_base_url
     "BasicAuth__EncodedCreds"               = var.basic_auth_credentials

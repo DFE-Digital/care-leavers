@@ -127,18 +127,6 @@ resource "azurerm_key_vault_secret" "application-insights-connection-string" {
   ]
 }
 
-resource "azurerm_key_vault_secret" "pdf-generation-api-key" {
-  key_vault_id = azurerm_key_vault.kv.id
-  name         = "pdf-generation-api-key"
-  value        = var.pdf_generation_api_key
-
-  depends_on = [
-    azurerm_role_assignment.kv_officer,
-    azurerm_role_assignment.kv_administrator,
-    azurerm_role_assignment.kv_admin_sp
-  ]
-}
-
 resource "azurerm_key_vault_secret" "azure-translation-access-key" {
   key_vault_id = azurerm_key_vault.kv.id
   name         = "azure-translation-access-key"

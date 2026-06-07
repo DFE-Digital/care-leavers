@@ -47,7 +47,6 @@ const internalPageToScan = (url) => {
     
     if (url.startsWith('//assets.ctfassets.net')) return false;
     if (url.includes('translate-this-website')) return true;
-    if (url.includes('pdf')) return true;
 
     if (url.startsWith('/') || url.startsWith(websiteRoot)) {
         return transformInternalUrl(url);
