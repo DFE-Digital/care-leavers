@@ -53,6 +53,15 @@
                                 new { languageCode = translation.Code },
                                 new { @class = "govuk-link", rel = "nofollow", hreflang = translation.Code })
                         }
+                        else if (!string.IsNullOrEmpty(Model.Identifier))
+                        {
+                            @Html.ActionLink(
+                                $"{translation.NativeName} ({translation.Name})",
+                                "GetPrintableCollection",
+                                "Print",
+                                new { Model.Identifier, languageCode = translation.Code },
+                                new { @class = "govuk-link", rel = "nofollow", hreflang = translation.Code })
+                        }
                         else
                         {
                             @Html.ActionLink(

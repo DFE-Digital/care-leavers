@@ -8,5 +8,7 @@ public class TranslationViewModel
     
     public string? Slug { get; set; }
     
+    public string? Identifier { get; set; }
+    
     public string? Page { get; set; }
 }

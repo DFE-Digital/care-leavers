@@ -1,4 +1,5 @@
 using CareLeavers.Web.Configuration;
+using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Models.ViewModels;
 using CareLeavers.Web.Translation;
 using Microsoft.AspNetCore.Mvc;
@@ -46,5 +47,17 @@ public class TranslationController(
         };
         
         return View("Index", model);
+    }
+
+    [Route("print/{identifier?}")]
+    public async Task<IActionResult> Print(string? identifier)
+    {
+        ContentfulConfigurationEntity config = await contentfulConfiguration.GetConfiguration();
+
+        return config.TranslationEnabled ? View("Index", new TranslationViewModel
+        {
+            Languages = await translationService.GetLanguages(),
+            Identifier = identifier
+        }) : NotFound();
     }
 }
