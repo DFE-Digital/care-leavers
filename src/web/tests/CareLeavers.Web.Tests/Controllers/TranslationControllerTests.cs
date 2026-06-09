@@ -90,6 +90,39 @@ public class TranslationControllerTests
         Assert.That(result, Is.TypeOf<NotFoundResult>());
     }
 
+    [Test]
+    public async Task Print_WhenTranslationIs_Enabled_Returns_View()
+    {
+        const string identifier = "test-identifier";
+        _contentfulConfiguration.GetConfiguration().Returns(new ContentfulConfigurationEntity { TranslationEnabled =  true });
+        List<TranslationLanguage> languages = [ new() { Code = "sv"} ];
+        _translationService.GetLanguages().Returns(languages);
+        
+        IActionResult result = await _translationController.Print(identifier);
+        
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+        Assert.That(viewResult.Model, Is.TypeOf<TranslationViewModel>());
+        TranslationViewModel? viewModel = viewResult.Model as TranslationViewModel;
+        Assert.That(viewModel, Is.Not.Null);
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(viewModel.Identifier, Is.EqualTo(identifier));
+            Assert.That(viewModel.Languages, Is.EqualTo(languages));
+        }
+    }
+
+    [Test]
+    public async Task Print_WhenTranslationIs_Disabled_Returns_NotFound()
+    {
+        _contentfulConfiguration.GetConfiguration().Returns(new ContentfulConfigurationEntity { TranslationEnabled =  false });
+
+        IActionResult result = await _translationController.Print("test-identifier");
+        
+        Assert.That(result, Is.TypeOf<NotFoundResult>());
+    }
+
     [TearDown]
     public void Teardown()
     {

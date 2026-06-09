@@ -82,7 +82,7 @@ public class GdsLinkRenderer(ContentRendererCollection rendererCollection, IServ
                         break;
 
                     case PrintableCollection pc:
-                        tb.Attributes["href"] = helper.GetPathByAction("DownloadPdf", "Print",
+                        tb.Attributes["href"] = helper.GetPathByAction("GetPrintableCollection", "Print",
                             values: new { identifier = pc.Identifier, languageCode });
                         tb.Attributes["rel"] = "nofollow";
                         
@@ -98,7 +98,7 @@ public class GdsLinkRenderer(ContentRendererCollection rendererCollection, IServ
                         break;
 
                     case PrintableCollection pc:
-                        tb.Attributes["href"] = $"/pdf/{pc.Identifier}";
+                        tb.Attributes["href"] = $"/print/{pc.Identifier}";
                         tb.Attributes["rel"] = "nofollow";
                         break;
                 }

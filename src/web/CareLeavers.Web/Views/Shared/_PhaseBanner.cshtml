@@ -46,6 +46,14 @@
                             new { page = currentAction },
                             new { @class = "govuk-link", rel = "nofollow" })
                         break;
+                    case "Print":
+                        string? identifier = ViewContext.RouteData.Values["identifier"]?.ToString();
+                        @Html.ActionLink(Model.Language.NativeName,
+                            "Print",
+                            "Translation",
+                            new { identifier },
+                            new { @class = "govuk-link", rel = "nofollow" })
+                        break;
                     default:
                         @Html.ActionLink(Model.Language.NativeName,
                             "Index",

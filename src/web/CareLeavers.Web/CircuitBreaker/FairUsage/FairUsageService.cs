@@ -7,7 +7,7 @@ namespace CareLeavers.Web.CircuitBreaker.FairUsage;
 
 public interface IFairUsageService
 {
-    public bool ShouldLimitUsage(FairUsageType circuit);
+    public bool ShouldLimitUsage();
 }
 
 public sealed class FairUsageService(IHttpContextAccessor accessor, IOptions<FairUsageOptions> options) 
@@ -15,17 +15,12 @@ public sealed class FairUsageService(IHttpContextAccessor accessor, IOptions<Fai
 {
     private static readonly JsonSerializerOptions JsonSerializerOptions = new(JsonSerializerDefaults.Web);
 
-    public bool ShouldLimitUsage(FairUsageType circuit)
+    public bool ShouldLimitUsage()
     {
         if (accessor.HttpContext is null) throw new InvalidOperationException("HttpContext is NULL");
         HttpContext httpContext = accessor.HttpContext;
-
-        return circuit switch
-        {
-            FairUsageType.AzureTranslation => ShouldLimitUsageAzureTranslation(httpContext),
-            FairUsageType.PdfGenerator => ShouldLimitUsagePdfGenerator(httpContext),
-            _ => throw new ArgumentOutOfRangeException(nameof(circuit))
-        };
+        
+        return ShouldLimitUsageAzureTranslation(httpContext);
     }
 
     private bool ShouldLimitUsageAzureTranslation(HttpContext httpContext)
@@ -54,13 +49,5 @@ public sealed class FairUsageService(IHttpContextAccessor accessor, IOptions<Fai
         DateTime timeout = DateTime.UtcNow.AddDays(1);
         if (timeZoneInfo.IsDaylightSavingTime(timeout)) timeout = timeout.AddHours(1);
         return timeout.ToString("h:mmtt", CultureInfo.CreateSpecificCulture("en-GB"));
-    }
-
-    private bool ShouldLimitUsagePdfGenerator(HttpContext httpContext)
-    {
-        int timesUsed = httpContext.Session.GetInt32(FairUsageOptions.PdfGeneratorKey) ?? 0;
-        if (timesUsed >= options.Value.PdfGeneratorLimit) return true;
-        httpContext.Session.SetInt32(FairUsageOptions.PdfGeneratorKey, timesUsed + 1);
-        return false;
     }
 }

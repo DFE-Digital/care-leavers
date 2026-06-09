@@ -15,7 +15,7 @@
             break;
         case PrintableCollection pc:
             var identifier = pc.Identifier ?? string.Empty;
-            link = LinkGenerator.GetPathByAction("DownloadPdf", "Print", values: new { identifier, languageCode });
+            link = LinkGenerator.GetPathByAction("GetPrintableCollection", "Print", values: new { identifier, languageCode });
             rel = "nofollow";
 
             break;

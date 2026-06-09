@@ -1,138 +1,37 @@
-using System.Net.Http.Headers;
-using CareLeavers.Web.CircuitBreaker.FairUsage;
-using CareLeavers.Web.Configuration;
 using CareLeavers.Web.Contentful;
 using CareLeavers.Web.Filters;
+using CareLeavers.Web.Models.Content;
 using CareLeavers.Web.Translation;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using ZiggyCreatures.Caching.Fusion;
 
 namespace CareLeavers.Web.Controllers;
 
-public class PrintController(IHttpClientFactory httpClientFactory, IContentService contentService, ITranslationService translationService, IOptions<PdfGenerationOptions> pdfOptions, IFusionCache fusionCache) : Controller
+[Route("print/{identifier}")]
+[Route("print/{languageCode}/{identifier}")]
+public class PrintController(IContentService contentService, ITranslationService translationService) : Controller
 {
-    [Route("/print/{identifier}")]
-    [Route("/print/{languageCode}/{identifier}")]
     [Translation]
     public async Task<IActionResult> GetPrintableCollection(string identifier, string languageCode)
     {
-        if (string.IsNullOrEmpty(languageCode))
-        {
+        if (string.IsNullOrWhiteSpace(languageCode)) 
             return RedirectToAction("GetPrintableCollection", new { identifier, languageCode = "en" });
-        }
-
-        var config = await contentService.GetConfiguration();
-
-        if (config == null)
-        {
-            return NotFound();
-        }
         
-
-        var languages = new List<string>();
-        if (config is { TranslationEnabled: true })
-        {
-            languages.AddRange((await translationService.GetLanguages()).Select(l => l.Code));
-        }
-        if (languages.Count == 0)
-        {
-            languages.Add("en");
-        }
+        ContentfulConfigurationEntity? config = await contentService.GetConfiguration();
         
-        if (!languages.Contains(languageCode))
+        switch (config)
         {
-            return RedirectToAction("GetPrintableCollection", new { identifier, languageCode = "en" });
-        }
-        
-        var collection = await contentService.GetPrintableCollection(identifier);
-
-        if (collection == null)
-        {
-            return NotFound();
-        }
-        
-        return View("Collection", collection);
-    }
-
-    [Route("/pdf/{languageCode}/{identifier}")]
-    public async Task<IActionResult> DownloadPdf([FromServices] IFairUsageService fairUsageService, 
-        string identifier, string languageCode)
-    {
-        var collection = await contentService.GetPrintableCollection(identifier);
-        if (collection == null)
-            return NotFound();
-
-        // Add tags for each page in the collection, so we expire it if a page changes
-        var tags = collection.Content.Select(p => p.Slug!).ToList();
-        
-        // Also add our printable collection identifier as a tag too
-        tags.Add($"pc-{identifier}");
-        var filename = identifier;
-        if (languageCode != "en")
-        {
-            filename += "-" + languageCode;
-        }
-        filename += ".pdf";
-
-        try
-        {
-            var pdf = await fusionCache.GetOrSetAsync<byte[]>($"pdf:{identifier}:{languageCode}", async token =>
+            case { TranslationEnabled: true }:
             {
-                if (fairUsageService.ShouldLimitUsage(FairUsageType.PdfGenerator)) return [];
-                
-                var config = await contentService.GetConfiguration();
-
-                var url = Url.ActionLink("GetPrintableCollection", "Print", new { identifier, languageCode }, protocol: "https");
-                
-                var sandbox = pdfOptions.Value.Sandbox.ToString().ToLower();
-                var apiKey = pdfOptions.Value.ApiKey;
-                
-                if (config == null)
-                    return [];
-
-                var client = httpClientFactory.CreateClient();
-                var request = new HttpRequestMessage();
-
-                request.Method = HttpMethod.Post;
-                request.RequestUri = new Uri("https://api.pdfendpoint.com/v1/convert");
-                request.Headers.Authorization =
-                    AuthenticationHeaderValue.Parse($"Bearer {apiKey}");
-                var requestContent = $$"""
-                                       {
-                                           "url": "{{url}}",
-                                           "sandbox": {{sandbox}}, 
-                                           "delivery_mode": "inline", 
-                                           "title": "{{collection.Title}}", 
-                                           "author": "{{config?.ServiceName}}",
-                                           "filename": "{{filename}}",
-                                           "print_media": true,
-                                           "user_agent": "PDF Renderer - twitterbot"
-                                       }
-                                       """;
-                request.Content = new StringContent(requestContent);
-
-                request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
-
-                using var response = await client.SendAsync(request, token);
-                response.EnsureSuccessStatusCode();
-
-                return await response.Content.ReadAsByteArrayAsync(token);
-            }, tags: tags);
-
-            if (pdf.Length > 0)
-            {
-                Response.Headers.Append("Content-Disposition",$"inline;{filename}");
-                return File(pdf, contentType: "application/pdf");
+                TranslationLanguage language = await translationService.GetLanguage(languageCode);
+                if (!languageCode.Equals(language.Code, StringComparison.InvariantCultureIgnoreCase)) 
+                    return RedirectToAction("GetPrintableCollection", new { identifier, languageCode = "en" });
+                break;
             }
-        }
-        catch (HttpRequestException)
-        {
-            // If we can't generate our printable PDF, redirect to the print page instead
-            return RedirectToAction("GetPrintableCollection", new { identifier, languageCode });
+            case null:
+                return NotFound();
         }
 
-        return NotFound();
-
+        PrintableCollection? collection = await contentService.GetPrintableCollection(identifier);
+        return collection is not null ? View("Collection", collection) : NotFound();
     }
 }

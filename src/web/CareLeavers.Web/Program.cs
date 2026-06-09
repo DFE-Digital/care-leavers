@@ -253,7 +253,6 @@ try
 
     builder.Services.AddOptions<ScriptOptions>().BindConfiguration(ScriptOptions.Name);
     builder.Services.AddOptions<CachingOptions>().BindConfiguration(CachingOptions.Name);
-    builder.Services.AddOptions<PdfGenerationOptions>().BindConfiguration(PdfGenerationOptions.Name);
 
     #endregion
     

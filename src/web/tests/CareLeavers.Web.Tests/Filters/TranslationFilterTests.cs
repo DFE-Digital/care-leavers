@@ -111,7 +111,7 @@ public class TranslationFilterTests
         _resultExecutingContext.RouteData.Values["languageCode"] = "sv";
         
         _translationService.GetLanguage(Arg.Any<string>()).Returns(new TranslationLanguage { Code = "sv" });
-        _fairUsageService.ShouldLimitUsage(Arg.Any<FairUsageType>()).Returns(true);
+        _fairUsageService.ShouldLimitUsage().Returns(true);
         
         await _translationFilter.OnResultExecutionAsync(_resultExecutingContext, Next);
         

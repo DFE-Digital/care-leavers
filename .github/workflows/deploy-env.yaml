@@ -154,8 +154,6 @@ jobs:
           TF_VAR_scripts_clarity: ${{ vars.SCRIPTS_CLARITY }}
           TF_VAR_custom_domain: ${{ vars.CUSTOM_DOMAIN }}
           TF_VAR_azure_frontdoor_scale: ${{ vars.AZURE_FRONTDOOR_SCALE }}
-          TF_VAR_pdf_generation_api_key: ${{ secrets.PDF_GENERATION_API_KEY }}
-          TF_VAR_pdf_generation_use_sandbox: ${{ vars.PDF_GENERATION_USE_SANDBOX }}
           TF_VAR_rebrand: ${{ vars.REBRAND }}
           TF_VAR_support_alert_email: ${{ secrets.SUPPORT_ALERT_EMAIL }}
           TF_VAR_gtaa_base_url: ${{ vars.GTAA_BASE_URL }}

@@ -280,7 +280,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       match_variable = "RequestUri"
       operator       = "Contains"
       transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["/pdf/", "/translate-this-website/"]
+      match_values   = ["/translate-this-website/"]
     }
   }
 
@@ -304,7 +304,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       operator           = "Contains"
       negation_condition = true
       transforms         = ["Lowercase", "UrlDecode"]
-      match_values       = ["/pdf/", "/translate-this-website/"]
+      match_values       = ["/translate-this-website/"]
     }
   }
 
@@ -368,7 +368,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       operator           = "Contains"
       negation_condition = true
       transforms         = ["Lowercase", "UrlDecode"]
-      match_values       = ["/pdf/", "/translate-this-website/"]
+      match_values       = ["/translate-this-website/"]
     }
   }
 
