@@ -31,7 +31,7 @@ RUN dotnet publish CareLeavers.Web.csproj --no-restore --configuration Release -
 # -- Run .NET -- #
 #    Image - [Major].[Minor].[Patch]-alpine[Major].[Minor] - E.g., 8.0.28-alpine3.23
 FROM mcr.microsoft.com/dotnet/aspnet@sha256:4718c6b44771e710f91d6129912cb4fa3b90024ec4e23b3f8ce89822fba612fd
-RUN apk add --no-cache icu-libs && apk add --no-cache icu-data-full
+RUN apk add --no-cache icu-libs icu-data-full tzdata
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 USER app
 WORKDIR /src
