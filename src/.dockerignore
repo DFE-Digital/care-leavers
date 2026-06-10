@@ -12,6 +12,7 @@
 **/*.dbmdl
 **/*.jfm
 **/azds.yaml
+**/wwwroot
 **/bin
 **/charts
 **/docker-compose*
