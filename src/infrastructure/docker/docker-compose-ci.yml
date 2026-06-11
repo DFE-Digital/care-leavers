@@ -14,4 +14,6 @@ services:
       - Rebrand=true
       - ASPNETCORE_URLS=https://+:8080
       - ASPNETCORE_Kestrel__Certificates__Default__Password=e2e
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro

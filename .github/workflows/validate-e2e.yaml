@@ -23,6 +23,14 @@ jobs:
                 
       - name: Lowercase the repo name and username
         run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+        
+      - name: Create Local Developer Certificate
+        run: |
+          mkdir -p ${HOME}/.aspnet/https
+          export SSL_CERT_DIR="$HOME/.aspnet/dev-certs/trust:$SSL_CERT_DIR"
+          dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p "e2e"
+          dotnet dev-certs https --trust
+          chmod -R 755 ${HOME}/.aspnet
 
       - name: Build Web Docker Image
         id: build
@@ -33,11 +41,12 @@ jobs:
         id: run
         if: steps.build.outcome == 'success'
         working-directory: ./src
+        run: |
+          docker compose -f infrastructure/docker/docker-compose-ci.yml up -d
         env:
           CONTENTFUL_DELIVERY_API_KEY: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
           CONTENTFUL_PREVIEW_API_KEY: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
           CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
-        run: docker compose -f infrastructure/docker/docker-compose-ci.yml up -d
 
       - name: Install dependencies
         working-directory: ./src/e2e/CareLeavers.E2ETests
