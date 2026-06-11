@@ -1,5 +1,5 @@
 ﻿# -- Build Node -- #
-#    Image - [Major]-alpine[Major].[Minor] - E.g., 26-alpine3.23
+#    Image: Node 26 Alpine
 FROM node@sha256:144769ec3f32e8ee36b3cfde91e82bee25d9367b20f31a151f3f7eea3a2a8541 AS build-node
 WORKDIR /src
 
@@ -16,7 +16,7 @@ RUN gulp dev
 # -- Build Node -- #
 
 # -- Build .NET -- #
-#    Image - [Major].[Minor].[Patch]-alpine[Major].[Minor] - E.g., 8.0.422-alpine3.23
+#    Image: .NET 8 Alpine
 FROM mcr.microsoft.com/dotnet/sdk@sha256:d9f4f4a5d99a43799b500ee1365c370e3233822fbe7d43666715d9b5b5cda2ab AS build-dotnet
 WORKDIR /src
 
@@ -29,7 +29,7 @@ RUN dotnet publish CareLeavers.Web.csproj --no-restore --configuration Release -
 # -- Build .NET -- #
 
 # -- Run .NET -- #
-#    Image - [Major].[Minor].[Patch]-alpine[Major].[Minor] - E.g., 8.0.28-alpine3.23
+#    Image: .NET 8 Alpine
 FROM mcr.microsoft.com/dotnet/aspnet@sha256:4718c6b44771e710f91d6129912cb4fa3b90024ec4e23b3f8ce89822fba612fd
 RUN apk add --no-cache icu-libs icu-data-full tzdata
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
