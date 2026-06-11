@@ -88,14 +88,13 @@ public class AzureTranslationServiceTests
         await _fusionCache.SetAsync("translation:supported-languages",
             new List<TranslationLanguage> { new() { Code = languageCode } });
 
-        _textTranslationClientMock.TranslateAsync(Arg.Any<TextTranslationTranslateOptions>())
-            .Returns(Response.FromValue<IReadOnlyList<TranslatedTextItem>>(new List<TranslatedTextItem>
+        _textTranslationClientMock.TranslateAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(
+            Response.FromValue<IReadOnlyList<TranslatedTextItem>>(new List<TranslatedTextItem>
                 {
-                    AITranslationTextModelFactory.TranslatedTextItem(
+                    TranslationTextModelFactory.TranslatedTextItem(
                         translations:
                         [
-                            AITranslationTextModelFactory.TranslationText(targetLanguage: languageCode,
-                                text: translation)
+                            TranslationTextModelFactory.TranslationText(languageCode, text: translation)
                         ])
                 },
                 new ResponseMock()));
@@ -111,7 +110,7 @@ public class AzureTranslationServiceTests
     {
         const string html = "<p>Test</p>";
 
-        await _fusionCache.SetAsync("translation:supported-languages", 
+        await _fusionCache.SetAsync("translation:supported-languages",
             new List<TranslationLanguage> { new() { Code = "ZZ" } });
 
         string? result = await _azureTranslationService.TranslateHtml(html, "Invalid");
@@ -160,13 +159,17 @@ public class AzureTranslationServiceTests
         };
         _contentfulConfigurationMock.GetConfiguration().Returns(config);
 
-        GetSupportedLanguagesResult? azureLanguages = AITranslationTextModelFactory.GetSupportedLanguagesResult(
+        GetSupportedLanguagesResult? azureLanguages = TranslationTextModelFactory.GetSupportedLanguagesResult(
             translation: new Dictionary<string, Azure.AI.Translation.Text.TranslationLanguage>
             {
-                { "en", AITranslationTextModelFactory.TranslationLanguage("English", "English") },
-                { "sv", AITranslationTextModelFactory.TranslationLanguage("Swedish", "Svenska") },
-                { "fr", AITranslationTextModelFactory.TranslationLanguage("French", "Francais") },
-                { "ar", AITranslationTextModelFactory.TranslationLanguage("Arabic", "Arabic", LanguageDirectionality.RightToLeft) }
+                { "en", TranslationTextModelFactory.TranslationLanguage("English", "English") },
+                { "sv", TranslationTextModelFactory.TranslationLanguage("Swedish", "Svenska") },
+                { "fr", TranslationTextModelFactory.TranslationLanguage("French", "Francais") },
+                {
+                    "ar",
+                    TranslationTextModelFactory.TranslationLanguage("Arabic", "Arabic",
+                        LanguageDirectionality.RightToLeft)
+                }
             });
 
         _textTranslationClientMock.GetSupportedLanguagesAsync(cancellationToken: Arg.Any<CancellationToken>())

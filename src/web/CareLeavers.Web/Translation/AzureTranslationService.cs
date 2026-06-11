@@ -1,4 +1,5 @@
 using System.Text;
+using Azure;
 using Azure.AI.Translation.Document;
 using Azure.AI.Translation.Text;
 using CareLeavers.Web.Configuration;
@@ -27,14 +28,10 @@ public class AzureTranslationService(
             return await TranslateDocument(html, language.Code);
         }
         
-        var translateOptions = new TextTranslationTranslateOptions(toLanguage, html)
-        {
-            TextType = TextType.Html
-        };
-        
-        var response = await azureTranslationClient.TranslateAsync(translateOptions);
+        Response<IReadOnlyList<TranslatedTextItem>>? response = 
+            await azureTranslationClient.TranslateAsync($"to={toLanguage}", html, "en");
 
-        return response.Value.FirstOrDefault()?.Translations.FirstOrDefault()?.Text;
+        return response.HasValue ? response.Value[0].Translations[0].Text : null;
     }
 
     private async Task<string?> TranslateDocument(string html, string language)
