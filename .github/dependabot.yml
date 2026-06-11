@@ -28,6 +28,21 @@ updates:
         patterns:
           - "*"
 
+  - package-ecosystem: "docker"
+    directory: "/src"
+    cooldown:
+      default-days: 7
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "[docker] "
+    open-pull-requests-limit: 5
+    ignore:
+    groups:
+      docker-deps:
+        patterns:
+          - "*"
+
   - package-ecosystem: "nuget"
     directory: "/src"
     cooldown:
