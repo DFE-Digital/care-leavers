@@ -29,7 +29,7 @@ public class AzureTranslationService(
         }
         
         Response<IReadOnlyList<TranslatedTextItem>>? response = 
-            await azureTranslationClient.TranslateAsync($"to={toLanguage}", html, "en");
+            await azureTranslationClient.TranslateAsync(toLanguage, html, "en");
 
         return response.HasValue ? response.Value[0].Translations[0].Text : null;
     }
