@@ -4,9 +4,6 @@ on:
   workflow_call:
   pull_request:
     branches: [ "main" ]
-    paths:
-      - 'src/web/**'
-      - '.github/workflows/validate-web.yaml'
 
 jobs:
   build-backend:
