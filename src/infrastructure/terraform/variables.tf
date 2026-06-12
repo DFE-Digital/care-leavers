@@ -56,11 +56,13 @@ variable "scripts_clarity" {
 variable "scripts_ga4" {
   description = "Google Analytics code"
   type        = string
+  default     = "G-LPYZPF4TEX"
 }
 
 variable "scripts_gtm" {
   description = "Google Tag Manager code"
   type        = string
+  default     = "GTM-TKWX6SNW"
 }
 
 variable "custom_domain" {

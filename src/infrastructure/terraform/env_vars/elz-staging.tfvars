@@ -1,0 +1,12 @@
+aspnetcore_environment     = "Staging"
+environment_prefix         = "t01"
+elz_environment            = "Test"
+contentful_environment     = "production"
+contentful_use_preview_api = true
+caching_type               = "Memory"
+scripts_clarity            = "q9nglnu3j3"
+custom_domain              = "staging.support-for-care-leavers.education.gov.uk"
+azure_frontdoor_scale      = "Standard"
+rebrand                    = false
+gtaa_base_url              = "https://staging.get-to-an-answer.education.gov.uk"
+enable_basic_auth          = true

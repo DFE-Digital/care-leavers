@@ -1,0 +1,12 @@
+aspnetcore_environment     = "Production"
+environment_prefix         = "p01"
+elz_environment            = "Prod"
+contentful_environment     = "production"
+contentful_use_preview_api = false
+caching_type               = "Redis"
+scripts_clarity            = "q9nhc06tot"
+custom_domain              = "www.support-for-care-leavers.education.gov.uk"
+azure_frontdoor_scale      = "Premium"
+rebrand                    = false
+gtaa_base_url              = "https://www.get-to-an-answer.education.gov.uk"
+enable_basic_auth          = false

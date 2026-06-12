@@ -1,0 +1,12 @@
+aspnetcore_environment     = "Test"
+environment_prefix         = "d01"
+elz_environment            = "Dev"
+contentful_environment     = "test"
+contentful_use_preview_api = false
+caching_type               = "Redis"
+scripts_clarity            = "q52qzxjslm"
+custom_domain              = "test.support-for-care-leavers.education.gov.uk"
+azure_frontdoor_scale      = "Standard"
+rebrand                    = true
+gtaa_base_url              = "https://dev.get-to-an-answer.education.gov.uk"
+enable_basic_auth          = true
