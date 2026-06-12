@@ -55,6 +55,8 @@ updates:
     ignore:
       - dependency-name: "Microsoft.*"
         update-types: ["version-update:semver-major"]
+      - dependency-name: "Azure.*"
+        update-types: [ "version-update:semver-major" ]
       - dependency-name: "Serilog.AspNetCore"
         update-types: [ "version-update:semver-major" ]
     groups:
