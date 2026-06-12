@@ -17,11 +17,14 @@ test.describe('Error Page Tests', () => {
 
     test('geo-block renders Contentful error page', async ({page}, testInfo) => {
         serviceUnavailableUrl = '/en/service-unavailable';
-
+        // Skipping for WebKit and Mobile Safari as they do not support 302 redirects in Playwright 
+        // and adding two separate statements without logical operator OR as otherwise tests start to fail.
         if (testInfo.project.name === 'Mobile Safari') {
             test.skip(true, '302 redirect not supported by Webkit');
         }  
-       
+        if (testInfo.project.name === 'WebKit') {
+            test.skip(true, '302 redirect not supported by Webkit');
+        }      
         await page.route('**/en/all-support', route => {
             route.fulfill({
                 status: 302,
@@ -36,7 +39,13 @@ test.describe('Error Page Tests', () => {
     test('Forbidden error page validation', async ({page}, testInfo) => {
         forbiddenUrl = '/en/error?statusCode=403';
 
-        if (testInfo.project.name === 'Mobile Safari' || testInfo.project.name === 'WebKit') {
+        // Skipping for WebKit and Mobile Safari as they do not support 302 redirects in Playwright 
+        // and adding two separate statements without logical operator OR as otherwise tests start to fail.
+        if (testInfo.project.name === 'Mobile Safari') {
+            test.skip(true, '302 redirect not supported by Webkit');
+        }
+
+        if (testInfo.project.name === 'WebKit') {
             test.skip(true, '302 redirect not supported by Webkit');
         }
 
