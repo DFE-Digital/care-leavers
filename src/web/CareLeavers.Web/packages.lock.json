@@ -14,27 +14,25 @@
       },
       "Azure.AI.Translation.Text": {
         "type": "Direct",
-        "requested": "[1.0.0, )",
-        "resolved": "1.0.0",
-        "contentHash": "1NuUYXydLzlJH8NXuq3SIBvCJ1VDSXJym0BA24bFWkLMDluYQaS4pwmrVyEfTqFmqO1fqzAxP87RMqH+zWdr4Q==",
+        "requested": "[2.0.0, )",
+        "resolved": "2.0.0",
+        "contentHash": "v0U87B7PkjvxppAVWSMZSDshTB1uPBR6nPcdGWrhzUW/v9RG5sP7QdjxJtyJtHVzrUmY9lM8Y2T2mO7KAAXBpQ==",
         "dependencies": {
-          "Azure.Core": "1.39.0",
-          "System.ClientModel": "1.0.0",
-          "System.Text.Json": "4.7.2"
+          "Azure.Core": "1.57.0"
         }
       },
       "Azure.Core": {
         "type": "Direct",
-        "requested": "[1.55.0, )",
-        "resolved": "1.55.0",
-        "contentHash": "c7femvYS/xEUrLP1sNZN+DoQZmx3X+G3ZXtOOz0RL/7cGMCM3JVqepVmRd3AwM4IK8AtTGS4GOigCO+d/zaSsQ==",
+        "requested": "[1.58.0, )",
+        "resolved": "1.58.0",
+        "contentHash": "A5P6rTFEg5mAaW90+eAZNRBikJz4I5m09WDqIOC8SkB4zPnxz+rYnZ/NqoKHO+wemkqjHGvCTZqW+lPqkpvj1Q==",
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "10.0.3",
           "Microsoft.Extensions.Configuration.Abstractions": "10.0.3",
           "Microsoft.Extensions.Hosting.Abstractions": "10.0.3",
           "Microsoft.Identity.Client": "4.83.1",
           "Microsoft.Identity.Client.Extensions.Msal": "4.83.1",
-          "System.ClientModel": "1.11.0",
+          "System.ClientModel": "1.14.0",
           "System.Diagnostics.DiagnosticSource": "10.0.3",
           "System.Memory.Data": "10.0.3",
           "System.Text.Encodings.Web": "10.0.3",
@@ -56,12 +54,12 @@
       },
       "Azure.Storage.Blobs": {
         "type": "Direct",
-        "requested": "[12.28.0, )",
-        "resolved": "12.28.0",
-        "contentHash": "OK6slT3Hq3Yp2HWA0e23YHheHzKNbYjBZOwdT4fQ1iMH6I/8e6X8kAJLuKqVUeFBy160QSwhsynA3HxhVSHEcg==",
+        "requested": "[12.29.0, )",
+        "resolved": "12.29.0",
+        "contentHash": "e82Racxat6NsLHD+6Nwf2GxglYdN9T20QHgAsaHB1FYgbJUZilmUR0H+IPCu6AJy8nNyvSONc/erF8vtsyHrRw==",
         "dependencies": {
-          "Azure.Core": "1.51.1",
-          "Azure.Storage.Common": "12.27.0"
+          "Azure.Core": "1.55.0",
+          "Azure.Storage.Common": "12.28.0"
         }
       },
       "contentful.aspnetcore": {
@@ -120,13 +118,13 @@
       },
       "Microsoft.Extensions.Caching.StackExchangeRedis": {
         "type": "Direct",
-        "requested": "[9.0.15, )",
-        "resolved": "9.0.15",
-        "contentHash": "A6cPl6wUW4wLOl03kqVzFYOzMVpFlOOjK5czvpYoqMMJgx3guzbyaugkeLmLfT5Vv2HXPkvBebxRgylgkkGuSg==",
+        "requested": "[9.0.16, )",
+        "resolved": "9.0.16",
+        "contentHash": "cW/17J/3KoCY2JhrWuS/R6wLIDUJHRs4DWXriACdfWRH7arXChcMleWDj5YMCrK5Lw4pQi4Ac10ZAM01nozSSg==",
         "dependencies": {
-          "Microsoft.Extensions.Caching.Abstractions": "9.0.15",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.15",
-          "Microsoft.Extensions.Options": "9.0.15",
+          "Microsoft.Extensions.Caching.Abstractions": "9.0.16",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.16",
+          "Microsoft.Extensions.Options": "9.0.16",
           "StackExchange.Redis": "2.7.27"
         }
       },
@@ -274,10 +272,10 @@
       },
       "Azure.Storage.Common": {
         "type": "Transitive",
-        "resolved": "12.27.0",
-        "contentHash": "PBucMNzot6cYyN0isdte50iPCefJ4Ylg0B+KP4kxmqsc3ciOiDYh1MwVV6fPZPjoPnPvNRLN9TI6J5hgNf4huA==",
+        "resolved": "12.28.0",
+        "contentHash": "5l8YhNrks38zKLGFW2BBFLwieyamH/xauABSASsdpZv79G0f+n2n22IjkRmUqCmALSupkwRHh2LOhbW3yj5Qgw==",
         "dependencies": {
-          "Azure.Core": "1.51.1",
+          "Azure.Core": "1.55.0",
           "System.IO.Hashing": "10.0.3"
         }
       },
@@ -1243,8 +1241,8 @@
       },
       "System.ClientModel": {
         "type": "Transitive",
-        "resolved": "1.11.0",
-        "contentHash": "1Wl32zh7TbvN+HAO8NqDuaN0Ao2Qu/0j0NJSrXGDtpUQsTXQYJ3C6hd9/Ds2IrgP4agMQYFoXB35GZfC21ByHw==",
+        "resolved": "1.14.0",
+        "contentHash": "yhIJHDW3Hh5kcvhHv3ww1T8qvya06Nlwo/SR/rke4/fHXtyKiqQV/9b/VDhnVI7QUcMnpfvh4pIEFhNsTDLeKQ==",
         "dependencies": {
           "Microsoft.Extensions.Configuration.Abstractions": "10.0.3",
           "Microsoft.Extensions.Hosting.Abstractions": "10.0.3",
