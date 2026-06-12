@@ -20,7 +20,10 @@ test.describe('Error Page Tests', () => {
 
         if (testInfo.project.name === 'Mobile Safari') {
             test.skip(true, '302 redirect not supported by Webkit');
-        }
+        }  
+        if (testInfo.project.name === 'WebKit') {
+            test.skip(true, '302 redirect not supported by Webkit');
+        }      
         await page.route('**/en/all-support', route => {
             route.fulfill({
                 status: 302,
@@ -36,6 +39,10 @@ test.describe('Error Page Tests', () => {
         forbiddenUrl = '/en/error?statusCode=403';
 
         if (testInfo.project.name === 'Mobile Safari') {
+            test.skip(true, '302 redirect not supported by Webkit');
+        }
+
+        if (testInfo.project.name === 'WebKit') {
             test.skip(true, '302 redirect not supported by Webkit');
         }
 
