@@ -39,11 +39,11 @@ updates:
     open-pull-requests-limit: 5
     ignore:
       - dependency-name: "node"
-        versions: [">= 27"]
-      - dependency-name: "mcr.microsoft.com/dotnet/sdk"
-        versions: [">= 9.0"]
-      - dependency-name: "mcr.microsoft.com/dotnet/aspnet"
-        versions: [">= 9.0"]
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "dotnet/sdk"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "dotnet/aspnet"
+        update-types: ["version-update:semver-major"]
     groups:
       docker-deps:
         patterns:
