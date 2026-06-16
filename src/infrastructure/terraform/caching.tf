@@ -17,6 +17,8 @@ resource "azurerm_managed_redis" "redis-enterprise" {
     access_keys_authentication_enabled = true
   }
 
+  public_network_access = false
+
   tags = local.common_tags
 
   lifecycle {
