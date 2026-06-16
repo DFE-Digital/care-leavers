@@ -7,7 +7,7 @@ RUN npm install --ignore-scripts --global gulp-cli@3.1.0
 
 COPY ["web/CareLeavers.Web/package.json", "."]
 COPY ["web/CareLeavers.Web/yarn.lock", "."]
-RUN yarn install --ignore-scripts
+RUN yarn install --immutable --immutable-cache --ignore-scripts
 
 COPY ["web/CareLeavers.Web/Gulpfile.js", "."]
 COPY ["web/CareLeavers.Web/AssetSrc/", "./AssetSrc/"]
