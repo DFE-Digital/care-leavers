@@ -7,7 +7,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$repoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "../.."))
+$repoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "../../.."))
 $configPath = Join-Path $repoRoot ".gitleaks.toml"
 $baselinePath = Join-Path $repoRoot ".gitleaks.baseline.json"
 $gitleaksVersion = "8.30.0"
