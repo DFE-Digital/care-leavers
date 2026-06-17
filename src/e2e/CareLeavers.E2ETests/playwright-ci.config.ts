@@ -22,8 +22,7 @@ export default defineConfig({
         {
             name: 'Chromium',
             use: { browserName: 'chromium' },
-        },
-        /*Removing this to reduce the number of repetative tests
+        },       
         {
             name: 'Firefox',
             use: { browserName: 'firefox' },
@@ -31,7 +30,7 @@ export default defineConfig({
         {
             name: 'WebKit',
             use: { browserName: 'webkit' },
-        },*/
+        },
         {
             name: 'Mobile Chrome',
             use: {

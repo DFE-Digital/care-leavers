@@ -109,7 +109,7 @@ export class BasePage {
 
     // Navigates to the specified URL and waits for the page to load.
     async navigateTo(url: string) {
-        await this.page.goto(url, {waitUntil: 'networkidle'});
+        await this.page.goto(url, {waitUntil: 'domcontentloaded'});
     }
 
     // Validate URL contains a specific path
