@@ -1,0 +1,83 @@
+.dfe-box {
+  margin-bottom: 15px;
+  margin-right: 15px;
+  padding: 15px;
+}
+
+.box-dfe {
+  border: 1px solid govuk-colour('black', $variant: 'tint-80');
+
+  .box-content {
+    width: 100%;
+  }
+}
+
+section {
+  &.dfe {
+    margin-bottom: 15px;
+    margin-top: 60px;
+  }
+}
+
+.box-gov {
+  border: 1px solid govuk-colour('black', $variant: 'tint-80');
+}
+
+.box-ext {
+  background-color: #EAF5FF;
+  border-radius: 15px;
+  padding: 25px;
+  display: block;
+}
+
+.box-guide {
+  background-color: #EAF5FF;
+}
+
+.box-content {
+  width: 75%;
+  display: block;
+}
+
+.box-icon {
+  width: 20%;
+  display: block;
+  text-align: right;
+  float: right;
+
+  img {
+    max-width: 100%;
+    max-height: 6rem;
+  }
+}
+
+.govuk-grid-column-two-thirds {
+  > .govuk-grid-row {
+    > .box-ext {
+      margin: 2.5em 15px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .box-content {
+    width: 100%;
+
+    p,
+    ul,
+    ol,
+    h4 {
+      clear: both;
+    }
+  }
+
+  .box-icon {
+    float: right;
+    width: 30%;
+    padding-bottom: 0.25rem;
+
+    img {
+      max-height: 3rem;
+    }
+  }
+}

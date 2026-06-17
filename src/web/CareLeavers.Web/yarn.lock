@@ -308,7 +308,7 @@ detect-libc@^2.0.3:
   resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-2.1.2.tgz#689c5dcdc1900ef5583a4cb9f6d7b473742074ad"
   integrity sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==
 
-dfe-frontend@^2.0.1:
+dfe-frontend@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/dfe-frontend/-/dfe-frontend-2.0.1.tgz#b214c9866c8eca022623707090373560bc4c6b66"
   integrity sha512-HwNu93gFPHKe0CvuXN9JAQrZIYsFa81IsY5kyt1AAV3zsLQpBXZQXnJyVPtbAZ+n0unV/Uimv3vHrGVHqzmxXA==
@@ -522,15 +522,15 @@ glogg@^2.2.0:
   dependencies:
     sparkles "^2.1.0"
 
+govuk-frontend@6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/govuk-frontend/-/govuk-frontend-6.2.0.tgz#51ce06aa0e6d2c214749621fd12cedd77d4b1e33"
+  integrity sha512-PCRyQT+7kiV2dUz0Ku6Co+Nx4anOwJ7mAduXYbTQHK2krppBSynv9dBXtOYha/8j+LIzK7FqesTbJl9HD6ekHg==
+
 govuk-frontend@^5.3.1:
   version "5.14.0"
   resolved "https://registry.yarnpkg.com/govuk-frontend/-/govuk-frontend-5.14.0.tgz#d93f1ffa88b0696114509cab86e4ea474006f8e0"
   integrity sha512-MgfaXswIM6KpXS2T5gltEnzgVLgfM3UoE9+rYkhBiR0suaJ8Let31VZXQZqz9QhiPDbv28fW1nRjIyLujfZIBA==
-
-govuk-frontend@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/govuk-frontend/-/govuk-frontend-6.1.0.tgz#7022bede1d72f6c63f6bf43f16f3d207c6f1214e"
-  integrity sha512-sqivexZFa82LiDIDVMItsUlqEXE/wEUWWBqzEoxHvUFLBH7bY0C8lVrj1qsDThSnj5JEUMS7isBAbKnfQ5Qp6g==
 
 graceful-fs@^4.2.10, graceful-fs@^4.2.11, graceful-fs@^4.2.8:
   version "4.2.11"
@@ -555,7 +555,7 @@ gulp-cli@^3.1.0:
     v8flags "^4.0.0"
     yargs "^16.2.0"
 
-gulp-sass@^6.0.1:
+gulp-sass@6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/gulp-sass/-/gulp-sass-6.0.1.tgz#28d292b5e9ca143d763e14fce87d6723b6d1b749"
   integrity sha512-4wonidxB8lGPHvahelpGavUBJAuERSl+OIVxPCyQthK4lSJhZ/u3/qjFcyAtnMIXDl6fXTn34H4BXsN7gt54kQ==
@@ -567,7 +567,7 @@ gulp-sass@^6.0.1:
     strip-ansi "^6.0.1"
     vinyl-sourcemaps-apply "^0.2.1"
 
-gulp@^5.0.1:
+gulp@5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/gulp/-/gulp-5.0.1.tgz#c43f37aa34569e101fb6da4e0b464677305acd36"
   integrity sha512-PErok3DZSA5WGMd6XXV3IRNO0mlB+wW3OzhFJLEec1jSERg2j1bxJ6e5Fh6N6fn3FH2T9AP4UYNb/pYlADB9sA==
@@ -967,7 +967,7 @@ safe-buffer@~5.2.0:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-sass@^1.100.0:
+sass@1.100.0:
   version "1.100.0"
   resolved "https://registry.yarnpkg.com/sass/-/sass-1.100.0.tgz#b4cab1bed286fe22ac6c879c514f71cd36aa06c8"
   integrity sha512-B5j0rYMlinhhOo9tjQebMVVn0TfyXAF+wB3b2ggZUuJ/is/Y+7+JGjirAMxHZ9Z3hIP98NPfamlAkBHa1lAaXQ==
