@@ -17,7 +17,7 @@
     flex-direction: column;
     justify-content: center;
     @include govuk-responsive-padding(4);
-    
+
     &.image-column {
       padding: 0;
       position: relative;

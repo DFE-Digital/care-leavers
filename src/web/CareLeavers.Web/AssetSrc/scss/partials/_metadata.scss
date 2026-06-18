@@ -6,7 +6,7 @@
   font-size: 1rem;
   line-height: 1.25;
   margin-bottom: 15px;
-  
+
   a {
     font-weight: bold;
     -webkit-font-smoothing: antialiased;
@@ -14,7 +14,7 @@
     text-decoration: underline;
     text-decoration-thickness: max(1px, .0625rem);
     text-underline-offset: .1578em;
-    
+
     &:hover {
       color: govuk-colour('blue', $variant: 'shade-50');
       text-decoration-thickness: max(3px, .1875rem, .12em);
@@ -22,25 +22,25 @@
       -webkit-text-decoration-skip: none;
       text-decoration-skip: none;
     }
-    
+
     &:focus {
-      outline: 3px solid rgba(0,0,0,0);
+      outline: 3px solid rgba(0, 0, 0, 0);
       color: #0B0C0C;
       background-color: #FD0;
-      box-shadow: 0 -2px #FD0,0 4px #0b0c0c;
+      box-shadow: 0 -2px #FD0, 0 4px #0b0c0c;
       text-decoration: none;
       -webkit-box-decoration-break: clone;
       box-decoration-break: clone;
     }
-    
+
     &:link {
       color: #1D70B8;
     }
-    
+
     &:visited {
       color: #4C2C92;
     }
-    
+
     &:active {
       color: #0B0C0C;
     }
@@ -49,7 +49,7 @@
   .gem-c-metadata__definition-link {
     font-weight: normal;
   }
-  
+
   .direction-rtl {
     direction: rtl;
     text-align: start;
@@ -64,12 +64,12 @@
 
 .gem-c-metadata--inverse {
   color: #FFFFFF;
-  
+
   a:link,
   a:visited {
     color: #FFFFFF;
   }
-  
+
   a:hover,
   a:active {
     color: rgba(255, 255, 255, .99);
@@ -193,10 +193,10 @@
 .gem-c-contents-list__link:active:focus,
 .gem-c-contents-list__link:link:focus,
 .gem-c-contents-list__link:visited:focus {
-  outline: 3px solid rgba(0,0,0,0);
+  outline: 3px solid rgba(0, 0, 0, 0);
   color: #0B0C0C !important;
   background-color: #FD0;
-  box-shadow: 0 -2px #FD0,0 4px #0b0c0c;
+  box-shadow: 0 -2px #FD0, 0 4px #0b0c0c;
   text-decoration: none;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
@@ -206,20 +206,20 @@
   .gem-c-contents-list__title {
     margin-bottom: 15px;
   }
-  
+
   .gem-c-contents-list__list-item {
     padding: 10px 0;
     margin: 0;
   }
-  
+
   .gem-c-contents-list__list-item-dash::before {
     display: none;
   }
-  
+
   .gem-c-contents-list__list-item--active {
     padding: 5px 10px;
     margin: 5px 0;
-    border-left: 4px solid #1D70B8; 
+    border-left: 4px solid #1D70B8;
     color: #1D70B8;
     font-weight: 700;
   }
@@ -267,8 +267,8 @@
   }
 }
 
-.print-only { 
-  display: none; 
+.print-only {
+  display: none;
 }
 
 .dfe-card-link-print-url {
@@ -288,10 +288,10 @@
     margin-top: 0;
   }
 
-  .gem-c-metadata  {
+  .gem-c-metadata {
     .direction-rtl {
       .gem-c-metadata__term {
-        padding-left:5px;
+        padding-left: 5px;
         padding-right: 0;
       }
     }

@@ -1,9 +1,9 @@
-#main-content-header { 
+#main-content-header {
   h1 {
     @include govuk-responsive-margin(6, "top");
-    @include govuk-responsive-margin(6, "bottom"); 
-  } 
-  
+    @include govuk-responsive-margin(6, "bottom");
+  }
+
   :has(.govuk-breadcrumbs) h1 {
     @include govuk-responsive-margin(6, "top");
   }
@@ -15,10 +15,10 @@
 
 .dfe-page-grey {
   background-color: #EAF5FF;
-  
+
   @include govuk-responsive-padding(6, "top");
   @include govuk-responsive-padding(9, "bottom");
-  
+
   .govuk-body-l {
     margin: 0;
   }

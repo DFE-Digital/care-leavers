@@ -23,7 +23,7 @@ html {
   @include govuk-width-container;
   --w: 1200px;
   --m: 1em;
-  margin-inline: max(var(--m),50cqw - var(--w)/2);
+  margin-inline: max(var(--m), 50cqw - var(--w) / 2);
 }
 
 * {
