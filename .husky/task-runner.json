@@ -1,0 +1,14 @@
+{
+   "tasks": [
+      {
+         "name": "Run gitleaks",
+         "command": "dotnet",
+         "args": [
+            "pwsh",
+            "-NoProfile",
+            "-File",
+            "./src/scripts/security/run-gitleaks.ps1"
+         ]
+      }
+   ]
+}
