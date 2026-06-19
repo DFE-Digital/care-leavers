@@ -190,7 +190,7 @@ resource "azurerm_private_endpoint" "redis-private-endpoint" {
   }
   private_dns_zone_group {
     name                 = "${local.service_prefix}-redis-dns-group"
-    private_dns_zone_ids = [azurerm_private_dns_zone.redis-dns-zone.id]
+    private_dns_zone_ids = [azurerm_private_dns_zone.redis-dns-zone[0].id]
   }
 
   lifecycle {
