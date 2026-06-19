@@ -277,7 +277,14 @@
 
 @media(min-width: 40.0625em) {
   .gem-c-metadata {
-    margin-bottom: 40px
+    margin-bottom: 40px;
+
+    .direction-rtl {
+      .gem-c-metadata__term {
+        padding-left: 5px;
+        padding-right: 0;
+      }
+    }
   }
 
   .gem-c-metadata__term {
@@ -286,15 +293,6 @@
     clear: left;
     padding-right: 5px;
     margin-top: 0;
-  }
-
-  .gem-c-metadata {
-    .direction-rtl {
-      .gem-c-metadata__term {
-        padding-left: 5px;
-        padding-right: 0;
-      }
-    }
   }
 
   .gem-c-metadata--inverse-padded {
