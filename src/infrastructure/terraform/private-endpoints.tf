@@ -67,7 +67,7 @@ resource "azurerm_private_endpoint" "translation-private-endpoint" {
     name                           = "${local.service_prefix}-translation-psc"
     is_manual_connection           = false
     private_connection_resource_id = azurerm_cognitive_account.ai-translator.id
-    subresource_names              = ["cognitiveservices"]
+    subresource_names              = ["account"]
   }
   private_dns_zone_group {
     name                 = "${local.service_prefix}-translation-dns-group"
