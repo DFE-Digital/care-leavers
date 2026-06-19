@@ -3,21 +3,30 @@
     <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/web/CareLeavers.Web/CareLeavers.Web.csproj" />
     <option name="LAUNCH_PROFILE_TFM" value="net8.0" />
     <option name="LAUNCH_PROFILE_NAME" value="https" />
-    <option name="USE_EXTERNAL_CONSOLE" value="0" />
     <option name="USE_MONO" value="0" />
     <option name="RUNTIME_ARGUMENTS" value="" />
     <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
     <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
     <option name="SEND_DEBUG_REQUEST" value="1" />
     <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+    <option name="AUTO_ATTACH_CHILDREN" value="0" />
+    <option name="MIXED_MODE_DEBUG" value="0" />
     <method v="2">
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Yarn Install" run_configuration_type="ShConfigurationType" />
-      <option name="GulpBeforeRunTask" enabled="true">
-        <node-interpreter>project</node-interpreter>
-        <node-options />
-        <gulpfile>$PROJECT_DIR$/web/CareLeavers.Web/Gulpfile.js</gulpfile>
-        <tasks />
-        <arguments />
+      <option name="NpmBeforeRunTask" enabled="true">
+        <package-json value="$PROJECT_DIR$/web/CareLeavers.Web.Node/package.json" />
+        <command value="install" />
+        <node-interpreter value="project" />
+        <package-manager value="npm" />
+        <envs />
+      </option>
+      <option name="NpmBeforeRunTask" enabled="true">
+        <package-json value="$PROJECT_DIR$/web/CareLeavers.Web.Node/package.json" />
+        <command value="run" />
+        <scripts>
+          <script value="build" />
+        </scripts>
+        <node-interpreter value="project" />
+        <package-manager value="npm" />
         <envs />
       </option>
       <option name="Build" />

@@ -2,16 +2,12 @@
 FROM node:26-alpine@sha256:144769ec3f32e8ee36b3cfde91e82bee25d9367b20f31a151f3f7eea3a2a8541 AS build-node
 WORKDIR /src
 
-RUN npm install --ignore-scripts --global corepack@0.35.0
-RUN npm install --ignore-scripts --global gulp-cli@3.1.0
+COPY ["web/CareLeavers.Web.Node/package.json", "."]
+COPY ["web/CareLeavers.Web.Node/package-lock.json", "."]
+RUN npm ci --ignore-scripts --omit=dev
 
-COPY ["web/CareLeavers.Web/package.json", "."]
-COPY ["web/CareLeavers.Web/yarn.lock", "."]
-RUN yarn install --immutable --immutable-cache --ignore-scripts
-
-COPY ["web/CareLeavers.Web/Gulpfile.js", "."]
-COPY ["web/CareLeavers.Web/AssetSrc/", "./AssetSrc/"]
-RUN gulp dev
+COPY ["web/CareLeavers.Web.Node", "."]
+RUN npm run build
 # -- Build Node -- #
 
 # -- Build .NET -- #
@@ -33,7 +29,7 @@ ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 USER app
 WORKDIR /src
 
-COPY --from=build-node ["src/wwwroot", "./wwwroot/"]
+COPY --from=build-node ["../CareLeavers.Web/wwwroot", "./wwwroot/"]
 COPY --from=build-dotnet ["src/publish", "."]
 
 EXPOSE 8080
