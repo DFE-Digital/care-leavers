@@ -1,0 +1,31 @@
+@use "../node_modules/govuk-frontend/dist/govuk" as *;
+@import '../node_modules/dfe-frontend/packages/dfefrontend';
+
+@import url('https://rsms.me/inter/inter.css');
+
+@import "partials/banner";
+@import "partials/box";
+@import "partials/call-to-action";
+@import "partials/environment";
+@import "partials/feedback-cta";
+@import "partials/gtaa";
+@import "partials/main-content";
+@import "partials/metadata";
+@import "partials/navigation";
+@import "partials/phase-banner";
+@import "partials/split-panel";
+
+html {
+  container-type: inline-size;
+}
+
+.govuk-width-container {
+  @include govuk-width-container;
+  --w: 1200px;
+  --m: 1em;
+  margin-inline: max(var(--m), 50cqw - var(--w) / 2);
+}
+
+* {
+  font-family: 'Inter', sans-serif !important;
+}

@@ -75,7 +75,7 @@ updates:
       - "/src/e2e/CareLeavers.E2ETests"
       - "/src/e2e/pa11y"
       - "/src/utilities"
-      - "/src/web/CareLeavers.Web"
+      - "/src/web/CareLeavers.Web.Node"
       - "/src/contentful/Synchronisation"
     cooldown:
       default-days: 7

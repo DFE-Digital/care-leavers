@@ -1,0 +1,16 @@
+{
+  "name": "careleavers.web.node",
+  "description": "Contains the frontend build system for the Care Leavers project.",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "build": "node esbuild.config.js"
+  },
+  "dependencies": {
+    "dfe-frontend": "2.0.1",
+    "esbuild": "0.28.1",
+    "esbuild-sass-plugin": "3.7.0",
+    "govuk-frontend": "6.2.0",
+    "sass": "1.101.0"
+  }
+}
