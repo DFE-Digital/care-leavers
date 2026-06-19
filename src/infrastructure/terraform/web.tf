@@ -18,6 +18,7 @@ locals {
     "Caching__ConnectionString"             = lower(var.caching_type) == "redis" ? "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.redis-enterprise-connection-string[0].versionless_id})" : ""
     "Scripts__Clarity"                      = var.scripts_clarity
     "AzureTranslation__AccessKey"           = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.azure-translation-access-key.versionless_id})"
+    "AzureTranslation__Endpoint"            = "https://${local.service_prefix}.cognitiveservices.azure.com"
     "AzureTranslation__CharacterLimit"      = local.environment_character_limits[var.environment_prefix]
     "BlobStorage__ConnectionString"         = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.blob-storage-connection-string.versionless_id})"
     "BlobStorage__ContainerName"            = azurerm_storage_container.translator_storage_container.name
