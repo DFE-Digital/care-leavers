@@ -17,7 +17,7 @@ resource "azurerm_managed_redis" "redis-enterprise" {
     access_keys_authentication_enabled = true
   }
 
-  public_network_access = false
+  public_network_access = "Disabled"
 
   tags = local.common_tags
 
