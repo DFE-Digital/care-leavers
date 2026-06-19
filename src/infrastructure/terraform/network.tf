@@ -54,3 +54,26 @@ resource "azapi_resource" "private-endpoint-subnet" {
     azapi_resource.web-subnet
   ]
 }
+
+resource "azapi_resource" "redis-subnet" {
+  count     = lower(var.caching_type) == "redis" ? 1 : 0
+  type      = "Microsoft.Network/virtualNetworks/subnets@2024-05-01"
+  name      = "${local.service_prefix}-redis-subnet"
+  parent_id = azurerm_virtual_network.careleavers-web-vnet.id
+
+  body = {
+    properties = {
+      addressPrefixes = ["10.0.3.0/24"]
+      networkSecurityGroup = {
+        id = azurerm_network_security_group.redis-nsg[0].id
+      }
+    }
+  }
+
+  depends_on = [
+    azurerm_network_security_group.redis-nsg,
+    azurerm_virtual_network.careleavers-web-vnet,
+    azapi_resource.web-subnet,
+    azapi_resource.private-endpoint-subnet
+  ]
+}

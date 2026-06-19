@@ -26,3 +26,12 @@ resource "azurerm_network_security_group" "private-endpoint-nsg" {
 
   tags = local.common_tags
 }
+
+resource "azurerm_network_security_group" "redis-nsg" {
+  count               = lower(var.caching_type) == "redis" ? 1 : 0
+  name                = "${local.service_prefix}-redis-nsg"
+  resource_group_name = azurerm_resource_group.redis-rg[0].name
+  location            = local.location
+
+  tags = local.common_tags
+}
