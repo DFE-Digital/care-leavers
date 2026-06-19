@@ -202,7 +202,7 @@ resource "azurerm_private_endpoint" "redis-private-endpoint" {
 
 resource "azurerm_private_dns_zone" "redis-dns-zone" {
   count               = lower(var.caching_type) == "redis" ? 1 : 0
-  name                = "privatelink.redisenterprise.azure.net"
+  name                = "privatelink.redis.azure.net"
   resource_group_name = azurerm_resource_group.redis-rg[0].name
 
   lifecycle {
