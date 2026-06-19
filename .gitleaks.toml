@@ -1,0 +1,8 @@
+title = "Support for Care Leavers Configuration"
+
+[extend]
+useDefault = true
+
+# [allowList]
+# description = "Tracked fixtures and local development examples with placeholder credentials"
+# paths = []
