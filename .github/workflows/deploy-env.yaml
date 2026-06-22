@@ -193,6 +193,6 @@ jobs:
       - name: Clear Cache
         shell: bash
         run: |
-          curl -X POST "https://${vars.CUSTOM_DOMAIN}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f"
+          curl -X POST "https://${CUSTOM_DOMAIN}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f"
         env:
           CUSTOM_DOMAIN: ${{ vars.CUSTOM_DOMAIN }}
