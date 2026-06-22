@@ -23,6 +23,8 @@ run-name: ${{ github.event_name == 'push' && 'Deploy to Test' || format('Deploy 
 concurrency:
   group: "${{ github.workflow }}-${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}"
   cancel-in-progress: false
+  
+permissions: {}
 
 env:
   TAG_NAME: "${{ github.sha }}"
@@ -40,9 +42,10 @@ jobs:
       packages: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           ref: ${{ github.ref }}
+          persist-credentials: "false"
 
       - name: Lowercase Repository Name
         id: lowercase
@@ -52,10 +55,12 @@ jobs:
 
       - name: Build Web Docker Image
         run: |
-          docker build . -t ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ env.TAG_NAME }} -f web/CareLeavers.Web/Dockerfile
+          docker build . -t ghcr.io/${REPO_NAME}:${TAG_NAME} -f web/CareLeavers.Web/Dockerfile
+        env:
+          REPO_NAME: ${{ steps.lowercase.outputs.lowercased_value }}
 
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v4
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -63,7 +68,9 @@ jobs:
 
       - name: Push Web Docker Image
         run: |
-          docker push ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ env.TAG_NAME }}
+          docker push ghcr.io/${REPO_NAME}:${TAG_NAME}
+        env:
+          REPO_NAME: ${{ steps.lowercase.outputs.lowercased_value }}
 
   deploy:
     name: Deploying to ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
@@ -80,18 +87,19 @@ jobs:
       ARM_CLIENT_SECRET: "${{ secrets.AZURE_CLIENT_SECRET }}"
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           ref: ${{ github.ref }}
+          persist-credentials: "false"
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v4
+        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
         with:
           terraform_version: 1.10.4
           terraform_wrapper: false
 
       - name: Azure CLI Login
-        uses: azure/login@v3
+        uses: azure/login@532459ea530d8321f2fb9bb10d1e0bcf23869a43
         with:
           creds: |
             {
@@ -130,8 +138,8 @@ jobs:
         working-directory: ./src/infrastructure/terraform
         run: |
           terraform init \
-            -backend-config="resource_group_name=${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-tfstate" \
-            -backend-config="storage_account_name=${{ env.ENVIRONMENT_PREFIX }}cltfstate" \
+            -backend-config="resource_group_name=${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate" \
+            -backend-config="storage_account_name=${ENVIRONMENT_PREFIX}cltfstate" \
             -backend-config="container_name=tfstate" \
             -backend-config="key=terraform.tfstate"
 
@@ -139,8 +147,9 @@ jobs:
         id: terraform_plan
         working-directory: ./src/infrastructure/terraform
         run: |
-          terraform plan -out plan.plan -var-file="env_vars/${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}.tfvars"
+          terraform plan -out plan.plan -var-file="env_vars/${ENVIRONMENT}.tfvars"
         env:
+          ENVIRONMENT: ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
           TF_VAR_contentful_delivery_api_key: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
           TF_VAR_contentful_preview_api_key: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
           TF_VAR_contentful_management_api_key: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
@@ -165,7 +174,7 @@ jobs:
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
+        uses: azure/webapps-deploy@02a81bead70021f5284939794bcec79c271ab383
         with:
           app-name: "${{ env.ENVIRONMENT_PREFIX }}-uks-cl-web-app-service"
           slot-name: "${{vars.WEB_APP_SLOT}}"
@@ -174,14 +183,16 @@ jobs:
       - name: Swap Slot to Production
         if: github.event.inputs.environment == 'elz-production'
         run: |
-          az webapp deployment slot swap --name ${{ env.ENVIRONMENT_PREFIX }}-uks-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-web --slot staging --target-slot production
+          az webapp deployment slot swap --name ${ENVIRONMENT_PREFIX}-uks-cl-web-app-service --resource-group ${ENVIRONMENT_PREFIX}rg-uks-cl-web --slot staging --target-slot production
 
       - name: Delete Staging Slot
         if: github.event.inputs.environment == 'elz-production'
         run: |
-          az webapp deployment slot delete --name ${{ env.ENVIRONMENT_PREFIX }}-uks-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-web --slot staging
+          az webapp deployment slot delete --name ${ENVIRONMENT_PREFIX}-uks-cl-web-app-service --resource-group ${ENVIRONMENT_PREFIX}rg-uks-cl-web --slot staging
 
       - name: Clear Cache
         shell: bash
         run: |
-          curl -X POST "https://${{ vars.CUSTOM_DOMAIN }}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f"
+          curl -X POST "https://${vars.CUSTOM_DOMAIN}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f"
+        env:
+          CUSTOM_DOMAIN: ${{ vars.CUSTOM_DOMAIN }}
