@@ -1,11 +1,12 @@
 @using CareLeavers.Web.Contentful
+@using Microsoft.Extensions.Primitives
 @model CareLeavers.Web.Models.Content.StatusChecker
 @inject IHttpContextAccessor HttpContextAccessor;
 @inject IContentService ContentService
 @{
     var checker = await ContentService.Hydrate(Model);
     var languageCode = HttpContextAccessor.HttpContext?.Request.RouteValues["languageCode"]?.ToString();
-    HttpContextAccessor.HttpContext?.Request.Query.TryGetValue("errorMessage", out var errorMessage);
+    StringValues errorMessage = HttpContextAccessor.HttpContext?.Request.Query["errorMessage"] ?? [];
 }
 <form method="post" action="/statuschecker" novalidate>
     <input type="hidden" name="CheckerId" id="CheckerId" value="@checker?.Sys?.Id"/>
