@@ -16,6 +16,30 @@ resource "azurerm_network_security_group" "web-nsg" {
     source_port_range          = "*"
   }
 
+  security_rule {
+    name                       = "Allow_Outbound_Integration"
+    priority                   = 200
+    direction                  = "Outbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "443"
+    source_address_prefix      = "VirtualNetwork"
+    destination_address_prefix = "Internet"
+  }
+
+  security_rule {
+    name                       = "Deny_Internet_Outbound"
+    priority                   = 1000
+    direction                  = "Outbound"
+    access                     = "Deny"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "VirtualNetwork"
+    destination_address_prefix = "Internet"
+  }
+
   tags = local.common_tags
 }
 
