@@ -48,6 +48,18 @@ resource "azurerm_network_security_group" "private-endpoint-nsg" {
   resource_group_name = azurerm_resource_group.web-rg.name
   location            = local.location
 
+  security_rule {
+    name                       = "Deny_Internet_Outbound"
+    priority                   = 1000
+    direction                  = "Outbound"
+    access                     = "Deny"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "VirtualNetwork"
+    destination_address_prefix = "Internet"
+  }
+
   tags = local.common_tags
 }
 
@@ -56,6 +68,18 @@ resource "azurerm_network_security_group" "redis-nsg" {
   name                = "${local.service_prefix}-redis-nsg"
   resource_group_name = azurerm_resource_group.redis-rg[0].name
   location            = local.location
+
+  security_rule {
+    name                       = "Deny_Internet_Outbound"
+    priority                   = 1000
+    direction                  = "Outbound"
+    access                     = "Deny"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "VirtualNetwork"
+    destination_address_prefix = "Internet"
+  }
 
   tags = local.common_tags
 }
