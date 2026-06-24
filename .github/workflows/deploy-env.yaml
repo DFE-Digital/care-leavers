@@ -45,6 +45,7 @@ jobs:
         uses: actions/checkout@v6.0.3
         with:
           ref: ${{ github.ref }}
+          persist-credentials: false
 
       - name: Lowercase Repository Name
         id: lowercase
@@ -85,6 +86,7 @@ jobs:
         uses: actions/checkout@v6.0.3
         with:
           ref: ${{ github.ref }}
+          persist-credentials: false
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v4

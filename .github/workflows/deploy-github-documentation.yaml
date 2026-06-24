@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Checkout main
         uses: actions/checkout@v6.0.3
+        with:
+          persist-credentials: false
 
       - name: Deploy docs
         uses: mhausenblas/mkdocs-deploy-gh-pages@master

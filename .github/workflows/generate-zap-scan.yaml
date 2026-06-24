@@ -27,6 +27,8 @@ jobs:
     steps:
       - name: "Checkout source"
         uses: actions/checkout@v6.0.3
+        with:
+          persist-credentials: false
 
       - name: "Az CLI login"
         uses: azure/login@v3

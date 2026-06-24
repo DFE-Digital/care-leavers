@@ -25,6 +25,8 @@ jobs:
     name: Run Contentful Migrations
     steps:
       - uses: actions/checkout@v6.0.3
+        with:
+          persist-credentials: false
 
       - name: Set Node.js 20.x
         uses: actions/setup-node@v6

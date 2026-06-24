@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6.0.3
+        with:
+          persist-credentials: false
 
       - name: Setup Node.JS
         uses: actions/setup-node@v6

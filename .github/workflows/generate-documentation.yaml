@@ -16,6 +16,8 @@ jobs:
       contents: write
     steps:
       - name: Checkout Repository
+        with:
+          persist-credentials: false
         uses: actions/checkout@v6.0.3
       - uses: hashicorp/setup-terraform@v4
 
