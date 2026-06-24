@@ -33,7 +33,9 @@ jobs:
         run: npm install -g contentful-cli
 
       - name: Login to Contentful with management token
-        run: contentful login --management-token "${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}"
+        run: contentful login --management-token "${CONTENTFUL_MANAGEMENT_TOKEN}"
+        env:
+          CONTENTFUL_MANAGEMENT_TOKEN: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
