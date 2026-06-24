@@ -4,6 +4,8 @@ on:
   workflow_call:
   pull_request:
     branches: [ "main" ]
+    
+permissions: {}
 
 jobs:
   build-backend:

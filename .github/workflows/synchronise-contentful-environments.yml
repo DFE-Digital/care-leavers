@@ -27,6 +27,8 @@ on:
           - "Test"
           - "Development"
         default: "Development"
+        
+permissions: {}
 
 jobs:
   synchronise:

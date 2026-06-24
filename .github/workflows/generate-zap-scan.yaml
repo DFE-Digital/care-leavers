@@ -12,9 +12,10 @@ on:
           - "elz-test"
           - "elz-staging"
           - "elz-production"
-
   schedule:
     - cron: "0 3 * * 1-5"
+      
+permissions: {}
 
 run-name: Running ZAP scan against ${{ github.event.inputs.environment || 'elz-staging'}}
 jobs:

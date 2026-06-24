@@ -18,6 +18,8 @@ on:
           - "elz-staging"
           - "elz-production"
 
+permissions: {}
+
 run-name: ${{ github.event_name == 'push' && 'Deploy to Test' || format('Deploy to {0}', github.event.inputs.environment) }}
 
 concurrency:

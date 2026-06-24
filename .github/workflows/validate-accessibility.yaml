@@ -13,6 +13,8 @@ on:
           - "staging"
           - "www"
 
+permissions: {}
+
 jobs:
   accessibility-scan:
     name: "Run Pa11y Accessibility Scan"

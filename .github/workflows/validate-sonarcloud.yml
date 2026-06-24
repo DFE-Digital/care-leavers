@@ -9,13 +9,11 @@ on:
     branches:
       - 'main'
 
+permissions: {}
+
 concurrency:
   group: '${{ github.workflow }}-${{ github.ref }}'
   cancel-in-progress: true
-
-permissions:
-  pull-requests: write
-  contents: read
 
 env:
   DOTNET_VERSION: '10.x'
@@ -26,6 +24,9 @@ jobs:
     if: ${{ github.actor != 'dependabot[bot]' }}
     name: Build, Test & Analyse
     runs-on: ubuntu-24.04
+    permissions: 
+      pull-requests: write
+      contents: read
     defaults:
       run:
         working-directory: './src'

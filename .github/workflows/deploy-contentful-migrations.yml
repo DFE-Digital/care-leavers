@@ -17,6 +17,8 @@ on:
           - production
           - e2e
 
+permissions: {}
+
 jobs:
   contentful:
     runs-on: ubuntu-latest

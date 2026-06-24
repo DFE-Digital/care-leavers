@@ -10,6 +10,8 @@ on:
       - 'resources/tech_docs_template/**'
       - '.github/workflows/deploy-github-documentation.yaml'
 
+permissions: {}
+
 jobs:
   build:
     name: Deploy docs
