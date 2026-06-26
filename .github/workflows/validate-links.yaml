@@ -14,7 +14,7 @@ jobs:
       WEBSITE_ROOT: ${{ vars.APP_WEBSITE_ROOT }}
 
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
 
       - uses: actions/setup-node@v6
         with:
