@@ -60,11 +60,14 @@ jobs:
           dotnet-sonarscanner begin \
           /o:"dfe-digital" \
           /k:"DFE-Digital_care-leavers" \
-          /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+          /d:sonar.token="${SONAR_TOKEN}" \
           /d:sonar.coverage.exclusions=**/Program.cs,**/LoggingConfigurationExtensions.cs,**/esbuild.config.js,**.cshtml,**/Configuration/**,**/e2e/**,**/contentful/Synchronisation/**,**/utilities/**,**/Migrations/** \
           /d:sonar.exclusions=**/Program.cs,**/LoggingConfigurationExtensions.cs,**/Migrations/** \
           /d:sonar.scanner.skipJreProvisioning=true \
-          /s:${{ github.workspace }}/SonarQube.Analysis.xml
+          /s:${GITHUB_WORKSPACE}/SonarQube.Analysis.xml
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_WORKSPACE: ${{ github.workspace }}
 
       - name: Restore Solution
         shell: bash
@@ -102,7 +105,9 @@ jobs:
         shell: bash
         run: |
           dotnet-sonarscanner end \
-          /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          /d:sonar.token="${SONAR_TOKEN}"
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Generate Test Report
         uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2

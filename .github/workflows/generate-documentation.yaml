@@ -21,10 +21,10 @@ jobs:
         env:
           TERRAFORM_DOCS_VERSION: 0.18.0
         run: |
-          wget https://github.com/terraform-docs/terraform-docs/releases/download/v${{ env.TERRAFORM_DOCS_VERSION }}/terraform-docs-v${{ env.TERRAFORM_DOCS_VERSION }}-linux-amd64.tar.gz
-          tar -xvf terraform-docs-v${{ env.TERRAFORM_DOCS_VERSION }}-linux-amd64.tar.gz terraform-docs
+          wget https://github.com/terraform-docs/terraform-docs/releases/download/v${TERRAFORM_DOCS_VERSION}/terraform-docs-v${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz
+          tar -xvf terraform-docs-v${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz terraform-docs
           sudo mv terraform-docs /usr/local/bin/
-          rm terraform-docs-v${{ env.TERRAFORM_DOCS_VERSION }}-linux-amd64.tar.gz
+          rm terraform-docs-v${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz
 
       - name: Terraform fmt
         id: fmt
