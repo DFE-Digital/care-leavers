@@ -1,0 +1,8 @@
+FROM node:24-alpine3.24
+
+RUN npm install -g contentful-cli
+
+WORKDIR /opt/backup
+
+#ENTRYPOINT ["sh", "-c", "contentful space import --management-token $token --space-id=$space --environment-id=$envid --content-file /opt/backup/prod-contentful-backup-output.json"]
+ENTRYPOINT ["contentful", "space import"]
