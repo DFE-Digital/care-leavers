@@ -29,13 +29,13 @@ env:
 
 jobs:
   validate_using_tag:
-  name: Validating the workflow is using a tag for deployment
-  runs-on: ubuntu-latest
-  steps:
-    - name: Run Validation
-      uses: ./.github/actions/validate-deploy
-      with:
-        deploy: "tag"
+    name: Validating the workflow is using a tag for deployment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Validation
+        uses: ./.github/actions/validate-deploy
+        with:
+          deploy: "tag"
 
   deploy:
     name: Deploying to ${{ env.ENVIRONMENT }}

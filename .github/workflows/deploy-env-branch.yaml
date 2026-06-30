@@ -25,13 +25,13 @@ env:
 
 jobs:
   validate_using_branch:
-  name: Validating the workflow is using a branch for deployment
-  runs-on: ubuntu-latest
-  steps:
-    - name: Run Validation
-      uses: ./.github/actions/validate-deploy
-      with:
-        deploy: "branch"
+    name: Validating the workflow is using a branch for deployment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Validation
+        uses: ./.github/actions/validate-deploy
+        with:
+          deploy: "branch"
 
   package:
     name: Package Web in Docker
