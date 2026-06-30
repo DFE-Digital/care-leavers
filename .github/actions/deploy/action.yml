@@ -1,0 +1,165 @@
+name: Deploy
+description: Action to deploy infrastructure and webapp
+
+inputs:
+  environment:
+    description: The environment for the deployment
+    required: true
+  webapp_slot:
+    description: The webapp slot to deploy
+    required: true
+  custom_domain:
+    description: The custom domain
+    required: true
+  environment_prefix:
+    description: The environment prefix for infrastructure
+    required: true
+  tag_name:
+    description: The tag name of the image to use within the webapp
+    required: true
+  AZURE_CLIENT_ID_SECRET:
+    description: The Azure client ID
+    required: true
+  AZURE_SUBSCRIPTION_ID_SECRET:
+    description: The Azure subscription ID
+    required: true
+  AZURE_TENANT_ID_SECRET:
+    description: The Azure tenant ID
+    required: true
+  AZURE_CLIENT_SECRET:
+    description: The Azure client secret
+    required: true
+  CONTENTFUL_DELIVERY_API_KEY_SECRET:
+    description: Contentful delivery API Key
+    required: false
+    default: ""
+  CONTENTFUL_PREVIEW_API_KEY_SECRET:
+    description: Contentful preview API key
+    required: false
+    default: ""
+  CONTENTFUL_MANAGEMENT_TOKEN_SECRET:
+    description: Contentful management token
+    required: false
+    default: ""
+  CONTENTFUL_SPACE_ID_SECRET:
+    description: Contentful space ID
+    required: false
+    default: ""
+  SUPPORT_ALERT_EMAIL_SECRET:
+    description: The support alert email
+    required: false
+    default: ""
+  BASIC_AUTH_CREDS_SECRET:
+    description: The basic auth credentials
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v6.0.3
+      with:
+        ref: ${{ github.ref }}
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v4
+      with:
+        terraform_version: 1.10.4
+        terraform_wrapper: false
+
+    - name: Azure CLI Login
+      uses: azure/login@v3
+      with:
+        creds: |
+          {
+              "clientId": "${{ inputs.AZURE_CLIENT_ID_SECRET }}",
+              "clientSecret": "${{ inputs.AZURE_CLIENT_SECRET }}",
+              "tenantId": "${{ inputs.AZURE_TENANT_ID_SECRET }}",
+              "subscriptionId": "${{ inputs.AZURE_SUBSCRIPTION_ID_SECRET }}"
+          }
+          
+    # Ensure PAL metadata is set on the deployment principal
+    - name: Service principal metadata
+      continue-on-error: true
+      run: |
+        az rest --method put --uri "https://management.azure.com/providers/microsoft.managementpartner/partners/6084223?api-version=2018-02-01" --body '{"partnerId": "6084223"}' || true
+
+    - name: Add Alert Management Provider
+      run: |
+        az provider register --namespace Microsoft.AlertsManagement
+
+    - name: Lowercase Repository Name
+      id: lowercase
+      uses: ./.github/actions/lowercase
+      with:
+        value: ${{ github.repository }}
+
+    - name: Unlock Terraform State
+      id: terraform_unlock
+      uses: ./.github/actions/manage-storage-network-access
+      with:
+        storage_account_name: ${{ inputs.environment_prefix }}cltfstate
+        resource_group_name: ${{ inputs.environment_prefix }}rg-uks-cl-tfstate
+        enable_network_access: true
+
+    - name: Terraform Init
+      id: terraform_init
+      working-directory: ./src/infrastructure/terraform
+      run: |
+        terraform init \
+          -backend-config="resource_group_name=${{ inputs.environment_prefix }}rg-uks-cl-tfstate" \
+          -backend-config="storage_account_name=${{ inputs.environment_prefix }}cltfstate" \
+          -backend-config="container_name=tfstate" \
+          -backend-config="key=terraform.tfstate"
+
+    - name: Terraform Plan
+      id: terraform_plan
+      working-directory: ./src/infrastructure/terraform
+      run: |
+        terraform plan -out plan.plan -var-file="env_vars/${{ inputs.environment }}.tfvars"
+      env:
+        TF_VAR_contentful_delivery_api_key: ${{ inputs.CONTENTFUL_DELIVERY_API_KEY_SECRET }}
+        TF_VAR_contentful_preview_api_key: ${{ inputs.CONTENTFUL_PREVIEW_API_KEY_SECRET }}
+        TF_VAR_contentful_management_api_key: ${{ inputs.CONTENTFUL_MANAGEMENT_TOKEN_SECRET }}
+        TF_VAR_contentful_space_id: ${{ inputs.CONTENTFUL_SPACE_ID_SECRET }}
+        TF_VAR_support_alert_email: ${{ inputs.SUPPORT_ALERT_EMAIL_SECRET }}
+        TF_VAR_basic_auth_credentials: ${{ inputs.BASIC_AUTH_CREDS_SECRET }}
+        
+    - name: Terraform Apply
+      id: terraform_apply
+      working-directory: ./src/infrastructure/terraform
+      run: |
+        terraform apply plan.plan
+
+    - name: Lock Terraform State
+      if: ${{ always() }}
+      id: terraform_lock
+      uses: ./.github/actions/manage-storage-network-access
+      with:
+        storage_account_name: ${{ inputs.environment_prefix }}cltfstate
+        resource_group_name: ${{ inputs.environment_prefix }}rg-uks-cl-tfstate
+        enable_network_access: false
+
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v3
+      with:
+        app-name: "${{ inputs.environment_prefix }}-uks-cl-web-app-service"
+        slot-name: "${{inputs.webapp_slot}}"
+        images: "ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ inputs.tag_name }}"
+
+    - name: Swap Slot to Production
+      if: inputs.environment == 'elz-production'
+      run: |
+        az webapp deployment slot swap --name ${{ inputs.environment_prefix }}-uks-cl-web-app-service --resource-group ${{ inputs.environment_prefix }}rg-uks-cl-web --slot staging --target-slot production
+
+    - name: Delete Staging Slot
+      if: inputs.environment == 'elz-production'
+      run: |
+        az webapp deployment slot delete --name ${{ inputs.environment_prefix }}-uks-cl-web-app-service --resource-group ${{ inputs.environment_prefix }}rg-uks-cl-web --slot staging
+
+    - name: Clear Cache
+      shell: bash
+      run: |
+        curl -X POST "https://${{ inputs.custom_domain }}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f"
