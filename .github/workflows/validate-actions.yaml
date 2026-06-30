@@ -37,7 +37,7 @@ jobs:
           fi
           
           if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
-            FILES=$(git diff --name-only ${TARGET} HEAD | grep -E '^\.github\/.*\.ya?ml$' | xargs || true)
+            FILES=$(git diff --name-only --diff-filter=d ${TARGET} HEAD | grep -E '^\.github\/.*\.ya?ml$' | xargs || true)
           fi
           
           if [ -z "${FILES}" ]; then
