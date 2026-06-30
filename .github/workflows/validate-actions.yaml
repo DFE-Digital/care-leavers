@@ -27,7 +27,6 @@ jobs:
           persist-credentials: false
           
       - name: Determine Files to Scan
-        if: ${{ github.event_name == 'pull_request' }}
         id: list
         run: |
           FILES=""
