@@ -27,6 +27,8 @@ on:
           - "Test"
           - "Development"
         default: "Development"
+        
+permissions: {}
 
 jobs:
   synchronise:
@@ -34,9 +36,10 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6.0.3
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           ref: ${{ github.ref }}
+          persist-credentials: false
 
       - name: Configure Runner Environment
         shell: bash
@@ -58,15 +61,15 @@ jobs:
           echo SPACE_ID=$CONTENTFUL_SPACE_ID >> .env
           echo MANAGEMENT_TOKEN=$CONTENTFUL_MANAGEMENT_TOKEN >> .env
           echo MIGRATION_TRACKER_ENTITY_ID=$CONTENTFUL_MIGRATION_TRACKER_ENTITY_ID >> .env
-          echo SOURCE_ENVIRONMENT=${{ env.SOURCE }} >> .env
-          echo TARGET_ENVIRONMENT=${{ env.TARGET }} >> .env
+          echo SOURCE_ENVIRONMENT=$SOURCE >> .env
+          echo TARGET_ENVIRONMENT=$TARGET >> .env
         env:
           CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
           CONTENTFUL_MANAGEMENT_TOKEN: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
           CONTENTFUL_MIGRATION_TRACKER_ENTITY_ID: ${{ vars.CONTENTFUL_MIGRATION_TRACKER_ENTITY_ID }}
 
       - name: Setup Node.JS
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
         with:
           node-version: "lts/Krypton"
 
