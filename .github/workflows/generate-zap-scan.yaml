@@ -44,11 +44,13 @@ jobs:
       - name: Get Azure Frontdoor URL
         run: |
           FRONTDOOR_URL=$(az afd custom-domain list \
-            -g s272${{ vars.ENVIRONMENT_PREFIX }}rg-uks-cl-web \
-            --profile-name s272${{ vars.ENVIRONMENT_PREFIX }}-uks-cl-web-fd-profile \
+            -g s272${ENVIRONMENT_PREFIX}rg-uks-cl-web \
+            --profile-name s272${ENVIRONMENT_PREFIX}-uks-cl-web-fd-profile \
             --query "[0].hostName" -o tsv)
 
           echo "FRONTDOOR_URL=$FRONTDOOR_URL" >> ${GITHUB_ENV}
+        env:
+          ENVIRONMENT_PREFIX: ${{ vars.ENVIRONMENT_PREFIX }}
 
       - name: "Running ZAP scan against https://${{ env.FRONTDOOR_URL }}"
         uses: zaproxy/action-full-scan@3c58388149901b9a03b7718852c5ba889646c27c
@@ -78,9 +80,11 @@ jobs:
           if [ -f ./zap-report/report_md.md ]; then
             echo "## 🛡️ ZAP Security Scan Summary" >> $GITHUB_STEP_SUMMARY
             echo "⚠️ **Full report exceeds 1MB limit.**" >> $GITHUB_STEP_SUMMARY
-            echo "[Download Full Report from Artifacts](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+            echo "[Download Full Report from Artifacts](${FULL_REPORT_URL})" >> $GITHUB_STEP_SUMMARY
             echo "---" >> $GITHUB_STEP_SUMMARY
             grep -A 20 "Alerts" ./zap-report/report_md.md >> $GITHUB_STEP_SUMMARY
           else
             echo "⚠️ ZAP report_md.md not found." >> $GITHUB_STEP_SUMMARY
           fi
+        env:
+          FULL_REPORT_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

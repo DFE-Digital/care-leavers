@@ -35,4 +35,6 @@ jobs:
         working-directory: ./src/e2e/pa11y
         run: |
           yarn install --immutable --immutable-cache --production=true
-          yarn pa11y-ci --config pa11y.json --sitemap https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml
+          yarn pa11y-ci --config pa11y.json --sitemap https://${DOMAIN_PREFIX}.support-for-care-leavers.education.gov.uk/sitemap.xml
+        env:
+          DOMAIN_PREFIX: ${{ github.event.inputs.domain_prefix }}
