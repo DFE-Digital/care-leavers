@@ -7,12 +7,12 @@ on:
       - main
     paths:
       - .github/**
-    
+
 concurrency:
   group: '${{ github.workflow }}-${{ github.ref }}'
   cancel-in-progress: true
 
-permissions: {}
+permissions: { }
 
 jobs:
   static-analysis:
@@ -25,7 +25,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.ref }}
           persist-credentials: false
-          
+
       - name: Determine Files to Scan
         id: list
         run: |
@@ -52,7 +52,7 @@ jobs:
           echo "skip=$SKIP" >> $GITHUB_OUTPUT
         env:
           TARGET: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || '' }}
-          
+
       - name: Run Zizmor Static Analysis
         if: ${{ steps.list.outputs.skip == 'false' }}
         uses: docker://ghcr.io/zizmorcore/zizmor@sha256:d1117e5dbd9ee4970644067b534ab6ab50371f3c6f7f4d05446eb603a6e78f48
