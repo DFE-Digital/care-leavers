@@ -1,0 +1,61 @@
+name: Validate - GitHub Actions
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/**
+    
+concurrency:
+  group: '${{ github.workflow }}-${{ github.ref }}'
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  static-analysis:
+    name: Zizmor Static Analysis
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+          persist-credentials: false
+          
+      - name: Determine Files to Scan
+        if: ${{ github.event_name == 'pull_request' }}
+        id: list
+        run: |
+          FILES=""
+          SKIP=false
+          
+          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
+            FILES=.github/
+          fi
+          
+          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+            FILES=$(git diff --name-only ${TARGET} HEAD | grep -E '^\.github\/.*\.ya?ml$' | xargs || true)
+          fi
+          
+          if [ -z "${FILES}" ]; then
+            echo "No Workflows/Actions Changed - Skipping..."
+            SKIP=true
+          else
+            echo "Scanning Workflows/Actions:"
+            echo "${FILES}"
+          fi
+          
+          echo "files=$FILES" >> $GITHUB_OUTPUT
+          echo "skip=$SKIP" >> $GITHUB_OUTPUT
+        env:
+          TARGET: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || '' }}
+          
+      - name: Run Zizmor Static Analysis
+        if: ${{ steps.list.outputs.skip == 'false' }}
+        uses: docker://ghcr.io/zizmorcore/zizmor@sha256:d1117e5dbd9ee4970644067b534ab6ab50371f3c6f7f4d05446eb603a6e78f48
+        with:
+          args: ${{ steps.list.outputs.files }}
