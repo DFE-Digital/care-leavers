@@ -61,8 +61,8 @@ jobs:
           echo SPACE_ID=$CONTENTFUL_SPACE_ID >> .env
           echo MANAGEMENT_TOKEN=$CONTENTFUL_MANAGEMENT_TOKEN >> .env
           echo MIGRATION_TRACKER_ENTITY_ID=$CONTENTFUL_MIGRATION_TRACKER_ENTITY_ID >> .env
-          echo SOURCE_ENVIRONMENT=${{ env.SOURCE }} >> .env
-          echo TARGET_ENVIRONMENT=${{ env.TARGET }} >> .env
+          echo SOURCE_ENVIRONMENT=$SOURCE >> .env
+          echo TARGET_ENVIRONMENT=$TARGET >> .env
         env:
           CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
           CONTENTFUL_MANAGEMENT_TOKEN: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}

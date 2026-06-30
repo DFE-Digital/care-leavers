@@ -21,10 +21,13 @@ runs:
       shell: bash
       run: |
         az storage account update \
-          --name ${{ inputs.storage_account_name }} \
-          --resource-group ${{ inputs.resource_group_name }} \
+          --name ${STORAGE_ACCOUNT_NAME} \
+          --resource-group ${RESOURCE_GROUP_NAME} \
           --public-network-access Enabled \
           --default-action Allow > /dev/null
+      env:
+        STORAGE_ACCOUNT_NAME: ${{ inputs.storage_account_name }}
+        RESOURCE_GROUP_NAME: ${{ inputs.resource_group_name }}
     
     - name: Disable Public Network Access to Storage Account
       if: ${{ inputs.enable_network_access == 'false' }}
@@ -34,9 +37,12 @@ runs:
           echo "Disabling public network access due to workflow failure or cancellation."
         fi
         az storage account update \
-          --name ${{ inputs.storage_account_name }} \
-          --resource-group ${{ inputs.resource_group_name }} \
+          --name ${STORAGE_ACCOUNT_NAME} \
+          --resource-group ${RESOURCE_GROUP_NAME} \
           --public-network-access Disabled > /dev/null
+      env:
+        STORAGE_ACCOUNT_NAME: ${{ inputs.storage_account_name }}
+        RESOURCE_GROUP_NAME: ${{ inputs.resource_group_name }}
     
     - name: Sleep for 30s
       shell: bash

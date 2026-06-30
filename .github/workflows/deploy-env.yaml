@@ -55,7 +55,9 @@ jobs:
 
       - name: Build Web Docker Image
         run: |
-          docker build . -t ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ env.TAG_NAME }} -f web/CareLeavers.Web/Dockerfile
+          docker build . -t ${TAG} -f web/CareLeavers.Web/Dockerfile
+        env:
+          TAG: ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ env.TAG_NAME }}
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee
@@ -66,7 +68,9 @@ jobs:
 
       - name: Push Web Docker Image
         run: |
-          docker push ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ env.TAG_NAME }}
+          docker push ${TAG}
+        env:
+          TAG: ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ env.TAG_NAME }}
 
   deploy:
     name: Deploying to ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
@@ -134,8 +138,8 @@ jobs:
         working-directory: ./src/infrastructure/terraform
         run: |
           terraform init \
-            -backend-config="resource_group_name=${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-tfstate" \
-            -backend-config="storage_account_name=${{ env.ENVIRONMENT_PREFIX }}cltfstate" \
+            -backend-config="resource_group_name=${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate" \
+            -backend-config="storage_account_name=${ENVIRONMENT_PREFIX}cltfstate" \
             -backend-config="container_name=tfstate" \
             -backend-config="key=terraform.tfstate"
 
@@ -143,8 +147,9 @@ jobs:
         id: terraform_plan
         working-directory: ./src/infrastructure/terraform
         run: |
-          terraform plan -out plan.plan -var-file="env_vars/${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}.tfvars"
+          terraform plan -out plan.plan -var-file="env_vars/${ENVIRONMENT}.tfvars"
         env:
+          ENVIRONMENT: ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
           TF_VAR_contentful_delivery_api_key: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
           TF_VAR_contentful_preview_api_key: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
           TF_VAR_contentful_management_api_key: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
@@ -178,14 +183,16 @@ jobs:
       - name: Swap Slot to Production
         if: github.event.inputs.environment == 'elz-production'
         run: |
-          az webapp deployment slot swap --name ${{ env.ENVIRONMENT_PREFIX }}-uks-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-web --slot staging --target-slot production
+          az webapp deployment slot swap --name ${ENVIRONMENT_PREFIX}-uks-cl-web-app-service --resource-group ${ENVIRONMENT_PREFIX}rg-uks-cl-web --slot staging --target-slot production
 
       - name: Delete Staging Slot
         if: github.event.inputs.environment == 'elz-production'
         run: |
-          az webapp deployment slot delete --name ${{ env.ENVIRONMENT_PREFIX }}-uks-cl-web-app-service --resource-group ${{ env.ENVIRONMENT_PREFIX }}rg-uks-cl-web --slot staging
+          az webapp deployment slot delete --name ${ENVIRONMENT_PREFIX}-uks-cl-web-app-service --resource-group ${ENVIRONMENT_PREFIX}rg-uks-cl-web --slot staging
 
       - name: Clear Cache
         shell: bash
         run: |
-          curl -X POST "https://${{ vars.CUSTOM_DOMAIN }}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f"
+          curl -X POST "https://${CUSTOM_DOMAIN}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f"
+        env:
+          CUSTOM_DOMAIN: ${{ vars.CUSTOM_DOMAIN }}
