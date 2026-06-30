@@ -13,18 +13,21 @@ on:
           - "staging"
           - "www"
 
+permissions: {}
+
 jobs:
   accessibility-scan:
     name: "Run Pa11y Accessibility Scan"
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           ref: ${{ github.ref }}
+          persist-credentials: false
 
       - name: Setup Node.JS
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
         with:
           node-version: "lts/Krypton"
 
@@ -32,4 +35,6 @@ jobs:
         working-directory: ./src/e2e/pa11y
         run: |
           yarn install --immutable --immutable-cache --production=true
-          yarn pa11y-ci --config pa11y.json --sitemap https://${{ github.event.inputs.domain_prefix }}.support-for-care-leavers.education.gov.uk/sitemap.xml
+          yarn pa11y-ci --config pa11y.json --sitemap https://${DOMAIN_PREFIX}.support-for-care-leavers.education.gov.uk/sitemap.xml
+        env:
+          DOMAIN_PREFIX: ${{ github.event.inputs.domain_prefix }}
