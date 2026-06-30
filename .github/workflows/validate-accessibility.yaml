@@ -13,6 +13,8 @@ on:
           - "staging"
           - "www"
 
+permissions: {}
+
 jobs:
   accessibility-scan:
     name: "Run Pa11y Accessibility Scan"
@@ -22,6 +24,7 @@ jobs:
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           ref: ${{ github.ref }}
+          persist-credentials: false
 
       - name: Setup Node.JS
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
