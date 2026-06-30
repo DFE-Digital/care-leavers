@@ -6,6 +6,8 @@ on:
   schedule:
     - cron: "0 23 * * 1-5"
 
+permissions: {}
+
 run-name: Running backup procedure of Contentful space
 jobs:
   backup-contentful:

@@ -1,6 +1,6 @@
 FROM node:24-alpine3.24
 
-RUN npm install -g contentful-cli
+RUN npm install -g --ignore-scripts contentful-cli@4.0.2
 
 WORKDIR /opt/backup
 
