@@ -25,7 +25,6 @@ concurrency:
 env:
   TAG_NAME: "${{ github.ref_name }}"
   ENVIRONMENT_PREFIX: "s272${{ vars.ENVIRONMENT_PREFIX }}"
-  ENVIRONMENT: ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
 
 jobs:
   validate_using_tag:
@@ -38,7 +37,7 @@ jobs:
           deploy: "tag"
 
   deploy:
-    name: Deploying to ${{ env.ENVIRONMENT }}
+    name: Deploying to ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
     needs: [validate_using_tag]
     runs-on: ubuntu-latest
     permissions:
@@ -48,7 +47,7 @@ jobs:
       - name: Run Deploy Action
         uses: ./.github/actions/deploy
         with:
-          environment: ${{ env.ENVIRONMENT }}
+          environment: ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
           webapp_slot: ${{ vars.WEB_APP_SLOT }}
           custom_domain: ${{ vars.CUSTOM_DOMAIN }}
           environment_prefix: ${{ env.ENVIRONMENT_PREFIX }}

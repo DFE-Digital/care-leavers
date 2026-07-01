@@ -21,7 +21,6 @@ concurrency:
 env:
   TAG_NAME: "${{ github.sha }}"
   ENVIRONMENT_PREFIX: "s272${{ vars.ENVIRONMENT_PREFIX }}"
-  ENVIRONMENT: ${{ github.event.inputs.environment }}
 
 jobs:
   validate_using_branch:
@@ -42,7 +41,7 @@ jobs:
       packages: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6.0.3
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           ref: ${{ env.TAG_NAME }}
 
@@ -52,7 +51,7 @@ jobs:
           tag_name: ${{ env.TAG_NAME }}
 
   deploy:
-    name: Deploying to ${{ env.ENVIRONMENT }}
+    name: Deploying to ${{ github.event.inputs.environment }}
     needs: [package]
     runs-on: ubuntu-latest
     permissions:
@@ -62,7 +61,7 @@ jobs:
       - name: Run Deploy Action
         uses: ./.github/actions/deploy
         with:
-          environment: ${{ env.ENVIRONMENT }}
+          environment: ${{ github.event.inputs.environment }}
           webapp_slot: ${{ vars.WEB_APP_SLOT }}
           custom_domain: ${{ vars.CUSTOM_DOMAIN }}
           environment_prefix: ${{ env.ENVIRONMENT_PREFIX }}
