@@ -20,7 +20,7 @@ runs:
         value: ${{ github.repository }}
 
     - name: Log in to GitHub Container Registry
-      uses: docker/login-action@v4
+      uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
@@ -28,9 +28,13 @@ runs:
 
     - name: Build Web Docker Image
       run: |
-        docker build . -t ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ inputs.tag_name }} -f web/CareLeavers.Web/Dockerfile
+        docker build . -t ${TAG} -f web/CareLeavers.Web/Dockerfile
+      env:
+        TAG: ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ inputs.tag_name }} 
 
     - name: Push Web Docker Image
       run: |
-        docker push ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ inputs.tag_name }}
+        docker push ${TAG}
+      env: 
+        TAG: ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ inputs.tag_name }}
     
