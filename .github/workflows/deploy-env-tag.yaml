@@ -18,6 +18,8 @@ on:
 
 run-name: ${{ github.event_name == 'push' && 'Deploy to Test' || format('Deploy to {0}', github.event.inputs.environment) }}
 
+permissions: {}
+
 concurrency:
   group: "deploy-${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}"
   cancel-in-progress: false
@@ -30,6 +32,8 @@ jobs:
   validate_using_tag:
     name: Validating the workflow is using a tag for deployment
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Run Validation
         uses: ./.github/actions/validate-deploy
