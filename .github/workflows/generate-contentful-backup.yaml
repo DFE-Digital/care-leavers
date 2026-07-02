@@ -72,7 +72,7 @@ jobs:
 
             CONN_STR=$(az keyvault secret show \
               --name "blob-storage-connection-string" \
-              --vault-name "${{ env.ENVIRONMENT_PREFIX }}-kv-uks-cl" \
+              --vault-name "${{ ENVIRONMENT_PREFIX }}-kv-uks-cl" \
               --query "value" \
               --output tsv)
 
@@ -81,9 +81,11 @@ jobs:
             echo "AZURE_STORAGE_CONNECTION_STRING=$CONN_STR" >> $GITHUB_ENV
 
             az storage blob upload \
-              --container-name ${{ env.ENVIRONMENT_PREFIX }}-backup-container \
+              --container-name ${{ ENVIRONMENT_PREFIX }}-backup-container \
               --file ./backups/export.json \
               --name "contentful-backup-${BACKUP_DATE}-run-${{ github.run_id }}.json"
+        env:
+          ENVIRONMENT_PREFIX: ${{ env.ENVIRONMENT_PREFIX }}  
 
       - name: Lock Web Storage Account
         if: ${{ always() }}
