@@ -174,3 +174,9 @@ resource "azurerm_storage_container" "translator_storage_container" {
   storage_account_id    = azurerm_storage_account.web_storage_account.id
   container_access_type = "private"
 }
+
+resource "azurerm_storage_container" "backup_storage_container" {
+  name                  = "${local.service_prefix}-backup-container"
+  storage_account_id    = azurerm_storage_account.web_storage_account.id
+  container_access_type = "private"
+}
