@@ -8,10 +8,10 @@ on:
 
 permissions: {}
 
-run-name: Running backup procedure of Contentful space
+run-name: Performing Contentful Backup
 jobs:
   backup-contentful:
-    name: "Create backup"
+    name: "Create backup and export to file storage"
     runs-on: ubuntu-latest
     permissions:
       id-token: write
