@@ -39,8 +39,7 @@ jobs:
 
   deploy:
     name: Deploying to ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
-    needs: [configure_run_and_validate_tag]
-    if: needs.configure_run_and_validate_tag.outputs.should_run == 'true'
+    needs: [validate_using_tag]
     runs-on: ubuntu-latest
     permissions:
       contents: read
