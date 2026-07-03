@@ -35,7 +35,7 @@ jobs:
 
           chmod 777 ./backups
           
-          docker build -f src/contentful/Dockerfile.backup -t contentful-backup-tool .
+          docker build -f src/contentful/Utilities/Dockerfile.backup -t contentful-backup-tool .
           
           docker run \
             -v ${{ github.workspace }}/backups:/output \
