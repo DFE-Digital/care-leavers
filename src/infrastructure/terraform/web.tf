@@ -176,6 +176,8 @@ resource "azurerm_storage_container" "translator_storage_container" {
 }
 
 resource "azurerm_storage_container" "backup_storage_container" {
+  count = var.elz_environment == "Dev" ? 1 : 0
+
   name                  = "${local.service_prefix}-backup-container"
   storage_account_id    = azurerm_storage_account.web_storage_account.id
   container_access_type = "private"

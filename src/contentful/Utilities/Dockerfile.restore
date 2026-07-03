@@ -8,4 +8,4 @@ RUN adduser -D nonroot
 USER nonroot
 
 #ENTRYPOINT ["sh", "-c", "contentful space import --management-token $token --space-id=$space --environment-id=$envid --content-file /opt/backup/prod-contentful-backup-output.json"]
-ENTRYPOINT ["contentful", "space import"]
+ENTRYPOINT ["contentful", "space", "import"]
