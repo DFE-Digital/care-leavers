@@ -1,10 +1,6 @@
 name: Deploy with Tag
 
 on:
-  workflow_run:
-    workflows: ["Create tag and publish image"]
-    types:
-      - completed
   workflow_dispatch:
     inputs:
       environment:
@@ -30,68 +26,16 @@ env:
   ENVIRONMENT_PREFIX: "s272${{ vars.ENVIRONMENT_PREFIX }}"
 
 jobs:
-  configure_run_and_validate_tag:
-    name: Configure Workflow Run
+  validate_using_tag:
+    name: Validating the workflow is using a tag for deployment
     runs-on: ubuntu-latest
     permissions:
-      actions: write
       contents: read
-    outputs:
-      should_run: ${{ steps.check_status.outputs.should_run || steps.check_validate.outputs.should_run }}
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
-        with:
-          ref: ${{ github.ref }}
-          persist-credentials: false
-
-      - name: Check Upstream Deployment Status
-        if: github.event_name == 'workflow_run'
-        id: check_status
-        run: |
-          if [[ '${WORKFLOW_CONCLUSION}' == 'success' ]]; then
-            echo 'should_run=true' >> $GITHUB_OUTPUT
-            echo 'Proceeding with Deployment'
-          else
-            echo 'should_run=false' >> $GITHUB_OUTPUT
-            echo '### Cancelled workflow run as Create tag and publish image failed :warning:' >> $GITHUB_STEP_SUMMARY
-            echo '' >> $GITHUB_STEP_SUMMARY
-            echo 'This workflow run was triggered by the completion of the Create tag and publish image workflow.' >> $GITHUB_STEP_SUMMARY
-            echo 'However, as that run failed, this deploy workflow has been cancelled.'>> $GITHUB_STEP_SUMMARY
-            echo '' >> $GITHUB_STEP_SUMMARY
-            echo '[View failed Create tag and publish image run](${WORKFLOW_URL})'>> $GITHUB_STEP_SUMMARY
-            gh run cancel ${GITHUB_RUN_ID}
-          fi
-        env:
-          WORKFLOW_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
-          WORKFLOW_URL: ${{ github.event.workflow_run.html_url}}
-          GITHUB_RUN_ID: ${{ github.run_id }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Run Validation
-        id: tag_validation
-        if: github.event_name == 'workflow_dispatch'
         uses: ./.github/actions/validate-deploy
         with:
           deploy: "tag"
-
-      - name: Proceed with Deployment
-        if: github.event_name == 'workflow_dispatch'
-        id: check_validate
-        run: |
-          if [[ '${TAG_VALIDATION}' == 'success' ]]; then
-            echo 'should_run=true' >> $GITHUB_OUTPUT
-            echo 'Proceeding with Deployment'
-          else
-            echo 'should_run=false' >> $GITHUB_OUTPUT
-            echo '### Cancelled workflow run as it has been determined a tag is not being used :warning:' >> $GITHUB_STEP_SUMMARY
-            echo '' >> $GITHUB_STEP_SUMMARY
-            gh run cancel ${GITHUB_RUN_ID}
-          fi
-        env:
-          TAG_VALIDATION: ${{ steps.tag_validation.outcome }}
-          GITHUB_RUN_ID: ${{ github.run_id }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
     name: Deploying to ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
