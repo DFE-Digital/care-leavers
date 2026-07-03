@@ -79,10 +79,9 @@ jobs:
 
             echo "::add-mask::$CONN_STR"
 
-            echo "AZURE_STORAGE_CONNECTION_STRING=$CONN_STR" >> $GITHUB_ENV
-
             az storage blob upload \
-              --container-name ${ENVIRONMENT_PREFIX}-backup-container \
+              --connection-string "$CONN_STR" \
+              --container-name "${ENVIRONMENT_PREFIX}-backup-container" \
               --file ./backups/export.json \
               --name "contentful-backup-${BACKUP_DATE}-run-${{ github.run_id }}.json"
         env:
