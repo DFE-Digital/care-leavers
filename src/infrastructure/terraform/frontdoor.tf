@@ -247,26 +247,11 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   }
 
   custom_rule {
-    name     = "allowcontentful"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 100
-
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "X-Contentful-CRN"
-      operator       = "Contains"
-      match_values   = ["crn:contentful"]
-    }
-  }
-
-  custom_rule {
     name     = "blockarchiving"
     enabled  = true
     action   = "Block"
     type     = "MatchRule"
-    priority = 150
+    priority = 100
 
     match_condition {
       match_variable = "RequestHeader"
@@ -285,42 +270,25 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   }
 
   custom_rule {
-    name     = "allowsearchengines"
+    name     = "blocknonuk"
     enabled  = true
-    action   = "Allow"
+    action   = "Redirect"
     type     = "MatchRule"
-    priority = 200
+    priority = 150
 
     match_condition {
-      match_variable = "RequestHeader"
-      selector       = "User-Agent"
-      operator       = "RegEx"
-      transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["aolbuild|baidu|bingbot|bingpreview|msnbot|duckduckgo|-google|googlebot|google-|googleother|read-aloud|teoma|slurp|yandex|yahoo"]
+      match_variable     = "SocketAddr"
+      operator           = "GeoMatch"
+      negation_condition = true
+      match_values       = ["GB", "ZZ"]
     }
 
     match_condition {
       match_variable     = "RequestUri"
-      operator           = "Contains"
+      operator           = "RegEx"
       negation_condition = true
       transforms         = ["Lowercase", "UrlDecode"]
-      match_values       = ["/translate-this-website/"]
-    }
-  }
-
-  custom_rule {
-    name     = "allowtools"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 210
-
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "User-Agent"
-      operator       = "Contains"
-      transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["slack", "embedly", "figma", "skype"]
+      match_values       = ["\\/(robots\\.txt|error|service-unavailable|accessibility-statement|page-not-found|cookie-policy|privacy-policies|assets\\/|css\\/|js\\/|sitemap)"]
     }
   }
 
@@ -329,7 +297,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
     enabled  = true
     action   = "Block"
     type     = "MatchRule"
-    priority = 220
+    priority = 200
 
     match_condition {
       match_variable = "RequestHeader"
@@ -345,84 +313,6 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
       negation_condition = true
       transforms         = ["Lowercase", "UrlDecode"]
       match_values       = ["/en/", "/robots.txt", "/sitemap"]
-    }
-  }
-
-  custom_rule {
-    name     = "allowai"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 230
-
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "User-Agent"
-      operator       = "RegEx"
-      transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = ["oai-search|chatgpt|gptbot|cohere-ai|google-extended|amazonbot|applebot|duckassistbot"]
-    }
-
-    match_condition {
-      match_variable     = "RequestUri"
-      operator           = "Contains"
-      negation_condition = true
-      transforms         = ["Lowercase", "UrlDecode"]
-      match_values       = ["/translate-this-website/"]
-    }
-  }
-
-  custom_rule {
-    name     = "allowsocialmedia"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 240
-
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "User-Agent"
-      operator       = "RegEx"
-      transforms     = ["Lowercase", "UrlDecode"]
-      match_values   = var.list_of_social_media_bots
-    }
-  }
-
-  custom_rule {
-    name     = "allowteamsredirect"
-    enabled  = true
-    action   = "Allow"
-    type     = "MatchRule"
-    priority = 250
-
-    match_condition {
-      match_variable = "RequestHeader"
-      selector       = "Referer"
-      operator       = "Contains"
-      match_values   = ["statics.teams.cdn.office.net"]
-    }
-  }
-
-  custom_rule {
-    name     = "blocknonuk"
-    enabled  = true
-    action   = "Redirect"
-    type     = "MatchRule"
-    priority = 400
-
-    match_condition {
-      match_variable     = "SocketAddr"
-      operator           = "GeoMatch"
-      negation_condition = true
-      match_values       = ["GB", "ZZ"]
-    }
-
-    match_condition {
-      match_variable     = "RequestUri"
-      operator           = "RegEx"
-      negation_condition = true
-      transforms         = ["Lowercase", "UrlDecode"]
-      match_values       = ["\\/(robots\\.txt|error|service-unavailable|accessibility-statement|page-not-found|cookie-policy|privacy-policies|assets\\/|css\\/|js\\/|sitemap)"]
     }
   }
 }

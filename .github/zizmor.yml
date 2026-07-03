@@ -1,0 +1,7 @@
+rules:
+  adhoc-packages:
+    ignore:
+      # Ignoring "npm install -g contentful-cli"
+      # https://github.com/contentful/contentful-cli
+      # Official install method via the docs, we would need to refactor the migration mechanism itself to resolve this rule fully
+      - deploy-contentful-migrations.yml:37
