@@ -13,12 +13,12 @@ on:
           - "elz-staging"
           - "elz-production"
 
-run-name: ${{ github.event_name == 'push' && 'Deploy to Test' || format('Deploy to {0}', github.event.inputs.environment) }}
+run-name: ${{ format('Deploy to {0}', github.event.inputs.environment) }}
 
 permissions: {}
 
 concurrency:
-  group: "deploy-${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}"
+  group: "deploy-${{ github.event.inputs.environment }}"
   cancel-in-progress: false
 
 env:
@@ -38,7 +38,7 @@ jobs:
           deploy: "tag"
 
   deploy:
-    name: Deploying to ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
+    name: Deploying to ${{ github.event.inputs.environment }}
     needs: [validate_using_tag]
     runs-on: ubuntu-latest
     permissions:
@@ -48,7 +48,7 @@ jobs:
       - name: Run Deploy Action
         uses: ./.github/actions/deploy
         with:
-          environment: ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
+          environment: ${{ github.event.inputs.environment }}
           webapp_slot: ${{ vars.WEB_APP_SLOT }}
           custom_domain: ${{ vars.CUSTOM_DOMAIN }}
           environment_prefix: ${{ env.ENVIRONMENT_PREFIX }}
