@@ -16,7 +16,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    environment: 'elz-production'
+    environment: 'elz-test'
     env:
       ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
       ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
