@@ -81,7 +81,7 @@ jobs:
 
             az storage blob upload \
               --connection-string "$CONN_STR" \
-              --container-name "${ENVIRONMENT_PREFIX}-backup-container" \
+              --container-name "${ENVIRONMENT_PREFIX}-uks-cl-backup-container" \
               --file ./backups/export.json \
               --name "contentful-backup-${BACKUP_DATE}-run-${{ github.run_id }}.json"
         env:
