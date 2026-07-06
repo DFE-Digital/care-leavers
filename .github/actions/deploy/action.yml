@@ -83,10 +83,12 @@ runs:
     # Ensure PAL metadata is set on the deployment principal
     - name: Service principal metadata
       continue-on-error: true
+      shell: bash
       run: |
         az rest --method put --uri "https://management.azure.com/providers/microsoft.managementpartner/partners/6084223?api-version=2018-02-01" --body '{"partnerId": "6084223"}' || true
 
     - name: Add Alert Management Provider
+      shell: bash
       run: |
         az provider register --namespace Microsoft.AlertsManagement
 
@@ -107,19 +109,32 @@ runs:
     - name: Terraform Init
       id: terraform_init
       working-directory: ./src/infrastructure/terraform
+      shell: bash
       run: |
         terraform init \
-          -backend-config="resource_group_name=${{ inputs.environment_prefix }}rg-uks-cl-tfstate" \
-          -backend-config="storage_account_name=${{ inputs.environment_prefix }}cltfstate" \
+          -backend-config="resource_group_name=${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate" \
+          -backend-config="storage_account_name=${ENVIRONMENT_PREFIX}cltfstate" \
           -backend-config="container_name=tfstate" \
           -backend-config="key=terraform.tfstate"
+      env:
+        ENVIRONMENT_PREFIX: ${{ inputs.environment_prefix }}
+        ARM_CLIENT_ID: "${{ inputs.AZURE_CLIENT_ID_SECRET }}"
+        ARM_SUBSCRIPTION_ID: "${{ inputs.AZURE_SUBSCRIPTION_ID_SECRET }}"
+        ARM_TENANT_ID: "${{ inputs.AZURE_TENANT_ID_SECRET }}"
+        ARM_CLIENT_SECRET: "${{ inputs.AZURE_CLIENT_SECRET }}"
 
     - name: Terraform Plan
       id: terraform_plan
       working-directory: ./src/infrastructure/terraform
+      shell: bash
       run: |
-        terraform plan -out plan.plan -var-file="env_vars/${{ inputs.environment }}.tfvars"
+        terraform plan -out plan.plan -var-file="env_vars/${ENVIRONMENT}.tfvars"
       env:
+        ENVIRONMENT: ${{ inputs.environment }}
+        ARM_CLIENT_ID: "${{ inputs.AZURE_CLIENT_ID_SECRET }}"
+        ARM_SUBSCRIPTION_ID: "${{ inputs.AZURE_SUBSCRIPTION_ID_SECRET }}"
+        ARM_TENANT_ID: "${{ inputs.AZURE_TENANT_ID_SECRET }}"
+        ARM_CLIENT_SECRET: "${{ inputs.AZURE_CLIENT_SECRET }}"
         TF_VAR_contentful_delivery_api_key: ${{ inputs.CONTENTFUL_DELIVERY_API_KEY_SECRET }}
         TF_VAR_contentful_preview_api_key: ${{ inputs.CONTENTFUL_PREVIEW_API_KEY_SECRET }}
         TF_VAR_contentful_management_api_key: ${{ inputs.CONTENTFUL_MANAGEMENT_TOKEN_SECRET }}
@@ -130,8 +145,14 @@ runs:
     - name: Terraform Apply
       id: terraform_apply
       working-directory: ./src/infrastructure/terraform
+      shell: bash
       run: |
         terraform apply plan.plan
+      env:
+        ARM_CLIENT_ID: "${{ inputs.AZURE_CLIENT_ID_SECRET }}"
+        ARM_SUBSCRIPTION_ID: "${{ inputs.AZURE_SUBSCRIPTION_ID_SECRET }}"
+        ARM_TENANT_ID: "${{ inputs.AZURE_TENANT_ID_SECRET }}"
+        ARM_CLIENT_SECRET: "${{ inputs.AZURE_CLIENT_SECRET }}"
 
     - name: Lock Terraform State
       if: ${{ always() }}
@@ -152,15 +173,23 @@ runs:
 
     - name: Swap Slot to Production
       if: inputs.environment == 'elz-production'
+      shell: bash
       run: |
-        az webapp deployment slot swap --name ${{ inputs.environment_prefix }}-uks-cl-web-app-service --resource-group ${{ inputs.environment_prefix }}rg-uks-cl-web --slot staging --target-slot production
+        az webapp deployment slot swap --name ${ENVIRONMENT_PREFIX}-uks-cl-web-app-service --resource-group ${ENVIRONMENT_PREFIX}rg-uks-cl-web --slot staging --target-slot production
+      env:
+        ENVIRONMENT_PREFIX: ${{ inputs.environment_prefix }}
 
     - name: Delete Staging Slot
       if: inputs.environment == 'elz-production'
+      shell: bash
       run: |
-        az webapp deployment slot delete --name ${{ inputs.environment_prefix }}-uks-cl-web-app-service --resource-group ${{ inputs.environment_prefix }}rg-uks-cl-web --slot staging
+        az webapp deployment slot delete --name ${ENVIRONMENT_PREFIX}-uks-cl-web-app-service --resource-group ${ENVIRONMENT_PREFIX}rg-uks-cl-web --slot staging
+      env:
+        ENVIRONMENT_PREFIX: ${{ inputs.environment_prefix }}
 
     - name: Clear Cache
       shell: bash
       run: |
-        curl -X POST "https://${{ inputs.custom_domain }}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f"
+        curl -X POST "https://${CUSTOM_DOMAIN}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f"
+      env:
+        CUSTOM_DOMAIN: ${{ inputs.custom_domain }}

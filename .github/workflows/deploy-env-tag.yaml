@@ -32,6 +32,12 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          ref: ${{ env.TAG_NAME }}
+          persist-credentials: false
+          
       - name: Run Validation
         uses: ./.github/actions/validate-deploy
         with:
@@ -41,10 +47,17 @@ jobs:
     name: Deploying to ${{ github.event.inputs.environment }}
     needs: [validate_using_tag]
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
     permissions:
       contents: read
       id-token: write
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          ref: ${{ env.TAG_NAME }}
+          persist-credentials: false
+
       - name: Run Deploy Action
         uses: ./.github/actions/deploy
         with:

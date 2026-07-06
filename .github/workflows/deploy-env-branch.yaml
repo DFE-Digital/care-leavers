@@ -34,6 +34,12 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          ref: ${{ env.TAG_NAME }}
+          persist-credentials: false
+          
       - name: Run Validation
         uses: ./.github/actions/validate-deploy
         with:
@@ -57,15 +63,23 @@ jobs:
         uses: ./.github/actions/build-webapp-image
         with:
           tag_name: ${{ env.TAG_NAME }}
+          github_token_secret: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
     name: Deploying to ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
     needs: [package]
     runs-on: ubuntu-latest
+    environment: ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
     permissions:
       contents: read
       id-token: write
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          ref: ${{ env.TAG_NAME }}
+          persist-credentials: false
+
       - name: Run Deploy Action
         uses: ./.github/actions/deploy
         with:

@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tag_version: ${{ steps.tag_version.outputs.new_tag }}
+    permissions:
+      contents: write
     steps:
       - name: Checkout Repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
@@ -46,4 +48,5 @@ jobs:
         uses: ./.github/actions/build-webapp-image
         with:
           tag_name: ${{ env.TAG_NAME }}
+          github_token_secret: ${{ secrets.GITHUB_TOKEN }}
         
