@@ -1,0 +1,40 @@
+name: Build Web App Image
+description: Action to build the web app image
+
+inputs:
+  tag_name:
+    description: The tag for the package to be built
+    required: true
+    type: string
+    
+runs:
+  using: composite
+  defaults:
+      run:
+        working-directory: ./src
+  steps:
+    - name: Lowercase Repository Name
+      id: lowercase
+      uses: ./.github/actions/lowercase
+      with:
+        value: ${{ github.repository }}
+
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build Web Docker Image
+      run: |
+        docker build . -t ${TAG} -f web/CareLeavers.Web/Dockerfile
+      env:
+        TAG: ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ inputs.tag_name }} 
+
+    - name: Push Web Docker Image
+      run: |
+        docker push ${TAG}
+      env: 
+        TAG: ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ inputs.tag_name }}
+    

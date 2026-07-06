@@ -1,0 +1,86 @@
+name: Deploy with Branch
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: "Environment to deploy to"
+        required: true
+        default: "elz-test"
+        options:
+          - "elz-test"
+          - "elz-staging"
+
+run-name: ${{ github.event_name == 'push' && 'Deploy to Test' || format('Deploy to {0}', github.event.inputs.environment) }}
+
+permissions: {}
+
+concurrency:
+  group: "deploy-${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}"
+  cancel-in-progress: false
+
+env:
+  TAG_NAME: "${{ github.sha }}"
+  ENVIRONMENT_PREFIX: "s272${{ vars.ENVIRONMENT_PREFIX }}"
+
+jobs:
+  validate_using_branch:
+    name: Validating the workflow is using a branch for deployment
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Run Validation
+        uses: ./.github/actions/validate-deploy
+        with:
+          deploy: "branch"
+
+  package:
+    name: Package Web in Docker
+    runs-on: ubuntu-latest
+    needs: [validate_using_branch]
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          ref: ${{ env.TAG_NAME }}
+          persist-credentials: false
+
+      - name: Build Image
+        uses: ./.github/actions/build-webapp-image
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+
+  deploy:
+    name: Deploying to ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
+    needs: [package]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Run Deploy Action
+        uses: ./.github/actions/deploy
+        with:
+          environment: ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
+          webapp_slot: ${{ vars.WEB_APP_SLOT }}
+          custom_domain: ${{ vars.CUSTOM_DOMAIN }}
+          environment_prefix: ${{ env.ENVIRONMENT_PREFIX }}
+          tag_name: ${{ env.TAG_NAME }}
+          AZURE_CLIENT_ID_SECRET: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_SUBSCRIPTION_ID_SECRET: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_TENANT_ID_SECRET: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          CONTENTFUL_DELIVERY_API_KEY_SECRET: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
+          CONTENTFUL_PREVIEW_API_KEY_SECRET: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
+          CONTENTFUL_MANAGEMENT_TOKEN_SECRET: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
+          CONTENTFUL_SPACE_ID_SECRET: ${{ secrets.CONTENTFUL_SPACE_ID }}
+          SUPPORT_ALERT_EMAIL_SECRET: ${{ secrets.SUPPORT_ALERT_EMAIL }}
+          BASIC_AUTH_CREDS_SECRET: ${{ secrets.BASIC_AUTH_CREDS }}
