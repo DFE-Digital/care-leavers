@@ -131,6 +131,10 @@ runs:
         terraform plan -out plan.plan -var-file="env_vars/${ENVIRONMENT}.tfvars"
       env:
         ENVIRONMENT: ${{ inputs.environment }}
+        ARM_CLIENT_ID: "${{ inputs.AZURE_CLIENT_ID_SECRET }}"
+        ARM_SUBSCRIPTION_ID: "${{ inputs.AZURE_SUBSCRIPTION_ID_SECRET }}"
+        ARM_TENANT_ID: "${{ inputs.AZURE_TENANT_ID_SECRET }}"
+        ARM_CLIENT_SECRET: "${{ inputs.AZURE_CLIENT_SECRET }}"
         TF_VAR_contentful_delivery_api_key: ${{ inputs.CONTENTFUL_DELIVERY_API_KEY_SECRET }}
         TF_VAR_contentful_preview_api_key: ${{ inputs.CONTENTFUL_PREVIEW_API_KEY_SECRET }}
         TF_VAR_contentful_management_api_key: ${{ inputs.CONTENTFUL_MANAGEMENT_TOKEN_SECRET }}
@@ -144,6 +148,11 @@ runs:
       shell: bash
       run: |
         terraform apply plan.plan
+      env:
+        ARM_CLIENT_ID: "${{ inputs.AZURE_CLIENT_ID_SECRET }}"
+        ARM_SUBSCRIPTION_ID: "${{ inputs.AZURE_SUBSCRIPTION_ID_SECRET }}"
+        ARM_TENANT_ID: "${{ inputs.AZURE_TENANT_ID_SECRET }}"
+        ARM_CLIENT_SECRET: "${{ inputs.AZURE_CLIENT_SECRET }}"
 
     - name: Lock Terraform State
       if: ${{ always() }}
