@@ -47,6 +47,7 @@ jobs:
     name: Deploying to ${{ github.event.inputs.environment }}
     needs: [validate_using_tag]
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
     permissions:
       contents: read
       id-token: write
@@ -56,7 +57,7 @@ jobs:
         with:
           ref: ${{ env.TAG_NAME }}
           persist-credentials: false
-          
+
       - name: Run Deploy Action
         uses: ./.github/actions/deploy
         with:

@@ -69,6 +69,7 @@ jobs:
     name: Deploying to ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
     needs: [package]
     runs-on: ubuntu-latest
+    environment: ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
     permissions:
       contents: read
       id-token: write
@@ -78,7 +79,7 @@ jobs:
         with:
           ref: ${{ env.TAG_NAME }}
           persist-credentials: false
-          
+
       - name: Run Deploy Action
         uses: ./.github/actions/deploy
         with:
