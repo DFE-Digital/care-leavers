@@ -56,6 +56,11 @@ inputs:
 
 runs:
   using: composite
+  env:
+    ARM_CLIENT_ID: "${{ inputs.AZURE_CLIENT_ID_SECRET }}"
+    ARM_SUBSCRIPTION_ID: "${{ inputs.AZURE_SUBSCRIPTION_ID_SECRET }}"
+    ARM_TENANT_ID: "${{ inputs.AZURE_TENANT_ID_SECRET }}"
+    ARM_CLIENT_SECRET: "${{ inputs.AZURE_CLIENT_SECRET }}"
   steps:
     - name: Checkout Repository
       uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
