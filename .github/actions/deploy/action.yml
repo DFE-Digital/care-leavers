@@ -112,17 +112,21 @@ runs:
       shell: bash
       run: |
         terraform init \
-          -backend-config="resource_group_name=${{ inputs.environment_prefix }}rg-uks-cl-tfstate" \
-          -backend-config="storage_account_name=${{ inputs.environment_prefix }}cltfstate" \
+          -backend-config="resource_group_name=${ENVIRONMENT_PREFIX}rg-uks-cl-tfstate" \
+          -backend-config="storage_account_name=${ENVIRONMENT_PREFIX}cltfstate" \
           -backend-config="container_name=tfstate" \
           -backend-config="key=terraform.tfstate"
+      with:
+        ENVIRONMENT_PREFIX: ${{ inputs.environment_prefix }}
 
     - name: Terraform Plan
       id: terraform_plan
       working-directory: ./src/infrastructure/terraform
       shell: bash
       run: |
-        terraform plan -out plan.plan -var-file="env_vars/${{ inputs.environment }}.tfvars"
+        terraform plan -out plan.plan -var-file="env_vars/${ENVIRONMENT}.tfvars"
+      with:
+        ENVIRONMENT: ${{ inputs.environment }}
       env:
         TF_VAR_contentful_delivery_api_key: ${{ inputs.CONTENTFUL_DELIVERY_API_KEY_SECRET }}
         TF_VAR_contentful_preview_api_key: ${{ inputs.CONTENTFUL_PREVIEW_API_KEY_SECRET }}
@@ -159,15 +163,21 @@ runs:
       if: inputs.environment == 'elz-production'
       shell: bash
       run: |
-        az webapp deployment slot swap --name ${{ inputs.environment_prefix }}-uks-cl-web-app-service --resource-group ${{ inputs.environment_prefix }}rg-uks-cl-web --slot staging --target-slot production
+        az webapp deployment slot swap --name ${ENVIRONMENT_PREFIX}-uks-cl-web-app-service --resource-group ${ENVIRONMENT_PREFIX}rg-uks-cl-web --slot staging --target-slot production
+      with:
+        ENVIRONMENT_PREFIX: ${{ inputs.environment_prefix }}
 
     - name: Delete Staging Slot
       if: inputs.environment == 'elz-production'
       shell: bash
       run: |
-        az webapp deployment slot delete --name ${{ inputs.environment_prefix }}-uks-cl-web-app-service --resource-group ${{ inputs.environment_prefix }}rg-uks-cl-web --slot staging
+        az webapp deployment slot delete --name ${ENVIRONMENT_PREFIX}-uks-cl-web-app-service --resource-group ${ENVIRONMENT_PREFIX}rg-uks-cl-web --slot staging
+      with:
+        ENVIRONMENT_PREFIX: ${{ inputs.environment_prefix }}
 
     - name: Clear Cache
       shell: bash
       run: |
-        curl -X POST "https://${{ inputs.custom_domain }}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f"
+        curl -X POST "https://${CUSTOM_DOMAIN}/b0e0dce2-b96d-4b94-a800-63c3ab56e72f"
+      with:
+        CUSTOM_DOMAIN: ${{ inputs.custom_domain }}
