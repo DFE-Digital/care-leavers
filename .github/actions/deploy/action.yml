@@ -83,10 +83,12 @@ runs:
     # Ensure PAL metadata is set on the deployment principal
     - name: Service principal metadata
       continue-on-error: true
+      shell: bash
       run: |
         az rest --method put --uri "https://management.azure.com/providers/microsoft.managementpartner/partners/6084223?api-version=2018-02-01" --body '{"partnerId": "6084223"}' || true
 
     - name: Add Alert Management Provider
+      shell: bash
       run: |
         az provider register --namespace Microsoft.AlertsManagement
 
@@ -107,6 +109,7 @@ runs:
     - name: Terraform Init
       id: terraform_init
       working-directory: ./src/infrastructure/terraform
+      shell: bash
       run: |
         terraform init \
           -backend-config="resource_group_name=${{ inputs.environment_prefix }}rg-uks-cl-tfstate" \
@@ -117,6 +120,7 @@ runs:
     - name: Terraform Plan
       id: terraform_plan
       working-directory: ./src/infrastructure/terraform
+      shell: bash
       run: |
         terraform plan -out plan.plan -var-file="env_vars/${{ inputs.environment }}.tfvars"
       env:
@@ -130,6 +134,7 @@ runs:
     - name: Terraform Apply
       id: terraform_apply
       working-directory: ./src/infrastructure/terraform
+      shell: bash
       run: |
         terraform apply plan.plan
 
@@ -152,11 +157,13 @@ runs:
 
     - name: Swap Slot to Production
       if: inputs.environment == 'elz-production'
+      shell: bash
       run: |
         az webapp deployment slot swap --name ${{ inputs.environment_prefix }}-uks-cl-web-app-service --resource-group ${{ inputs.environment_prefix }}rg-uks-cl-web --slot staging --target-slot production
 
     - name: Delete Staging Slot
       if: inputs.environment == 'elz-production'
+      shell: bash
       run: |
         az webapp deployment slot delete --name ${{ inputs.environment_prefix }}-uks-cl-web-app-service --resource-group ${{ inputs.environment_prefix }}rg-uks-cl-web --slot staging
 

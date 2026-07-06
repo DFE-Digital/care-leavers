@@ -6,12 +6,13 @@ inputs:
     description: The tag for the package to be built
     required: true
     type: string
+  github_token_secret:
+    description: The GitHub token to use for authentication
+    required: true
+    type: string
     
 runs:
   using: composite
-  defaults:
-      run:
-        working-directory: ./src
   steps:
     - name: Lowercase Repository Name
       id: lowercase
@@ -24,15 +25,19 @@ runs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ inputs.github_token_secret }}
 
     - name: Build Web Docker Image
+      shell: bash
+      working-directory: ./src
       run: |
         docker build . -t ${TAG} -f web/CareLeavers.Web/Dockerfile
       env:
         TAG: ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ inputs.tag_name }} 
 
     - name: Push Web Docker Image
+      shell: bash
+      working-directory: ./src
       run: |
         docker push ${TAG}
       env: 

@@ -63,6 +63,7 @@ jobs:
         uses: ./.github/actions/build-webapp-image
         with:
           tag_name: ${{ env.TAG_NAME }}
+          github_token_secret: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
     name: Deploying to ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
