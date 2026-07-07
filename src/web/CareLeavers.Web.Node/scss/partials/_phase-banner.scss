@@ -3,10 +3,14 @@
 }
 
 .govuk-phase-banner__content {
-  display: -ms-flexbox;
+  display: flex !important;
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
+}
+
+.govuk-phase-banner__text {
+  flex-grow: 1;
 }
 
 .translate {
