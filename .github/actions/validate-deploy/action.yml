@@ -1,0 +1,37 @@
+name: Validate Deploy
+description: Validates that a deployment is either using a branch or a tag depending on the workflow it is being called from
+
+inputs:
+  deploy:
+    description: Whether it should be deployed using a tag or branch
+    type: string
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Validate if Tag
+      if: ${{ inputs.deploy == 'tag' }}
+      shell: bash
+      run: |
+        if [[ "${REF}" != refs/tags/* ]]; then
+          echo "::error::Deployment denied! You must select a TAG, not a branch. Current ref: ${REF}"
+          exit 1
+        fi
+        echo "Ref verified as a tag: ${REF_NAME}"
+      env:
+        REF: ${{ github.ref }}
+        REF_NAME: ${{ github.ref_name }}
+    
+    - name: Validate if Branch
+      if: ${{inputs.deploy == 'branch' }}
+      shell: bash
+      run: |
+        if [[ "${REF}" != refs/heads/* ]]; then
+          echo "::error::Deployment denied! You must select a BRANCH, not a tag. Current ref: ${REF}"
+          exit 1
+        fi
+        echo "Ref verified as a branch: ${REF_NAME}"
+      env:
+        REF: ${{ github.ref }}
+        REF_NAME: ${{ github.ref_name }}
