@@ -10,16 +10,15 @@
 
 .translate {
   display: flex;
-  margin-left: auto;
-  text-align: right;
+  margin-inline-start: auto;
+  text-align: start;
   min-width: 90px;
-  float: right;
   font-size: 1em;
 
   .govuk-link {
     background-image: url("/assets/icon-translate.png");
     background-repeat: no-repeat;
     background-size: contain;
-    padding-left: 32px;
+    padding-inline-start: 32px;
   }
 }
