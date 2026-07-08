@@ -1,0 +1,15 @@
+{
+  "name": "support-for-care-leavers-docs",
+  "version": "1.0.0",
+  "description": "Care Leavers Documentation",
+  "type": "module",
+  "scripts": {
+    "prebuild:css": "node generate-sass-prefix.js",
+    "build": "npm run prebuild:css && eleventy",
+    "start": "npm run prebuild:css && eleventy --serve"
+  },
+  "dependencies": {
+    "@11ty/eleventy": "^3.1.6",
+    "@x-govuk/govuk-eleventy-plugin": "^9.0.2"
+  }
+}
