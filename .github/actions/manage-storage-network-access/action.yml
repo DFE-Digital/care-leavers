@@ -1,6 +1,6 @@
 name: Manage Storage Network Access
 
-description: Manage Storage Network Access for the Terraform State Storage Account
+description: Manage Network Access for Storage Accounts
 
 inputs:
   storage_account_name:

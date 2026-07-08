@@ -10,7 +10,7 @@
     "dependencies": {
         "contentful-export": "^8.0.1",
         "contentful-import": "^10.0.11",
-        "contentful-management": "^12.6.0",
+        "contentful-management": "^12.8.0",
         "dotenv": "^17.4.2"
     },
     "resolutions": {
