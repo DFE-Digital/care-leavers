@@ -84,7 +84,7 @@ jobs:
         uses: bridgecrewio/checkov-action@99bb2caf247dfd9f03cf984373bc6043d4e32ebf
         with:
           directory: ./src/infrastructure/terraform
-          output_format: cli,junitxml
+          output_format: cli
           output_file_path: console,${{ env.CHECKOV_RESULTS }}/results.xml
           var-file: ./src/infrastructure/terraform/env_vars/elz-production.tfvars
 
@@ -98,15 +98,6 @@ jobs:
           fi
         env:
           CHECKOV_OUTCOME: ${{ steps.checkov.outcome }}
-
-      - name: Publish Checkov results
-        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
-        if: always()
-        with:
-          name: Checkov Scan Results
-          path: ${{ github.workspace }}/${{ env.CHECKOV_RESULTS }}/results.xml
-          reporter: java-junit
-          fail-on-error: true
 
       - name: Add Summary
         if: always()
