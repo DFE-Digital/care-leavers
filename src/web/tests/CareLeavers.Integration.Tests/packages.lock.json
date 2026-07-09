@@ -127,8 +127,8 @@
       },
       "Azure.Storage.Blobs": {
         "type": "Transitive",
-        "resolved": "12.29.0",
-        "contentHash": "e82Racxat6NsLHD+6Nwf2GxglYdN9T20QHgAsaHB1FYgbJUZilmUR0H+IPCu6AJy8nNyvSONc/erF8vtsyHrRw==",
+        "resolved": "12.29.1",
+        "contentHash": "pWh7xZBto8YcwiO853AB3uijTfVqs9PDte0Bu9/Zd8O9nwKiitWm0Jej1vsNkmYUzeG1552f8vJPjmtW30pBUQ==",
         "dependencies": {
           "Azure.Core": "1.55.0",
           "Azure.Storage.Common": "12.28.0"
@@ -1054,20 +1054,20 @@
       },
       "OpenTelemetry.Instrumentation.AspNetCore": {
         "type": "Transitive",
-        "resolved": "1.15.2",
-        "contentHash": "2nPd7r0ug/gd6/CNFL6Rlu+RSQ9WYGSGHAYQ1ssbSqyzKJpqTunfx2I/1O0WB5k+L0cyXbG4XVZpoSoUc3M7wg==",
+        "resolved": "1.16.0",
+        "contentHash": "vSC5EsmBVNcqXMh9BGkkq8zkoUjrg8ghBDb9zbKR8Bqjd05utjVgVft+fqsqQVsvlV5olGj1pBliHBngcIGSIg==",
         "dependencies": {
-          "OpenTelemetry.Api.ProviderBuilderExtensions": "[1.15.3, 2.0.0)"
+          "OpenTelemetry.Api.ProviderBuilderExtensions": "[1.16.0, 2.0.0)"
         }
       },
       "OpenTelemetry.Instrumentation.Http": {
         "type": "Transitive",
-        "resolved": "1.15.1",
-        "contentHash": "vFO4Fj/dXkoVNGo/nhoGpO2zYQmZwr4jTID7oRGo+XlQ8LqksyZjUXQ4p39RfUvTID7IzzL8Qe71tW7CcAFymA==",
+        "resolved": "1.16.0",
+        "contentHash": "+Sz3lfvMXwWE8s/sMruHCDlO/+cArFVc6oBg1tCb70BKlL9FCC7uK4Ar2/VP9Hhwvs+UwaW1vGzE/uiByVHXiA==",
         "dependencies": {
           "Microsoft.Extensions.Configuration": "10.0.0",
           "Microsoft.Extensions.Options": "10.0.0",
-          "OpenTelemetry.Api.ProviderBuilderExtensions": "[1.15.3, 2.0.0)"
+          "OpenTelemetry.Api.ProviderBuilderExtensions": "[1.16.0, 2.0.0)"
         }
       },
       "OpenTelemetry.PersistentStorage.Abstractions": {
@@ -1326,7 +1326,7 @@
           "Azure.AI.Translation.Text": "[1.0.0, )",
           "Azure.Core": "[1.59.0, )",
           "Azure.Monitor.OpenTelemetry.AspNetCore": "[1.5.0, )",
-          "Azure.Storage.Blobs": "[12.29.0, )",
+          "Azure.Storage.Blobs": "[12.29.1, )",
           "HtmlAgilityPack": "[1.12.4, )",
           "Joonasw.AspNetCore.SecurityHeaders": "[6.0.0, )",
           "Microsoft.ApplicationInsights": "[2.23.0, )",
@@ -1334,8 +1334,8 @@
           "Microsoft.Extensions.Caching.StackExchangeRedis": "[9.0.17, )",
           "OpenTelemetry.Api": "[1.16.0, )",
           "OpenTelemetry.Extensions.Hosting": "[1.16.0, )",
-          "OpenTelemetry.Instrumentation.AspNetCore": "[1.15.2, )",
-          "OpenTelemetry.Instrumentation.Http": "[1.15.1, )",
+          "OpenTelemetry.Instrumentation.AspNetCore": "[1.16.0, )",
+          "OpenTelemetry.Instrumentation.Http": "[1.16.0, )",
           "Serilog": "[4.3.1, )",
           "Serilog.AspNetCore": "[9.0.0, )",
           "Serilog.Sinks.ApplicationInsights": "[5.0.1, )",
