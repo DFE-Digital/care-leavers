@@ -1,3 +1,14 @@
+---
+title: Terraform
+layout: sub-navigation
+sectionKey: Architecture
+order: 5
+includeInBreadcrumbs: true
+eleventyNavigation:
+  parent: Architecture
+  key: Terraform
+---
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 

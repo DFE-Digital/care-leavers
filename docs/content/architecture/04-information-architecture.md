@@ -16,4 +16,4 @@ The API is used to retrieve content from the Contentful CMS and display it on th
 
 ## Contentful Models
 
-![Content Models](../assets/images/content-models.png)
+![Content Models](/assets/images/content-models.png)
