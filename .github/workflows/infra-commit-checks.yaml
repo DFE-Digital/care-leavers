@@ -9,7 +9,7 @@ on:
 
 jobs:
   validate_infrastructure:
-    name: Validating the infrastructure changes are valid against commit checks
+    name: Validating Infrastructure
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -84,8 +84,8 @@ jobs:
         uses: bridgecrewio/checkov-action@99bb2caf247dfd9f03cf984373bc6043d4e32ebf
         with:
           directory: ./src/infrastructure/terraform
-          output_format: junitxml
-          output_file: ${{ env.CHECKOV_RESULTS }}/results.xml
+          output_format: cli,junitxml
+          output_file_path: console,${{ env.CHECKOV_RESULTS }}/results.xml
           var-file: ./src/infrastructure/terraform/env_vars/elz-production.tfvars
 
       - name: Record Checkov Result
