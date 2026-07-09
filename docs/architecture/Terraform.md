@@ -11,7 +11,7 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.10.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.78.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.80.0 |
 
 ## Modules
 
@@ -95,6 +95,7 @@ No modules.
 | [azurerm_role_assignment.kv_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_service_plan.web-app-service-plan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/service_plan) | resource |
 | [azurerm_storage_account.web_storage_account](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account) | resource |
+| [azurerm_storage_container.backup_storage_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.translator_storage_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_user_assigned_identity.cl-identity-administrator](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
 | [azurerm_user_assigned_identity.cl-identity-reader](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
@@ -109,7 +110,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_alerting"></a> [alerting](#input\_alerting) | Alerting configuration per environment | <pre>map(object({<br>    name                 = string<br>    alerts_enabled       = bool<br>    email_alerts_enabled = bool<br>    smart_alerts_enabled = bool<br>    thresholds = object({<br>      availability = number<br>      cpu          = number<br>      memory       = number<br>      error        = number<br>    })<br>  }))</pre> | <pre>{<br>  "d01": {<br>    "alerts_enabled": false,<br>    "email_alerts_enabled": false,<br>    "name": "Test",<br>    "smart_alerts_enabled": false,<br>    "thresholds": {<br>      "availability": 90,<br>      "cpu": 95,<br>      "error": 5,<br>      "memory": 95<br>    }<br>  },<br>  "p01": {<br>    "alerts_enabled": true,<br>    "email_alerts_enabled": true,<br>    "name": "Production",<br>    "smart_alerts_enabled": true,<br>    "thresholds": {<br>      "availability": 99.9,<br>      "cpu": 85,<br>      "error": 1,<br>      "memory": 85<br>    }<br>  },<br>  "t01": {<br>    "alerts_enabled": true,<br>    "email_alerts_enabled": false,<br>    "name": "Staging",<br>    "smart_alerts_enabled": true,<br>    "thresholds": {<br>      "availability": 99.9,<br>      "cpu": 85,<br>      "error": 1,<br>      "memory": 85<br>    }<br>  }<br>}</pre> | no |
+| <a name="input_alerting"></a> [alerting](#input\_alerting) | Alerting configuration per environment | <pre>map(object({<br/>    name                 = string<br/>    alerts_enabled       = bool<br/>    email_alerts_enabled = bool<br/>    smart_alerts_enabled = bool<br/>    thresholds = object({<br/>      availability = number<br/>      cpu          = number<br/>      memory       = number<br/>      error        = number<br/>    })<br/>  }))</pre> | <pre>{<br/>  "d01": {<br/>    "alerts_enabled": false,<br/>    "email_alerts_enabled": false,<br/>    "name": "Test",<br/>    "smart_alerts_enabled": false,<br/>    "thresholds": {<br/>      "availability": 90,<br/>      "cpu": 95,<br/>      "error": 5,<br/>      "memory": 95<br/>    }<br/>  },<br/>  "p01": {<br/>    "alerts_enabled": true,<br/>    "email_alerts_enabled": true,<br/>    "name": "Production",<br/>    "smart_alerts_enabled": true,<br/>    "thresholds": {<br/>      "availability": 99.9,<br/>      "cpu": 85,<br/>      "error": 1,<br/>      "memory": 85<br/>    }<br/>  },<br/>  "t01": {<br/>    "alerts_enabled": true,<br/>    "email_alerts_enabled": false,<br/>    "name": "Staging",<br/>    "smart_alerts_enabled": true,<br/>    "thresholds": {<br/>      "availability": 99.9,<br/>      "cpu": 85,<br/>      "error": 1,<br/>      "memory": 85<br/>    }<br/>  }<br/>}</pre> | no |
 | <a name="input_aspnetcore_environment"></a> [aspnetcore\_environment](#input\_aspnetcore\_environment) | ASP.NET Core environment | `string` | n/a | yes |
 | <a name="input_azure_frontdoor_scale"></a> [azure\_frontdoor\_scale](#input\_azure\_frontdoor\_scale) | Azure Front Door Scale | `string` | `"Standard_AzureFrontDoor"` | no |
 | <a name="input_basic_auth_credentials"></a> [basic\_auth\_credentials](#input\_basic\_auth\_credentials) | Basic authentication credentials | `string` | n/a | yes |
@@ -125,7 +126,7 @@ No modules.
 | <a name="input_enable_basic_auth"></a> [enable\_basic\_auth](#input\_enable\_basic\_auth) | n/a | `bool` | `false` | no |
 | <a name="input_environment_prefix"></a> [environment\_prefix](#input\_environment\_prefix) | Environment prefix (e.g. d01) | `string` | n/a | yes |
 | <a name="input_gtaa_base_url"></a> [gtaa\_base\_url](#input\_gtaa\_base\_url) | The base url for the 'Get-To-An-Answer' questionnaire service | `string` | n/a | yes |
-| <a name="input_list_of_social_media_bots"></a> [list\_of\_social\_media\_bots](#input\_list\_of\_social\_media\_bots) | A list of social media bots that are explicitly allowed or refed to within the site | `list(string)` | <pre>[<br>  "facebookbot|facebookexternalhit|facebookscraper|twitterbot|meta-externalfetcher|microsoftpreview|linkedinbot|pinterest|redditbot|telegrambot|mastadon|duckduckbot"<br>]</pre> | no |
+| <a name="input_list_of_social_media_bots"></a> [list\_of\_social\_media\_bots](#input\_list\_of\_social\_media\_bots) | A list of social media bots that are explicitly allowed or refed to within the site | `list(string)` | <pre>[<br/>  "facebookbot|facebookexternalhit|facebookscraper|twitterbot|meta-externalfetcher|microsoftpreview|linkedinbot|pinterest|redditbot|telegrambot|mastadon|duckduckbot"<br/>]</pre> | no |
 | <a name="input_rebrand"></a> [rebrand](#input\_rebrand) | Force DfE Rebrand before 25th June 2025 | `bool` | `false` | no |
 | <a name="input_scripts_clarity"></a> [scripts\_clarity](#input\_scripts\_clarity) | Clarity code | `string` | n/a | yes |
 | <a name="input_scripts_ga4"></a> [scripts\_ga4](#input\_scripts\_ga4) | Google Analytics code | `string` | `"G-LPYZPF4TEX"` | no |
