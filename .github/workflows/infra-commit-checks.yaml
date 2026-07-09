@@ -1,0 +1,157 @@
+name: Infrastructure Commit Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths: 
+      - src/infrastructure/**
+
+jobs:
+  validate_infrastructure:
+    name: Validating the infrastructure changes are valid against commit checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+      actions: read
+    env:
+      CHECKOV_RESULTS: checkov-results
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Encode ref_name
+        env:
+          REF_NAME: ${{ github.head_ref }}
+        run: |
+          ENCODED_REF="$REF_NAME"
+          ENCODED_REF="${ENCODED_REF//\//%2F}"
+          echo "ENCODED_REF=$ENCODED_REF" >> $GITHUB_ENV
+          
+      - name: Init summary state
+        run: |
+          echo "TF_FMT=unknown" >> $GITHUB_ENV
+          echo "TF_VALIDATE=unknown" >> $GITHUB_ENV
+          echo "CHECKOV=unknown" >> $GITHUB_ENV
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
+        with:
+          terraform_version: ${{ vars.TERRAFORM_VERSION }}
+
+      - name: Terraform Init
+        run: terraform init -input=false -backend=false
+        working-directory: ./src/infrastructure/terraform
+
+      - name: Terraform Format Check
+        id: terraform_fmt
+        run: terraform fmt -check
+        working-directory: ./src/infrastructure/terraform
+
+      - name: Record fmt Result
+        if: always()
+        run: |
+          if [ "${FMT_OUTCOME}" = "success" ]; then
+            echo "TF_FMT=passed" >> $GITHUB_ENV
+          else
+            echo "TF_FMT=failed" >> $GITHUB_ENV
+          fi
+        env:
+          FMT_OUTCOME: ${{ steps.terraform_fmt.outcome }}
+
+      - name: Terraform Validate
+        id: terraform_validate
+        run: terraform validate
+        working-directory: ./src/infrastructure/terraform
+
+      - name: Record validate Result
+        if: always()
+        run: |
+          if [ "${VALIDATE_OUTCOME}" = "success" ]; then
+            echo "TF_VALIDATE=passed" >> $GITHUB_ENV
+          else
+            echo "TF_VALIDATE=failed" >> $GITHUB_ENV
+          fi
+        env:
+          VALIDATE_OUTCOME: ${{ steps.terraform_validate.outcome }}
+
+      - name: Run Checkov
+        id: checkov
+        uses: bridgecrewio/checkov-action@99bb2caf247dfd9f03cf984373bc6043d4e32ebf
+        with:
+          directory: ./src/infrastructure/terraform
+          output_format: junitxml
+          output_file: ${{ env.CHECKOV_RESULTS }}/results.xml
+          var-file: ./src/infrastructure/terraform/env_vars/elz-production.tfvars
+
+      - name: Record Checkov Result
+        if: always()
+        run: |
+          if [ "${CHECKOV_OUTCOME}" = "success" ]; then
+            echo "CHECKOV=passed" >> $GITHUB_ENV
+          else
+            echo "CHECKOV=failed" >> $GITHUB_ENV
+          fi
+        env:
+          CHECKOV_OUTCOME: ${{ steps.checkov.outcome }}
+
+      - name: Publish Checkov results
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
+        if: always()
+        with:
+          name: Checkov Scan Results
+          path: ${{ github.workspace }}/${{ env.CHECKOV_RESULTS }}/results.xml
+          reporter: java-junit
+          fail-on-error: true
+
+      - name: Add Summary
+        if: always()
+        run: |
+          fmt_icon="❔"
+          validate_icon="❔"
+          checkov_icon="❔"
+
+          # Terraform fmt
+          if [ "$TF_FMT" = "passed" ]; then fmt_icon="✅"
+          elif [ "$TF_FMT" = "failed" ]; then fmt_icon="❌"
+          fi
+          
+          # Terraform validate
+          if [ "$TF_VALIDATE" = "passed" ]; then validate_icon="✅"
+          elif [ "$TF_VALIDATE" = "failed" ]; then validate_icon="❌"
+          fi
+          
+          # Checkov
+          if [ "$CHECKOV" = "passed" ]; then checkov_icon="✅"
+          elif [ "$CHECKOV" = "failed" ]; then checkov_icon="❌"
+          fi 
+
+          echo "## 🧱 Terraform CI Report Card" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "| Area | Status | Details |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|---------|" >> $GITHUB_STEP_SUMMARY
+          
+          echo "| Terraform fmt | $fmt_icon | $TF_FMT |" >> $GITHUB_STEP_SUMMARY
+          echo "| Terraform validate | $validate_icon | $TF_VALIDATE |" >> $GITHUB_STEP_SUMMARY
+          echo "| Checkov | $checkov_icon | $CHECKOV |" >> $GITHUB_STEP_SUMMARY
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "$TF_FMT" = "passed" ] && [ "$TF_VALIDATE" = "passed" ] && [ "$CHECKOV" = "passed" ]; then
+            echo "### Overall: 🟢 Healthy" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### Overall: 🟡 Needs attention" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### 🔎 Links" >> $GITHUB_STEP_SUMMARY
+          echo "- Security: https://github.com/${REPO}/security/code-scanning?query=branch:${ENCODED_REF}" >> $GITHUB_STEP_SUMMARY
+        env:
+          REPO: ${{ github.repository }}
+          ENCODED_REF: ${{ env.ENCODED_REF }}
