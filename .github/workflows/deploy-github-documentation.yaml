@@ -1,4 +1,4 @@
-name: Publish docs via GitHub Pages
+name: Publish docs to GitHub Pages
 on:
   workflow_dispatch:
   push:
@@ -6,27 +6,58 @@ on:
       - main
     paths:
       - 'docs/**'
-      - 'mkdocs.yml'
-      - 'resources/tech_docs_template/**'
-      - '.github/workflows/deploy-github-documentation.yaml'
 
 permissions: {}
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build:
-    name: Deploy docs
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     steps:
       - name: Checkout main
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           persist-credentials: false
 
+      - name: Setup Node
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: docs/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+        working-directory: docs
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d
+
+      - name: Build
+        run: ELEVENTY_ENV=production npm run build
+        working-directory: docs
+
+      - name: Upload artifacts
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
+        with:
+          path: 'docs/_site'
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy docs
-        uses: mhausenblas/mkdocs-deploy-gh-pages@d77dd03172e96abbcdb081d8c948224762033653
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CONFIG_FILE: mkdocs.yml
-          REQUIREMENTS: folder/requirements.txt
+        id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128
