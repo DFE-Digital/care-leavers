@@ -33,6 +33,8 @@ and disaster recovery plans in place.
 
 In addition, we create a daily backup of the production space in an automated GitHub workflow. The export is stored in a Storage Account on Azure on the 'elz-test' subscription. We cannot store the backup in production as the current configuration needs a team member to approve any deployments to production.
 
+Backups will be retained for 14 days.
+
 ### Restore
 
 We have taken the decision to not create an automated restore workflow as Contentful handles the high availability, replication, and infrastructure-level disaster recovery on their side.
