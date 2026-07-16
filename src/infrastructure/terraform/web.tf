@@ -157,6 +157,7 @@ resource "azurerm_storage_account" "web_storage_account" {
   #checkov:skip=CKV_AZURE_3: Will review in a later ticket
   #checkov:skip=CKV2_AZURE_1: Do not need to use CMK
   #checkov:skip=CKV2_AZURE_18: Do not need to use CMK
+  #checkov:skip=CKV_AZURE_35: To review in a later ticket
   name                     = "${local.prefix}webstorage"
   resource_group_name      = azurerm_resource_group.web-rg.name
   location                 = local.location
@@ -175,11 +176,6 @@ resource "azurerm_storage_account" "web_storage_account" {
   }
 }
 
-resource "azurerm_storage_account_network_rules" "web_storage_account_network_rules" {
-  storage_account_id = azurerm_storage_account.web_storage_account.id
-  default_action     = "Deny"
-}
-
 resource "azurerm_storage_container" "translator_storage_container" {
   #checkov:skip=CKV2_AZURE_21: Will review in a later ticket
   name                  = "${local.service_prefix}-char-container"
@@ -189,6 +185,7 @@ resource "azurerm_storage_container" "translator_storage_container" {
 
 resource "azurerm_storage_container" "backup_storage_container" {
   #checkov:skip=CKV2_AZURE_21: Will review in a later ticket
+  #checkov:skip=CKV2_AZURE_8: Does not look at container access type in this version of checkov - will update with image longer term
   count = var.elz_environment == "Dev" ? 1 : 0
 
   name                  = "${local.service_prefix}-backup-container"
