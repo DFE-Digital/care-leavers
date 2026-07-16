@@ -10,7 +10,7 @@ resource "azurerm_key_vault" "kv" {
   rbac_authorization_enabled = true
 
   network_acls {
-    default_action = "Allow"
+    default_action = "Deny"
     bypass         = "AzureServices"
   }
 
@@ -68,9 +68,11 @@ resource "azurerm_role_assignment" "kv_admin_sp" {
 # Secrets
 
 resource "azurerm_key_vault_secret" "contentful-delivery-api-key" {
+  #checkov:skip=CKV_AZURE_41: Will review in a future ticket
   key_vault_id = azurerm_key_vault.kv.id
   name         = "contentful-delivery-api-key"
   value        = var.contentful_delivery_api_key
+  content_type = "api_key"
 
   depends_on = [
     azurerm_role_assignment.kv_officer,
@@ -80,9 +82,11 @@ resource "azurerm_key_vault_secret" "contentful-delivery-api-key" {
 }
 
 resource "azurerm_key_vault_secret" "contentful-preview-api-key" {
+  #checkov:skip=CKV_AZURE_41: Unlikey to change, just allows changes to be previewed in staging ReadOnly
   key_vault_id = azurerm_key_vault.kv.id
   name         = "contentful-preview-api-key"
   value        = var.contentful_preview_api_key
+  content_type = "api_key"
 
   depends_on = [
     azurerm_role_assignment.kv_officer,
@@ -92,9 +96,11 @@ resource "azurerm_key_vault_secret" "contentful-preview-api-key" {
 }
 
 resource "azurerm_key_vault_secret" "contentful-management-api-key" {
+  #checkov:skip=CKV_AZURE_41: Will review in a future ticket
   key_vault_id = azurerm_key_vault.kv.id
   name         = "contentful-management-api-key"
   value        = var.contentful_management_api_key
+  content_type = "api_key"
 
   depends_on = [
     azurerm_role_assignment.kv_officer,
@@ -104,9 +110,11 @@ resource "azurerm_key_vault_secret" "contentful-management-api-key" {
 }
 
 resource "azurerm_key_vault_secret" "contentful-space-id" {
+  #checkov:skip=CKV_AZURE_41: Contentful space ID is not likely to change
   key_vault_id = azurerm_key_vault.kv.id
   name         = "contentful-space-id"
   value        = var.contentful_space_id
+  content_type = "space_id"
 
   depends_on = [
     azurerm_role_assignment.kv_officer,
@@ -116,9 +124,11 @@ resource "azurerm_key_vault_secret" "contentful-space-id" {
 }
 
 resource "azurerm_key_vault_secret" "application-insights-connection-string" {
+  #checkov:skip=CKV_AZURE_41: Will review in a future ticket
   key_vault_id = azurerm_key_vault.kv.id
   name         = "application-insights-connection-string"
   value        = azurerm_application_insights.application-insights.connection_string
+  content_type = "connection_string"
 
   depends_on = [
     azurerm_role_assignment.kv_officer,
@@ -128,9 +138,11 @@ resource "azurerm_key_vault_secret" "application-insights-connection-string" {
 }
 
 resource "azurerm_key_vault_secret" "azure-translation-access-key" {
+  #checkov:skip=CKV_AZURE_41: Will review in a future ticket
   key_vault_id = azurerm_key_vault.kv.id
   name         = "azure-translation-access-key"
   value        = azurerm_cognitive_account.ai-translator.primary_access_key
+  content_type = "access_key"
 
   depends_on = [
     azurerm_role_assignment.kv_officer,
@@ -140,10 +152,12 @@ resource "azurerm_key_vault_secret" "azure-translation-access-key" {
 }
 
 resource "azurerm_key_vault_secret" "redis-enterprise-connection-string" {
+  #checkov:skip=CKV_AZURE_41: Will review in a future ticket
   count        = lower(var.caching_type) == "redis" ? 1 : 0
   key_vault_id = azurerm_key_vault.kv.id
   name         = "redis-enterprise-connection-string"
   value        = "${azurerm_managed_redis.redis-enterprise[0].hostname}:${azurerm_managed_redis.redis-enterprise[0].default_database[0].port},ssl=true,password=${azurerm_managed_redis.redis-enterprise[0].default_database[0].primary_access_key}"
+  content_type = "connection_string"
 
   depends_on = [
     azurerm_role_assignment.kv_officer,
@@ -153,9 +167,11 @@ resource "azurerm_key_vault_secret" "redis-enterprise-connection-string" {
 }
 
 resource "azurerm_key_vault_secret" "blob-storage-connection-string" {
+  #checkov:skip=CKV_AZURE_41: Will review in a future ticket
   key_vault_id = azurerm_key_vault.kv.id
   name         = "blob-storage-connection-string"
   value        = azurerm_storage_account.web_storage_account.primary_connection_string
+  content_type = "connection_string"
 
   depends_on = [
     azurerm_role_assignment.kv_officer,

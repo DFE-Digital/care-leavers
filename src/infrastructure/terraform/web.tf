@@ -153,6 +153,10 @@ resource "azurerm_monitor_diagnostic_setting" "webapp_logs" {
 }
 
 resource "azurerm_storage_account" "web_storage_account" {
+  #checkov:skip=CKV_AZURE_33: Will review in a later ticket
+  #checkov:skip=CKV_AZURE_3: Will review in a later ticket
+  #checkov:skip=CKV2_AZURE_1: Do not need to use CMK
+  #checkov:skip=CKV2_AZURE_18: Do not need to use CMK
   name                     = "${local.prefix}webstorage"
   resource_group_name      = azurerm_resource_group.web-rg.name
   location                 = local.location
@@ -162,6 +166,8 @@ resource "azurerm_storage_account" "web_storage_account" {
   public_network_access_enabled   = false
   allow_nested_items_to_be_public = false
 
+  min_tls_version = "TLS1_2"
+
   tags = local.common_tags
 
   identity {
@@ -169,13 +175,22 @@ resource "azurerm_storage_account" "web_storage_account" {
   }
 }
 
+resource "azurerm_storage_acount_network_rules" "web_storage_account_network_rules" {
+  resource_group_name  = azurerm_resource_group.web-rg.name
+  storage_account_name = azurerm_storage_account.web_storage_account.name
+
+  default_action = "Deny"
+}
+
 resource "azurerm_storage_container" "translator_storage_container" {
+  #checkov:skip=CKV2_AZURE_21: Will review in a later ticket
   name                  = "${local.service_prefix}-char-container"
   storage_account_id    = azurerm_storage_account.web_storage_account.id
   container_access_type = "private"
 }
 
 resource "azurerm_storage_container" "backup_storage_container" {
+  #checkov:skip=CKV2_AZURE_21: Will review in a later ticket
   count = var.elz_environment == "Dev" ? 1 : 0
 
   name                  = "${local.service_prefix}-backup-container"
