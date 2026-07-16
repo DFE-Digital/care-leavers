@@ -175,11 +175,9 @@ resource "azurerm_storage_account" "web_storage_account" {
   }
 }
 
-resource "azurerm_storage_acount_network_rules" "web_storage_account_network_rules" {
-  resource_group_name  = azurerm_resource_group.web-rg.name
-  storage_account_name = azurerm_storage_account.web_storage_account.name
-
-  default_action = "Deny"
+resource "azurerm_storage_account_network_rules" "web_storage_account_network_rules" {
+  storage_account_id = azurerm_storage_account.web_storage_account.id
+  default_action     = "Deny"
 }
 
 resource "azurerm_storage_container" "translator_storage_container" {
