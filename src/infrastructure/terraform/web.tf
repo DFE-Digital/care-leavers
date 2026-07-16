@@ -158,6 +158,7 @@ resource "azurerm_storage_account" "web_storage_account" {
   #checkov:skip=CKV2_AZURE_1: Do not need to use CMK
   #checkov:skip=CKV2_AZURE_18: Do not need to use CMK
   #checkov:skip=CKV_AZURE_35: To review in a later ticket
+  #checkov:skip=CKV2_AZURE_8: Container access type is private, set within other resources
   name                     = "${local.prefix}webstorage"
   resource_group_name      = azurerm_resource_group.web-rg.name
   location                 = local.location
