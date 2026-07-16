@@ -178,6 +178,7 @@ resource "azurerm_storage_account" "web_storage_account" {
 
 resource "azurerm_storage_container" "translator_storage_container" {
   #checkov:skip=CKV2_AZURE_21: Will review in a later ticket
+  #checkov:skip=CKV2_AZURE_8: Does not look at container access type in this version of checkov - will update with image longer term
   name                  = "${local.service_prefix}-char-container"
   storage_account_id    = azurerm_storage_account.web_storage_account.id
   container_access_type = "private"
