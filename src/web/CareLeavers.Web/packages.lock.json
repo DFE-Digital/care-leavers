@@ -137,9 +137,9 @@
       },
       "Serilog": {
         "type": "Direct",
-        "requested": "[4.3.1, )",
-        "resolved": "4.3.1",
-        "contentHash": "savYe7h5yRlkqBVOwP8cIRDOdqKiPmYCU4W87JH38sBmcKD5EBoXvQIw6bNEvZ/pTe1gsiye3VFCzBsoppGkXQ=="
+        "requested": "[4.4.0, )",
+        "resolved": "4.4.0",
+        "contentHash": "ZC6Le3rr4TVJJjS4KsQAesxeF1EhW9qcZmmG7eP5Y2G3+gTGkJEUXkq4+tZNPtyp05I0wWOxnIjwtxFweJsObw=="
       },
       "Serilog.AspNetCore": {
         "type": "Direct",
@@ -177,9 +177,9 @@
       },
       "WebMarkupMin.AspNetCoreLatest": {
         "type": "Direct",
-        "requested": "[2.21.0, )",
-        "resolved": "2.21.0",
-        "contentHash": "k99gUEtoubvgYNx9xHlv2EE5ERva0yXz5Gpl2qeTjP0usq6hhyPVvPF9NCxo4g6e5Y3KonlJgsSdaUVuyeGxJw==",
+        "requested": "[2.22.0, )",
+        "resolved": "2.22.0",
+        "contentHash": "1md+35C7pPKX7Dm1hct8qYo6PTCpvIuKWRYfAEXKgImTCx1L+KEVVezlf+bBoTIcPxy97kxFHlIdX7C2TiTpPw==",
         "dependencies": {
           "WebMarkupMin.AspNet.Common": "2.21.0"
         }
