@@ -84,9 +84,7 @@ jobs:
         uses: bridgecrewio/checkov-action@99bb2caf247dfd9f03cf984373bc6043d4e32ebf
         with:
           directory: ./src/infrastructure/terraform
-          output_format: cli
-          output_file_path: console,${{ env.CHECKOV_RESULTS }}/results.xml
-          var-file: ./src/infrastructure/terraform/env_vars/elz-production.tfvars
+          args: --output cli --output-file-path console,${{ env.CHECKOV_RESULTS }}/results.xml --var-file ./src/infrastructure/terraform/env_vars/elz-production.tfvars
 
       - name: Record Checkov Result
         if: always()
