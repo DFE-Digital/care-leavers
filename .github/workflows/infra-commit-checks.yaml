@@ -6,6 +6,7 @@ on:
       - main
     paths: 
       - src/infrastructure/**
+      - .github/workflows/infra-commit-checks.yaml
 
 jobs:
   validate_infrastructure:
@@ -44,12 +45,14 @@ jobs:
           terraform_version: ${{ vars.TERRAFORM_VERSION }}
 
       - name: Terraform Init
-        run: terraform init -input=false -backend=false
+        run: |
+          terraform init -input=false -backend=false
         working-directory: ./src/infrastructure/terraform
 
       - name: Terraform Format Check
         id: terraform_fmt
-        run: terraform fmt -check
+        run: |
+          terraform fmt -check
         working-directory: ./src/infrastructure/terraform
 
       - name: Record fmt Result
@@ -65,7 +68,8 @@ jobs:
 
       - name: Terraform Validate
         id: terraform_validate
-        run: terraform validate
+        run: |
+          terraform validate
         working-directory: ./src/infrastructure/terraform
 
       - name: Record validate Result
