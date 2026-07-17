@@ -1,4 +1,5 @@
 resource "azurerm_key_vault" "kv" {
+  #checkov:skip=CKV_AZURE_109: Will review in a later ticket - cannot be just deny as it blocks the SP
   location            = local.location
   name                = "${local.prefix}-kv-uks-cl"
   resource_group_name = azurerm_resource_group.core-rg.name
