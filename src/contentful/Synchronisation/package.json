@@ -9,14 +9,14 @@
     "type": "commonjs",
     "dependencies": {
         "contentful-export": "^8.0.1",
-        "contentful-import": "^10.0.11",
-        "contentful-management": "^12.6.0",
+        "contentful-import": "^10.0.13",
+        "contentful-management": "^12.8.0",
         "dotenv": "^17.4.2"
     },
     "resolutions": {
         "lodash": "4.18.1"
     },
     "devDependencies": {
-        "prettier": "3.8.4"
+        "prettier": "3.9.4"
     }
 }

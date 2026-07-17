@@ -194,3 +194,22 @@ resource "azurerm_storage_container" "backup_storage_container" {
   storage_account_id    = azurerm_storage_account.web_storage_account.id
   container_access_type = "private"
 }
+
+resource "azurerm_storage_management_policy" "backup_storage_policy" {
+  count = var.elz_environment == "Dev" ? 1 : 0
+
+  storage_account_id = azurerm_storage_account.web_storage_account.id
+  rule {
+    name    = "delete-backups-after-14-days"
+    enabled = true
+    filters {
+      prefix_match = ["${local.service_prefix}-backup-container"]
+      blob_types   = ["blockBlob"]
+    }
+    actions {
+      base_blob {
+        delete_after_days_since_creation_greater_than = 14
+      }
+    }
+  }
+}
