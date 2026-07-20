@@ -1,28 +1,29 @@
 .govuk-phase-banner {
   border-bottom: none;
-  postion: relative;
+  position: relative;
 }
 
 .govuk-phase-banner__content {
   display: block;
-  padding-inline-end: 100px;
+  padding-inline-end: 100px; 
 }
 
 .translate {
-  display: absolute;
+  position: absolute; 
   top: 50%;
   transform: translateY(-50%);
-  inset-inline-end: 0;
+  inset-inline-end: 0; 
   min-width: 90px;
-  fonmt-size: 1em;
+  font-size: 1em; 
   display: flex;
-
-
 
   .govuk-link {
     background-image: url("/assets/icon-translate.png");
     background-repeat: no-repeat;
     background-size: contain;
-    padding-inline-start: 32px;
+    padding-inline-start: 32px; 
+    
+  
+    background-position: inline-start center; 
   }
 }
