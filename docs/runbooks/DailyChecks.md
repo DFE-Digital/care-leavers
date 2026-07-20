@@ -26,9 +26,9 @@ The daily checks runbook for Care Leavers website lists all the daily checks tha
 Azure alert emails may be received in your inbox. These need to be reviewed and actioned appropriately.
 To receive these emails you should be added to C&F Operations group. Pradeep NEELAKANDAN can add you to this group.
 
-### Document Purpose
+### Daily GitHub Workflows
 
-This document lists all the daily checks that should be performed every morning.
+The following GitHub workflows run daily. These workflows should be checked every morning to ascertain that there are no reported errors.
 
 - **Running ZAP scan against elz-staging**: This GitHub Work flow runs scan against elz-staging environment. The job is scheduled to run at 03 AM, Monday through Friday. This workflow generates a ZAP Security Scan Summary which can be seen on the workflow. Zap action report can also be downloaded.
 - **Link Validation Check**: This GitHub workflow scans for all broken links found on the production care leavers website (https://www.support-for-care-leavers.education.gov.uk). This job is scheduled to run at 02:00 AM, Monday through Friday.

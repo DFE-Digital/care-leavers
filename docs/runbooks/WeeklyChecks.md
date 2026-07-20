@@ -19,11 +19,9 @@ eleventyNavigation:
 
 ### Overview
 
-The weekly checks runbook for Care Leavers website lists all checks that should be performed every morning morning or on tuesday after the bank holiday.
+The weekly checks runbook for Care Leavers website lists all checks that should be performed every monday morning or on tuesday after the bank holiday.
 
-### Document Purpose
-
-This document lists all the daily checks that should be performed every morning.
+### GitHub Workflow Checks
 
 - **Generate - Documentation**: This GitHub workflow auto generates terraform documentation updated based on recent changes to main branch. This job runs at 12AM everyday.
 
