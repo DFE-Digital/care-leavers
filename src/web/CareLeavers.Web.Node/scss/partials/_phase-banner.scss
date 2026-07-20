@@ -1,33 +1,68 @@
 .govuk-phase-banner {
   border-bottom: none;
+  position: relative; // Fixed typo (was 'postion')
 }
 
 .govuk-phase-banner__content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  gap: 1rem;
+  display: block;
+  // Reserve space for the translate element on the side
+  padding-right: 120px; 
+  padding-left: 0;
 
-  .govuk-phase-banner__text {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0;
+  // Fix 1: Place Beta badge side-by-side with text
+  .govuk-tag,
+  .govuk-phase-banner__content__tag {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+    margin-left: 0;
+  }
+
+  // RTL Overrides for Phase Banner content
+  [dir="rtl"] & {
+    padding-right: 0;
+    padding-left: 120px;
+
+    .govuk-tag,
+    .govuk-phase-banner__content__tag {
+      margin-right: 0;
+      margin-left: 8px;
+    }
   }
 }
 
+// Translate Container
 .translate {
-  display: flex;
-  align-items: center;
-  margin-inline-start: auto; 
-  white-space: nowrap;
+  position: absolute; 
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  left: auto;
+  font-size: 1em; 
 
+  // Move container to far left in RTL
+  [dir="rtl"] & {
+    right: auto;
+    left: 0; 
+  }
+
+  // Fix 2: Place icon beside text cleanly without overlapping
   .govuk-link {
+    display: inline-flex;
+    align-items: center;
     background-image: url("/assets/icon-translate.png");
     background-repeat: no-repeat;
     background-size: contain;
-    background-position: inline-start center;
-    padding-inline-start: 32px;
+    background-position: left center;
+    padding-left: 32px;
+    padding-right: 0;
+    line-height: 1;
+
+    // RTL Overrides for icon and text spacing
+    [dir="rtl"] & {
+      background-position: right center;
+      padding-left: 0;
+      padding-right: 32px;
+    }
   }
 }
