@@ -16,6 +16,11 @@
   float: right;
   font-size: 1em;
 
+   [dir="rtl"] & {
+    margin-right: auto;
+    margin-left: 0;
+  }
+
   .govuk-link {
     background-image: url("/assets/icon-translate.png");
     background-repeat: no-repeat;
