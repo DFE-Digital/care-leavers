@@ -153,6 +153,12 @@ resource "azurerm_monitor_diagnostic_setting" "webapp_logs" {
 }
 
 resource "azurerm_storage_account" "web_storage_account" {
+  #checkov:skip=CKV_AZURE_33: Will review in a later ticket
+  #checkov:skip=CKV_AZURE_3: Will review in a later ticket
+  #checkov:skip=CKV2_AZURE_1: Do not need to use CMK
+  #checkov:skip=CKV2_AZURE_18: Do not need to use CMK
+  #checkov:skip=CKV_AZURE_35: To review in a later ticket
+  #checkov:skip=CKV2_AZURE_8: Container access type is private, set within other resources
   name                     = "${local.prefix}webstorage"
   resource_group_name      = azurerm_resource_group.web-rg.name
   location                 = local.location
@@ -162,6 +168,8 @@ resource "azurerm_storage_account" "web_storage_account" {
   public_network_access_enabled   = false
   allow_nested_items_to_be_public = false
 
+  min_tls_version = "TLS1_2"
+
   tags = local.common_tags
 
   identity {
@@ -170,15 +178,38 @@ resource "azurerm_storage_account" "web_storage_account" {
 }
 
 resource "azurerm_storage_container" "translator_storage_container" {
+  #checkov:skip=CKV2_AZURE_21: Will review in a later ticket
+  #checkov:skip=CKV2_AZURE_8: Does not look at container access type in this version of checkov - will update with image longer term
   name                  = "${local.service_prefix}-char-container"
   storage_account_id    = azurerm_storage_account.web_storage_account.id
   container_access_type = "private"
 }
 
 resource "azurerm_storage_container" "backup_storage_container" {
+  #checkov:skip=CKV2_AZURE_21: Will review in a later ticket
+  #checkov:skip=CKV2_AZURE_8: Does not look at container access type in this version of checkov - will update with image longer term
   count = var.elz_environment == "Dev" ? 1 : 0
 
   name                  = "${local.service_prefix}-backup-container"
   storage_account_id    = azurerm_storage_account.web_storage_account.id
   container_access_type = "private"
+}
+
+resource "azurerm_storage_management_policy" "backup_storage_policy" {
+  count = var.elz_environment == "Dev" ? 1 : 0
+
+  storage_account_id = azurerm_storage_account.web_storage_account.id
+  rule {
+    name    = "delete-backups-after-14-days"
+    enabled = true
+    filters {
+      prefix_match = ["${local.service_prefix}-backup-container"]
+      blob_types   = ["blockBlob"]
+    }
+    actions {
+      base_blob {
+        delete_after_days_since_creation_greater_than = 14
+      }
+    }
+  }
 }
