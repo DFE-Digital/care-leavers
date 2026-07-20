@@ -1,11 +1,11 @@
 ---
 title: Weekly Checks
 layout: sub-navigation
-sectionKey: Weekly
+sectionKey: Runbooks
 order: 1
 includeInBreadcrumbs: true
 eleventyNavigation:
-  parent: runbooks
+  parent: Runbooks
   key: Weekly Checks
 ---
 
@@ -13,7 +13,7 @@ eleventyNavigation:
 
 | Version | Date          | Author               | Reviewer(s) | Approver | Description of Changes         |
 |---------|---------------|----------------------|-------------|----------|--------------------------------|
-| 1.0     | [20/07/2026]  | Rachna Mehta         |             |          | 							   |
+| 1.0     | 20/07/2026  | Rachna Mehta         |             |          | 							   |
 
 ## Introduction
 
