@@ -23,7 +23,7 @@ The weekly checks runbook for Care Leavers website lists all checks that should 
 
 ### GitHub Workflow Checks
 
-- **Generate - Documentation**: This GitHub workflow auto generates terraform documentation updated based on recent changes to main branch. This job runs at 12AM everyday.
+**1. Generate - Documentation**: This GitHub workflow auto generates terraform documentation updated based on recent changes to main branch. This job runs at 12AM everyday.
 
 ### Depandabot Checks
 
