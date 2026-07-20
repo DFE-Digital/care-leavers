@@ -13,15 +13,9 @@
   .govuk-phase-banner__content__tag {
     display: inline-block;
     vertical-align: middle;
-    margin-right: 8px;
-    margin-left: 0;
+    margin-right: 0px;
+    margin-left: 20px;
   }
-
-  // RTL layout adjustments
-  [dir="rtl"] & {
-    padding-right: 0;
-    padding-left: 120px; 
-    text-align: right;
 
     .govuk-tag,
     .govuk-phase-banner__content__tag {
@@ -29,22 +23,17 @@
       margin-left: 8px;
     }
   }
-}
+
 
 
 .translate {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  
   right: 0;
   left: auto;
 
-  // RTL Override: Move to top left
-  [dir="rtl"] & {
-    right: auto;
-    left: 0;
-  }
+
 
   .govuk-link {
     display: inline-flex;
@@ -62,4 +51,4 @@
       padding-right: 32px;
     }
   }
-}
+} 
