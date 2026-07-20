@@ -1,59 +1,25 @@
 .govuk-phase-banner {
   border-bottom: none;
-  position: relative; // Required anchor for absolute positioning
 }
 
 .govuk-phase-banner__content {
-  display: block;
-  padding-right: 120px;
-  padding-left: 0;
-
-  [dir="rtl"] & {
-    padding-right: 0;
-    padding-left: 120px;
-  }
-
-  // Render Beta tag inline beside text
-  .govuk-tag,
-  .govuk-phase-banner__content__tag {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 8px;
-    margin-left: 0;
-
-    [dir="rtl"] & {
-      margin-right: 0;
-      margin-left: 8px;
-    }
-  }
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .translate {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 0;
-  left: auto;
-
-  [dir="rtl"] & {
-    right: auto;
-    left: 0;
-  }
+  display: block;
+  margin-left: auto;
+  text-align: right;
+  min-width: 90px;
+  float: right;
+  font-size: 1em;
 
   .govuk-link {
-    display: inline-flex;
-    align-items: center;
     background-image: url("/assets/icon-translate.png");
     background-repeat: no-repeat;
     background-size: contain;
-    background-position: left center;
     padding-left: 32px;
-    padding-right: 0;
-
-    [dir="rtl"] & {
-      background-position: right center;
-      padding-left: 0;
-      padding-right: 32px;
-    }
   }
 }
