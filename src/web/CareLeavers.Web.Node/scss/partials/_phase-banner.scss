@@ -1,36 +1,46 @@
 .govuk-phase-banner {
   border-bottom: none;
-  position: relative; // Keeps absolute elements inside the banner
+  position: relative; // Required anchor for absolute positioning
 }
 
 .govuk-phase-banner__content {
   display: block;
-  padding-right: 0;
-  padding-left: 120px; // Leaves space for translate button on the far left
+  padding-right: 120px; 
+  padding-left: 0;
 
-  // Move Beta tag beside the text (Red Circle area)
+  // Render Beta tag inline beside text
   .govuk-tag,
   .govuk-phase-banner__content__tag {
     display: inline-block;
     vertical-align: middle;
-    margin-right: 0;
-    margin-left: 8px; // Moves tag to the right of the Arabic text
+    margin-right: 8px;
+    margin-left: 0;
   }
 
-  // Handle RTL layout specifically
+  // RTL layout adjustments
   [dir="rtl"] & {
-    text-align: right; // Keeps text reading from the right side
+    padding-right: 0;
+    padding-left: 120px; 
+    text-align: right;
+
+    .govuk-tag,
+    .govuk-phase-banner__content__tag {
+      margin-right: 0;
+      margin-left: 8px;
+    }
   }
 }
 
-// Translate Link (Black X area)
+
 .translate {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1em;
+  
+  right: 0;
+  left: auto;
 
-  // Force button to the far left in RTL mode
+  // RTL Override: Move to top left
   [dir="rtl"] & {
     right: auto;
     left: 0;
@@ -42,12 +52,14 @@
     background-image: url("/assets/icon-translate.png");
     background-repeat: no-repeat;
     background-size: contain;
+    background-position: left center;
+    padding-left: 32px;
+    padding-right: 0;
 
-    // Align icon beside text properly in RTL
     [dir="rtl"] & {
       background-position: right center;
       padding-left: 0;
-      padding-right: 32px; // Space for translate icon on the right of the link text
+      padding-right: 32px;
     }
   }
 }
