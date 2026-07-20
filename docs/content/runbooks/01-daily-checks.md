@@ -50,8 +50,5 @@ This document lists all the daily checks that should be performed every morning.
 - The backup file is then uploaded to blob storage. 
 
 Please note:- 
-_our prod environment (in Azure) requires approval before it can be deployed to, so an automated workflow wouldn't work/be able to make a backup and deploy.
-So it was decided to backup in our dev account and store it in the developers main environment (dev/test). It can be restore if needed. 
-So this workflow takes the backup of our production site and stores in dev storage account. 
-This workflow is being run as an extra precaution as contentful takes its own backups. But if things go wrong from our side. We also have a backup to restore from._
+_Our production environment requires manual approval before a deployment can begin, restricting our ability to use an automated workflow. It was decided to backup production in our storage dev account so it can be restored quickly. Contentful will take its own backups in case of error, however this will support developers in restoring the site should an issue occur._
 
