@@ -26,9 +26,9 @@ The daily checks runbook for Care Leavers website lists all the daily checks tha
 Azure alert emails may be received in your inbox. These need to be reviewed and actioned appropriately.
 To receive these emails you should be added to C&F Operations group. Pradeep NEELAKANDAN can add you to this group.
 
-### Document Purpose
+### GitHub Workflows
 
-This document lists all the daily checks that should be performed every morning.
+This document lists all the daily checks that should be performed every morning for GitHub Workflows.
 
 **1. Running ZAP scan against elz-staging**: 
 - This GitHub Work flow runs scan against elz-staging environment. 
