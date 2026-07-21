@@ -6,6 +6,10 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  [dir="rtl"] & {
+    margin-right: 0;
+    margin-left: 10px; // Creates the missing gap between tag and text
+  }
 }
 
 .translate {
