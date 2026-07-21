@@ -32,17 +32,17 @@ This document lists all the daily checks that should be performed every morning 
 
 **1. Running ZAP scan against elz-staging**: 
 - This GitHub Work flow runs scan against elz-staging environment. 
-- The job is scheduled to run at 03 AM, Monday through Friday. 
+- The job is scheduled to run at 03:00 AM, Monday through Friday. 
 - This workflow generates a ZAP Security Scan Summary which can be seen on the workflow. 
 - Zap action report can also be downloaded. 
 	
 **2. Link Validation Check**: 
-- This GitHub workflow scans for all broken links found on the production care leavers website (https://www.support-for-care-leavers.education.gov.uk). 
+- This GitHub workflow scans for all broken links found on the [production](https://www.support-for-care-leavers.education.gov.uk) care leavers website. 
 - This job is scheduled to run at 02:00 AM, Monday through Friday.
 
 **3. Generate - Documentation**: 
 - This GitHub workflow auto generates terraform documentation based on recent changes to main branch. 
-- This job is scheduled to run at 12 AM everyday.
+- This job is scheduled to run at 12:00 AM everyday.
 
 **4. Performing Contentful Backup**:
 - This Github workflow creates backup and exports it to file storage.
