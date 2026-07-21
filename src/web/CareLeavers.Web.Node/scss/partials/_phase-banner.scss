@@ -8,7 +8,7 @@
   flex-wrap: wrap;
   [dir="rtl"] & {
     margin-right: 0;
-    margin-left: 10px; // Creates the missing gap between tag and text
+    margin-left: inherit; // Creates the missing gap between tag and text
   }
 }
 
