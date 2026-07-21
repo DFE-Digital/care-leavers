@@ -2,7 +2,7 @@
 title: Weekly Checks
 layout: sub-navigation
 sectionKey: Runbooks
-order: 1
+order: 2
 includeInBreadcrumbs: true
 eleventyNavigation:
   parent: Runbooks
