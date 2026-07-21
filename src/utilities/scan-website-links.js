@@ -96,10 +96,10 @@ const scanPage = async (url, parent = '') => {
 
         const childPagesToScan = processLinks(links, url);
 
-        for (const childUrl of childPagesToScan) {
-            if(childUrl != true)
+        for (const childUrl of childPagesToScan) {	
+			if(childUrl != true)
 			{						
-				await scanPage(childUrl, url);
+            await scanPage(childUrl, url);
 			}
         }
     } catch (error) {
