@@ -48,7 +48,7 @@ export default function(eleventyConfig) {
           text: 'Scans',
           href: '/scans/'
         },
-		    {
+		{
           text: 'Runbooks',
           href: '/runbooks/'
         }
