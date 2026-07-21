@@ -97,7 +97,10 @@ const scanPage = async (url, parent = '') => {
         const childPagesToScan = processLinks(links, url);
 
         for (const childUrl of childPagesToScan) {
-            await scanPage(childUrl, url);
+            if(childUrl != true)
+			{						
+				await scanPage(childUrl, url);
+			}
         }
     } catch (error) {
         handleScanError(error, url, parent);
