@@ -94,12 +94,9 @@ const scanPage = async (url, parent = '') => {
         const $ = cheerio.load(data);
         const links = $('a[href]').map((_, el) => $(el).attr('href')).get();
 
-        const childPagesToScan = processLinks(links, url);
-		const trueValue = true
-        for (const childUrl of childPagesToScan) {	
-			if(childUrl != trueValue) {						
-            await scanPage(childUrl, url);
-			}
+        const childPagesToScan = processLinks(links, url);		
+        for (const childUrl of childPagesToScan) {
+            await scanPage(childUrl, url);		
         }
     } catch (error) {
         handleScanError(error, url, parent);
@@ -111,8 +108,8 @@ const processLinks = (links, currentUrl) => {
 
     links.forEach(href => {
         const internalHref = internalPageToScan(href);
-
-        if (internalHref) {
+				
+        if (internalHref && !href.includes('translate-this-website')) {
             if (!scannedPages.includes(internalHref)) {
                 scannedPages.push(internalHref);
                 internalToScan.push(internalHref);
