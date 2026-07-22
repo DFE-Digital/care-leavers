@@ -48,7 +48,9 @@ const internalPageToScan = (url) => {
     // { isInternal: boolean, skipScan?: boolean, url?: string }
     if (!url) return { isInternal: false };
 
-    if (url.startsWith('//assets.ctfassets.net')) return { isInternal: false };  
+    if (url.startsWith('//assets.ctfassets.net')) return { isInternal: false };
+
+    // Marker used in markup to indicate this page should not be crawled
     if (url.includes('translate-this-website')) return { isInternal: true, skipScan: true };
 
     if (url.startsWith('/') || url.startsWith(websiteRoot)) {
@@ -99,7 +101,7 @@ const scanPage = async (url, parent = '') => {
         const links = $('a[href]').map((_, el) => $(el).attr('href')).get();
 
         const childPagesToScan = processLinks(links, url);
-        
+        console.log();
 		for (const childUrl of childPagesToScan) {
             await scanPage(childUrl, url);
         }
@@ -117,6 +119,8 @@ const processLinks = (links, currentUrl) => {
         if (internalInfo.isInternal) {
             // If marked to skip scanning (internal marker), don't queue for scanning
             if (internalInfo.skipScan) return;
+
+            const internalHref = internalInfo.url;
             if (internalHref) {
                 scannedPages.push(internalHref);
                 internalToScan.push(internalHref);
