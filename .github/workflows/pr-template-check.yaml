@@ -1,0 +1,28 @@
+name: PR Template Check
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+jobs:
+  check-pr-template:
+    name: Check PR description uses outlined template
+    if: github.event.pull_request.user.type != 'Bot'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check PR follows template
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+        with:
+          script: |
+            const body = context.payload.pull_request.body || '';
+            const required = ['## What', '## Why', '## Tests'];
+            const missing = required.filter(section => !body.includes(section));
+
+            if (missing.length > 0) {
+              core.setFailed(
+                `PR description is missing required sections: ${missing.join(', ')}\n\n` +
+                `Please use the PR template and fill in all required sections.`
+              );
+            }
