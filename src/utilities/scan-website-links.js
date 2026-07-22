@@ -48,9 +48,7 @@ const internalPageToScan = (url) => {
     // { isInternal: boolean, skipScan?: boolean, url?: string }
     if (!url) return { isInternal: false };
 
-    if (url.startsWith('//assets.ctfassets.net')) return { isInternal: false };
-
-    // Marker used in markup to indicate this page should not be crawled
+    if (url.startsWith('//assets.ctfassets.net')) return { isInternal: false };  
     if (url.includes('translate-this-website')) return { isInternal: true, skipScan: true };
 
     if (url.startsWith('/') || url.startsWith(websiteRoot)) {
@@ -121,7 +119,7 @@ const processLinks = (links, currentUrl) => {
             if (internalInfo.skipScan) return;
 
             const internalHref = internalInfo.url;
-            if (internalHref && !scannedPages.includes(internalHref)) {
+            if (internalHref) {
                 scannedPages.push(internalHref);
                 internalToScan.push(internalHref);
             }
