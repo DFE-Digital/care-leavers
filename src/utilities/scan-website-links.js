@@ -100,7 +100,7 @@ const scanPage = async (url, parent = '') => {
         const $ = cheerio.load(data);
         const links = $('a[href]').map((_, el) => $(el).attr('href')).get();
 
-        const childPagesToScan = processLinks(links, url);
+        const childPagesToScan = processLinks(links, url); console.log(childPagesToScan);
 		for (const childUrl of childPagesToScan) {
             await scanPage(childUrl, url);
         }
@@ -121,8 +121,10 @@ const processLinks = (links, currentUrl) => {
 
             const internalHref = internalInfo.url;
             if (internalHref) {
-                scannedPages.push(internalHref);
-                internalToScan.push(internalHref);
+                if (!scannedPages.includes(internalHref)) {
+                    scannedPages.push(internalHref);
+                    internalToScan.push(internalHref);
+                }
             }
             return;
         }
