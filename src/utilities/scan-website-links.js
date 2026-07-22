@@ -117,8 +117,6 @@ const processLinks = (links, currentUrl) => {
         if (internalInfo.isInternal) {
             // If marked to skip scanning (internal marker), don't queue for scanning
             if (internalInfo.skipScan) return;
-
-            const internalHref = internalInfo.url;
             if (internalHref) {
                 scannedPages.push(internalHref);
                 internalToScan.push(internalHref);
