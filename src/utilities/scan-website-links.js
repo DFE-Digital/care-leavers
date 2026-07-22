@@ -100,7 +100,7 @@ const scanPage = async (url, parent = '') => {
         const $ = cheerio.load(data);
         const links = $('a[href]').map((_, el) => $(el).attr('href')).get();
 
-        const childPagesToScan = processLinks(links, url); console.log(childPagesToScan);
+        const childPagesToScan = processLinks(links, url);
 		for (const childUrl of childPagesToScan) {
             await scanPage(childUrl, url);
         }
