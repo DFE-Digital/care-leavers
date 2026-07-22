@@ -95,7 +95,6 @@ const scanPage = async (url, parent = '') => {
         const links = $('a[href]').map((_, el) => $(el).attr('href')).get();
 
         const childPagesToScan = processLinks(links, url);
-		
 		for (const childUrl of childPagesToScan) {
             await scanPage(childUrl, url);
         }
