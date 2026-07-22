@@ -9,6 +9,8 @@ jobs:
     name: Check PR description uses outlined template
     if: github.event.pull_request.user.type != 'Bot'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Check PR follows template
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
