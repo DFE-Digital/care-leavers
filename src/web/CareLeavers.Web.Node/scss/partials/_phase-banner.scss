@@ -1,15 +1,14 @@
 .govuk-phase-banner {
   border-bottom: none;
+  margin-left : 0;
 }
 
 .govuk-phase-banner__content {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  [dir="rtl"] & {
-    margin-right: 0;
-    margin-left: inherit; // Creates the missing gap between tag and text
-  }
+  margin-right: 0;
+  margin-left: 10px;
 }
 
 .translate {
