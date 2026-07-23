@@ -1,58 +1,42 @@
 .govuk-phase-banner {
   border-bottom: none;
-  position: relative; // Anchor container for absolute elements
+  position: relative; // Required anchor for absolute layout
 }
 
 .govuk-phase-banner__content {
-  display: block;
-
-  // Space for Beta badge next to the text
-  .govuk-tag,
-  .govuk-phase-banner__content__tag {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 0;
-    margin-left: 12px; // FIX 1: Creates space between Beta tag and Arabic text
-  }
+  display: flex;
+  align-items: center;
+  gap: 12px; // Creates space between Beta tag, text, and link naturally with no margins
+  padding-right: 120px; 
+  padding-left: 0;
 
   [dir="rtl"] & {
     padding-right: 0;
-    padding-left: 140px; // Gives room on the far left for the translate link
-    text-align: right;
-
-    .govuk-tag,
-    .govuk-phase-banner__content__tag {
-      margin-right: 0;
-      margin-left: 12px; // Ensures gap remains in RTL
-    }
+    padding-left: 120px; // Leaves space for the translate button on far left
   }
 }
 
-// Translate button container
 .translate {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-
-  // LTR positioning
   right: 0;
   left: auto;
 
-  // RTL positioning: Pushes button to far-left margin
+  // Move button all the way to the far left in RTL
   [dir="rtl"] & {
     right: auto;
-    left: 0; // FIX 2: Forces button to the exact left edge of the page container
+    left: 0;
   }
 
   .govuk-link {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     background-image: url("/assets/icon-translate.png");
     background-repeat: no-repeat;
     background-size: contain;
     background-position: left center;
     padding-left: 32px;
-    padding-right: 0;
 
     [dir="rtl"] & {
       background-position: right center;
