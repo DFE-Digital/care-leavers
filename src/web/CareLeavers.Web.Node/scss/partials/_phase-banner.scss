@@ -1,30 +1,63 @@
 .govuk-phase-banner {
   border-bottom: none;
+  position: relative; // Anchor container for absolute elements
 }
 
 .govuk-phase-banner__content {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.translate {
   display: block;
-  margin-left: auto;
-  text-align: right;
-  min-width: 90px;
-  float: right;
-  font-size: 1em;
 
-   [dir="rtl"] & {
-     margin-right: auto;
-     margin-left: 0;
-   }
+  // Space for Beta badge next to the text
+  .govuk-tag,
+  .govuk-phase-banner__content__tag {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0;
+    margin-left: 12px; // FIX 1: Creates space between Beta tag and Arabic text
+  }
+
+  [dir="rtl"] & {
+    padding-right: 0;
+    padding-left: 140px; // Gives room on the far left for the translate link
+    text-align: right;
+
+    .govuk-tag,
+    .govuk-phase-banner__content__tag {
+      margin-right: 0;
+      margin-left: 12px; // Ensures gap remains in RTL
+    }
+  }
 }
+
+// Translate button container
+.translate {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  // LTR positioning
+  right: 0;
+  left: auto;
+
+  // RTL positioning: Pushes button to far-left margin
+  [dir="rtl"] & {
+    right: auto;
+    left: 0; // FIX 2: Forces button to the exact left edge of the page container
+  }
 
   .govuk-link {
+    display: inline-flex;
+    align-items: center;
     background-image: url("/assets/icon-translate.png");
     background-repeat: no-repeat;
     background-size: contain;
+    background-position: left center;
     padding-left: 32px;
+    padding-right: 0;
+
+    [dir="rtl"] & {
+      background-position: right center;
+      padding-left: 0;
+      padding-right: 32px;
+    }
   }
+}
