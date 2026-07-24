@@ -6,6 +6,12 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  
+  
+  [dir="rtl"] & {
+     margin-right: auto;
+     margin-left: 0;
+  }
 }
 
 .translate {
@@ -16,10 +22,11 @@
   float: right;
   font-size: 1em;
 
-  [dir="rtl"] & {
-    margin-right: auto;
-    margin-left: 0;
+   [dir="rtl"] & {
+     margin-right: auto;
+     margin-left: 0;
   }
+}
 
   .govuk-link {
     background-image: url("/assets/icon-translate.png");
@@ -27,4 +34,3 @@
     background-size: contain;
     padding-left: 32px;
   }
-}
