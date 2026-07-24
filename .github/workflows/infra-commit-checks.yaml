@@ -20,7 +20,7 @@ jobs:
       CHECKOV_RESULTS: checkov-results
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -85,7 +85,7 @@ jobs:
 
       - name: Run Checkov
         id: checkov
-        uses: bridgecrewio/checkov-action@99bb2caf247dfd9f03cf984373bc6043d4e32ebf
+        uses: bridgecrewio/checkov-action@7b972723c44fb3d256283fac96fae5d7c1894bb7
         with:
           directory: ./src/infrastructure/terraform
           args: --output cli --output-file-path console,${{ env.CHECKOV_RESULTS }}/results.xml --var-file ./src/infrastructure/terraform/env_vars/elz-production.tfvars
