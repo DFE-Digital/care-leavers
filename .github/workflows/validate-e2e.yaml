@@ -16,7 +16,13 @@ permissions: {}
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Run Playwright Tests
+    name: Run Playwright ${{ matrix.browser }} Tests
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit, 'Mobile Chrome', 'Mobile Safari']
+        shardIndex: [1, 2, 3, 4, 5]
+        shardTotal: [5]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
@@ -58,18 +64,18 @@ jobs:
 
       - name: Install Playwright Browsers
         working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: yarn playwright install --with-deps
+        run: yarn playwright install ${{ matrix.browser }} --with-deps
 
       - name: Run Playwright Tests
         if: steps.run.outcome == 'success'
         working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: yarn playwright test -c playwright-ci.config.ts
+        run: yarn playwright test --project="${{ matrix.browser }}" -c playwright-ci.config.ts
 
       - name: Upload Playwright Test Report
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: playwright-report
+          name: playwright-report${{ matrix.browser }}
           path: ./src/e2e/CareLeavers.E2ETests/playwright-report/
           if-no-files-found: ignore
 
@@ -77,5 +83,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: playwright-screenshots
+          name: playwright-screenshots-${{ matrix.browser }}
           path: ./src/e2e/CareLeavers.E2ETests/test-results/screenshots/
