@@ -128,11 +128,11 @@ public class PublishContentfulWebhookTests
 
         _contentfulClient.GetEntry<Page>(entryId).Returns(Task.FromResult(pageFromContentful));
         _fusionCache.TryGetAsync<Page>(entryId).Returns(MaybeValue<Page>.FromValue(outdatedPageInCache));
-        _contentfulClient.GetEntries(Arg.Any<QueryBuilder<RedirectionRules>>()).Returns(
-            new ContentfulCollection<RedirectionRules>
+        _contentfulClient.GetEntries(Arg.Is<QueryBuilder<RedirectionRules>>(q => q.Build().Contains("content_type")))
+            .Returns(Task.FromResult(new ContentfulCollection<RedirectionRules>
             {
-                Items = [redirectionRules]
-            });
+                Items = new List<RedirectionRules> { redirectionRules }
+            }));
         _contentfulManagementClient.CreateOrUpdateEntry(Arg.Any<Entry<dynamic>>(), contentTypeId: Arg.Any<string>(),
                 version: Arg.Any<int?>())
             .ReturnsForAnyArgs(updatedEntryResponse);
@@ -158,7 +158,7 @@ public class PublishContentfulWebhookTests
         Page linkedPage = new Page { Sys = new SystemProperties { Id = pageId }, Slug = pageSlug };
 
         _contentfulClient.GetEntries(Arg.Any<QueryBuilder<ContentfulContent>>())
-            .Returns(new ContentfulCollection<ContentfulContent> { Items = [linkedPage] });
+            .Returns(Task.FromResult(new ContentfulCollection<ContentfulContent> { Items = new List<ContentfulContent> { linkedPage } }));
 
         await _publishContentfulWebhook.Consume(entry, "Topic");
 
@@ -179,7 +179,7 @@ public class PublishContentfulWebhookTests
             { Sys = new SystemProperties { Id = pageId, PublishedVersion = 1 }, Slug = pageSlug };
 
         _contentfulClient.GetEntries(Arg.Any<QueryBuilder<ContentfulContent>>())
-            .Returns(new ContentfulCollection<ContentfulContent> { Items = [linkedPage] });
+            .Returns(Task.FromResult(new ContentfulCollection<ContentfulContent> { Items = new List<ContentfulContent> { linkedPage } }));
 
         await _publishContentfulWebhook.Consume(entry, "ContentManagement.Entry.publish");
 
@@ -212,11 +212,11 @@ public class PublishContentfulWebhookTests
 
         _contentfulClient.GetEntry<Page>(entryId).Returns(Task.FromResult(pageFromContentful));
         _fusionCache.TryGetAsync<Page>(entryId).Returns(MaybeValue<Page>.FromValue(outdatedPageInCache));
-        _contentfulClient.GetEntries(Arg.Any<QueryBuilder<RedirectionRules>>()).Returns(
-            new ContentfulCollection<RedirectionRules>
+        _contentfulClient.GetEntries(Arg.Is<QueryBuilder<RedirectionRules>>(q => q.Build().Contains("content_type")))
+            .Returns(Task.FromResult(new ContentfulCollection<RedirectionRules>
             {
-                Items = [redirectionRules]
-            });
+                Items = new List<RedirectionRules> { redirectionRules }
+            }));
         _contentfulManagementClient.CreateOrUpdateEntry(Arg.Any<Entry<dynamic>>(), contentTypeId: Arg.Any<string>(),
                 version: Arg.Any<int?>())
             .ReturnsForAnyArgs(updatedEntryResponse);
@@ -245,7 +245,7 @@ public class PublishContentfulWebhookTests
             { Sys = new SystemProperties { Id = pageId, PublishedVersion = 1 }, Slug = pageSlug };
 
         _contentfulClient.GetEntries(Arg.Any<QueryBuilder<ContentfulContent>>())
-            .Returns(new ContentfulCollection<ContentfulContent> { Items = [linkedPage] });
+            .Returns(Task.FromResult(new ContentfulCollection<ContentfulContent> { Items = new List<ContentfulContent> { linkedPage } }));
 
         _contentfulManagementClient.PublishEntry(pageId, 2)
             .Returns(Task.FromException<Entry<dynamic>>(new ContentfulException(500, "Error")));
