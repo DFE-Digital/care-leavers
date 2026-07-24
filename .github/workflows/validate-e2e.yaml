@@ -20,7 +20,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [chromium, firefox, webkit, mobile chrome, mobile safari]
+        include:
+          - project: 'chromium'
+            browser: 'chromium'
+          - project: 'firefox'
+            browser: 'firefox'
+          - project: 'webkit'
+            browser: 'webkit'
+          - project: 'Mobile Chrome'
+            browser: 'chromium'   
+          - project: 'Mobile Safari'
+            browser: 'webkit'
         shardIndex: [1, 2, 3, 4, 5]
         shardTotal: [5]
     steps:
