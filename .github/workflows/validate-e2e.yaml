@@ -70,11 +70,11 @@ jobs:
         working-directory: ./src/e2e/CareLeavers.E2ETests
         run: yarn install --immutable --immutable-cache
 
-      - name: Install Playwright Browsers "${{ matrix.browser }}"
+      - name: Install Playwright Browsers - ${{ matrix.browser }}
         working-directory: ./src/e2e/CareLeavers.E2ETests       
         run: yarn playwright install ${{ matrix.browser }} --with-deps
 
-      - name: Run Playwright Tests "${{ matrix.project }}"
+      - name: Run Playwright Tests - ${{ matrix.browser }}
         if: steps.run.outcome == 'success'
         working-directory: ./src/e2e/CareLeavers.E2ETests
         run: yarn playwright test --project="${{ matrix.project }}" -c playwright-ci.config.ts
@@ -83,7 +83,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: playwright-report-${{ matrix.project }}-${{ matrix.shardIndex }}
+          name: playwright-report-${{ matrix.browser }}
           path: ./src/e2e/CareLeavers.E2ETests/playwright-report/
           if-no-files-found: ignore
 
@@ -91,5 +91,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: playwright-screenshots-${{ matrix.project }}-${{ matrix.shardIndex }}
+          name: playwright-screenshots-${{ matrix.browser }}
           path: ./src/e2e/CareLeavers.E2ETests/test-results/screenshots/
