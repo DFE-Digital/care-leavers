@@ -21,13 +21,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - project: 'chromium'
+          - project: 'Chromium'
             browser: 'chromium'
-          - project: 'firefox'
+          - project: 'Firefox'
             browser: 'firefox'
-          - project: 'webkit'
+          - project: 'Webkit'
             browser: 'webkit'
-          - project: 'Mobile Chrome'
+          - project: 'MobileChrome'
             browser: 'chromium'   
           - project: 'Mobile Safari'
             browser: 'webkit'
@@ -79,13 +79,13 @@ jobs:
       - name: Run Playwright Tests
         if: steps.run.outcome == 'success'
         working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: yarn playwright test --project="${{ matrix.browser }}" -c playwright-ci.config.ts
+        run: yarn playwright test --project="${{ matrix.project }}" -c playwright-ci.config.ts
 
       - name: Upload Playwright Test Report
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: playwright-report${{ matrix.browser }}
+          name: playwright-report-${{ matrix.project }}-${{ matrix.shardIndex }}
           path: ./src/e2e/CareLeavers.E2ETests/playwright-report/
           if-no-files-found: ignore
 
@@ -93,5 +93,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: playwright-screenshots-${{ matrix.browser }}
+          name: playwright-screenshots-${{ matrix.project }}-${{ matrix.shardIndex }}
           path: ./src/e2e/CareLeavers.E2ETests/test-results/screenshots/
