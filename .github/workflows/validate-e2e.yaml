@@ -19,9 +19,18 @@ jobs:
     name: Run Playwright ${{ matrix.browser }} Tests
     strategy:
       fail-fast: false
-      matrix:        
-        shardIndex: [1, 2, 3, 4, 5]
-        shardTotal: [5]
+      matrix:
+        include:
+          - project: 'Chromium'
+            browser: 'chromium'
+          - project: 'Firefox'
+            browser: 'firefox'
+          - project: 'Webkit'
+            browser: 'webkit'
+          - project: 'Mobile Chrome'
+            browser: 'chromium'   
+          - project: 'Mobile Safari'
+            browser: 'webkit'       
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
@@ -61,24 +70,24 @@ jobs:
         working-directory: ./src/e2e/CareLeavers.E2ETests
         run: yarn install --immutable --immutable-cache
 
-      - name: Install Playwright Browsers
+      - name: Install Playwright Browsers "${{ matrix.browser }}"
         working-directory: ./src/e2e/CareLeavers.E2ETests       
         run: 
          echo "project=${{ matrix.project }}, browser=${{ matrix.browser }}, shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}"
-         yarn playwright install --with-deps
+         yarn playwright install ${{ matrix.browser }} --with-deps
 
-      - name: Run Playwright Tests
+      - name: Run Playwright Tests "${{ matrix.project }}"
         if: steps.run.outcome == 'success'
         working-directory: ./src/e2e/CareLeavers.E2ETests
         run: 
           echo "project=${{ matrix.project }}, browser=${{ matrix.browser }}, shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}"
-          yarn playwright test  --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} -c playwright-ci.config.ts
+          yarn playwright test --project="${{ matrix.project }}" -c playwright-ci.config.ts
 
       - name: Upload Playwright Test Report
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: playwright-report-${{ matrix.shardIndex }}
+          name: playwright-report-${{ matrix.project }}-${{ matrix.shardIndex }}
           path: ./src/e2e/CareLeavers.E2ETests/playwright-report/
           if-no-files-found: ignore
 
@@ -86,5 +95,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: playwright-screenshots-${{ matrix.shardIndex }}
+          name: playwright-screenshots-${{ matrix.project }}-${{ matrix.shardIndex }}
           path: ./src/e2e/CareLeavers.E2ETests/test-results/screenshots/
