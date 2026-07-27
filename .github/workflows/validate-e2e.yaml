@@ -19,18 +19,7 @@ jobs:
     name: Run Playwright ${{ matrix.browser }} Tests
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - project: 'Chromium'
-            browser: 'chromium'
-          - project: 'Firefox'
-            browser: 'firefox'
-          - project: 'Webkit'
-            browser: 'webkit'
-          - project: 'Mobile Chrome'
-            browser: 'chromium'   
-          - project: 'Mobile Safari'
-            browser: 'webkit'
+      matrix:        
         shardIndex: [1, 2, 3, 4, 5]
         shardTotal: [5]
     steps:
@@ -76,20 +65,20 @@ jobs:
         working-directory: ./src/e2e/CareLeavers.E2ETests       
         run: 
          echo "project=${{ matrix.project }}, browser=${{ matrix.browser }}, shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}"
-         yarn playwright install ${{ matrix.browser }} --with-deps
+         yarn playwright install --with-deps
 
       - name: Run Playwright Tests
         if: steps.run.outcome == 'success'
         working-directory: ./src/e2e/CareLeavers.E2ETests
         run: 
           echo "project=${{ matrix.project }}, browser=${{ matrix.browser }}, shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}"
-          yarn playwright test --project="${{ matrix.project }}"  --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} -c playwright-ci.config.ts
+          yarn playwright test  --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} -c playwright-ci.config.ts
 
       - name: Upload Playwright Test Report
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: playwright-report-${{ matrix.project }}-${{ matrix.shardIndex }}
+          name: playwright-report-${{ matrix.shardIndex }}
           path: ./src/e2e/CareLeavers.E2ETests/playwright-report/
           if-no-files-found: ignore
 
@@ -97,5 +86,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: playwright-screenshots-${{ matrix.project }}-${{ matrix.shardIndex }}
+          name: playwright-screenshots-${{ matrix.shardIndex }}
           path: ./src/e2e/CareLeavers.E2ETests/test-results/screenshots/
