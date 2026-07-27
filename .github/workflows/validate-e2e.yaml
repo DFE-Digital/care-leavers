@@ -72,16 +72,12 @@ jobs:
 
       - name: Install Playwright Browsers "${{ matrix.browser }}"
         working-directory: ./src/e2e/CareLeavers.E2ETests       
-        run: 
-         echo "project=${{ matrix.project }}, browser=${{ matrix.browser }}, shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}"
-         yarn playwright install ${{ matrix.browser }} --with-deps
+        run: yarn playwright install ${{ matrix.browser }} --with-deps
 
       - name: Run Playwright Tests "${{ matrix.project }}"
         if: steps.run.outcome == 'success'
         working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: 
-          echo "project=${{ matrix.project }}, browser=${{ matrix.browser }}, shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}"
-          yarn playwright test --project="${{ matrix.project }}" -c playwright-ci.config.ts
+        run: yarn playwright test --project="${{ matrix.project }}" -c playwright-ci.config.ts
 
       - name: Upload Playwright Test Report
         if: always()
