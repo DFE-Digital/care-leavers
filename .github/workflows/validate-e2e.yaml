@@ -16,23 +16,12 @@ permissions: {}
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Run Playwright ${{ matrix.browser }} Tests
+    name: Run Playwright Tests
     strategy:
       fail-fast: false
       matrix:
         shardIndex: [1, 2, 3, 4, 5]
-        shardTotal: [5]
-        include:
-          - project: 'Chromium'
-            browser: 'chromium'
-          - project: 'Firefox'
-            browser: 'firefox'
-          - project: 'Webkit'
-            browser: 'webkit'
-          - project: 'Mobile Chrome'
-            browser: 'chromium'   
-          - project: 'Mobile Safari'
-            browser: 'webkit'       
+        shardTotal: [5]        
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
@@ -72,11 +61,11 @@ jobs:
         working-directory: ./src/e2e/CareLeavers.E2ETests
         run: yarn install --immutable --immutable-cache
 
-      - name: Install Playwright Browsers - ${{ matrix.browser }}
+      - name: Install Playwright Browsers
         working-directory: ./src/e2e/CareLeavers.E2ETests       
-        run: yarn playwright install ${{ matrix.browser }} --with-deps
+        run: yarn playwright install --with-deps
 
-      - name: Run Playwright Tests - ${{ matrix.browser }} - ${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+      - name: Run Playwright Tests - ${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
         if: steps.run.outcome == 'success'
         working-directory: ./src/e2e/CareLeavers.E2ETests
         run: yarn playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} -c playwright-ci.config.ts
@@ -85,7 +74,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: playwright-report-${{ matrix.browser }}
+          name: playwright-report
           path: ./src/e2e/CareLeavers.E2ETests/playwright-report/
           if-no-files-found: ignore
 
@@ -93,5 +82,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: playwright-screenshots-${{ matrix.browser }}
+          name: playwright-screenshots
           path: ./src/e2e/CareLeavers.E2ETests/test-results/screenshots/
