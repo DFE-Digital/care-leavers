@@ -88,7 +88,7 @@ jobs:
   MergeReport:
     runs-on: ubuntu-latest
     name: Download Merged Report
-    needs: tests
+    needs: test
     steps:
       - name: Download all Playwright report artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c 
