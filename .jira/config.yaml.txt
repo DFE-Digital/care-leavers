@@ -4,5 +4,5 @@ deployments:
       - "elz-production"      
     staging:
       - "elz-staging"      
-    testing:
+    development:
       - "elz-test"
