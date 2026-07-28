@@ -76,10 +76,10 @@ jobs:
         working-directory: ./src/e2e/CareLeavers.E2ETests       
         run: yarn playwright install ${{ matrix.browser }} --with-deps
 
-      - name: Run Playwright Tests - ${{ matrix.browser }}
+      - name: Run Playwright Tests - ${{ matrix.browser }} - ${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
         if: steps.run.outcome == 'success'
         working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: yarn playwright test --project="${{ matrix.project }}" --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} -c playwright-ci.config.ts
+        run: yarn playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} -c playwright-ci.config.ts
 
       - name: Upload Playwright Test Report
         if: always()
