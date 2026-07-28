@@ -87,7 +87,7 @@ jobs:
           path: ./src/e2e/CareLeavers.E2ETests/test-results/screenshots/
 
       - name: Download all Playwright report artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:          
           path: ./artifacts
 
