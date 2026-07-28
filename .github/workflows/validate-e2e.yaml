@@ -20,9 +20,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shardIndex: [1, 2, 3]
-        shardTotal: [3]
-        browser: ${{ fromJson('["chromium","firefox","webkit"]') }}
+        shardIndex: [1, 2, 3, 4, 5]
+        shardTotal: [5]        
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
@@ -64,7 +63,7 @@ jobs:
 
       - name: Install Playwright Browsers
         working-directory: ./src/e2e/CareLeavers.E2ETests       
-        run: yarn playwright install --with-deps ${{ matrix.browser }}
+        run: yarn playwright install --with-deps
 
       - name: Run Playwright Tests - ${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
         if: steps.run.outcome == 'success'
