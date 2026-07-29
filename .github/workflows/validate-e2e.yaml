@@ -111,7 +111,14 @@ jobs:
         with:
           path: ./artifacts
 
-      - name: Assemble merged report
+      - name: Install dependencies and Playwright browsers
+        working-directory: ./src/e2e/CareLeavers.E2ETests
+        run: |
+          set -euo pipefail
+          yarn install --immutable --immutable-cache
+          yarn playwright install --with-deps
+
+      - name: Assemble merged report        
         run: |
           set -euo pipefail
           ARTIFACTS_DIR="$(pwd)/artifacts"
@@ -119,9 +126,10 @@ jobs:
           if [ ! -d "$ARTIFACTS_DIR" ] || [ -z "$(ls -A "$ARTIFACTS_DIR" || true)" ]; then
             echo "No artifacts downloaded at $ARTIFACTS_DIR" >&2
             exit 1
-          fi       
+          fi
 
-       
+          # Merge reports directly from the artifact directories. Artifacts are expected
+          # to contain each shard's report files at the artifact root.
           yarn playwright merge-reports --reporter=html "$ARTIFACTS_DIR"/* -o ./merged-report
 
       - name: Upload merged Playwright report
