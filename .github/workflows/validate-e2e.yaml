@@ -100,11 +100,7 @@ jobs:
           node-version: "24"
 
       - name: Lowercase the repo name and username
-        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
-
-      - name: Install dependencies
-        working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: yarn install --immutable --immutable-cache
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}      
 
       - name: Download all Playwright report artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c 
@@ -118,7 +114,8 @@ jobs:
           yarn install --immutable --immutable-cache
           yarn playwright install --with-deps
 
-      - name: Assemble merged report        
+      - name: Assemble merged report 
+        working-directory: ./src/e2e/CareLeavers.E2ETests  
         run: |
           set -euo pipefail
           ARTIFACTS_DIR="$(pwd)/artifacts"
@@ -130,7 +127,7 @@ jobs:
 
           # Merge reports directly from the artifact directories. Artifacts are expected
           # to contain each shard's report files at the artifact root.
-          yarn playwright merge-reports --reporter=html "$ARTIFACTS_DIR"/* -o ./merged-report
+          yarn ./node_modules/.bin/playwright merge-reports --reporter=html "$ARTIFACTS_DIR"/* -o ./merged-report
 
       - name: Upload merged Playwright report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
