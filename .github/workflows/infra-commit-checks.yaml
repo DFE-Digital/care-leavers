@@ -83,12 +83,27 @@ jobs:
         env:
           VALIDATE_OUTCOME: ${{ steps.terraform_validate.outcome }}
 
-      - name: Run Checkov
+      - name: Pull Checkov Image
+        run: |
+          docker pull bridgecrew/checkov
+
+      - name: Run Checkov Scan
         id: checkov
-        uses: bridgecrewio/checkov-action@99bb2caf247dfd9f03cf984373bc6043d4e32ebf
-        with:
-          directory: ./src/infrastructure/terraform
-          args: --output cli --output-file-path console,${{ env.CHECKOV_RESULTS }}/results.xml --var-file ./src/infrastructure/terraform/env_vars/elz-production.tfvars
+        run: |
+          mkdir -p "$WORKSPACE/$CHECKOV_RESULTS"
+          
+          docker run --rm \
+            -v "$WORKSPACE/$TF_DIR:/tf" \
+            -v "$WORKSPACE/$CHECKOV_RESULTS:/results" \
+            -v "$WORKSPACE/$TF_DIR/env_vars:/env" \
+            ghcr.io/dfe-digital/dfe-checkov-policies/checkov-elz:ELZ-2026.07.1 \
+            -d /tf --var-file "/env/elz-production.tfvars" \
+            -o cli \
+            -o junitxml \
+            --output-file-path console,/results/results.xml
+        env:
+          WORKSPACE: ${{ github.workspace }}
+          TF_DIR: ./src/infrastructure/terraform
 
       - name: Record Checkov Result
         if: always()
