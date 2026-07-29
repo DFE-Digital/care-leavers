@@ -85,10 +85,9 @@ jobs:
           name: playwright-screenshots
           path: ./src/e2e/CareLeavers.E2ETests/test-results/screenshots/
 
-  merge-rport:
+  merge-report:
     runs-on: ubuntu-latest
-    name: Download Merged Report
-    
+    name: Download & Merge Reports
     if: ${{ !cancelled() }}
     needs: test
     steps:
@@ -110,18 +109,41 @@ jobs:
       - name: Download all Playwright report artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c 
         with:
-          path: ./src/e2e/CareLeavers.E2ETest/playwright-report
-          merge-multiple: true
+          path: ./artifacts
 
-      - name: Assemble merged report 
-        working-directory: ./src/e2e/CareLeavers.E2ETests  
-        run: yarn playwright merge-reports --reporter html ./playwright-report    
+      - name: Assemble merged report
+        working-directory: ./src/e2e/CareLeavers.E2ETests
+        run: |
+          set -euo pipefail
+          ARTIFACTS_DIR="$(pwd)/../../../artifacts"
+          echo "Looking for artifacts in $ARTIFACTS_DIR"
+          mkdir -p playwright-report
+          for a in "$ARTIFACTS_DIR"/*; do
+            if [ -d "$a" ]; then
+              rpt=$(find "$a" -type d -name 'playwright-report' -print -quit || true)
+              if [ -n "$rpt" ]; then
+                shard=$(basename "$a")
+                echo "Copying report from $rpt to playwright-report/$shard"
+                mkdir -p "playwright-report/$shard"
+                cp -r "$rpt"/* "playwright-report/$shard/" || true
+              else
+                echo "No playwright-report found in $a, skipping"
+              fi
+            fi
+          done
+
+          if [ -z "$(ls -A playwright-report || true)" ]; then
+            echo "No playwright-report directories found in downloaded artifacts" >&2
+            exit 1
+          fi
+
+          # Merge reports (run from e2e project). Output merged HTML into merged-report
+          yarn playwright merge-reports --reporter=html ./playwright-report -o ./merged-report
 
       - name: Upload merged Playwright report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: playwright-report-merged
-          working-directory: ./src/e2e/CareLeavers.E2ETests
-          path: ./merged-report
+          path: src/e2e/CareLeavers.E2ETests/merged-report
           if-no-files-found: ignore
           retention-days: 14
