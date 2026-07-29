@@ -110,8 +110,7 @@ jobs:
       - name: Download all Playwright report artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c 
         with:
-          working-directory: ./src/e2e/CareLeavers.E2ETests
-          path: ./playwright-report
+          path: ./src/e2e/CareLeavers.E2ETest/playwright-report
           merge-multiple: true
 
       - name: Assemble merged report 
