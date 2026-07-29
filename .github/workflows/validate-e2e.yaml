@@ -73,8 +73,7 @@ jobs:
       - name: Upload Playwright Test Report
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        with:
-        
+        with:        
           name: playwright-report-${{ matrix.shardIndex }}
           path: ./src/e2e/CareLeavers.E2ETests/playwright-report/
           if-no-files-found: ignore
@@ -85,6 +84,7 @@ jobs:
         with:
           name: playwright-screenshots
           path: ./src/e2e/CareLeavers.E2ETests/test-results/screenshots/
+
   merge-rport:
     runs-on: ubuntu-latest
     name: Download Merged Report
@@ -92,6 +92,21 @@ jobs:
     if: ${{ !cancelled() }}
     needs: test
     steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+        with:
+          node-version: "24"
+
+      - name: Lowercase the repo name and username
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+
+      - name: Install dependencies
+        working-directory: ./src/e2e/CareLeavers.E2ETests
+        run: yarn install --immutable --immutable-cache
+
       - name: Download all Playwright report artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c 
         with:          
