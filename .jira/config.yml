@@ -1,0 +1,8 @@
+deployments:
+  environmentMapping:
+    production:
+      - "elz-production"      
+    staging:
+      - "elz-staging"      
+    development:
+      - "elz-test"
