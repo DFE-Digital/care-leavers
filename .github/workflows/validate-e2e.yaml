@@ -114,7 +114,7 @@ jobs:
 
       - name: Assemble merged report
         working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: yarn playwright merge-reports --config=merge.config.ts ./artifacts     
+        run: yarn playwright merge-reports --reporter html ./artifacts     
 
       - name: Upload merged Playwright report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
