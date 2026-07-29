@@ -111,11 +111,10 @@ jobs:
         with:
           path: ./artifacts
 
-      - name: Assemble merged report
-        working-directory: ./src/e2e/CareLeavers.E2ETests
+      - name: Assemble merged report        
         run: |
           set -euo pipefail
-          ARTIFACTS_DIR="$(pwd)/../../../artifacts"
+          ARTIFACTS_DIR="$(pwd)/artifacts"
           echo "Looking for artifacts in $ARTIFACTS_DIR"
           mkdir -p playwright-report
           for a in "$ARTIFACTS_DIR"/*; do
