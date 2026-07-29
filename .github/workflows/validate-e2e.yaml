@@ -109,10 +109,7 @@ jobs:
 
       - name: Install dependencies and Playwright browsers
         working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: |
-          set -euo pipefail
-          yarn install --immutable --immutable-cache
-          yarn playwright install --with-deps
+        run: yarn install --immutable --immutable-cache          
 
       - name: Assemble merged report 
         working-directory: ./src/e2e/CareLeavers.E2ETests  
@@ -133,6 +130,6 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: playwright-report-merged
-          path: src/e2e/CareLeavers.E2ETests/merged-report
+          path: ./src/e2e/CareLeavers.E2ETests/merged-report
           if-no-files-found: ignore
           retention-days: 14
