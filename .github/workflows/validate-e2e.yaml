@@ -96,26 +96,7 @@ jobs:
           path: ./artifacts
 
       - name: Assemble merged report
-        run: |
-          set -euo pipefail
-          mkdir -p merged-report
-          cd artifacts || exit 1
-          # move each downloaded shard report into merged-report/shard-<n>
-          for d in *; do
-            if [ -d "$d" ]; then
-              mv "$d" ../merged-report/"$d"
-            fi
-          done
-          cd ../merged-report
-          # create a simple index that links to each shard's index.html
-          echo "<html><head><meta charset=\"utf-8\"><title>Merged Playwright Report</title></head><body><h1>Merged Playwright Report</h1><ul>" > index.html
-          for d in *; do
-            if [ -d "$d" ]; then
-              # assume each shard report has an index.html at its root
-              echo "<li><a href=\"$d/index.html\">$d</a></li>" >> index.html
-            fi
-          done
-          echo "</ul></body></html>" >> index.html
+        run: yarn playwright merge-reports --config=merge.config.ts ./artifacts     
 
       - name: Upload merged Playwright report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
