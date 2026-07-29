@@ -107,12 +107,11 @@ jobs:
         with:
           path: ./artifacts
 
-      - name: Install dependencies and Playwright browsers
+      - name: Install dependencies
         working-directory: ./src/e2e/CareLeavers.E2ETests
         run: yarn install --immutable --immutable-cache          
 
       - name: Assemble merged report 
-        working-directory: ./src/e2e/CareLeavers.E2ETests  
         run: |
           set -euo pipefail
           ARTIFACTS_DIR="$(pwd)/artifacts"
