@@ -101,11 +101,7 @@ jobs:
           node-version: "24"
 
       - name: Lowercase the repo name and username
-        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
-
-      - name: Install dependencies
-        working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: yarn install --immutable --immutable-cache
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}      
 
       - name: Download all Playwright report artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c 
@@ -113,8 +109,7 @@ jobs:
           path: ./playwright-report
           merge-multiple: true
 
-      - name: Assemble merged report
-        working-directory: ./src/e2e/CareLeavers.E2ETests
+      - name: Assemble merged report        
         run: yarn playwright merge-reports --reporter html ./playwright-report    
 
       - name: Upload merged Playwright report
