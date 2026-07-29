@@ -85,9 +85,11 @@ jobs:
         with:
           name: playwright-screenshots
           path: ./src/e2e/CareLeavers.E2ETests/test-results/screenshots/
-  MergeReport:
+  merge-rport:
     runs-on: ubuntu-latest
     name: Download Merged Report
+    
+    if: ${{ !cancelled() }}
     needs: test
     steps:
       - name: Download all Playwright report artifacts
@@ -96,6 +98,7 @@ jobs:
           path: ./artifacts
 
       - name: Assemble merged report
+        working-directory: ./src/e2e/CareLeavers.E2ETests
         run: yarn playwright merge-reports --config=merge.config.ts ./artifacts     
 
       - name: Upload merged Playwright report
@@ -104,3 +107,4 @@ jobs:
           name: playwright-report-merged
           path: ./merged-report
           if-no-files-found: ignore
+          retention-days: 14
