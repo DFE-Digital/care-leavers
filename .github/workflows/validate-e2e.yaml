@@ -111,33 +111,18 @@ jobs:
         with:
           path: ./artifacts
 
-      - name: Assemble merged report        
+      - name: Assemble merged report
         run: |
           set -euo pipefail
           ARTIFACTS_DIR="$(pwd)/artifacts"
           echo "Looking for artifacts in $ARTIFACTS_DIR"
-          mkdir -p playwright-report
-          for a in "$ARTIFACTS_DIR"/*; do
-            if [ -d "$a" ]; then
-              rpt=$(find "$a" -type d -name 'playwright-report' -print -quit || true)
-              if [ -n "$rpt" ]; then
-                shard=$(basename "$a")
-                echo "Copying report from $rpt to playwright-report/$shard"
-                mkdir -p "playwright-report/$shard"
-                cp -r "$rpt"/* "playwright-report/$shard/" || true
-              else
-                echo "No playwright-report found in $a, skipping"
-              fi
-            fi
-          done
-
-          if [ -z "$(ls -A playwright-report || true)" ]; then
-            echo "No playwright-report directories found in downloaded artifacts" >&2
+          if [ ! -d "$ARTIFACTS_DIR" ] || [ -z "$(ls -A "$ARTIFACTS_DIR" || true)" ]; then
+            echo "No artifacts downloaded at $ARTIFACTS_DIR" >&2
             exit 1
-          fi
+          fi       
 
-          # Merge reports (run from e2e project). Output merged HTML into merged-report
-          yarn playwright merge-reports --reporter=html ./playwright-report -o ./merged-report
+       
+          yarn playwright merge-reports --reporter=html "$ARTIFACTS_DIR"/* -o ./merged-report
 
       - name: Upload merged Playwright report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
