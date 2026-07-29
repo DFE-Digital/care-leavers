@@ -109,7 +109,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: yarn install --immutable --immutable-cache          
+        run: yarn install --immutable --immutable-cache     
+        
+      - name: Install Playwright and dependencies
+        working-directory: ./src/e2e/CareLeavers.E2ETests       
+        run: yarn playwright install --with-deps
 
       - name: Assemble merged report 
         run: |
