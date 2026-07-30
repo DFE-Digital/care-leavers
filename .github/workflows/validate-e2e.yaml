@@ -127,7 +127,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: yarn install --immutable --immutable-cache     
+        run: yarn install --immutable --immutable-cache   
+        
+      - name: Install Playwright Browsers
+        working-directory: ./src/e2e/CareLeavers.E2ETests       
+        run: yarn playwright install --with-deps     
 
       - name: Download blob reports from GitHub Actions Artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c 
