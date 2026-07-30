@@ -141,6 +141,7 @@ jobs:
          merge-multiple: true
 
       - name: Merge into HTML Report
+        working-directory: ./src/e2e/CareLeavers.E2ETests
         run: yarn playwright merge-reports --reporter html ./playwright-report
 
       - name: Upload HTML report
