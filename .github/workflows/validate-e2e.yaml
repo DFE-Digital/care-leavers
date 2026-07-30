@@ -151,7 +151,7 @@ jobs:
         working-directory: ./src/e2e/CareLeavers.E2ETests
         run: |
           set -euo pipefail
-          ARTIFACTS_DIR="$(pwd)/artifacts/playwright-report"
+          ARTIFACTS_DIR="$(pwd)/artifacts"
           echo "Looking for artifacts in $ARTIFACTS_DIR"
           if [ ! -d "$ARTIFACTS_DIR" ] || [ -z "$(ls -A "$ARTIFACTS_DIR" || true)" ]; then
             echo "No artifacts downloaded at $ARTIFACTS_DIR" >&2
@@ -169,8 +169,8 @@ jobs:
           fi
 
           # Merge all found reports
-          echo "Merging reports from: $REPORT_DIRS"
-          yarn playwright merge-reports $REPORT_DIRS --reporter=html
+          echo "Merging reports from: $ARTIFACTS_DIR"
+          yarn playwright merge-reports $ARTIFACTS_DIR --reporter=html
 
       - name: Upload merged Playwright report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
