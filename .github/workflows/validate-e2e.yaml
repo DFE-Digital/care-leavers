@@ -98,40 +98,40 @@ jobs:
         with:
           node-version: "24"
 
-      # - name: Lowercase the repo name and username
-      #   run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+      - name: Lowercase the repo name and username
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
 
-      # - name: Create Local Developer Certificate
-      #   run: |
-      #     mkdir -p ${HOME}/.aspnet/https
-      #     export SSL_CERT_DIR="$HOME/.aspnet/dev-certs/trust:$SSL_CERT_DIR"
-      #     dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p "e2e"
-      #     dotnet dev-certs https --trust
-      #     chmod -R 755 ${HOME}/.aspnet
+      - name: Create Local Developer Certificate
+        run: |
+          mkdir -p ${HOME}/.aspnet/https
+          export SSL_CERT_DIR="$HOME/.aspnet/dev-certs/trust:$SSL_CERT_DIR"
+          dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p "e2e"
+          dotnet dev-certs https --trust
+          chmod -R 755 ${HOME}/.aspnet
 
-      # - name: Build Web Docker Image
-      #   id: build
-      #   working-directory: ./src
-      #   run: docker build . -t care-leavers-web:e2e -f web/CareLeavers.Web/Dockerfile
+      - name: Build Web Docker Image
+        id: build
+        working-directory: ./src
+        run: docker build . -t care-leavers-web:e2e -f web/CareLeavers.Web/Dockerfile
 
-      # - name: Run E2E Docker Image
-      #   id: run
-      #   if: steps.build.outcome == 'success'
-      #   working-directory: ./src
-      #   run: |
-      #     docker compose -f infrastructure/docker/docker-compose-ci.yml up -d
-      #   env:
-      #     CONTENTFUL_DELIVERY_API_KEY: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
-      #     CONTENTFUL_PREVIEW_API_KEY: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
-      #     CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
+      - name: Run E2E Docker Image
+        id: run
+        if: steps.build.outcome == 'success'
+        working-directory: ./src
+        run: |
+          docker compose -f infrastructure/docker/docker-compose-ci.yml up -d
+        env:
+          CONTENTFUL_DELIVERY_API_KEY: ${{ secrets.CONTENTFUL_DELIVERY_API_KEY }}
+          CONTENTFUL_PREVIEW_API_KEY: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
+          CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
 
-      # - name: Install dependencies
-      #   working-directory: ./src/e2e/CareLeavers.E2ETests
-      #   run: yarn install --immutable --immutable-cache   
+      - name: Install dependencies
+        working-directory: ./src/e2e/CareLeavers.E2ETests
+        run: yarn install --immutable --immutable-cache   
         
-      # - name: Install Playwright Browsers
-      #   working-directory: ./src/e2e/CareLeavers.E2ETests       
-      #   run: yarn playwright install --with-deps     
+      - name: Install Playwright Browsers
+        working-directory: ./src/e2e/CareLeavers.E2ETests       
+        run: yarn playwright install --with-deps     
 
       - name: Download blob reports from GitHub Actions Artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c 
