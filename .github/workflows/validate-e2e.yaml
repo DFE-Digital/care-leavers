@@ -149,7 +149,19 @@ jobs:
             exit 1
           fi
 
-          yarn playwright merge-reports --reporter=html
+          echo "Listing downloaded artifacts:"
+          ls -la "$ARTIFACTS_DIR" || true
+
+          # Find any extracted playwright-report directories under the artifacts folder
+          REPORT_DIRS=$(find "$ARTIFACTS_DIR" -type d -name 'playwright-report' -print || true)
+          if [ -z "$REPORT_DIRS" ]; then
+            echo "No playwright-report directories found under $ARTIFACTS_DIR" >&2
+            exit 1
+          fi
+
+          # Merge all found reports
+          echo "Merging reports from: $REPORT_DIRS"
+          yarn playwright merge-reports $REPORT_DIRS --reporter=html
 
       - name: Upload merged Playwright report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
