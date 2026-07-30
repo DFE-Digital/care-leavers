@@ -142,7 +142,10 @@ jobs:
 
       - name: Ensure playwright-report directory exists
         working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: mkdir -p ./playwright-report
+        run: |
+           set -euo pipefail
+           echo "$(pwd)"
+           mkdir -p ./artifacts/playwright-report
 
       - name: Assemble merged report 
         working-directory: ./src/e2e/CareLeavers.E2ETests
