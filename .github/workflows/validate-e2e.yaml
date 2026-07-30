@@ -149,7 +149,7 @@ jobs:
             exit 1
           fi
 
-          yarn playwright merge-reports --reporter html ./artifacts 
+          yarn playwright merge-reports --reporter=html
 
       - name: Upload merged Playwright report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
