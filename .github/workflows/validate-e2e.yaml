@@ -130,7 +130,7 @@ jobs:
         run: yarn install --immutable --immutable-cache     
 
       - name: Download blob reports from GitHub Actions Artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c 
         with:
          path: all-blob-reports
          pattern: blob-report-*
@@ -140,7 +140,7 @@ jobs:
         run: npx playwright merge-reports --reporter html ./all-blob-reports
 
       - name: Upload HTML report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
          name: html-report--attempt-${{ github.run_attempt }}
          path: playwright-report
