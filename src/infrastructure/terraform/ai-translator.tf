@@ -7,6 +7,7 @@ resource "azurerm_resource_group" "translator-rg" {
 resource "azurerm_cognitive_account" "ai-translator" {
   #checkov:skip=CKV_AZURE_134: Can't disable public access as keys are required for authentication presently
   #checkov:skip=CKV2_AZURE_22: Do not need to use CMK
+  #checkov:skip=DFE_ELZ_0004: AI foundry resources required as part of this solution
   name                  = "${local.service_prefix}-ai-translation"
   location              = azurerm_resource_group.translator-rg.location
   resource_group_name   = azurerm_resource_group.translator-rg.name

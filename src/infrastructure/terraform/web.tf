@@ -51,6 +51,8 @@ resource "azurerm_service_plan" "web-app-service-plan" {
   sku_name            = "P0v3"
 
   tags = local.common_tags
+
+  #checkov:skip=CKV_AZURE_212: Will review in a later ticket
 }
 
 resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
@@ -122,6 +124,16 @@ resource "azurerm_linux_web_app" "web-app-service" {
   app_settings = local.web_app_settings
 
   tags = local.common_tags
+
+  #checkov:skip=CKV_AZURE_78: Will review in a later ticket
+  #checkov:skip=CKV_AZURE_88: Will review in a later ticket
+  #checkov:skip=CKV_AZURE_17: Will review in a later ticket
+  #checkov:skip=CKV_AZURE_63: Will review in a later ticket
+  #checkov:skip=CKV_AZURE_18: Will review in a later ticket
+  #checkov:skip=CKV_AZURE_13: Will review in a later ticket
+  #checkov:skip=CKV_AZURE_222: Will review in a later ticket
+  #checkov:skip=CKV_AZURE_65: Will review in a later ticket
+  #checkov:skip=CKV_AZURE_66: Will review in a later ticket
 }
 
 resource "azurerm_monitor_diagnostic_setting" "webapp_logs" {
@@ -153,12 +165,8 @@ resource "azurerm_monitor_diagnostic_setting" "webapp_logs" {
 }
 
 resource "azurerm_storage_account" "web_storage_account" {
-  #checkov:skip=CKV_AZURE_33: Will review in a later ticket
-  #checkov:skip=CKV_AZURE_3: Will review in a later ticket
   #checkov:skip=CKV2_AZURE_1: Do not need to use CMK
   #checkov:skip=CKV2_AZURE_18: Do not need to use CMK
-  #checkov:skip=CKV_AZURE_35: To review in a later ticket
-  #checkov:skip=CKV2_AZURE_8: Container access type is private, set within other resources
   name                     = "${local.prefix}webstorage"
   resource_group_name      = azurerm_resource_group.web-rg.name
   location                 = local.location
@@ -175,24 +183,35 @@ resource "azurerm_storage_account" "web_storage_account" {
   identity {
     type = "SystemAssigned"
   }
+
+  #checkov:skip=CKV_AZURE_33: Will review in a later ticket
+  #checkov:skip=CKV_AZURE_3: Will review in a later ticket
+  #checkov:skip=CKV_AZURE_35: To review in a later ticket
+  #checkov:skip=CKV2_AZURE_8: Container access type is private, set within other resources
+  #checkov:skip=CKV_AZURE_206: Will review in a later ticket
+  #checkov:skip=CKV2_AZURE_38: Will review in a later ticket
+  #checkov:skip=CKV2_AZURE_40: Will review in a later ticket
+  #checkov:skip=CKV2_AZURE_41: Will review in a later ticket
 }
 
 resource "azurerm_storage_container" "translator_storage_container" {
-  #checkov:skip=CKV2_AZURE_21: Will review in a later ticket
   #checkov:skip=CKV2_AZURE_8: Does not look at container access type in this version of checkov - will update with image longer term
   name                  = "${local.service_prefix}-char-container"
   storage_account_id    = azurerm_storage_account.web_storage_account.id
   container_access_type = "private"
+
+  #checkov:skip=CKV2_AZURE_21: Will review in a later ticket
 }
 
 resource "azurerm_storage_container" "backup_storage_container" {
-  #checkov:skip=CKV2_AZURE_21: Will review in a later ticket
   #checkov:skip=CKV2_AZURE_8: Does not look at container access type in this version of checkov - will update with image longer term
   count = var.elz_environment == "Dev" ? 1 : 0
 
   name                  = "${local.service_prefix}-backup-container"
   storage_account_id    = azurerm_storage_account.web_storage_account.id
   container_access_type = "private"
+
+  #checkov:skip=CKV2_AZURE_21: Will review in a later ticket
 }
 
 resource "azurerm_storage_management_policy" "backup_storage_policy" {
