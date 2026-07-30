@@ -63,11 +63,7 @@ jobs:
 
       - name: Install Playwright Browsers
         working-directory: ./src/e2e/CareLeavers.E2ETests       
-        run: yarn playwright install --with-deps
-
-      - name: Ensure artifacts directory exists
-        working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: mkdir -p ./artifacts
+        run: yarn playwright install --with-deps     
 
       - name: Run Playwright Tests - ${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
         if: steps.run.outcome == 'success'
@@ -144,6 +140,9 @@ jobs:
           pattern: playwright-report*
           merge-multiple: true
 
+      - name: Ensure playwright-report directory exists
+        working-directory: ./src/e2e/CareLeavers.E2ETests
+        run: mkdir -p ./playwright-report
 
       - name: Assemble merged report 
         working-directory: ./src/e2e/CareLeavers.E2ETests
