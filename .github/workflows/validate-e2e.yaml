@@ -151,7 +151,7 @@ jobs:
 
           # Merge reports directly from the artifact directories. Artifacts are expected
           # to contain each shard's report files at the artifact root.
-          yarn playwright merge-reports --reporter=html "$ARTIFACTS_DIR"/* -o ./merged-report
+          yarn playwright merge-reports --reporter=html "$ARTIFACTS_DIR"/* ./merged-report
 
       - name: Upload merged Playwright report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
