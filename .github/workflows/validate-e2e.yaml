@@ -127,25 +127,14 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: yarn install --immutable --immutable-cache
-
-     # - name: Install Playwright Browsers
-     #   working-directory: ./src/e2e/CareLeavers.E2ETests       
-     #   run: yarn playwright install --with-deps
+        run: yarn install --immutable --immutable-cache     
 
       - name: Download all Playwright report artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c 
         with:
           path: ./src/e2e/CareLeavers.E2ETests/playwright-report/
           pattern: playwright-report*
-          merge-multiple: true
-
-      #- name: Ensure playwright-report directory exists
-       # working-directory: ./src/e2e/CareLeavers.E2ETests
-       # run: |
-       #    set -euo pipefail
-       #    echo "$(pwd)"
-       #    mkdir -p ./artifacts/playwright-report
+          merge-multiple: true     
 
       - name: Assemble merged report 
         working-directory: ./src/e2e/CareLeavers.E2ETests
