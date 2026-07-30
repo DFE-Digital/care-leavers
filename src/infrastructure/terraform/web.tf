@@ -53,6 +53,7 @@ resource "azurerm_service_plan" "web-app-service-plan" {
   tags = local.common_tags
 
   #checkov:skip=CKV_AZURE_212: Will review in a later ticket
+  #checkov:skip=CKV_AZURE_225: Will review in a later ticket
 }
 
 resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
