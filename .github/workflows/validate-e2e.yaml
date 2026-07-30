@@ -129,36 +129,36 @@ jobs:
         working-directory: ./src/e2e/CareLeavers.E2ETests
         run: yarn install --immutable --immutable-cache
 
-      - name: Install Playwright Browsers
-        working-directory: ./src/e2e/CareLeavers.E2ETests       
-        run: yarn playwright install --with-deps
+     # - name: Install Playwright Browsers
+     #   working-directory: ./src/e2e/CareLeavers.E2ETests       
+     #   run: yarn playwright install --with-deps
 
       - name: Download all Playwright report artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c 
         with:
-          path: ./src/e2e/CareLeavers.E2ETests/artifacts
+          path: ./src/e2e/CareLeavers.E2ETests/playwright-report/
           pattern: playwright-report*
           merge-multiple: true
 
-      - name: Ensure playwright-report directory exists
-        working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: |
-           set -euo pipefail
-           echo "$(pwd)"
-           mkdir -p ./artifacts/playwright-report
+      #- name: Ensure playwright-report directory exists
+       # working-directory: ./src/e2e/CareLeavers.E2ETests
+       # run: |
+       #    set -euo pipefail
+       #    echo "$(pwd)"
+       #    mkdir -p ./artifacts/playwright-report
 
       - name: Assemble merged report 
         working-directory: ./src/e2e/CareLeavers.E2ETests
         run: |
           set -euo pipefail
-          ARTIFACTS_DIR="$(pwd)/artifacts"
+          ARTIFACTS_DIR="$(pwd)/playwright-report/"
           echo "Looking for artifacts in $ARTIFACTS_DIR"
           if [ ! -d "$ARTIFACTS_DIR" ] || [ -z "$(ls -A "$ARTIFACTS_DIR" || true)" ]; then
             echo "No artifacts downloaded at $ARTIFACTS_DIR" >&2
             exit 1
           fi
 
-          echo "Listing downloaded artifacts:"
+          echo "Listing downloaded artifacts from playwright-report directory"
           ls -la "$ARTIFACTS_DIR" || true
 
           # Find any extracted playwright-report directories under the artifacts folder
@@ -169,8 +169,8 @@ jobs:
           fi
 
           # Merge all found reports
-          echo "Merging reports from: $ARTIFACTS_DIR"
-          yarn playwright merge-reports $ARTIFACTS_DIR --reporter=html
+          echo "Merging reports from: $REPORT_DIRS"
+          yarn playwright merge-reports $REPORT_DIRS --reporter=html
 
       - name: Upload merged Playwright report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
