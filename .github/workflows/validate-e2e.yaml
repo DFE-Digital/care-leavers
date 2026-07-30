@@ -65,6 +65,10 @@ jobs:
         working-directory: ./src/e2e/CareLeavers.E2ETests       
         run: yarn playwright install --with-deps
 
+      - name: Ensure artifacts directory exists
+        working-directory: ./src/e2e/CareLeavers.E2ETests
+        run: mkdir -p ./artifacts
+
       - name: Run Playwright Tests - ${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
         if: steps.run.outcome == 'success'
         working-directory: ./src/e2e/CareLeavers.E2ETests
@@ -136,7 +140,10 @@ jobs:
       - name: Download all Playwright report artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c 
         with:
-          path: ./src/e2e/CareLeavers.E2ETests/artifacts     
+          path: ./src/e2e/CareLeavers.E2ETests/artifacts
+          pattern: playwright-report*
+          merge-multiple: true
+
 
       - name: Assemble merged report 
         working-directory: ./src/e2e/CareLeavers.E2ETests
