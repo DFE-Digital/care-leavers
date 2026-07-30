@@ -142,7 +142,7 @@ jobs:
         working-directory: ./src/e2e/CareLeavers.E2ETests
         run: |
           set -euo pipefail
-          ARTIFACTS_DIR="./src/e2e/CareLeavers.E2ETests/artifacts"
+          ARTIFACTS_DIR="$(pwd)/artifacts"
           echo "Looking for artifacts in $ARTIFACTS_DIR"
           if [ ! -d "$ARTIFACTS_DIR" ] || [ -z "$(ls -A "$ARTIFACTS_DIR" || true)" ]; then
             echo "No artifacts downloaded at $ARTIFACTS_DIR" >&2
