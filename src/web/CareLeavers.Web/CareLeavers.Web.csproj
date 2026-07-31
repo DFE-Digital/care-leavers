@@ -32,8 +32,8 @@
         <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.18" />
         <PackageReference Include="OpenTelemetry.Api" Version="1.17.0" />
         <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.17.0" />
-        <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.16.0" />
-        <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.16.0" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.17.0" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.17.0" />
         <PackageReference Include="Serilog" Version="4.4.0" />
         <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
         <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="5.0.1" />
