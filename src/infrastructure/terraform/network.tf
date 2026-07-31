@@ -8,6 +8,9 @@ resource "azurerm_virtual_network" "careleavers-web-vnet" {
 }
 
 resource "azapi_resource" "web-subnet" {
+  #checkov:skip=DFE_CMN_0001: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0002: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0003: Tags applied by policy rather than set to prevent overriding
   type      = "Microsoft.Network/virtualNetworks/subnets@2024-05-01"
   name      = "${local.service_prefix}-webapp-subnet"
   parent_id = azurerm_virtual_network.careleavers-web-vnet.id
@@ -34,6 +37,9 @@ resource "azapi_resource" "web-subnet" {
 }
 
 resource "azapi_resource" "private-endpoint-subnet" {
+  #checkov:skip=DFE_CMN_0001: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0002: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0003: Tags applied by policy rather than set to prevent overriding
   type      = "Microsoft.Network/virtualNetworks/subnets@2024-05-01"
   name      = "${local.service_prefix}-private-endpoint-subnet"
   parent_id = azurerm_virtual_network.careleavers-web-vnet.id
@@ -56,6 +62,9 @@ resource "azapi_resource" "private-endpoint-subnet" {
 }
 
 resource "azapi_resource" "redis-subnet" {
+  #checkov:skip=DFE_CMN_0001: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0002: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0003: Tags applied by policy rather than set to prevent overriding
   count     = lower(var.caching_type) == "redis" ? 1 : 0
   type      = "Microsoft.Network/virtualNetworks/subnets@2024-05-01"
   name      = "${local.service_prefix}-redis-subnet"

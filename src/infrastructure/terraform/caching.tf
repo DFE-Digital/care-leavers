@@ -6,6 +6,9 @@ resource "azurerm_resource_group" "redis-rg" {
 }
 
 resource "azurerm_managed_redis" "redis-enterprise" {
+  #checkov:skip=DFE_CMN_0001: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0002: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0003: Tags applied by policy rather than set to prevent overriding
   count                     = lower(var.caching_type) == "redis" ? 1 : 0
   name                      = "${local.service_prefix}-redis"
   location                  = local.location

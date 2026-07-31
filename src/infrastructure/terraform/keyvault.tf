@@ -1,5 +1,6 @@
 resource "azurerm_key_vault" "kv" {
   #checkov:skip=CKV_AZURE_109: Will review in a later ticket - cannot be just deny as it blocks the SP
+  #checkov:skip=CKV_AZURE_189: Will review in a later ticket - cannot be just deny as it blocks the SP
   location            = local.location
   name                = "${local.prefix}-kv-uks-cl"
   resource_group_name = azurerm_resource_group.core-rg.name
@@ -80,6 +81,8 @@ resource "azurerm_key_vault_secret" "contentful-delivery-api-key" {
     azurerm_role_assignment.kv_administrator,
     azurerm_role_assignment.kv_admin_sp
   ]
+
+  tags = local.common_tags
 }
 
 resource "azurerm_key_vault_secret" "contentful-preview-api-key" {
@@ -94,6 +97,8 @@ resource "azurerm_key_vault_secret" "contentful-preview-api-key" {
     azurerm_role_assignment.kv_administrator,
     azurerm_role_assignment.kv_admin_sp
   ]
+
+  tags = local.common_tags
 }
 
 resource "azurerm_key_vault_secret" "contentful-management-api-key" {
@@ -108,6 +113,8 @@ resource "azurerm_key_vault_secret" "contentful-management-api-key" {
     azurerm_role_assignment.kv_administrator,
     azurerm_role_assignment.kv_admin_sp
   ]
+
+  tags = local.common_tags
 }
 
 resource "azurerm_key_vault_secret" "contentful-space-id" {
@@ -122,6 +129,8 @@ resource "azurerm_key_vault_secret" "contentful-space-id" {
     azurerm_role_assignment.kv_administrator,
     azurerm_role_assignment.kv_admin_sp
   ]
+
+  tags = local.common_tags
 }
 
 resource "azurerm_key_vault_secret" "application-insights-connection-string" {
@@ -136,6 +145,8 @@ resource "azurerm_key_vault_secret" "application-insights-connection-string" {
     azurerm_role_assignment.kv_administrator,
     azurerm_role_assignment.kv_admin_sp
   ]
+
+  tags = local.common_tags
 }
 
 resource "azurerm_key_vault_secret" "azure-translation-access-key" {
@@ -150,6 +161,8 @@ resource "azurerm_key_vault_secret" "azure-translation-access-key" {
     azurerm_role_assignment.kv_administrator,
     azurerm_role_assignment.kv_admin_sp
   ]
+
+  tags = local.common_tags
 }
 
 resource "azurerm_key_vault_secret" "redis-enterprise-connection-string" {
@@ -165,6 +178,8 @@ resource "azurerm_key_vault_secret" "redis-enterprise-connection-string" {
     azurerm_role_assignment.kv_administrator,
     azurerm_role_assignment.kv_admin_sp
   ]
+
+  tags = local.common_tags
 }
 
 resource "azurerm_key_vault_secret" "blob-storage-connection-string" {
@@ -179,4 +194,6 @@ resource "azurerm_key_vault_secret" "blob-storage-connection-string" {
     azurerm_role_assignment.kv_administrator,
     azurerm_role_assignment.kv_admin_sp
   ]
+
+  tags = local.common_tags
 }
