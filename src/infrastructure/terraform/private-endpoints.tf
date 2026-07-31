@@ -1,4 +1,7 @@
 resource "azurerm_private_endpoint" "web-storage-private-endpoint" {
+  #checkov:skip=DFE_CMN_0001: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0002: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0003: Tags applied by policy rather than set to prevent overriding
   name                = "${local.service_prefix}-webapp-pe"
   resource_group_name = azurerm_resource_group.web-rg.name
   location            = local.location
@@ -23,6 +26,9 @@ resource "azurerm_private_endpoint" "web-storage-private-endpoint" {
 }
 
 resource "azurerm_private_dns_zone" "web-sa-dns-zone" {
+  #checkov:skip=DFE_CMN_0001: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0002: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0003: Tags applied by policy rather than set to prevent overriding
   name                = "privatelink.blob.core.windows.net"
   resource_group_name = azurerm_resource_group.web-rg.name
 
@@ -40,6 +46,9 @@ resource "azurerm_private_dns_zone" "web-sa-dns-zone" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "web-sa-dns-link" {
+  #checkov:skip=DFE_CMN_0001: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0002: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0003: Tags applied by policy rather than set to prevent overriding
   name                  = "${local.service_prefix}-web-sa-dns-link"
   resource_group_name   = azurerm_resource_group.web-rg.name
   private_dns_zone_name = azurerm_private_dns_zone.web-sa-dns-zone.name
@@ -58,6 +67,9 @@ resource "azurerm_private_dns_zone_virtual_network_link" "web-sa-dns-link" {
 }
 
 resource "azurerm_private_endpoint" "translation-private-endpoint" {
+  #checkov:skip=DFE_CMN_0001: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0002: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0003: Tags applied by policy rather than set to prevent overriding
   name                = "${local.service_prefix}-translation-pe"
   resource_group_name = azurerm_resource_group.translator-rg.name
   location            = local.location
@@ -82,6 +94,9 @@ resource "azurerm_private_endpoint" "translation-private-endpoint" {
 }
 
 resource "azurerm_private_dns_zone" "translator-dns-zone" {
+  #checkov:skip=DFE_CMN_0001: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0002: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0003: Tags applied by policy rather than set to prevent overriding
   name                = "privatelink.cognitiveservices.azure.com"
   resource_group_name = azurerm_resource_group.translator-rg.name
 
@@ -99,6 +114,9 @@ resource "azurerm_private_dns_zone" "translator-dns-zone" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "translator-dns-link" {
+  #checkov:skip=DFE_CMN_0001: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0002: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0003: Tags applied by policy rather than set to prevent overriding
   name                  = "${local.service_prefix}-translator-dns-link"
   resource_group_name   = azurerm_resource_group.translator-rg.name
   private_dns_zone_name = azurerm_private_dns_zone.translator-dns-zone.name
@@ -117,6 +135,9 @@ resource "azurerm_private_dns_zone_virtual_network_link" "translator-dns-link" {
 }
 
 resource "azurerm_private_endpoint" "kv-private-endpoint" {
+  #checkov:skip=DFE_CMN_0001: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0002: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0003: Tags applied by policy rather than set to prevent overriding
   name                = "${local.service_prefix}-kv-pe"
   resource_group_name = azurerm_resource_group.web-rg.name
   location            = local.location
@@ -141,6 +162,9 @@ resource "azurerm_private_endpoint" "kv-private-endpoint" {
 }
 
 resource "azurerm_private_dns_zone" "kv-dns-zone" {
+  #checkov:skip=DFE_CMN_0001: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0002: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0003: Tags applied by policy rather than set to prevent overriding
   name                = "privatelink.vaultcore.azure.net"
   resource_group_name = azurerm_resource_group.web-rg.name
 
@@ -158,6 +182,9 @@ resource "azurerm_private_dns_zone" "kv-dns-zone" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "kv-dns-link" {
+  #checkov:skip=DFE_CMN_0001: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0002: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0003: Tags applied by policy rather than set to prevent overriding
   name                  = "${local.service_prefix}-kv-dns-link"
   resource_group_name   = azurerm_resource_group.web-rg.name
   private_dns_zone_name = azurerm_private_dns_zone.kv-dns-zone.name
@@ -176,6 +203,9 @@ resource "azurerm_private_dns_zone_virtual_network_link" "kv-dns-link" {
 }
 
 resource "azurerm_private_endpoint" "redis-private-endpoint" {
+  #checkov:skip=DFE_CMN_0001: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0002: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0003: Tags applied by policy rather than set to prevent overriding
   count               = lower(var.caching_type) == "redis" ? 1 : 0
   name                = "${local.service_prefix}-redis-pe"
   resource_group_name = azurerm_resource_group.redis-rg[0].name
@@ -201,6 +231,9 @@ resource "azurerm_private_endpoint" "redis-private-endpoint" {
 }
 
 resource "azurerm_private_dns_zone" "redis-dns-zone" {
+  #checkov:skip=DFE_CMN_0001: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0002: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0003: Tags applied by policy rather than set to prevent overriding
   count               = lower(var.caching_type) == "redis" ? 1 : 0
   name                = "privatelink.redis.azure.net"
   resource_group_name = azurerm_resource_group.redis-rg[0].name
@@ -219,6 +252,9 @@ resource "azurerm_private_dns_zone" "redis-dns-zone" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "redis-dns-link" {
+  #checkov:skip=DFE_CMN_0001: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0002: Tags applied by policy rather than set to prevent overriding
+  #checkov:skip=DFE_CMN_0003: Tags applied by policy rather than set to prevent overriding
   count                 = lower(var.caching_type) == "redis" ? 1 : 0
   name                  = "${local.service_prefix}-redis-dns-link"
   resource_group_name   = azurerm_resource_group.redis-rg[0].name
