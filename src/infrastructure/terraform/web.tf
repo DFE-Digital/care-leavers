@@ -176,6 +176,7 @@ resource "azurerm_storage_account" "web_storage_account" {
 
   public_network_access_enabled   = false
   allow_nested_items_to_be_public = false
+  https_traffic_only_enabled      = true
 
   min_tls_version = "TLS1_2"
 
@@ -185,14 +186,17 @@ resource "azurerm_storage_account" "web_storage_account" {
     type = "SystemAssigned"
   }
 
-  #checkov:skip=CKV_AZURE_33: Will review in a later ticket
-  #checkov:skip=CKV_AZURE_3: Will review in a later ticket
-  #checkov:skip=CKV_AZURE_35: To review in a later ticket
+  blob_properties {
+    delete_retention_policy { days = 30 }
+    container_delete_retention_policy { days = 30 }
+  }
+
+  #checkov:skip=CKV_AZURE_33: Queue service is not utilized on this storage account.
+  #checkov:skip=CKV_AZURE_35: Public network access is explicitly disabled via public_network_access_enabled = false
   #checkov:skip=CKV2_AZURE_8: Container access type is private, set within other resources
-  #checkov:skip=CKV_AZURE_206: Will review in a later ticket
-  #checkov:skip=CKV2_AZURE_38: Will review in a later ticket
-  #checkov:skip=CKV2_AZURE_40: Will review in a later ticket
-  #checkov:skip=CKV2_AZURE_41: Will review in a later ticket
+  #checkov:skip=CKV_AZURE_206: Data residency mandate restricts all data to UKSouth region (GRS/geo-replication not permitted).
+  #checkov:skip=CKV2_AZURE_40: Business constraint.
+  #checkov:skip=CKV2_AZURE_41: Business constraint.
 }
 
 resource "azurerm_storage_container" "translator_storage_container" {
@@ -201,7 +205,7 @@ resource "azurerm_storage_container" "translator_storage_container" {
   storage_account_id    = azurerm_storage_account.web_storage_account.id
   container_access_type = "private"
 
-  #checkov:skip=CKV2_AZURE_21: Will review in a later ticket
+  #checkov:skip=CKV2_AZURE_21: Logging omitted to minimize ingestion costs on non-sensitive data; network controls mitigate access risk.
 }
 
 resource "azurerm_storage_container" "backup_storage_container" {
@@ -212,7 +216,7 @@ resource "azurerm_storage_container" "backup_storage_container" {
   storage_account_id    = azurerm_storage_account.web_storage_account.id
   container_access_type = "private"
 
-  #checkov:skip=CKV2_AZURE_21: Will review in a later ticket
+  #checkov:skip=CKV2_AZURE_21: Logging omitted to minimize ingestion costs on non-sensitive data; network controls mitigate access risk.
 }
 
 resource "azurerm_storage_management_policy" "backup_storage_policy" {
