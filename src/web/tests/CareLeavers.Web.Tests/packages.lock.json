@@ -88,11 +88,11 @@
       },
       "Azure.Monitor.OpenTelemetry.AspNetCore": {
         "type": "Transitive",
-        "resolved": "1.5.0",
-        "contentHash": "jXyeb4E5gB/VQt3EkNEyP1L+TgRT/66RcN21o0QQ3cIVywZC7V7I42s9cA7Yy9Ezd4RnSqATHb/c76QIMixF1Q==",
+        "resolved": "1.6.0",
+        "contentHash": "9H0JgEl5yVdpOz+GqPBL5Qtfw0k/gAQ9iD8L+W9ucrxwMG/CMwdAg4mWdLWKUvW56iDCQ8PAHVVCxC4Hg5l1AA==",
         "dependencies": {
-          "Azure.Core": "1.54.0",
-          "Azure.Monitor.OpenTelemetry.Exporter": "1.8.0",
+          "Azure.Core": "1.60.0",
+          "Azure.Monitor.OpenTelemetry.Exporter": "1.8.3",
           "OpenTelemetry.Extensions.Hosting": "1.15.3",
           "OpenTelemetry.Instrumentation.AspNetCore": "1.15.2",
           "OpenTelemetry.Instrumentation.Http": "1.15.1"
@@ -100,10 +100,10 @@
       },
       "Azure.Monitor.OpenTelemetry.Exporter": {
         "type": "Transitive",
-        "resolved": "1.8.0",
-        "contentHash": "JbNUQIK7uZ7Mg2fZzdsjqC/eso3Ag/tMwCqYvGvedyE1fObe6JAwCaCSMZDMrhrAaFn8x8+ZaKJelfcEK5MCcg==",
+        "resolved": "1.8.3",
+        "contentHash": "hZ35hXxiRuJcT67u970iqqJ+z2ol3Sg23/m1wwNNh8uzK/48uB9iJ3va9PQ7gXn6kij6wzowUe5olPPfObkEug==",
         "dependencies": {
-          "Azure.Core": "1.54.0",
+          "Azure.Core": "1.60.0",
           "OpenTelemetry.Extensions.Hosting": "1.15.3",
           "OpenTelemetry.PersistentStorage.FileSystem": "1.0.3"
         }
@@ -1161,7 +1161,7 @@
           "Azure.AI.Translation.Document": "[2.0.0, )",
           "Azure.AI.Translation.Text": "[1.0.0, )",
           "Azure.Core": "[1.60.0, )",
-          "Azure.Monitor.OpenTelemetry.AspNetCore": "[1.5.0, )",
+          "Azure.Monitor.OpenTelemetry.AspNetCore": "[1.6.0, )",
           "Azure.Storage.Blobs": "[12.29.1, )",
           "HtmlAgilityPack": "[1.12.4, )",
           "Joonasw.AspNetCore.SecurityHeaders": "[6.0.0, )",
