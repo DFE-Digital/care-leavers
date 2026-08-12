@@ -130,6 +130,9 @@ resource "azurerm_linux_web_app" "web-app-service" {
 
   tags = local.common_tags
 
+  #checkov:skip=CKV_AZURE_88: Application is completely stateless
+  #checkov:skip=CKV_AZURE_17: Standalone app with no dependencies on other Azure services
+  #checkov:skip=CKV_AZURE_13: Authentication is handled by .net code base
   #checkov:skip=CKV_AZURE_63: Public API protected by Azure Front Door
   #checkov:skip=CKV_AZURE_222: Public network access is only enabled for Front Door
   #checkov:skip=CKV_AZURE_65: Detailed errors are captured via Application Insights
