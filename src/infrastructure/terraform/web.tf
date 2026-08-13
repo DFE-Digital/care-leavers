@@ -52,8 +52,8 @@ resource "azurerm_service_plan" "web-app-service-plan" {
 
   tags = local.common_tags
 
-  #checkov:skip=CKV_AZURE_212: Will review in a later ticket
-  #checkov:skip=CKV_AZURE_225: Will review in a later ticket
+  #checkov:skip=CKV_AZURE_212: Single instance is sufficient for this service
+  #checkov:skip=CKV_AZURE_225: Zone redundancy not required for this service
 }
 
 resource "azurerm_linux_web_app_slot" "web-app-service-staging" {
@@ -105,6 +105,10 @@ resource "azurerm_linux_web_app" "web-app-service" {
     always_on = true
 
     ip_restriction_default_action = "Deny"
+    ftps_state                    = "Disabled"
+    http2_enabled                 = true
+    remote_debugging_enabled      = false
+    minimum_tls_version           = "1.2"
 
     ip_restriction {
       name        = "Access from Front Door"
@@ -126,15 +130,13 @@ resource "azurerm_linux_web_app" "web-app-service" {
 
   tags = local.common_tags
 
-  #checkov:skip=CKV_AZURE_78: Will review in a later ticket
-  #checkov:skip=CKV_AZURE_88: Will review in a later ticket
-  #checkov:skip=CKV_AZURE_17: Will review in a later ticket
-  #checkov:skip=CKV_AZURE_63: Will review in a later ticket
-  #checkov:skip=CKV_AZURE_18: Will review in a later ticket
-  #checkov:skip=CKV_AZURE_13: Will review in a later ticket
-  #checkov:skip=CKV_AZURE_222: Will review in a later ticket
-  #checkov:skip=CKV_AZURE_65: Will review in a later ticket
-  #checkov:skip=CKV_AZURE_66: Will review in a later ticket
+  #checkov:skip=CKV_AZURE_88: Application is completely stateless
+  #checkov:skip=CKV_AZURE_17: Standalone app with no dependencies on other Azure services
+  #checkov:skip=CKV_AZURE_13: Authentication is handled by .net code base
+  #checkov:skip=CKV_AZURE_63: Public API protected by Azure Front Door
+  #checkov:skip=CKV_AZURE_222: Public network access is only enabled for Front Door
+  #checkov:skip=CKV_AZURE_65: Detailed errors are captured via Application Insights
+  #checkov:skip=CKV_AZURE_66: Inbound HTTP access logging is captured and centralised at the Azure Front Door WAF layer
 }
 
 resource "azurerm_monitor_diagnostic_setting" "webapp_logs" {
