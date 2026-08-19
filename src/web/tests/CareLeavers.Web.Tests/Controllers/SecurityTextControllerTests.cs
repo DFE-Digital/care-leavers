@@ -28,9 +28,12 @@ namespace CareLeavers.Web.Tests.Controllers
             Assert.That(result, Is.TypeOf<NotFoundObjectResult>());
                 
             var resultType = result as NotFoundObjectResult;
-            Assert.That(resultType, Is.Not.Null);
-            Assert.That(resultType.StatusCode, Is.EqualTo(404));
-            Assert.That(resultType.Value, Is.EqualTo("Security file was not found"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(resultType, Is.Not.Null);
+                Assert.That(resultType?.StatusCode, Is.EqualTo(404));
+                Assert.That(resultType?.Value, Is.EqualTo("Security file was not found"));
+            });
           
         }
 
@@ -43,8 +46,11 @@ namespace CareLeavers.Web.Tests.Controllers
             Assert.That(result, Is.TypeOf<RedirectResult>());
 
             var resultType = result as RedirectResult;
-            Assert.That(resultType, Is.Not.Null);
-            Assert.That(resultType.Url, Is.EqualTo("https://www.google.com"));      
+            Assert.Multiple(() =>
+            {
+                Assert.That(resultType, Is.Not.Null);
+                Assert.That(resultType?.Url, Is.EqualTo("https://www.google.com"));
+            });
 
         }
 
