@@ -12,8 +12,16 @@ processors:
   batch:
     send_batch_size: 10000
     timeout: 2s
+  resource:
+    attributes:
+      - key: service.name
+        value: "${OTEL_SERVICE_NAME}"
+        action: insert
 
 exporters:
+  debug:
+    verbosity: detailed
+    
   otlphttp/splunk:
     endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com"
     tls:
