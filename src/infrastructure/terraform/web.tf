@@ -29,7 +29,7 @@ locals {
     "Scripts__GTM"                          = var.scripts_gtm
     "SPLUNK_PORT"                           = var.splunk_port
     "SPLUNK_REALM"                          = var.splunk_realm
-    "SPLUNK_ACCESS_TOKEN"                   = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault_secret.splunk-access-token.versionless_id})"
+    "SPLUNK_ACCESS_TOKEN"                   = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.splunk-access-token.versionless_id})"
     "SPLUNK_SERVICE_NAME"                   = "${local.prefix}-cl"
   }
 
