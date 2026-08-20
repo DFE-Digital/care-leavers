@@ -15,7 +15,7 @@ processors:
 
 exporters:
   otlp/splunk:
-    endpoint: "ingest.${SPLUNK_REALM}.signalfx.com:443"
+    endpoint: "ingest.${SPLUNK_REALM}.observability.splunkcloud.com"
     tls:
       insecure: false
     headers:
