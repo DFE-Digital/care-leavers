@@ -26,12 +26,12 @@ service:
     traces:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [otlp/splunk]
+      exporters: [otlphttp/splunk]
     logs:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [otlp/splunk]
+      exporters: [otlphttp/splunk]
     metrics:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [otlp/splunk]
+      exporters: [otlphttp/splunk]
