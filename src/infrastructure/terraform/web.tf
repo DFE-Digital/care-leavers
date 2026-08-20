@@ -31,6 +31,10 @@ locals {
     "SPLUNK_REALM"                          = var.splunk_realm
     "SPLUNK_ACCESS_TOKEN"                   = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.splunk-access-token.versionless_id})"
     "SPLUNK_SERVICE_NAME"                   = "${local.prefix}-cl"
+    "OTEL_EXPORTER_OTLP_ENDPOINT"           = "http://otel-collector:4318"
+    "OTEL_EXPORTER_OTLP_PROTOCOL"           = "http/protobuf"
+    "OTEL_SERVICE_NAME"                     = "${local.prefix}-cl"
+    "OTEL_RESOURCE_ATTRIBUTES"              = "deployment.environment=local,service.version=1.0.0"
   }
 
   managed_identity = {
