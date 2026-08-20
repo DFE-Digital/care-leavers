@@ -3,8 +3,8 @@
 # 1. Locate the .csproj file automatically
 CSPROJ_PATH="../../web/CareLeavers.Web/CareLeavers.Web.csproj"
 
-if [ -z "$CSPROJ_PATH" ]; then
-  echo "Error: Could not find a .csproj file!"
+if [[ -z "$CSPROJ_PATH" ]]; then
+  echo "Error: Could not find a .csproj file!" >&2
   exit 1
 fi
 
