@@ -14,8 +14,8 @@ processors:
     timeout: 2s
 
 exporters:
-  otlp/splunk:
-    endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com:443"
+  otlphttp/splunk:
+    endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com"
     tls:
       insecure: false
     headers:
