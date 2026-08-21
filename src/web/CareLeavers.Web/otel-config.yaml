@@ -16,13 +16,13 @@ processors:
     attributes:
       - key: service.name
         value: "${OTEL_SERVICE_NAME}"
-        action: insert
+        action: upsert
 
 exporters:
   debug:
     verbosity: detailed
 
-  otlphttp/splunk:
+  otlp/splunk:
     endpoint: "ingest.${SPLUNK_REALM}.observability.splunkcloud.com:443"
     tls:
       insecure: false
@@ -33,13 +33,13 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [memory_limiter, batch]
+      processors: [memory_limiter, resource, batch]
       exporters: [otlp/splunk]
     logs:
       receivers: [otlp]
-      processors: [memory_limiter, batch]
+      processors: [memory_limiter, resource, batch]
       exporters: [otlp/splunk]
     metrics:
       receivers: [otlp]
-      processors: [memory_limiter, batch]
+      processors: [memory_limiter, resource, batch]
       exporters: [otlp/splunk]
