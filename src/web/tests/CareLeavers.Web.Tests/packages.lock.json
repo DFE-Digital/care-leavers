@@ -20,9 +20,9 @@
       },
       "NSubstitute": {
         "type": "Direct",
-        "requested": "[6.0.0, )",
-        "resolved": "6.0.0",
-        "contentHash": "0gvKMbiJ+/WrfbcfBfqRZZrvfLJcd3rqkqVMjjlY5dtmLRVzMY+o/K/rJUStofQ2haSr9Vd04YDfvZtVVGS3/A==",
+        "requested": "[6.2.0, )",
+        "resolved": "6.2.0",
+        "contentHash": "05oaAmBAvYYUQb/NTb9/kWBDjq0iS772X4t428WJcHRcH+5ULJx6rTbEvqkZJBIHWRLI8MlU3et3F5/gkEHKIw==",
         "dependencies": {
           "Castle.Core": "5.1.1"
         }
@@ -543,12 +543,12 @@
       },
       "Microsoft.Extensions.Caching.StackExchangeRedis": {
         "type": "Transitive",
-        "resolved": "9.0.18",
-        "contentHash": "j8h9ySlmAwNBrwj3f0ZNUalyvBTPmXMhjvlCcB4AnlQIOKJHG63ib2tNW3aQpTxwn3+pcz9NLrVbRyZP/i3djA==",
+        "resolved": "9.0.19",
+        "contentHash": "mM6X0ZEePc3k2KEMS4wza+mA2SYVoetnfEa6IlMYO5K0KvCrxQSumGgDbkzrnoOa5JRbIzlZ27kqrYaRpTxw9g==",
         "dependencies": {
-          "Microsoft.Extensions.Caching.Abstractions": "9.0.18",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.18",
-          "Microsoft.Extensions.Options": "9.0.18",
+          "Microsoft.Extensions.Caching.Abstractions": "9.0.19",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.19",
+          "Microsoft.Extensions.Options": "9.0.19",
           "StackExchange.Redis": "2.7.27"
         }
       },
@@ -1167,7 +1167,7 @@
           "Joonasw.AspNetCore.SecurityHeaders": "[6.0.0, )",
           "Microsoft.ApplicationInsights": "[2.23.0, )",
           "Microsoft.Extensions.Azure": "[1.14.0, )",
-          "Microsoft.Extensions.Caching.StackExchangeRedis": "[9.0.18, )",
+          "Microsoft.Extensions.Caching.StackExchangeRedis": "[9.0.19, )",
           "OpenTelemetry.Api": "[1.17.0, )",
           "OpenTelemetry.Extensions.Hosting": "[1.17.0, )",
           "OpenTelemetry.Instrumentation.AspNetCore": "[1.17.0, )",
