@@ -22,24 +22,23 @@ exporters:
   debug:
     verbosity: detailed
 
-  otlp/splunk:
-    endpoint: "ingest.${SPLUNK_REALM}.observability.splunkcloud.com:443"
-    tls:
-      insecure: false
-    headers:
-      "X-SF-Token": "${SPLUNK_ACCESS_TOKEN}"
+  splunk_hec:
+    endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com/v1/log"
+    token: "${SPLUNK_ACCESS_TOKEN}"
+    source: "otel"
+    sourcetype: "otel:logs"
 
 service:
   pipelines:
     traces:
       receivers: [otlp]
       processors: [memory_limiter, resource, batch]
-      exporters: [otlp/splunk]
+      exporters: [splunk_hec, debug]
     logs:
       receivers: [otlp]
       processors: [memory_limiter, resource, batch]
-      exporters: [otlp/splunk]
+      exporters: [splunk_hec, debug]
     metrics:
       receivers: [otlp]
       processors: [memory_limiter, resource, batch]
-      exporters: [otlp/splunk]
+      exporters: [splunk_hec, debug]
