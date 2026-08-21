@@ -21,9 +21,9 @@ processors:
 exporters:
   debug:
     verbosity: detailed
-    
+
   otlphttp/splunk:
-    endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com"
+    endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com/v2/datapoint/otlp"
     tls:
       insecure: false
     headers:
