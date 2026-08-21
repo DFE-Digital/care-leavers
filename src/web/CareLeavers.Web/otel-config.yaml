@@ -23,7 +23,7 @@ exporters:
     verbosity: detailed
 
   otlphttp/splunk:
-    endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com/v2/datapoint/otlp"
+    endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com"
     tls:
       insecure: false
     headers:
