@@ -23,7 +23,7 @@ exporters:
     verbosity: detailed
 
   otlphttp/splunk:
-    endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com"
+    endpoint: "ingest.${SPLUNK_REALM}.observability.splunkcloud.com:443"
     tls:
       insecure: false
     headers:
@@ -34,12 +34,12 @@ service:
     traces:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [otlphttp/splunk]
+      exporters: [otlp/splunk]
     logs:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [otlphttp/splunk]
+      exporters: [otlp/splunk]
     metrics:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [otlphttp/splunk]
+      exporters: [otlp/splunk]
