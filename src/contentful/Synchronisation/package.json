@@ -8,8 +8,8 @@
     "license": "MIT",
     "type": "commonjs",
     "dependencies": {
-        "contentful-export": "^8.1.2",
-        "contentful-import": "^10.0.18",
+        "contentful-export": "^8.2.0",
+        "contentful-import": "^10.1.0",
         "contentful-management": "^12.14.0",
         "dotenv": "^17.4.2"
     },
