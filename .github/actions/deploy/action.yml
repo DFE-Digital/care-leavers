@@ -53,6 +53,10 @@ inputs:
     description: The basic auth credentials
     required: false
     default: ""
+  SPLUNK_ACCESS_TOKEN_SECRET:
+    description: The access token for Splunk
+    required: false
+    default: ""
 
 runs:
   using: composite
@@ -141,6 +145,7 @@ runs:
         TF_VAR_contentful_space_id: ${{ inputs.CONTENTFUL_SPACE_ID_SECRET }}
         TF_VAR_support_alert_email: ${{ inputs.SUPPORT_ALERT_EMAIL_SECRET }}
         TF_VAR_basic_auth_credentials: ${{ inputs.BASIC_AUTH_CREDS_SECRET }}
+        TF_VAR_splunk_access_token: ${{ inputs.SPLUNK_ACCESS_TOKEN_SECRET }}
         
     - name: Terraform Apply
       id: terraform_apply

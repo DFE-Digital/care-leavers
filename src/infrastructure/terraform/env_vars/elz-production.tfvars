@@ -10,3 +10,5 @@ azure_frontdoor_scale      = "Premium"
 rebrand                    = false
 gtaa_base_url              = "https://www.get-to-an-answer.education.gov.uk"
 enable_basic_auth          = false
+splunk_realm               = "eu2"
+splunk_port                = "4318"

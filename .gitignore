@@ -401,3 +401,5 @@ src/**/*.css.map
 src/**/*.css
 
 docs/_site/
+
+.env

@@ -3,7 +3,7 @@ using System.IO.Compression;
 using Azure;
 using Azure.AI.Translation.Document;
 using Azure.AI.Translation.Text;
-using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Azure.Monitor.OpenTelemetry.Exporter;
 using CareLeavers.Web;
 using CareLeavers.Web.CircuitBreaker;
 using CareLeavers.Web.CircuitBreaker.FairUsage;
@@ -37,38 +37,52 @@ using ZiggyCreatures.Caching.Fusion;
 using static System.TimeSpan;
 
 Log.Logger = new LoggerConfiguration()
-    .ConfigureLogging(Environment.GetEnvironmentVariable("ApplicationInsights__ConnectionString"))
+    .ConfigureLogging(Environment.GetEnvironmentVariable("ApplicationInsights__ConnectionString"), null)
     .CreateBootstrapLogger();
 
 try
 {
     var builder = WebApplication.CreateBuilder(args);
-    
-    #region Additional Logging and Application Insights
-    
+
+    #region Additional Logging, Application Insights & Open Telemetry
+
+    Serilog.Debugging.SelfLog.Enable(msg => Console.WriteLine($"SERILOG ERROR: {msg}"));
+
     Log.Logger.Information("Starting application");
     Log.Logger.Information("Environment: {Environment}", builder.Environment.EnvironmentName);
-    
-    builder.Services.AddSerilog((_, lc) => lc
-        .ConfigureLogging(builder.Configuration["ApplicationInsights:ConnectionString"]));
 
+    var otelEndpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"] ?? "http://localhost:4318";
     var appInsightsConnectionString = builder.Configuration.GetValue<string>("ApplicationInsights:ConnectionString");
 
-    if (!string.IsNullOrEmpty(appInsightsConnectionString))
-    {
-        builder.Services.AddOpenTelemetry()
-            .WithTracing(tracing => tracing
+    builder.Services.AddSerilog((_, lc) => lc
+        .ConfigureLogging(appInsightsConnectionString, otelEndpoint));
+
+    builder.Services.AddOpenTelemetry()
+            .WithTracing(tracing =>
+            {
+                tracing
                 .AddAspNetCoreInstrumentation()
+                .AddHttpClientInstrumentation()
                 .AddProcessor<RouteTelemetryProcessor>()
                 .AddFusionCacheInstrumentation()
-            )
-            .WithMetrics(metrics => metrics
-                .AddAspNetCoreInstrumentation()
-                .AddFusionCacheInstrumentation()
-                )
-            .UseAzureMonitor(monitor => monitor.ConnectionString = appInsightsConnectionString);
-    }
+                .AddOtlpExporter();
 
+                if (!string.IsNullOrEmpty(appInsightsConnectionString))
+                {
+                    tracing.AddAzureMonitorTraceExporter(o => o.ConnectionString = appInsightsConnectionString);
+                }
+            })
+            .WithMetrics(metrics =>
+            {
+                metrics
+                .AddAspNetCoreInstrumentation()
+                .AddFusionCacheInstrumentation();
+
+                if (!string.IsNullOrEmpty(appInsightsConnectionString))
+                {
+                    metrics.AddAzureMonitorMetricExporter(o => o.ConnectionString = appInsightsConnectionString);
+                }
+            });
     #endregion
 
     #region Minification
@@ -101,15 +115,15 @@ try
         });
 
     #endregion
-    
+
     #region Controllers
-    
+
     builder.Services.AddControllersWithViews();
-    
+
     #endregion
-    
+
     #region Setup security and headers
-    
+
     builder.Services.AddCsp(nonceByteAmount: 32);
     builder.Services.Configure<CookiePolicyOptions>(options =>
     {
@@ -119,7 +133,7 @@ try
         options.ConsentCookie.IsEssential = true;
         options.HttpOnly = HttpOnlyPolicy.None;
     });
-    
+
     builder.Services.Configure<ForwardedHeadersOptions>(options =>
     {
         options.ForwardedHeaders = ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedFor;
@@ -132,11 +146,11 @@ try
             "*.support-for-care-leavers.education.gov.uk"
         };
     });
-    
+
     #endregion
-    
+
     #region Session State & Fair Usage
-    
+
     builder.Services.AddSession(options =>
     {
         options.Cookie.Name = ".SupportForCareLeavers.Session";
@@ -144,39 +158,39 @@ try
         options.Cookie.MaxAge = FromDays(1);
         options.IdleTimeout = FromDays(1);
     });
-    
+
     builder.Services.AddOptions<FairUsageOptions>().BindConfiguration(FairUsageOptions.Name);
     builder.Services.AddTransient<IFairUsageService, FairUsageService>();
-    
+
     #endregion
-    
+
     #region Translation & Circuit Breaking
-    
+
     builder.Services.AddOptions<AzureTranslationOptions>().BindConfiguration(AzureTranslationOptions.Name);
     builder.Services.AddOptions<BlobStorageOptions>().BindConfiguration(BlobStorageOptions.Name);
-    
+
     string? blobStorageConnectionString = builder.Configuration.GetSection("BlobStorage:ConnectionString").Value;
     string? azureTranslationAccessKey = builder.Configuration.GetValue<string>("AzureTranslation:AccessKey");
 
     if (!string.IsNullOrWhiteSpace(blobStorageConnectionString) && !string.IsNullOrWhiteSpace(azureTranslationAccessKey))
     {
-        builder.Services.AddAzureClients(azure => 
+        builder.Services.AddAzureClients(azure =>
             { azure.AddBlobServiceClient(builder.Configuration.GetSection("BlobStorage:ConnectionString").Value); });
-    
+
         builder.Services.AddTransient<ITranslatorCircuitBreakerService, TranslatorCircuitBreakerService>();
-        
+
         builder.Services.AddTransient(service =>
         {
-            AzureTranslationOptions options =  service.GetRequiredService<IOptions<AzureTranslationOptions>>().Value;
+            AzureTranslationOptions options = service.GetRequiredService<IOptions<AzureTranslationOptions>>().Value;
             return new TextTranslationClient(new AzureKeyCredential(options.AccessKey), new Uri(options.Endpoint), options.Region);
         });
 
         builder.Services.AddTransient(service =>
         {
-            AzureTranslationOptions options =  service.GetRequiredService<IOptions<AzureTranslationOptions>>().Value;
+            AzureTranslationOptions options = service.GetRequiredService<IOptions<AzureTranslationOptions>>().Value;
             return new SingleDocumentTranslationClient(new Uri(options.DocumentEndpoint), new AzureKeyCredential(options.AccessKey));
         });
-        
+
         builder.Services.AddScoped<ITranslationService, AzureTranslationService>();
     }
     else
@@ -185,28 +199,28 @@ try
         builder.Services.AddSingleton<ITranslationService, NoTranslationService>();
         builder.Services.AddTransient<ITranslatorCircuitBreakerService, NoTranslatorCircuitBreakerService>();
     }
-    
+
     #endregion
-    
+
     #region GetToAnAnswer
 
     var gtaaBaseUrl = builder.Configuration.GetSection("GetToAnAnswer:BaseUrl").Value!;
-    
+
     builder.Services.AddHttpClient<IGetToAnAnswerRunClient, GetToAnAnswerRunClient>(client =>
     {
         client.BaseAddress = new Uri(gtaaBaseUrl);
     });
-    
+
     #endregion
 
     builder.Services.AddHttpClient<PrintController>();
-    
+
     #region Contentful and Renderers
-    
+
     builder.Services.AddScoped<IContentService, ContentfulContentService>();
     builder.Services.AddContentful(builder.Configuration);
     builder.Services.AddScoped<IContentfulConfiguration, ContentfulConfiguration>();
-    
+
     builder.Services.AddTransient<HtmlRenderer>(serviceProvider =>
     {
         // Turn off paragraph tags inside Contentful paragraph list items
@@ -222,13 +236,13 @@ try
         renderer.AddRenderer(new GdsHorizontalRulerContentRenderer());
         renderer.AddRenderer(new GdsSpacerRenderer());
         renderer.AddRenderer(new GdsTableRenderer());
-        
+
         // Add custom renderers, passing renderer collection
         renderer.AddRenderer(new GdsParagraphRenderer(renderer.Renderers));
         renderer.AddRenderer(new GdsHeaderRenderer(renderer.Renderers));
         renderer.AddRenderer(new GdsAssetRenderer(renderer.Renderers));
         renderer.AddRenderer(new GdsListRenderer(renderer.Renderers));
-        
+
         // Add custom renderers with DI
         renderer.AddRenderer(new GdsDefinitionLinkRenderer(serviceProvider));
         renderer.AddRenderer(new GdsGridRenderer(serviceProvider));
@@ -240,24 +254,24 @@ try
         renderer.AddRenderer(new GdsDefinitionRenderer(serviceProvider));
         renderer.AddRenderer(new GdsCallToActionRenderer(serviceProvider));
         renderer.AddRenderer(new GdsButtonRenderer(serviceProvider));
-        
+
         // Add custom renderers with renderers and DI
         renderer.AddRenderer(new GdsLinkRenderer(renderer.Renderers, serviceProvider));
 
         return renderer;
     });
-    
+
     #endregion
-    
+
     #region Configuration
 
     builder.Services.AddOptions<ScriptOptions>().BindConfiguration(ScriptOptions.Name);
     builder.Services.AddOptions<CachingOptions>().BindConfiguration(CachingOptions.Name);
 
     #endregion
-    
+
     #region Distributed Caching
-    
+
     var cachingOptions = builder.Configuration.GetSection(CachingOptions.Name).Get<CachingOptions>();
 
     builder.Services.AddFusionCacheNewtonsoftJsonSerializer(new JsonSerializerSettings()
@@ -274,7 +288,7 @@ try
         },
         MaxDepth = 128
     });
-    
+
 
     switch (cachingOptions?.Type)
     {
@@ -294,7 +308,7 @@ try
             {
                 options.Configuration = cachingOptions.ConnectionString;
             });
-        
+
             builder.Services.AddFusionCache()
                 .WithOptions(opt =>
                 {
@@ -302,7 +316,7 @@ try
                 })
                 .WithRegisteredSerializer()
                 .WithRegisteredDistributedCache()
-                .WithStackExchangeRedisBackplane(x => x.Configuration = cachingOptions.ConnectionString )
+                .WithStackExchangeRedisBackplane(x => x.Configuration = cachingOptions.ConnectionString)
                 .WithDefaultEntryOptions(new FusionCacheEntryOptions()
                 {
                     Duration = cachingOptions?.Duration ?? FromDays(30),
@@ -324,18 +338,18 @@ try
                 });
             break;
     }
-    
+
     #endregion
-    
+
     #region HTTP Context and Healthchecks
-    
+
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddHealthChecks();
-    
+
     #endregion
-    
+
     var app = builder.Build();
-    
+
     #region Content Security (CSP) and Headers
 
     // HSTS
@@ -349,10 +363,10 @@ try
         context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
         await next();
     });
-    
+
     // Cookie Security
     app.UseCookiePolicy();
-    
+
     // Content Security Policy
     app.UseCsp(x =>
     {
@@ -370,7 +384,7 @@ try
         {
             cspConfigList.ForEach(c => c.Add(gtaaBaseUrl));
         }
-        
+
         x.AllowScripts
             .FromSelf()
             .AddNonce();
@@ -392,7 +406,7 @@ try
             .From("data:");
 
         config.AllowFontUrls.ForEach(f => x.AllowFonts.From(f));
-        
+
         x.AllowFraming.FromSelf(); // Block framing on other sites, equivalent to X-Frame-Options: DENY
         config.AllowFrameUrls.ForEach(f => x.AllowFraming.From(f));
         config.AllowFrameUrls.ForEach(f => x.AllowFrames.From(f));
@@ -402,14 +416,14 @@ try
         x.AllowImages
             .FromSelf()
             .From("data:");
-        
+
         config.AllowImageUrls.ForEach(f => x.AllowImages.From(f));
 
         x.AllowConnections
             .ToSelf();
-        
+
         config.AllowConnectUrls.ForEach(f => x.AllowConnections.To(f));
-        
+
         if (config.ReportOnly)
         {
             x.SetReportOnly();
@@ -421,24 +435,25 @@ try
     app.UseForwardedHeaders();
 
     #endregion
-    
+
     #region Setup basic authentication
 
     var requiredCreds = builder.Configuration["BasicAuth:EncodedCreds"];
 
-    app.Use(async (context, next) => {
+    app.Use(async (context, next) =>
+    {
         // Don't need the auth header for health check 
         if (context.Request.Path.StartsWithSegments("/health"))
         {
             await next.Invoke();
             return;
         }
-        
+
         // Only run if we actually have a password configured in the environment
-        if (!string.IsNullOrEmpty(requiredCreds)) 
+        if (!string.IsNullOrEmpty(requiredCreds))
         {
             var authHeader = context.Request.Headers["Authorization"].ToString();
-            if (authHeader != requiredCreds) 
+            if (authHeader != requiredCreds)
             {
                 context.Response.Headers.Append("WWW-Authenticate", "Basic realm=\"Protected\"");
                 context.Response.StatusCode = 401;
@@ -449,7 +464,7 @@ try
     });
 
     #endregion
-    
+
     #region Contentful Setup
 
     var contentfulClient = app.Services.GetRequiredService<IContentfulClient>();
@@ -463,7 +478,7 @@ try
     contentfulClient.SerializerSettings.ContractResolver = new DefaultContractResolver
     {
         NamingStrategy = new CamelCaseNamingStrategy()
-        
+
     };
     contentfulClient.SerializerSettings.MaxDepth = 128;
     contentfulClient.Serializer.MaxDepth = 128;
@@ -478,25 +493,25 @@ try
         consumers.AddConsumer<Entry<ContentfulContent>>("*", "Entry", "*", async (entry, httpContext) =>
         {
             string? topic = httpContext.Request.Headers["X-Contentful-Topic"].FirstOrDefault();
-            
-            PublishContentfulWebhook webhookConsumer = 
-                new(contentfulClient, 
-                    app.Services.GetRequiredService<IFusionCache>(), 
-                    app.Services.GetRequiredService<IContentfulManagementClient>(), 
-                    new LinkedPageFinder(contentfulClient, app.Services.GetRequiredService<ILogger<LinkedPageFinder>>()), 
+
+            PublishContentfulWebhook webhookConsumer =
+                new(contentfulClient,
+                    app.Services.GetRequiredService<IFusionCache>(),
+                    app.Services.GetRequiredService<IContentfulManagementClient>(),
+                    new LinkedPageFinder(contentfulClient, app.Services.GetRequiredService<ILogger<LinkedPageFinder>>()),
                     app.Services.GetRequiredService<ILogger<PublishContentfulWebhook>>());
 
             await webhookConsumer.Consume(entry, topic);
-            
+
             return new { Result = "OK" };
         });
 
         consumers.AddConsumer<Asset>("*", "Asset", "*", async asset =>
         {
-            PublishAssetWebhook webhookConsumer = 
-                new(app.Services.GetRequiredService<IFusionCache>(), 
-                    new LinkedPageFinder(contentfulClient, 
-                        app.Services.GetRequiredService<ILogger<LinkedPageFinder>>()), 
+            PublishAssetWebhook webhookConsumer =
+                new(app.Services.GetRequiredService<IFusionCache>(),
+                    new LinkedPageFinder(contentfulClient,
+                        app.Services.GetRequiredService<ILogger<LinkedPageFinder>>()),
                     app.Services.GetRequiredService<ILogger<PublishAssetWebhook>>());
 
             await webhookConsumer.Consume(asset);
@@ -510,7 +525,7 @@ try
     #region Site Configuration
 
     SiteConfiguration.Rebrand = app.Configuration.GetValue<bool>("Rebrand") || DateTime.Today >= new DateTime(2025, 6, 25);
-    SiteConfiguration.SecurityTxtUrl = app.Configuration.GetValue<string>("SecurityTxtUrl")?? "https://vdp.security.education.gov.uk/.well-known/security.txt";
+    SiteConfiguration.SecurityTxtUrl = app.Configuration.GetValue<string>("SecurityTxtUrl") ?? "https://vdp.security.education.gov.uk/.well-known/security.txt";
 
     #endregion
 
@@ -519,18 +534,18 @@ try
     app.UseWebMarkupMin();
 
     #endregion
-    
+
     #region Setup error pages
-    
+
     app.UseStatusCodePagesWithReExecute("/en/error", "?statusCode={0}");
 
-    
+
     if (!app.Environment.IsDevelopment())
     {
         // If we're not in development mode, use the error handler page
         app.UseExceptionHandler("/en/error");
     }
-    
+
     // Redirect 404 responses to the page not found page
     app.Use(async (context, next) =>
     {
@@ -580,7 +595,7 @@ try
             }
         }
     });
-    
+
     #endregion
 
     #region Static files, routing, health checks, and default route
