@@ -46,10 +46,12 @@ try
 
     #region Additional Logging, Application Insights & Open Telemetry
 
+    Serilog.Debugging.SelfLog.Enable(msg => Console.WriteLine($"SERILOG ERROR: {msg}"));
+
     Log.Logger.Information("Starting application");
     Log.Logger.Information("Environment: {Environment}", builder.Environment.EnvironmentName);
 
-    var otelEndpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"] ?? "http://otel-collector:4318";
+    var otelEndpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"] ?? "http://localhost:4318";
     var appInsightsConnectionString = builder.Configuration.GetValue<string>("ApplicationInsights:ConnectionString");
 
     builder.Services.AddSerilog((_, lc) => lc
