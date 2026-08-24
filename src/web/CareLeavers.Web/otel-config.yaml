@@ -22,12 +22,11 @@ exporters:
   debug:
     verbosity: detailed
 
-  otlphttp/logs:
-    logs_endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com/v2/event/otlp"
-    tls:
-      insecure: false
-    headers:
-      "X-SF-Token": "${SPLUNK_ACCESS_TOKEN}"
+  splunk_hec:
+    endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com/services/collector/event"
+    token: "${SPLUNK_ACCESS_TOKEN}"
+    source: "otel"
+    sourcetype: "otel:logs"
 
   otlphttp/traces:
     traces_endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com/v2/trace/otlp"
@@ -52,7 +51,7 @@ service:
     logs:
       receivers: [otlp]
       processors: [memory_limiter, resource, batch]
-      exporters: [otlphttp/logs, debug]
+      exporters: [splunk_hec, debug]
     metrics:
       receivers: [otlp]
       processors: [memory_limiter, resource, batch]
