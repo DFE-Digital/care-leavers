@@ -22,12 +22,6 @@ exporters:
   debug:
     verbosity: detailed
 
-  splunk_hec:
-    endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com/services/collector/event"
-    token: "${SPLUNK_ACCESS_TOKEN}"
-    source: "otel"
-    sourcetype: "otel:logs"
-
   otlphttp/traces:
     traces_endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com/v2/trace/otlp"
     tls:
@@ -48,10 +42,6 @@ service:
       receivers: [otlp]
       processors: [memory_limiter, resource, batch]
       exporters: [otlphttp/traces, debug]
-    logs:
-      receivers: [otlp]
-      processors: [memory_limiter, resource, batch]
-      exporters: [splunk_hec, debug]
     metrics:
       receivers: [otlp]
       processors: [memory_limiter, resource, batch]
