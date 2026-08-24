@@ -29,14 +29,14 @@ exporters:
     sourcetype: "otel:logs"
 
   otlphttp/traces:
-    endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com/v2/trace/otlp"
+    traces_endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com/v2/trace/otlp"
     tls:
       insecure: false
     headers:
       "X-SF-Token": "${SPLUNK_ACCESS_TOKEN}"
 
   otlphttp/metrics:
-    endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com/v2/datapoint/otlp"
+    metrics_endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com/v2/datapoint/otlp"
     tls:
       insecure: false
     headers:
