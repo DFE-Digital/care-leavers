@@ -28,12 +28,26 @@ exporters:
     source: "otel"
     sourcetype: "otel:logs"
 
+  otlphttp/traces:
+    endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com/v2/trace/otlp"
+    tls:
+      insecure: false
+    headers:
+      "X-SF-Token": "${SPLUNK_ACCESS_TOKEN}"
+
+  otlphttp/metrics:
+    endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com/v2/datapoint/otlp"
+    tls:
+      insecure: false
+    headers:
+      "X-SF-Token": "${SPLUNK_ACCESS_TOKEN}"
+
 service:
   pipelines:
     traces:
       receivers: [otlp]
       processors: [memory_limiter, resource, batch]
-      exporters: [splunk_hec, debug]
+      exporters: [otlphttp/traces, debug]
     logs:
       receivers: [otlp]
       processors: [memory_limiter, resource, batch]
@@ -41,4 +55,4 @@ service:
     metrics:
       receivers: [otlp]
       processors: [memory_limiter, resource, batch]
-      exporters: [splunk_hec, debug]
+      exporters: [otlphttp/metrics, debug]
