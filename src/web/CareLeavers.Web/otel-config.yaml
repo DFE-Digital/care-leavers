@@ -19,9 +19,6 @@ processors:
         action: upsert
 
 exporters:
-  debug:
-    verbosity: detailed
-
   otlphttp/traces:
     traces_endpoint: "https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com/v2/trace/otlp"
     tls:
@@ -41,8 +38,8 @@ service:
     traces:
       receivers: [otlp]
       processors: [memory_limiter, resource, batch]
-      exporters: [otlphttp/traces, debug]
+      exporters: [otlphttp/traces]
     metrics:
       receivers: [otlp]
       processors: [memory_limiter, resource, batch]
-      exporters: [otlphttp/metrics, debug]
+      exporters: [otlphttp/metrics]

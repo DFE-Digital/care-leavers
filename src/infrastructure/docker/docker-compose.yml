@@ -9,7 +9,7 @@ services:
     environment:
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:${SPLUNK_PORT}
       - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
-      - OTEL_SERVICE_NAME=${SPLUNK_SERVICE_NAME}
+      - OTEL_SERVICE_NAME=${OTEL_SERVICE_NAME}
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
