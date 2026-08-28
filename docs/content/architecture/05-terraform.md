@@ -21,7 +21,7 @@ eleventyNavigation:
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.11.0 |
+| <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.12.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.81.0 |
 
 ## Modules
