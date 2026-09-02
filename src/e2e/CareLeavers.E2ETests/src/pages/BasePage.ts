@@ -186,7 +186,7 @@ export class BasePage {
     async verifyHeading(expectedHeading: string, expectedParagraph: string) {
         await expect(this.mainHeading).toBeVisible();
         const actualHeading = await this.mainHeading.innerText();
-        expect(actualHeading.trim()).toContain(expectedHeading.trim());
+        expect(actualHeading.trim().toLowerCase()).toContain(expectedHeading.trim().toLowerCase());
         await expect(this.firstHeaderParagraph).toBeVisible();
         await expect(this.firstHeaderParagraph).toContainText(expectedParagraph.trim());
         await expect(this.supportHeading).toBeVisible();

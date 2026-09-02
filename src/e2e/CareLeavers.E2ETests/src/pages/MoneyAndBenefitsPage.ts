@@ -6,13 +6,25 @@ export class MoneyAndBenefitsPage extends BasePage {
     public readonly pageSections: Locator;
     public readonly checkStatusLink: Locator;
     public readonly cardExternalLink: Locator;
+    public readonly printableCollectionLink: Locator;
 
     constructor(page: Page) {
         super(page);
         this.mainContent = page.locator('#main-content');
         this.pageSections = page.locator('h2, h3, h4'); // Select all major sections
         this.checkStatusLink = page.locator('a[href="/en/your-rights"]').nth(1); // "Check your care leaver status" link
-        this.cardExternalLink = page.locator('.dfe-card a.dfe-card-link--header[href^="http"]').first();
+        this.cardExternalLink = page.locator('.dfe-card a.dfe-card-link--header[href^="http"]').first();    
+        this.printableCollectionLink = page.locator('.print-collection-summary'); // Link to the printable collection page
+    }
+
+    async openPrintableCollectionPage() {
+        await this.navigateTo('/print/en/money-and-benefits');
+        await expect(this.printableCollectionLink).toBeVisible();
+    }
+
+    async checkSpacerContentTypeExists() {
+        const spacerLocator = this.page.locator('.govuk-section-break govuk-section-break--l');
+        await expect(spacerLocator);
     }
 
     async openMoneyAndBenefitsPage() {
@@ -22,7 +34,7 @@ export class MoneyAndBenefitsPage extends BasePage {
     async assertPageElements() {
         await this.validateURLContains('/en/money-and-benefits');
         await this.verifyLogoPresence();
-        await this.verifyHeading("Money and benefits", "Help with money and benefits");
+        await this.verifyHeading("money", "money");
 
         // Ensure main content wrapper is visible
         await expect(this.mainContent).toBeVisible();

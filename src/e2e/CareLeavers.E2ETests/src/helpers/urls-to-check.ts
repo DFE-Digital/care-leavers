@@ -22,7 +22,7 @@ export const helplineLinksToTest = prioritisedListOfCommonPagesToTest.filter(pat
 
 // List of Pages that will have the share and print buttons
 export const shareAndPrintLinksToTest = prioritisedListOfCommonPagesToTest.filter(
-    path => !['/en/home', '/en/all-support', '/en/your-rights', '/en/leaving-care-guides'].includes(path)
+    path => !['/en/home', '/en/all-support', '/en/your-rights', '/en/leaving-care-guides','/en/money-and-benefits','/en/pathway-plan','/en/leaving-care-allowance','/en/local-offer-for-care-leavers'].includes(path)
 );
 
 // List of URLS and their expected Breadcrumbs

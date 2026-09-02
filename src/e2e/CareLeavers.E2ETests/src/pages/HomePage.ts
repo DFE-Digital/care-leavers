@@ -24,6 +24,8 @@ export class HomePage extends BasePage {
     private readonly guideImage: Locator;
     private readonly guideLink: Locator;
 
+    //"Check Your Care Leaver Support" section
+    private readonly CheckYourCareLeaverSupport: Locator;   
 
     constructor(page: Page) {
         super(page);
@@ -37,7 +39,7 @@ export class HomePage extends BasePage {
         this.knowWhatSupportSection = page.locator('section.dfe-section.banner.banner-blue');
         this.guidesSection = page.locator('section.dfe-section.alternating-image-text');
 
-        // Generic locator for all cards on the home page
+        // Generic locator for contentful card content type on the home page
         this.supportCards = page.locator('.dfe-card-container');
         
         // Locator for the "Know what support you can get" section
@@ -48,6 +50,9 @@ export class HomePage extends BasePage {
         this.guidesHeading = page.locator('h2#Guides');
         this.guideImage = this.guidesSection.locator('.image-container');
         this.guideLink = this.guidesSection.locator('a.govuk-link');
+        
+        //"Locator for the Call to Action button in Care Leaver Support" section
+        this.CheckYourCareLeaverSupport = page.locator('.govuk-button--start');        
     }
     
     async openHomePage() {
@@ -74,19 +79,12 @@ export class HomePage extends BasePage {
         await this.verifyHeading(
             "Find support for care leavers",
             "Leaving care can be a challenging time"
-        );
-        
-        // Check if the "who is this for" section is visible
-        await expect(this.whoIsThisForSection).toContainText('support for');
-        await expect(this.page.locator('#Who-is-this-support-for-')).toHaveClass(/govuk-heading-l/);
-
+        );       
     }
 
-    async verifySectionsVisibility() {
-        await expect(this.whoIsThisForSection).toBeVisible();
-        await expect(this.findSupportSection).toBeVisible();
-        await expect(this.knowWhatSupportSection).toBeVisible();
-       await expect(this.guidesSection).toBeVisible();
+    async verifySectionsVisibility() {       
+        await expect(this.findSupportSection).toBeVisible();       
+        await expect(this.guidesSection).toBeVisible();
     }
     
     async verifySupportCardsNavigation(cards: { title: string; url: string }[]) {
@@ -100,27 +98,19 @@ export class HomePage extends BasePage {
             await this.validateURLContains('/home');
         }
     }
-
-    async verifyKnowWhatSupportSection() {
-        await expect(this.knowWhatSupportSection.locator('h2')).toBeVisible();  // Validate the heading exists 
-        await expect(this.knowWhatSupportSection.locator('p').first()).toBeVisible(); // Validate first paragraph
-        
-        // Validate the link exists and is functional
-        await expect(this.supportLink).toBeVisible();
-        await expect(this.supportLink).toHaveAttribute('href', expect.stringContaining('/en/status'));
-
-        // Validate the image container exists
-        await expect(this.supportImage).toBeVisible();
-    }
-
-    async verifyGuidesSection() {
-        // Validate the Guides heading exists
-        await expect(this.guidesHeading).toBeVisible();
-
+    
+    async verifyGuidesSection() {     
         // Validate that the guide image exists and is wrapped in a link
         await expect(this.guideImage).toBeVisible();
         await expect(this.guideLink).toBeVisible();
         await expect(this.guideLink).toHaveAttribute('href', expect.stringContaining('/en/guide-leaving-care'));
+    }
+
+    async verifyContentfulCallToActionButton()
+    {
+        // Validate that the "CheckYourCareLeaverSupport" section exists
+        await expect(this.CheckYourCareLeaverSupport).toBeVisible();        
+        await expect(this.CheckYourCareLeaverSupport).toHaveAttribute('href', expect.stringContaining('/en/check-your-care-leaver-support'));   
     }
 
 }

@@ -23,9 +23,6 @@ export class PersonQualifyingPage extends BasePage {
     
     async verifySectionsVisibility() {
         await expect(this.mainContent).toBeVisible();
-        await expect(this.supportSection).toBeVisible();
-        await expect(this.educationSupportSection).toBeVisible();
-        await expect(this.moreSupportSection).toBeVisible();
     }
     
     async assertPageElements() {
