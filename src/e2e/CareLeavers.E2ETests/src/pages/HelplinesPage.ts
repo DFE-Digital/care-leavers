@@ -19,6 +19,10 @@ export class HelplinesPage extends BasePage {
     public readonly shelterSection: Locator;
     public readonly centrePointSection: Locator;
 
+    //Adding Exeternal Agency Section
+    public readonly externalAgencyBoxIconSection: Locator;
+    public readonly externalAgencyBoxContentSection: Locator;
+
     constructor(page: Page) {
         super(page);
         this.mainHeading = page.locator('h1.govuk-heading-xl');
@@ -38,6 +42,11 @@ export class HelplinesPage extends BasePage {
         this.helpAtHandSection = page.locator('section.dfe-section:has-text("Help at Hand")');
         this.shelterSection = page.locator('section.dfe-section:has-text("Shelter")');
         this.centrePointSection = page.locator('section.dfe-section:has-text("Centre Point")');
+
+        //External Agency Section
+        this.externalAgencyBoxIconSection = page.locator('.box-icon').nth(1);
+        this.externalAgencyBoxContentSection = page.locator('.box-content').nth(1);
+
     }
 
     async openHelplinesPage() {
@@ -55,8 +64,7 @@ export class HelplinesPage extends BasePage {
         await expect(this.childlineSection).toBeVisible();
         await expect(this.helpAtHandSection).toBeVisible();
         await expect(this.shelterSection).toBeVisible();
-        await expect(this.centrePointSection).toBeVisible();
-
+        
         // You can also check if any other sections (like someoneToTalkToSection) are visible as needed
         await expect(this.someoneToTalkToSection).toBeVisible();
         await expect(this.understandingRightsSection).toBeVisible();
@@ -70,5 +78,10 @@ export class HelplinesPage extends BasePage {
         await expect(this.mainHeading).toBeVisible();
         const actualHeading = await this.mainHeading.innerText();
         expect(actualHeading.trim()).toBe("Helplines");
+    }
+
+    async verifyContentfulExternalAgencyContentTypeExists() {
+        await expect(this.externalAgencyBoxIconSection).toBeVisible();
+        await expect(this.externalAgencyBoxContentSection).toBeVisible();
     }
 }

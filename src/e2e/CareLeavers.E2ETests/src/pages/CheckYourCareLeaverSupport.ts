@@ -14,8 +14,4 @@ export class CheckYourCareLeaverSupport extends BasePage {
         await this.navigateTo('/en/check-your-care-leaver-support');
         await this.waitForPageLoad();
     }
-
-    async assertIframeLoaded() {
-        await expect(this.gtaaIFrame).toBeVisible();
-    }
 }

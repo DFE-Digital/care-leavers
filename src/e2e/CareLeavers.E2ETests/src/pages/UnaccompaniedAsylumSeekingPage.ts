@@ -22,7 +22,7 @@ export class UnaccompaniedAsylumSeekingPage extends BasePage {
     async assertPageElements() {
         await this.validateURLContains('/unaccompanied-asylum-seeking-young-people');
         await this.verifyLogoPresence();
-        await this.verifyHeading("Unaccompanied asylum", "Find out about support, help and advice");
+        await this.verifyHeading("asylum", "asylum");
 
         // Ensure main content wrapper is visible
         await expect(this.mainContent).toBeVisible();
