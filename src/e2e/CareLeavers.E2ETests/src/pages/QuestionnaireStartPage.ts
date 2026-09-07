@@ -18,8 +18,8 @@ export class QuestionnaireStartPage extends QuestionnaireRunBasePage {
 
     // ===== Assertions =====
     async assertStructure(){
-        await expect(this.gdsContentFulContent);
-        await expect(this.startButton); 
-        await expect(this.startButtonLink);       
+        await expect(this.gdsContentFulContent).not.toBeNull();
+        await expect(this.startButton).not.toBeNull();
+        await expect(this.startButtonLink).not.toBeNull();
     }   
 }

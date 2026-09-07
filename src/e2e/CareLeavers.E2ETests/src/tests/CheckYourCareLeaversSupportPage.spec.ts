@@ -13,6 +13,6 @@ test.describe('Check your Care Leaver Support page', () => {
 
     test('ContentFul Get to an answer questionnaire in Iframe exists', async ({ page }) => {
         startPage = await QuestionnaireStartPage.create(page);
-        await expect(startPage.assertStructure());
+        await startPage.assertStructure();
     });
 })

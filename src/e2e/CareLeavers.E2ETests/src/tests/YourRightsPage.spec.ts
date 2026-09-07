@@ -10,35 +10,35 @@ test.describe('Your Rights Page Tests', () => {
     });
 
     test('should verify all main sections are present', async () => {
-        await expect(yourRightsPage.verifySectionsVisibility());
+        await yourRightsPage.verifySectionsVisibility();
     });
 
     test('should assert page elements are correct', async () => {
-        await expect(yourRightsPage.assertPageElements());
+        await yourRightsPage.assertPageElements();
     });
 
     test('should check contentful banner exists on page', async () => {
-        await expect(yourRightsPage.assertBannerExists());
+        await yourRightsPage.assertBannerExists();
     });
 
     test('should verify Contentful Definition link exists', async () => {
-        await expect(yourRightsPage.verifyContentfulDefinitionLink());
+        await yourRightsPage.verifyContentfulDefinitionLink();
     });
 
     test('should verify Contentful Card exists', async () => {
-        await expect(yourRightsPage.verifyContentfulCardExists());
+        await yourRightsPage.verifyContentfulCardExists();
     });
 
     test('should verify Contentful Definition exists', async () => {
-        await expect(yourRightsPage.verifyContentfulDefinitionExists());
+        await yourRightsPage.verifyContentfulDefinitionExists();
     });
 
     test('should verify Contentful Grid exists', async () => {
-        await expect(yourRightsPage.verifyContentfulGridExists());
+        await yourRightsPage.verifyContentfulGridExists();
     });
 
     test('should verify Contentful NavigationLink exists', async () => {
-        await expect(yourRightsPage.verifyContentfulNavigationLinkExists());
+        await yourRightsPage.verifyContentfulNavigationLinkExists();
     });
 });
     

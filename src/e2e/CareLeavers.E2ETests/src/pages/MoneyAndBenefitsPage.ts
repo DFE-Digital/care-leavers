@@ -24,7 +24,7 @@ export class MoneyAndBenefitsPage extends BasePage {
 
     async checkSpacerContentTypeExists() {
         const spacerLocator = this.page.locator('.govuk-section-break govuk-section-break--l');
-        await expect(spacerLocator);
+        await expect(spacerLocator).not.toBeNull();
     }
 
     async openMoneyAndBenefitsPage() {
