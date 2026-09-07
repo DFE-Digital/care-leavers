@@ -27,10 +27,10 @@ export class YourRightsPage extends BasePage {
         super(page);
         this.mainContent = page.locator('#main-content'); // Main content wrapper
         this.tableOfContents = page.locator('#main-content-contents ol');  
-        this.contentFulBannerSection = page.locator('.dfe-section banner') 
+        this.contentFulBannerSection = page.locator('.banner-content').first() 
         this.contentFulBannerHeading = this.contentFulBannerSection.locator('h2, .govuk-heading-l');  
         this.contentfulDefinitionLink = page.locator('a[href*="#definition"]'); 
-        this.contentfulCardLink = page.locator('.dfe-card-container'); 
+        this.contentfulCardLink = page.locator('.govuk-link govuk-link--no-visited-state dfe-card-link--header dfe-card-link--no-url-after').first();         
         this.contentfulDefinition = page.locator('.dfe-section dfe box-ext');
         this.contentfulGrid = page.locator('.dfe-grid-container');
         this.contentfulNavigationLink = page.locator('.govuk-service-navigation__item');
@@ -59,20 +59,20 @@ export class YourRightsPage extends BasePage {
     }
 
     async verifyContentfulCardExists() {
-        await expect(this.contentfulCardLink);
+        await expect(this.contentfulCardLink).toBeDefined();
     }
 
     async verifyContentfulGridExists() {
-        await expect(this.contentfulGrid);
+        await expect(this.contentfulGrid).toBeVisible();
     }
 
     async verifyContentfulDefinitionExists() {
-        await expect(this.contentfulDefinition);
+        await expect(this.contentfulDefinition).toBeDefined();
     }
 
     async assertBannerExists() {
-        await expect(this.contentFulBannerSection);
-        await expect(this.contentFulBannerHeading);       
+        await expect(this.contentFulBannerSection).toBeVisible();
+        await expect(this.contentFulBannerHeading).toBeVisible();       
     }
 
     async verifyContentfulNavigationLinkExists(){
