@@ -1,7 +1,7 @@
 name: 'care-leavers'
 services:
   care-leavers-web:
-    image: care-leavers-web:staging
+    image: care-leavers-web:e2e
     ports:
       - "7050:8080"
     environment:
@@ -11,9 +11,10 @@ services:
       - ContentfulOptions__PreviewApiKey=${CONTENTFUL_PREVIEW_API_KEY}
       - ContentfulOptions__SpaceId=${CONTENTFUL_SPACE_ID}
       - ContentfulOptions__Environment=production
+      - ContentfulOptions__UsePreviewApi=true
       - Rebrand=true
       - ASPNETCORE_URLS=https://+:8080
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=staging
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=e2e
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     volumes:
       - ~/.aspnet/https:/https:ro
