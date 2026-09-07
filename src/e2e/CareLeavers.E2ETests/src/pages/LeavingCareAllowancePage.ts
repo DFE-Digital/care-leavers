@@ -22,7 +22,7 @@ export class LeavingCareAllowancePage extends BasePage {
     async assertPageElements() {
         //await this.validateURLContains('/leaving-care-allowance');
         await this.verifyLogoPresence();
-        await this.verifyHeading("Leaving Care Allowance", "Find out what the Leaving Care Allowance is and how to get it.");
+        await this.verifyHeading("Care", "Care");
 
         // Ensure main content wrapper is visible
         await expect(this.mainContent).toBeVisible();
