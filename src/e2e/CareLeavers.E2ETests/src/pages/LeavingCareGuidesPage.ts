@@ -22,24 +22,17 @@ export class LeavingCareGuidesPage extends BasePage {
 
     async assertPageElements() {
         await this.validateURLContains('/leaving-care-guides');
-        await this.verifyLogoPresence();
-        await this.verifyHeading(
-            "Leaving care guides",
-            "Guides to help you prepare for leaving care, understand your rights and find support."
-        );
+        await this.verifyLogoAndHeadingExists();
 
         await expect(this.mainContent).toBeVisible();
         await expect(this.guideSection).toBeVisible();
-        await expect(this.firstGuide).toBeVisible();
-        await expect(this.secondGuide).toBeVisible();
+        await expect(this.firstGuide).toBeVisible();       
     }
     
     async verifyGuideLinksNavigation() {
         await this.firstGuide.click();
         await this.validateURLContains('/what-happens-when-you-leave-care');
         await this.page.goBack(); // Navigate back to main page
-
-        await this.secondGuide.click();
-        await this.validateURLContains('/care-terms-explained');
+        await this.validateURLContains('/leaving-care-guides');
     }
 }

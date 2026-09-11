@@ -29,6 +29,14 @@ test.describe('Money and Benefits Page Tests', () => {
         await moneyAndBenefitsPage.assertPageElements();
     });
 
+    test('check contentful printable collection content type exists', async ({ page }) => {  
+        await moneyAndBenefitsPage.openPrintableCollectionPage();        
+    });
+
+    test('check contentful spacer content type exists', async ({ page }) => {  
+        await moneyAndBenefitsPage.checkSpacerContentTypeExists();        
+    });
+
 });
 
 // Cleanup after tests

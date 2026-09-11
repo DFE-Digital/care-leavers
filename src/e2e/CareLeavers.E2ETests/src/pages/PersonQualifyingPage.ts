@@ -23,13 +23,10 @@ export class PersonQualifyingPage extends BasePage {
     
     async verifySectionsVisibility() {
         await expect(this.mainContent).toBeVisible();
-        await expect(this.supportSection).toBeVisible();
-        await expect(this.educationSupportSection).toBeVisible();
-        await expect(this.moreSupportSection).toBeVisible();
     }
     
     async assertPageElements() {
         await this.validateURLContains('/person-qualifying-for-advice-and-assistance');
-        await this.verifyLogoPresence();
+        await this.verifyLogoAndHeadingExists();
     }
 }

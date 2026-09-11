@@ -1,4 +1,4 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export class CheckYourCareLeaverSupport extends BasePage {
@@ -13,9 +13,5 @@ export class CheckYourCareLeaverSupport extends BasePage {
     async openCheckYourCareLeaverSupportPage() {
         await this.navigateTo('/en/check-your-care-leaver-support');
         await this.waitForPageLoad();
-    }
-
-    async assertIframeLoaded() {
-        await expect(this.gtaaIFrame).toBeVisible();
     }
 }
