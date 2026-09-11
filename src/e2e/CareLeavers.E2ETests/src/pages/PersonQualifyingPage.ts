@@ -27,6 +27,6 @@ export class PersonQualifyingPage extends BasePage {
     
     async assertPageElements() {
         await this.validateURLContains('/person-qualifying-for-advice-and-assistance');
-        await this.verifyLogoPresence();
+        await this.verifyLogoAndHeadingExists();
     }
 }
