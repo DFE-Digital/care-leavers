@@ -270,6 +270,30 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   }
 
   custom_rule {
+    name     = "allowsearchengines"
+    enabled  = true
+    action   = "Allow"
+    type     = "MatchRule"
+    priority = 125
+
+    match_condition {
+      match_variable = "RequestHeader"
+      selector       = "User-Agent"
+      operator       = "RegEx"
+      transforms     = ["Lowercase", "UrlDecode"]
+      match_values   = ["bingbot|bingpreview|msnbot|duckduckgo|googlebot|googleother|read-aloud|slurp|yahoo"]
+    }
+
+    match_condition {
+      match_variable     = "RequestUri"
+      operator           = "Contains"
+      negation_condition = true
+      transforms         = ["Lowercase", "UrlDecode"]
+      match_values       = ["/translate-this-website/"]
+    }
+  }
+
+  custom_rule {
     name     = "blocknonuk"
     enabled  = true
     action   = "Redirect"
