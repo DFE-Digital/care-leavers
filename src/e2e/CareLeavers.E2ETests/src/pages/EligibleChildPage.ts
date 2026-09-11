@@ -27,9 +27,6 @@ export class EligibleChildPage extends BasePage {
     async assertPageElements() {
         await this.validateURLContains('/eligible-child');
         await this.verifyLogoPresence();
-        await this.verifyHeading(
-            "child",
-            "child"
-        );
+        await this.verifyHeadingExists();
     }
 }

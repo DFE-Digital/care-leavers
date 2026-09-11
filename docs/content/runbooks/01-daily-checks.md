@@ -49,6 +49,10 @@ This document lists all the daily checks that should be performed every morning 
 - This job is scheduled to run at 11:00 PM, Monday through Friday. 
 - The backup file is then uploaded to blob storage. 
 
+**5. Validate - E2E Tests**:
+- This Github workflow runs end to end tests pointing to preview of production.
+- This job is scheduled to run at 12:00 AM everyday.
+
 Please note:- 
 _Our production environment requires manual approval before a deployment can begin, restricting our ability to use an automated workflow. It was decided to backup production in our storage dev account so it can be restored quickly. Contentful will take its own backups in case of error, however this will support developers in restoring the site should an issue occur._
 

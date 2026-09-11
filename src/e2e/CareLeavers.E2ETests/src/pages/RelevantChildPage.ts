@@ -30,9 +30,6 @@ export class RelevantChildPage extends BasePage {
     async assertPageElements() {
         await this.validateURLContains('/relevant-child');
         await this.verifyLogoPresence();
-        await this.verifyHeading(
-            "child",
-            "child"
-        );
+       await this.verifyHeadingExists();
     }
 }

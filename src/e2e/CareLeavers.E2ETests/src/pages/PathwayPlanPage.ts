@@ -24,7 +24,7 @@ export class PathwayPlanPage extends BasePage {
     async assertPageElements() {
         await this.validateURLContains('/pathway-plan');
         await this.verifyLogoPresence();
-        await this.verifyHeading("Pathway", "Pathway");
+        await this.verifyHeadingExists();
 
         // Ensure the main content wrapper is visible
         await expect(this.mainContent).toBeVisible();

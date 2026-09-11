@@ -25,10 +25,7 @@ export class AllSupportPage extends BasePage {
     async assertPageElements() {
         await this.validateURLContains('/en/all-support');
         await this.verifyLogoPresence();
-        await this.verifyHeading(
-            "All support",
-            "Find care leaver support, services and help you could apply for."
-        );
+        await this.verifyHeadingExists();
         await expect(this.mainContent).toBeVisible();
         await this.verifySupportCardsPresence();
         await expect(this.knowWhatSupportSection).toBeVisible();

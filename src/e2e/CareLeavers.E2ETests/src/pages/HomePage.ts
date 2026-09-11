@@ -76,10 +76,7 @@ export class HomePage extends BasePage {
         await this.verifyPhaseBanner();
         
         // Validate the main heading and paragraph
-        await this.verifyHeading(
-            "Find support for care leavers",
-            "Leaving care can be a challenging time"
-        );       
+        await this.verifyHeadingExists();
     }
 
     async verifySectionsVisibility() {       

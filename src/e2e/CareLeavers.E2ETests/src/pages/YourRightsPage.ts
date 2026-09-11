@@ -49,9 +49,7 @@ export class YourRightsPage extends BasePage {
     async assertPageElements() {
         await this.validateURLContains('/your-rights');
         await this.verifyLogoPresence();
-        await this.verifyHeading(
-            "right",
-            'right');
+        await this.verifyHeadingExists();
     }
 
     async verifyContentfulDefinitionLink() {

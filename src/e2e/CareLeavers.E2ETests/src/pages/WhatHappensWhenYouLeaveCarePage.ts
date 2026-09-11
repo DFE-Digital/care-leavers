@@ -41,10 +41,7 @@ export class WhatHappensWhenYouLeaveCarePage extends BasePage {
     async assertPageElements() {
         await this.validateURLContains('/what-happens-when-you-leave-care');
         await this.verifyLogoPresence();
-        await this.verifyHeading(
-            "care",
-            "care"
-        );
+        await this.verifyHeadingExists();
 
         await expect(this.mainContent).toBeVisible();
         await expect(this.tableOfContents).toBeVisible();

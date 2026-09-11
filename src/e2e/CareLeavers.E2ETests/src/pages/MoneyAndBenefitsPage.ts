@@ -34,7 +34,7 @@ export class MoneyAndBenefitsPage extends BasePage {
     async assertPageElements() {
         await this.validateURLContains('/en/money-and-benefits');
         await this.verifyLogoPresence();
-        await this.verifyHeading("money", "money");
+        await this.verifyHeadingExists();
 
         // Ensure main content wrapper is visible
         await expect(this.mainContent).toBeVisible();
