@@ -507,10 +507,9 @@ try
 
     #endregion
 
-    #region Site Configuration
+    #region Rebrand
 
     SiteConfiguration.Rebrand = app.Configuration.GetValue<bool>("Rebrand") || DateTime.Today >= new DateTime(2025, 6, 25);
-    SiteConfiguration.SecurityTxtUrl = app.Configuration.GetValue<string>("SecurityTxtUrl")?? "https://vdp.security.education.gov.uk/.well-known/security.txt";
 
     #endregion
 
