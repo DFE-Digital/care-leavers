@@ -73,7 +73,7 @@ export class HelplinesPage extends BasePage {
 
     async assertPageElements() {
         await this.validateURLContains('/helplines');
-        await this.verifyLogoPresence();
+        await this.verifyLogoAndHeadingExists();
         
         await expect(this.mainHeading).toBeVisible();
         const actualHeading = await this.mainHeading.innerText();

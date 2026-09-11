@@ -69,14 +69,10 @@ export class HomePage extends BasePage {
     async assertPageElements() {
         await this.validateURLContains('/home');
 
-        // Verify the logo is present
-        await this.verifyLogoPresence();
+        await this.verifyLogoAndHeadingExists();
         
         //Phase Banner verification
         await this.verifyPhaseBanner();
-        
-        // Validate the main heading and paragraph
-        await this.verifyHeadingExists();
     }
 
     async verifySectionsVisibility() {       

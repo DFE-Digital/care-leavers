@@ -24,8 +24,7 @@ export class AllSupportPage extends BasePage {
 
     async assertPageElements() {
         await this.validateURLContains('/en/all-support');
-        await this.verifyLogoPresence();
-        await this.verifyHeadingExists();
+        await this.verifyLogoAndHeadingExists();        
         await expect(this.mainContent).toBeVisible();
         await this.verifySupportCardsPresence();
         await expect(this.knowWhatSupportSection).toBeVisible();

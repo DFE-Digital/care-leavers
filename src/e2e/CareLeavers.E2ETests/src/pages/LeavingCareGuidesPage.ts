@@ -22,8 +22,7 @@ export class LeavingCareGuidesPage extends BasePage {
 
     async assertPageElements() {
         await this.validateURLContains('/leaving-care-guides');
-        await this.verifyLogoPresence();
-        await this.verifyHeadingExists();
+        await this.verifyLogoAndHeadingExists();
 
         await expect(this.mainContent).toBeVisible();
         await expect(this.guideSection).toBeVisible();
