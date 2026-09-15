@@ -17,4 +17,8 @@ test.describe('Helplines Page Tests', () => {
         await helplinesPage.assertPageElements();
     });
 
+     test('should verify Contentful ExternalAgency content type exists', async () => {
+        await helplinesPage.verifyContentfulExternalAgencyContentTypeExists();
+    });
+
 });
