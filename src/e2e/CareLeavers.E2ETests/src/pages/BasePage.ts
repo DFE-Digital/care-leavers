@@ -72,9 +72,9 @@ export class BasePage {
 
         // Main Header section  
         this.mainHeading = page.locator('h1');
-        this.supportHeading = page.locator('h1.govuk-heading-xl');
+        this.supportHeading = page.locator('h1.govuk-heading-xl, h1.govuk-heading-xl--inverse');
         let headerSection = page.locator('div#main-header-container')
-        this.firstHeaderParagraph = headerSection.locator('p.govuk-body-l').first();
+        this.firstHeaderParagraph = headerSection.locator('p.govuk-body-l, p.govuk-body-l--inverse').first();
 
         //Locators for Navigation Bar
         this.navLinkHome = page.locator('a.govuk-service-navigation__link', {hasText: "Support for care leavers"});
