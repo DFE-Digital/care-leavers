@@ -19,6 +19,15 @@
   }
 }
 
+.app-masthead {
+    border-bottom: 1px solid #1d70b8;
+    color: #fff;
+    background-color: #1d70b8;
+
+    @include govuk-responsive-padding(6, "top");
+    @include govuk-responsive-padding(9, "bottom");
+}
+
 .dfe-header {
   padding-bottom: 1rem;
 }
