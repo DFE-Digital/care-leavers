@@ -19,8 +19,7 @@ export class WorkAndEmploymentPage extends BasePage {
 
     async assertPageElements() {
         await this.validateURLContains('/en/work-and-employment');
-        await this.verifyLogoPresence();
-        await this.verifyHeading("Work and employment", "work");
+        await this.verifyLogoAndHeadingExists();
 
         // Ensure main content wrapper is visible
         await expect(this.mainContent).toBeVisible();
