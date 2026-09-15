@@ -34,6 +34,10 @@
 
     @include govuk-responsive-padding(6, "top");
     @include govuk-responsive-padding(9, "bottom");
+
+    .govuk-heading-xl {
+        color: #fff
+    }
 }
 
 .dfe-service-navigation {

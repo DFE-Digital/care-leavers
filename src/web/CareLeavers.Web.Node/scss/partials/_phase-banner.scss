@@ -2,10 +2,27 @@
   border-bottom: none;
 }
 
-.govuk-phase-banner__content {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+.govuk-phase-banner {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    &__content {
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid;
+        border-bottom-color: var(--govuk-border-colour, #cecece);
+    }
+}
+
+@media (min-width: 40.0625em) {
+    .govuk-phase-banner {
+        &__content {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: 0;
+        }
+    }
 }
 
 .govuk-phase-banner__content__tag {
