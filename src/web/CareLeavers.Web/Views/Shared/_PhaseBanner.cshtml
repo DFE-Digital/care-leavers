@@ -15,6 +15,7 @@
                 </text>
             }
             </span>
+    </div>
         @if (Model.ContentfulConfiguration.TranslationEnabled && Model.ShowLanguage)
         {
             var currentSlug = ViewContext.RouteData.Values["slug"]?.ToString() ?? Model.ContentfulConfiguration.HomePage?.Slug;
@@ -63,6 +64,5 @@
                         break;
                 }
             </div>
-        }
-    </div>
+        }    
 </div>

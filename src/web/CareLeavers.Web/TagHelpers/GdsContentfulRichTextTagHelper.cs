@@ -12,6 +12,7 @@ public class GdsContentfulRichTextTagHelper(HtmlRenderer renderer, IHttpContextA
     public bool LargerText { get; set; }
     public bool DynamicTime { get; set; }
 
+    public string? Slug { get; set; }
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         output.TagName = null;
@@ -30,9 +31,17 @@ public class GdsContentfulRichTextTagHelper(HtmlRenderer renderer, IHttpContextA
 
     private string ProcessFlags(string content)
     {
+        Slug = accessor.HttpContext?.GetRouteValue("slug")?.ToString();
         if (LargerText)
         {
-            content = content.Replace("govuk-body", "govuk-body-l");
+            if(Slug == "home")
+            {
+                content = content.Replace("govuk-body", "govuk-body-l--inverse");
+            }
+            else
+            {
+                content = content.Replace("govuk-body", "govuk-body-l");
+            }            
         }
 
         if (DynamicTime)
