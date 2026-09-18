@@ -9,6 +9,7 @@
 @inject ITranslationService TranslationService
 
 @{
+    string currentPage = ViewContext.RouteData.Values["slug"]?.ToString() ?? string.Empty;
     var config = await ContentfulConfiguration.GetConfiguration();
     var scriptConfig = ScriptOptions.Value;
     
@@ -83,7 +84,7 @@
 @if (IsSectionDefined("BeforeGDSContent"))
 
 {
-    <section class="dfe-page-grey" id="main-content-header">
+        <section class="@(currentPage == "home" ? "app-masthead" : "dfe-page-grey")" id="main-content-header">
         <div class="govuk-width-container" id="main-header-container">
             @await RenderSectionAsync("BeforeGDSContent", required: false)
         </div>

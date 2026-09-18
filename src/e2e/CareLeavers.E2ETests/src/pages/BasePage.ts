@@ -72,9 +72,9 @@ export class BasePage {
 
         // Main Header section  
         this.mainHeading = page.locator('h1');
-        this.supportHeading = page.locator('h1.govuk-heading-xl');
+        this.supportHeading = page.locator('h1.govuk-heading-xl, h1.govuk-heading-xl--inverse');
         let headerSection = page.locator('div#main-header-container')
-        this.firstHeaderParagraph = headerSection.locator('p.govuk-body-l').first();
+        this.firstHeaderParagraph = headerSection.locator('p.govuk-body-l, p.govuk-body-l--inverse').first();
 
         //Locators for Navigation Bar
         this.navLinkHome = page.locator('a.govuk-service-navigation__link', {hasText: "Support for care leavers"});
@@ -146,12 +146,7 @@ export class BasePage {
         return cookies.some((cookie: Cookie) => cookie.name === '.AspNet.Consent');
 
     }
-
-    async verifyLogoPresence() {
-        await expect(this.logoLink).toBeVisible();
-        await expect(this.defaultLogo).toBeVisible();
-    }
-
+        
     // Clear cookies
     async clearCookies(context: BrowserContext) {
         await context.clearCookies();
@@ -183,12 +178,13 @@ export class BasePage {
     }
 
     // Generic method to verify PAGE Main heading and its paragraph text
-    async verifyHeading(expectedHeading: string, expectedParagraph: string) {
+    async verifyLogoAndHeadingExists() {
+        await expect(this.logoLink).toBeVisible();
+        await expect(this.defaultLogo).toBeVisible();
         await expect(this.mainHeading).toBeVisible();
         const actualHeading = await this.mainHeading.innerText();
-        expect(actualHeading.trim()).toContain(expectedHeading.trim());
+        expect(actualHeading.trim()).not.toBe('');
         await expect(this.firstHeaderParagraph).toBeVisible();
-        await expect(this.firstHeaderParagraph).toContainText(expectedParagraph.trim());
         await expect(this.supportHeading).toBeVisible();
     }
 

@@ -8,8 +8,7 @@
     var breadcrumbs = await ContentService.GetBreadcrumbs(currentPage, false);
 }
 
-<section aria-label="Service information" class="govuk-service-navigation"
-         data-module="govuk-service-navigation">
+<section aria-label="Service information" class="@(Model.ContentfulConfiguration.HomePage?.Slug == currentPage ? "govuk-service-navigation--inverse dfe-service-navigation" : "govuk-service-navigation")" data-module="govuk-service-navigation">
     <div class="govuk-width-container">
         <div class="govuk-service-navigation__container">
             <span class="govuk-service-navigation__service-name">

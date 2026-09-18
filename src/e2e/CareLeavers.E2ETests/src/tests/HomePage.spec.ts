@@ -21,13 +21,13 @@ test.describe('Home Page Tests', () => {
 
     test('should verify navigation for all support cards', async () => {
         await homePage.verifySupportCardsNavigation(supportCards);
-    });
-
-    test('should verify "Know what support you can get" section', async () => {
-        await homePage.verifyKnowWhatSupportSection();
-    });
+    });   
 
     test('should verify "Guides" section', async () => {
         await homePage.verifyGuidesSection();
+    });
+    
+    test('should verify Contentful Call to Action button exists', async () => {
+        await homePage.verifyContentfulCallToActionButton();
     });
 });

@@ -5,12 +5,13 @@ services:
     ports:
       - "7050:8080"
     environment:
-      - ASPNETCORE_ENVIRONMENT=EndToEnd
+      - ASPNETCORE_ENVIRONMENT=Staging
       - Caching__Type=Memory
       - ContentfulOptions__DeliveryApiKey=${CONTENTFUL_DELIVERY_API_KEY}
       - ContentfulOptions__PreviewApiKey=${CONTENTFUL_PREVIEW_API_KEY}
       - ContentfulOptions__SpaceId=${CONTENTFUL_SPACE_ID}
-      - ContentfulOptions__Environment=e2e
+      - ContentfulOptions__Environment=production
+      - ContentfulOptions__UsePreviewApi=true
       - Rebrand=true
       - ASPNETCORE_URLS=https://+:8080
       - ASPNETCORE_Kestrel__Certificates__Default__Password=e2e

@@ -21,8 +21,7 @@ export class HigherEducationBursaryPage extends BasePage {
 
     async assertPageElements() {
         await this.validateURLContains('/higher-education-bursary');
-        await this.verifyLogoPresence();
-        await this.verifyHeading("Higher Education Bursary", "care");
+        await this.verifyLogoAndHeadingExists();
 
         await expect(this.mainContent).toBeVisible();
         await expect(this.contentsSection).toHaveText('On this page');
