@@ -29,7 +29,7 @@
         <PackageReference Include="Joonasw.AspNetCore.SecurityHeaders" Version="6.0.0" />
         <PackageReference Include="Microsoft.ApplicationInsights" Version="2.23.0" />
         <PackageReference Include="Microsoft.Extensions.Azure" Version="1.14.1" />
-        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.19" />
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.20" />
         <PackageReference Include="OpenTelemetry.Api" Version="1.18.0" />
         <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.18.0" />
         <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.18.0" />
@@ -38,7 +38,7 @@
         <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
         <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="5.0.1" />
         <PackageReference Include="WebMarkupMin.AspNet.Brotli" Version="2.20.2" />
-        <PackageReference Include="WebMarkupMin.AspNetCoreLatest" Version="2.22.3" />
+        <PackageReference Include="WebMarkupMin.AspNetCoreLatest" Version="2.22.4" />
         <PackageReference Include="ZiggyCreatures.FusionCache.Backplane.Memory" Version="2.7.2" />
         <PackageReference Include="ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis" Version="2.7.2" />
         <PackageReference Include="ZiggyCreatures.FusionCache.OpenTelemetry" Version="2.7.2" />
