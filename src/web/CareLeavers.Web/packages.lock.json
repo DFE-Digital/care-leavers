@@ -106,9 +106,9 @@
       },
       "Microsoft.Extensions.Caching.StackExchangeRedis": {
         "type": "Direct",
-        "requested": "[9.0.19, )",
-        "resolved": "9.0.19",
-        "contentHash": "mM6X0ZEePc3k2KEMS4wza+mA2SYVoetnfEa6IlMYO5K0KvCrxQSumGgDbkzrnoOa5JRbIzlZ27kqrYaRpTxw9g==",
+        "requested": "[9.0.20, )",
+        "resolved": "9.0.20",
+        "contentHash": "Rg+t3DKI9KWFpn2ZqVEI2/+VU6Wr7PdF4kVopdgJ3q6CisMZ83QPLoV5y7YYXCVyRRkY7/rp7DVJ7zh0iQ8nLA==",
         "dependencies": {
           "StackExchange.Redis": "2.7.27"
         }
@@ -208,9 +208,9 @@
       },
       "WebMarkupMin.AspNetCoreLatest": {
         "type": "Direct",
-        "requested": "[2.22.3, )",
-        "resolved": "2.22.3",
-        "contentHash": "iq77ImZmE1RrFQDVY9q2iYzHStu8hTd5YYKxwNwXft/2vUUXeS2y20p5pXzVkzV+sIjP1aNi1IkNVEgM2j+h1w==",
+        "requested": "[2.22.4, )",
+        "resolved": "2.22.4",
+        "contentHash": "5jmJtTNwgBx2ueIM6bT8imRknOUe28GYU8iIKUJU3boO+GpVD6ow3QYFMO49d7zmyiVI3k5RXymPGlSwnk2p6A==",
         "dependencies": {
           "WebMarkupMin.AspNet.Common": "2.21.0"
         }

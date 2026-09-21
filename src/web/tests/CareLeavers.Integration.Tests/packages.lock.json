@@ -4,9 +4,9 @@
     "net10.0": {
       "AngleSharp": {
         "type": "Direct",
-        "requested": "[1.7.3, )",
-        "resolved": "1.7.3",
-        "contentHash": "I8TpSvgOPAVQHjVvXaROZOkIGZdX0tn+e9CUix6mv5pMqfyKO+/zm/dofsXgsxVTJl/sSTnEMFwrdnqxTt2axQ=="
+        "requested": "[1.8.1, )",
+        "resolved": "1.8.1",
+        "contentHash": "fTLPBxwYK5zmt+ernY3GL1kFBDA/2Cl72hpNnMHeNceZNJ/AT7Km9CXFaMHybuEFhXDy2Dv7Bjkez5G0Z4Io4g=="
       },
       "coverlet.collector": {
         "type": "Direct",
@@ -16,11 +16,11 @@
       },
       "Microsoft.AspNetCore.Mvc.Testing": {
         "type": "Direct",
-        "requested": "[8.0.30, )",
-        "resolved": "8.0.30",
-        "contentHash": "2BHvdjKaNvKVUBEthxJGDT9ktzr/vdii7jaWNlEkGnVwsz9ZLmewpklat5GElxU42lskUnD+CuNnqdzJvFsQHw==",
+        "requested": "[8.0.31, )",
+        "resolved": "8.0.31",
+        "contentHash": "UMxUZC02mDQ0uFASoaUJzMJeGyTyq2h0+NzzK7oP9KlvuPPKmWQR1gXwnWBYvx/mR4bQCC2ceHDqt/EsiVKnMA==",
         "dependencies": {
-          "Microsoft.AspNetCore.TestHost": "8.0.30",
+          "Microsoft.AspNetCore.TestHost": "8.0.31",
           "Microsoft.Extensions.DependencyModel": "8.0.2",
           "Microsoft.Extensions.Hosting": "8.0.1"
         }
@@ -508,8 +508,8 @@
       },
       "Microsoft.AspNetCore.TestHost": {
         "type": "Transitive",
-        "resolved": "8.0.30",
-        "contentHash": "Bqi+1PttTehAGGJj6+ovmm3rmRRGTjLdjBIkCudkjIwXGbhYIJzREPzMd2o/ljaIAmV92LxLyUW3jcOvGDEQbw=="
+        "resolved": "8.0.31",
+        "contentHash": "k1tthAL1CxydDD9oxO1gLZJbovDfK6ydOrgnQ6T0mLr4BvdOLR4F9PbLjcm5k3Er3dyN2A/5eUaq/oOBcdHz+Q=="
       },
       "Microsoft.AspNetCore.WebUtilities": {
         "type": "Transitive",
@@ -592,12 +592,12 @@
       },
       "Microsoft.Extensions.Caching.StackExchangeRedis": {
         "type": "Transitive",
-        "resolved": "9.0.19",
-        "contentHash": "mM6X0ZEePc3k2KEMS4wza+mA2SYVoetnfEa6IlMYO5K0KvCrxQSumGgDbkzrnoOa5JRbIzlZ27kqrYaRpTxw9g==",
+        "resolved": "9.0.20",
+        "contentHash": "Rg+t3DKI9KWFpn2ZqVEI2/+VU6Wr7PdF4kVopdgJ3q6CisMZ83QPLoV5y7YYXCVyRRkY7/rp7DVJ7zh0iQ8nLA==",
         "dependencies": {
-          "Microsoft.Extensions.Caching.Abstractions": "9.0.19",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.19",
-          "Microsoft.Extensions.Options": "9.0.19",
+          "Microsoft.Extensions.Caching.Abstractions": "9.0.20",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.20",
+          "Microsoft.Extensions.Options": "9.0.20",
           "StackExchange.Redis": "2.7.27"
         }
       },
@@ -1308,8 +1308,8 @@
       },
       "WebMarkupMin.AspNetCoreLatest": {
         "type": "Transitive",
-        "resolved": "2.22.3",
-        "contentHash": "iq77ImZmE1RrFQDVY9q2iYzHStu8hTd5YYKxwNwXft/2vUUXeS2y20p5pXzVkzV+sIjP1aNi1IkNVEgM2j+h1w==",
+        "resolved": "2.22.4",
+        "contentHash": "5jmJtTNwgBx2ueIM6bT8imRknOUe28GYU8iIKUJU3boO+GpVD6ow3QYFMO49d7zmyiVI3k5RXymPGlSwnk2p6A==",
         "dependencies": {
           "WebMarkupMin.AspNet.Common": "2.21.0"
         }
@@ -1378,7 +1378,7 @@
           "Joonasw.AspNetCore.SecurityHeaders": "[6.0.0, )",
           "Microsoft.ApplicationInsights": "[2.23.0, )",
           "Microsoft.Extensions.Azure": "[1.14.1, )",
-          "Microsoft.Extensions.Caching.StackExchangeRedis": "[9.0.19, )",
+          "Microsoft.Extensions.Caching.StackExchangeRedis": "[9.0.20, )",
           "OpenTelemetry.Api": "[1.18.0, )",
           "OpenTelemetry.Exporter.OpenTelemetryProtocol": "[1.17.0, )",
           "OpenTelemetry.Extensions.Hosting": "[1.18.0, )",
@@ -1389,7 +1389,7 @@
           "Serilog.Sinks.ApplicationInsights": "[5.0.1, )",
           "Serilog.Sinks.OpenTelemetry": "[4.2.0, )",
           "WebMarkupMin.AspNet.Brotli": "[2.20.2, )",
-          "WebMarkupMin.AspNetCoreLatest": "[2.22.3, )",
+          "WebMarkupMin.AspNetCoreLatest": "[2.22.4, )",
           "ZiggyCreatures.FusionCache.Backplane.Memory": "[2.7.2, )",
           "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis": "[2.7.2, )",
           "ZiggyCreatures.FusionCache.OpenTelemetry": "[2.7.2, )",
