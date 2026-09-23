@@ -20,10 +20,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
     name: Run Playwright Tests
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27
+      options: --user 1001 --ipc=host
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
+
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: "24"
@@ -58,10 +62,6 @@ jobs:
       - name: Install dependencies
         working-directory: ./src/e2e/CareLeavers.E2ETests
         run: yarn install --immutable --immutable-cache
-
-      - name: Install Playwright Browsers
-        working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: yarn playwright install --with-deps
 
       - name: Run Playwright Tests
         if: steps.run.outcome == 'success'
