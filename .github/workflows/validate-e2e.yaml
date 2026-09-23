@@ -20,9 +20,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     name: Run Playwright Tests
-    container:
-      image: mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27
-      options: --user 1001 --ipc=host
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -33,8 +30,7 @@ jobs:
           node-version: "24"
 
       - name: Lowercase the repo name and username
-        run: |
-          echo "REPO=$(printf '%s' "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
 
       - name: Create Local Developer Certificate
         run: |
@@ -60,14 +56,19 @@ jobs:
           CONTENTFUL_PREVIEW_API_KEY: ${{ secrets.CONTENTFUL_PREVIEW_API_KEY }}
           CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
 
-      - name: Install dependencies
-        working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: yarn install --immutable --immutable-cache
+      - name: Wait for Web App readiness
+        run: npx wait-on https-get://localhost:7050 --timeout 60000
 
-      - name: Run Playwright Tests
+      - name: Run Playwright Tests in Container
         if: steps.run.outcome == 'success'
-        working-directory: ./src/e2e/CareLeavers.E2ETests
-        run: yarn playwright test -c playwright-ci.config.ts
+        run: |
+          docker run --rm \
+            --network host \
+            --ipc=host \
+            -v ${{ github.workspace }}:/work \
+            -w /work/src/e2e/CareLeavers.E2ETests \
+            mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27 \
+            /bin/bash -c "yarn install --immutable --immutable-cache && yarn playwright test -c playwright-ci.config.ts"
 
       - name: Upload Playwright Test Report
         if: always()
