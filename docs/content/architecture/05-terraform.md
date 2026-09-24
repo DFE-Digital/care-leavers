@@ -62,6 +62,7 @@ No modules.
 | [azurerm_key_vault_secret.contentful-preview-api-key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.contentful-space-id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.redis-enterprise-connection-string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.splunk-access-token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_linux_web_app.web-app-service](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_web_app) | resource |
 | [azurerm_linux_web_app_slot.web-app-service-staging](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_web_app_slot) | resource |
 | [azurerm_log_analytics_workspace.log-analytics-workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
@@ -143,6 +144,9 @@ No modules.
 | <a name="input_scripts_clarity"></a> [scripts\_clarity](#input\_scripts\_clarity) | Clarity code | `string` | n/a | yes |
 | <a name="input_scripts_ga4"></a> [scripts\_ga4](#input\_scripts\_ga4) | Google Analytics code | `string` | `"G-LPYZPF4TEX"` | no |
 | <a name="input_scripts_gtm"></a> [scripts\_gtm](#input\_scripts\_gtm) | Google Tag Manager code | `string` | `"GTM-TKWX6SNW"` | no |
+| <a name="input_splunk_access_token"></a> [splunk\_access\_token](#input\_splunk\_access\_token) | Splunk Access Token | `string` | n/a | yes |
+| <a name="input_splunk_port"></a> [splunk\_port](#input\_splunk\_port) | Splunk port number | `string` | `"4318"` | no |
+| <a name="input_splunk_realm"></a> [splunk\_realm](#input\_splunk\_realm) | Splunk Observability Cloud Realm | `string` | `"eu2"` | no |
 | <a name="input_support_alert_email"></a> [support\_alert\_email](#input\_support\_alert\_email) | Where to send alert emails to | `string` | n/a | yes |
 
 ## Outputs
