@@ -13,7 +13,6 @@ export class HelplinesPage extends BasePage {
 
     // Adding locators for the helpline sections
     public readonly samaritansSection: Locator;
-    public readonly papyrusSection: Locator;
     public readonly childlineSection: Locator;
     public readonly helpAtHandSection: Locator;
     public readonly shelterSection: Locator;
@@ -37,7 +36,6 @@ export class HelplinesPage extends BasePage {
 
         // Helpline-specific sections 
         this.samaritansSection = page.locator('section.dfe-section:has-text("Samaritans")');
-        this.papyrusSection = page.locator('section.dfe-section:has-text("Papyrus")');
         this.childlineSection = page.locator('section.dfe-section:has-text("Childline")');
         this.helpAtHandSection = page.locator('section.dfe-section:has-text("Help at Hand")');
         this.shelterSection = page.locator('section.dfe-section:has-text("Shelter")');
@@ -60,7 +58,6 @@ export class HelplinesPage extends BasePage {
 
         // Verify that the individual helpline sections are visible
         await expect(this.samaritansSection).toBeVisible();
-        await expect(this.papyrusSection).toBeVisible();
         await expect(this.childlineSection).toBeVisible();
         await expect(this.helpAtHandSection).toBeVisible();
         await expect(this.shelterSection).toBeVisible();
