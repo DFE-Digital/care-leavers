@@ -24,14 +24,23 @@ RUN dotnet publish CareLeavers.Web.csproj --no-restore --configuration Release -
 
 # -- Run .NET -- #
 FROM mcr.microsoft.com/dotnet/aspnet:10.0-alpine@sha256:f62a272ac1b46e83f56b8ed0416572f31cd1128e2c4a5e63eb34d348e4a36095
-RUN apk add --no-cache icu-libs icu-data-full tzdata
+RUN apk add --no-cache icu-libs icu-data-full tzdata gcompat
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
-USER app
 WORKDIR /src
+
+COPY --from=quay.io/signalfx/splunk-otel-collector:latest /otelcol /usr/local/bin/otelcol
+
+COPY ["web/CareLeavers.Web/entrypoint.sh", "/entrypoint.sh"]
+RUN chmod +x /entrypoint.sh
+COPY  ["web/CareLeavers.Web/otel-config.yaml", "/otel-collector-config.yaml"]
 
 COPY --from=build-node ["../CareLeavers.Web/wwwroot", "./wwwroot/"]
 COPY --from=build-dotnet ["src/publish", "."]
 
+USER app
+
 EXPOSE 8080
 EXPOSE 8081
-ENTRYPOINT ["dotnet", "CareLeavers.Web.dll"]
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["dotnet", "CareLeavers.Web.dll"]

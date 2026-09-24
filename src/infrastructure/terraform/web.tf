@@ -27,6 +27,13 @@ locals {
     "BasicAuth__EncodedCreds"               = var.basic_auth_credentials
     "Scripts__GA4"                          = var.scripts_ga4
     "Scripts__GTM"                          = var.scripts_gtm
+    "SPLUNK_PORT"                           = var.splunk_port
+    "SPLUNK_REALM"                          = var.splunk_realm
+    "SPLUNK_ACCESS_TOKEN"                   = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.splunk-access-token.versionless_id})"
+    "OTEL_EXPORTER_OTLP_ENDPOINT"           = "http://localhost:4318"
+    "OTEL_EXPORTER_OTLP_PROTOCOL"           = "http/protobuf"
+    "OTEL_SERVICE_NAME"                     = "${local.prefix}-cl"
+    "OTEL_RESOURCE_ATTRIBUTES"              = "deployment.environment=${var.elz_environment},service.version=1.0.0"
   }
 
   managed_identity = {
