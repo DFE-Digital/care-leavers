@@ -908,10 +908,10 @@
       },
       "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
         "type": "Transitive",
-        "resolved": "1.17.0",
-        "contentHash": "R1omQOrQpGlS0Cp5UIr/TAiuEA48JrPlgr1NPV5gESiTU7HhWU+ILe2EBSYb1fKdsSavZ7nZkHcUxAzofPqr2A==",
+        "resolved": "1.18.0",
+        "contentHash": "Et3WAviooKGObZjUZN8d6eTsdJs1YM3ZoN+KlWSAHksTmHG1nyGi9XGo2wb0fkFMWK0g80FOPdR1njg52Dm+aw==",
         "dependencies": {
-          "OpenTelemetry": "1.17.0"
+          "OpenTelemetry": "1.18.0"
         }
       },
       "OpenTelemetry.Extensions.Hosting": {
@@ -1159,45 +1159,45 @@
       },
       "ZiggyCreatures.FusionCache": {
         "type": "Transitive",
-        "resolved": "2.7.2",
-        "contentHash": "WXloGTKSkyOQLocl5Seqn3P6HnwoaWV6lJeNAUtK0dMP8QL5SxvSg3h0jO5Itw/yL1/7urwCahiQps9/gWeMaQ==",
+        "resolved": "2.8.0",
+        "contentHash": "N6De2lLAJHA22QEtvu+4ofwUbvO7CifgYjVVoYbj7xh8aWQItfJ12N063UH45EBfTVkZ2mfm77AKDjtNYaDieg==",
         "dependencies": {
           "Microsoft.Extensions.Caching.Memory": "10.0.1"
         }
       },
       "ZiggyCreatures.FusionCache.Backplane.Memory": {
         "type": "Transitive",
-        "resolved": "2.7.2",
-        "contentHash": "dKl34XqC2B0ilzxucXGr/7K3NUijLEGKQURAqpo2SA+Hymp3MsvCS6TR4mvJC+PVcExm4tCY/DhbVtDtKmjEtQ==",
+        "resolved": "2.8.0",
+        "contentHash": "P1Q2NwVac6Oo2RdeOt+TpZnbx2DJLB0FQWtxyupVt8baXHOKA2D1PwaYj7G14z4uzPkwldQ17vhtmMkCuP+vZg==",
         "dependencies": {
-          "ZiggyCreatures.FusionCache": "2.7.2"
+          "ZiggyCreatures.FusionCache": "2.8.0"
         }
       },
       "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis": {
         "type": "Transitive",
-        "resolved": "2.7.2",
-        "contentHash": "eD6iNzbsqrmGnJIqHQp48FiSMmxvMZ6UNR2EJotPM4RhSgrgWQ6hSauB+klErYlWz8MxlW4sOM9Er1Pz8U2Iiw==",
+        "resolved": "2.8.0",
+        "contentHash": "VuXuVkNmWHUnCaVIPOuGYjY5xNDj89peh6Lykjqm4lLPNcAXGGb08mjFQ5+C8yGnSLDncJaxRSNdVZCAR7tx1Q==",
         "dependencies": {
           "StackExchange.Redis": "2.10.1",
-          "ZiggyCreatures.FusionCache": "2.7.2"
+          "ZiggyCreatures.FusionCache": "2.8.0"
         }
       },
       "ZiggyCreatures.FusionCache.OpenTelemetry": {
         "type": "Transitive",
-        "resolved": "2.7.2",
-        "contentHash": "dAcmGJ4SRqXtPO8i8GCzTBKIDtA56QIafTNEioTpR1WbRLmOGCPBbXMuE9r1G5ikvIoJAaddf2fk8/FJBVz0Jg==",
+        "resolved": "2.8.0",
+        "contentHash": "Cbpdr0a/NLV/tqQ+wzHhgqDhQKhh7KsNWjblOAoa5AdylNmzYf44ZuwA0GcqsSUhK7b21cbrEjQIm3HLR5euQA==",
         "dependencies": {
           "OpenTelemetry.Api": "1.15.3",
-          "ZiggyCreatures.FusionCache": "2.7.2"
+          "ZiggyCreatures.FusionCache": "2.8.0"
         }
       },
       "ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson": {
         "type": "Transitive",
-        "resolved": "2.7.2",
-        "contentHash": "lPj//otbvFFeXutg4WYIIhJ1eqDoIYvtfHnBKFcTAndfnsyoaCUkn6aCDto01O/d7xPCyunN7Mz/WFhKlYGF1Q==",
+        "resolved": "2.8.0",
+        "contentHash": "nlLP6Rv/chzMKxV8R3+6fwBoe1JBFlBPrkhXavp+yZ1HakKqgFdG/waGwK4MzYdWVSj8QsqBoL+SIHvrBmw69A==",
         "dependencies": {
           "Newtonsoft.Json": "13.0.4",
-          "ZiggyCreatures.FusionCache": "2.7.2"
+          "ZiggyCreatures.FusionCache": "2.8.0"
         }
       },
       "careleavers.web": {
@@ -1215,7 +1215,7 @@
           "Microsoft.Extensions.Azure": "[1.14.1, )",
           "Microsoft.Extensions.Caching.StackExchangeRedis": "[9.0.20, )",
           "OpenTelemetry.Api": "[1.18.0, )",
-          "OpenTelemetry.Exporter.OpenTelemetryProtocol": "[1.17.0, )",
+          "OpenTelemetry.Exporter.OpenTelemetryProtocol": "[1.18.0, )",
           "OpenTelemetry.Extensions.Hosting": "[1.18.0, )",
           "OpenTelemetry.Instrumentation.AspNetCore": "[1.18.0, )",
           "OpenTelemetry.Instrumentation.Http": "[1.18.0, )",
@@ -1225,10 +1225,10 @@
           "Serilog.Sinks.OpenTelemetry": "[4.2.0, )",
           "WebMarkupMin.AspNet.Brotli": "[2.20.2, )",
           "WebMarkupMin.AspNetCoreLatest": "[2.22.4, )",
-          "ZiggyCreatures.FusionCache.Backplane.Memory": "[2.7.2, )",
-          "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis": "[2.7.2, )",
-          "ZiggyCreatures.FusionCache.OpenTelemetry": "[2.7.2, )",
-          "ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson": "[2.7.2, )",
+          "ZiggyCreatures.FusionCache.Backplane.Memory": "[2.8.0, )",
+          "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis": "[2.8.0, )",
+          "ZiggyCreatures.FusionCache.OpenTelemetry": "[2.8.0, )",
+          "ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson": "[2.8.0, )",
           "contentful.aspnetcore": "[8.6.1, )"
         }
       }
