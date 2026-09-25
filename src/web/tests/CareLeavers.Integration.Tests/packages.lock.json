@@ -52,9 +52,9 @@
       },
       "NUnit.Analyzers": {
         "type": "Direct",
-        "requested": "[4.14.0, )",
-        "resolved": "4.14.0",
-        "contentHash": "xrpVoRNnEkK16+LS/vP4Lfch6vQ+ZJJrxFHeWN799sBzn1IpBTw8YPgDyJeT0gPsq8kpUV/N6+vv2UpnXNBU/g=="
+        "requested": "[4.15.0, )",
+        "resolved": "4.15.0",
+        "contentHash": "WbZpZI/gmrmTcb8JnP8poJBD4V6hJs2RRIQAmNxQ763t7RktZ/d6xxuU08XAd4K6SpnF0Bm02ADqL2wZ0CNIQA=="
       },
       "NUnit3TestAdapter": {
         "type": "Direct",
@@ -117,12 +117,12 @@
       },
       "Azure.Monitor.OpenTelemetry.Exporter": {
         "type": "Transitive",
-        "resolved": "1.8.3",
-        "contentHash": "hZ35hXxiRuJcT67u970iqqJ+z2ol3Sg23/m1wwNNh8uzK/48uB9iJ3va9PQ7gXn6kij6wzowUe5olPPfObkEug==",
+        "resolved": "1.9.0",
+        "contentHash": "gXe64QuF30HQkuo1B+FqsekN9coca1vcFKDWCgioo39Hb5Yc0lMS6g8OAa7rGBIssQBoaQQAxIM6Dn4pJbXz+g==",
         "dependencies": {
-          "Azure.Core": "1.60.0",
-          "OpenTelemetry.Extensions.Hosting": "1.15.3",
-          "OpenTelemetry.PersistentStorage.FileSystem": "1.0.3"
+          "Azure.Core": "1.62.0",
+          "OpenTelemetry.Extensions.Hosting": "1.18.0",
+          "OpenTelemetry.PersistentStorage.FileSystem": "1.1.1"
         }
       },
       "Azure.Storage.Blobs": {
@@ -1073,10 +1073,10 @@
       },
       "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
         "type": "Transitive",
-        "resolved": "1.17.0",
-        "contentHash": "R1omQOrQpGlS0Cp5UIr/TAiuEA48JrPlgr1NPV5gESiTU7HhWU+ILe2EBSYb1fKdsSavZ7nZkHcUxAzofPqr2A==",
+        "resolved": "1.18.0",
+        "contentHash": "Et3WAviooKGObZjUZN8d6eTsdJs1YM3ZoN+KlWSAHksTmHG1nyGi9XGo2wb0fkFMWK0g80FOPdR1njg52Dm+aw==",
         "dependencies": {
-          "OpenTelemetry": "1.17.0"
+          "OpenTelemetry": "1.18.0"
         }
       },
       "OpenTelemetry.Extensions.Hosting": {
@@ -1108,15 +1108,15 @@
       },
       "OpenTelemetry.PersistentStorage.Abstractions": {
         "type": "Transitive",
-        "resolved": "1.0.3",
-        "contentHash": "7nSE1uLY0KOHRssg1xQydDZJ/s9zECOzFT/gSDIp1KTxbgd1yziuMTsdBKZ/N1BbpUxfH6Pjq5OMd7lYogwReA=="
+        "resolved": "1.1.1",
+        "contentHash": "tsZtLJZZNYf7HIZZGm/DcYdQWKye0shFoekx59TkSkmXPB0u8bUXJZMYsdDIId+nyXcwTFdBlv5z0SQHOp+Xxg=="
       },
       "OpenTelemetry.PersistentStorage.FileSystem": {
         "type": "Transitive",
-        "resolved": "1.0.3",
-        "contentHash": "3k+yCroJcGBtZIia+0LgzMlBuD0U95BzcWNEGWedusBaRAD8EmkaCPAUwaCtFbb/Mg7HywbIG2zuenANPYFJ0g==",
+        "resolved": "1.1.1",
+        "contentHash": "f66+dhmMQgs4uYN+IbssgGRiINyw639CPWIPHt0+92Jq/VewNm7uZ/sSxQpWVorY/rmvDxfNqL1vzLebfZcczw==",
         "dependencies": {
-          "OpenTelemetry.PersistentStorage.Abstractions": "1.0.3"
+          "OpenTelemetry.PersistentStorage.Abstractions": "1.1.1"
         }
       },
       "Pipelines.Sockets.Unofficial": {
@@ -1324,45 +1324,45 @@
       },
       "ZiggyCreatures.FusionCache": {
         "type": "Transitive",
-        "resolved": "2.7.2",
-        "contentHash": "WXloGTKSkyOQLocl5Seqn3P6HnwoaWV6lJeNAUtK0dMP8QL5SxvSg3h0jO5Itw/yL1/7urwCahiQps9/gWeMaQ==",
+        "resolved": "2.8.0",
+        "contentHash": "N6De2lLAJHA22QEtvu+4ofwUbvO7CifgYjVVoYbj7xh8aWQItfJ12N063UH45EBfTVkZ2mfm77AKDjtNYaDieg==",
         "dependencies": {
           "Microsoft.Extensions.Caching.Memory": "10.0.1"
         }
       },
       "ZiggyCreatures.FusionCache.Backplane.Memory": {
         "type": "Transitive",
-        "resolved": "2.7.2",
-        "contentHash": "dKl34XqC2B0ilzxucXGr/7K3NUijLEGKQURAqpo2SA+Hymp3MsvCS6TR4mvJC+PVcExm4tCY/DhbVtDtKmjEtQ==",
+        "resolved": "2.8.0",
+        "contentHash": "P1Q2NwVac6Oo2RdeOt+TpZnbx2DJLB0FQWtxyupVt8baXHOKA2D1PwaYj7G14z4uzPkwldQ17vhtmMkCuP+vZg==",
         "dependencies": {
-          "ZiggyCreatures.FusionCache": "2.7.2"
+          "ZiggyCreatures.FusionCache": "2.8.0"
         }
       },
       "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis": {
         "type": "Transitive",
-        "resolved": "2.7.2",
-        "contentHash": "eD6iNzbsqrmGnJIqHQp48FiSMmxvMZ6UNR2EJotPM4RhSgrgWQ6hSauB+klErYlWz8MxlW4sOM9Er1Pz8U2Iiw==",
+        "resolved": "2.8.0",
+        "contentHash": "VuXuVkNmWHUnCaVIPOuGYjY5xNDj89peh6Lykjqm4lLPNcAXGGb08mjFQ5+C8yGnSLDncJaxRSNdVZCAR7tx1Q==",
         "dependencies": {
           "StackExchange.Redis": "2.10.1",
-          "ZiggyCreatures.FusionCache": "2.7.2"
+          "ZiggyCreatures.FusionCache": "2.8.0"
         }
       },
       "ZiggyCreatures.FusionCache.OpenTelemetry": {
         "type": "Transitive",
-        "resolved": "2.7.2",
-        "contentHash": "dAcmGJ4SRqXtPO8i8GCzTBKIDtA56QIafTNEioTpR1WbRLmOGCPBbXMuE9r1G5ikvIoJAaddf2fk8/FJBVz0Jg==",
+        "resolved": "2.8.0",
+        "contentHash": "Cbpdr0a/NLV/tqQ+wzHhgqDhQKhh7KsNWjblOAoa5AdylNmzYf44ZuwA0GcqsSUhK7b21cbrEjQIm3HLR5euQA==",
         "dependencies": {
           "OpenTelemetry.Api": "1.15.3",
-          "ZiggyCreatures.FusionCache": "2.7.2"
+          "ZiggyCreatures.FusionCache": "2.8.0"
         }
       },
       "ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson": {
         "type": "Transitive",
-        "resolved": "2.7.2",
-        "contentHash": "lPj//otbvFFeXutg4WYIIhJ1eqDoIYvtfHnBKFcTAndfnsyoaCUkn6aCDto01O/d7xPCyunN7Mz/WFhKlYGF1Q==",
+        "resolved": "2.8.0",
+        "contentHash": "nlLP6Rv/chzMKxV8R3+6fwBoe1JBFlBPrkhXavp+yZ1HakKqgFdG/waGwK4MzYdWVSj8QsqBoL+SIHvrBmw69A==",
         "dependencies": {
           "Newtonsoft.Json": "13.0.4",
-          "ZiggyCreatures.FusionCache": "2.7.2"
+          "ZiggyCreatures.FusionCache": "2.8.0"
         }
       },
       "careleavers.web": {
@@ -1372,7 +1372,7 @@
           "Azure.AI.Translation.Text": "[1.0.0, )",
           "Azure.Core": "[1.62.0, )",
           "Azure.Monitor.OpenTelemetry.AspNetCore": "[1.6.0, )",
-          "Azure.Monitor.OpenTelemetry.Exporter": "[1.8.3, )",
+          "Azure.Monitor.OpenTelemetry.Exporter": "[1.9.0, )",
           "Azure.Storage.Blobs": "[12.29.2, )",
           "HtmlAgilityPack": "[1.13.0, )",
           "Joonasw.AspNetCore.SecurityHeaders": "[6.0.0, )",
@@ -1380,7 +1380,7 @@
           "Microsoft.Extensions.Azure": "[1.14.1, )",
           "Microsoft.Extensions.Caching.StackExchangeRedis": "[9.0.20, )",
           "OpenTelemetry.Api": "[1.18.0, )",
-          "OpenTelemetry.Exporter.OpenTelemetryProtocol": "[1.17.0, )",
+          "OpenTelemetry.Exporter.OpenTelemetryProtocol": "[1.18.0, )",
           "OpenTelemetry.Extensions.Hosting": "[1.18.0, )",
           "OpenTelemetry.Instrumentation.AspNetCore": "[1.18.0, )",
           "OpenTelemetry.Instrumentation.Http": "[1.18.0, )",
@@ -1390,10 +1390,10 @@
           "Serilog.Sinks.OpenTelemetry": "[4.2.0, )",
           "WebMarkupMin.AspNet.Brotli": "[2.20.2, )",
           "WebMarkupMin.AspNetCoreLatest": "[2.22.4, )",
-          "ZiggyCreatures.FusionCache.Backplane.Memory": "[2.7.2, )",
-          "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis": "[2.7.2, )",
-          "ZiggyCreatures.FusionCache.OpenTelemetry": "[2.7.2, )",
-          "ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson": "[2.7.2, )",
+          "ZiggyCreatures.FusionCache.Backplane.Memory": "[2.8.0, )",
+          "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis": "[2.8.0, )",
+          "ZiggyCreatures.FusionCache.OpenTelemetry": "[2.8.0, )",
+          "ZiggyCreatures.FusionCache.Serialization.NewtonsoftJson": "[2.8.0, )",
           "contentful.aspnetcore": "[8.6.1, )"
         }
       }
