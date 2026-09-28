@@ -1,10 +1,6 @@
 @charset "UTF-8";
-
 @use "../node_modules/govuk-frontend/dist/govuk" as *;
 @import '../node_modules/dfe-frontend/packages/dfefrontend';
-
-@import url('https://rsms.me/inter/inter.css');
-
 @import "partials/banner";
 @import "partials/box";
 @import "partials/call-to-action";
@@ -17,6 +13,7 @@
 @import "partials/phase-banner";
 @import "partials/split-panel";
 @import "partials/quickfeedback";
+@import url('https://rsms.me/inter/inter.css');
 
 html {
   container-type: inline-size;
