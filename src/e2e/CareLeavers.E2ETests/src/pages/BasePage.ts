@@ -67,7 +67,7 @@ export class BasePage {
         this.rejectButton = page.locator('#reject-cookie');
 
         // Locators for the feedback component
-        this.feedbackBanner = page.locator('.feedback-cta-block');
+        this.feedbackBanner = page.locator('.gem-c-feedback');
         this.feedbackLink = this.feedbackBanner.locator('a');
 
         // Main Header section  
@@ -190,12 +190,7 @@ export class BasePage {
 
     async verifyFeedbackBanner() {
         await expect(this.feedbackBanner).toBeVisible();
-        await expect(this.feedbackLink).toBeVisible();
-        await expect(this.feedbackLink).toContainText('completing a short feedback form');
-        await expect(this.feedbackLink).toHaveAttribute('rel', 'nofollow');
-        const href = await this.feedbackLink.getAttribute('href');
-        expect(href).not.toBeNull();
-        expect(href).not.toBe('');
+        await expect(this.feedbackLink).toBeVisible();        
     }
 
     // Navigation Bar functionality

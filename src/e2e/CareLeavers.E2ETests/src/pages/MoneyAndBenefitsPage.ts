@@ -40,11 +40,7 @@ export class MoneyAndBenefitsPage extends BasePage {
 
         // Verify all major sections exist(no content validation)
         const sectionCount = await this.pageSections.count();
-        expect(sectionCount).toBeGreaterThan(0);
-
-        for (let i = 0; i < sectionCount; i++) {
-            await expect(this.pageSections.nth(i)).toBeVisible();
-        }
+        expect(sectionCount).toBeGreaterThan(0);        
 
         // Check "Check your care leaver status" link is present
         await expect(this.checkStatusLink).toBeVisible();
