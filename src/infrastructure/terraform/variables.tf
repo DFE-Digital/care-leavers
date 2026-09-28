@@ -169,3 +169,21 @@ variable "list_of_social_media_bots" {
   description = "A list of social media bots that are explicitly allowed or refed to within the site"
   default     = ["facebookbot|facebookexternalhit|facebookscraper|twitterbot|meta-externalfetcher|microsoftpreview|linkedinbot|pinterest|redditbot|telegrambot|mastadon|duckduckbot"]
 }
+
+variable "splunk_realm" {
+  type        = string
+  default     = "eu2"
+  description = "Splunk Observability Cloud Realm"
+}
+
+variable "splunk_port" {
+  type        = string
+  default     = "4318"
+  description = "Splunk port number"
+}
+
+variable "splunk_access_token" {
+  description = "Splunk Access Token"
+  type        = string
+  sensitive   = true
+}

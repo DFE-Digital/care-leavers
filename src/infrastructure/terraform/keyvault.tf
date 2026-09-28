@@ -197,3 +197,19 @@ resource "azurerm_key_vault_secret" "blob-storage-connection-string" {
 
   tags = local.common_tags
 }
+
+resource "azurerm_key_vault_secret" "splunk-access-token" {
+  #checkov:skip=CKV_AZURE_41: Will review in a future ticket
+  key_vault_id = azurerm_key_vault.kv.id
+  name         = "splunk-access-token"
+  value        = var.splunk_access_token
+  content_type = "access_token"
+
+  depends_on = [
+    azurerm_role_assignment.kv_officer,
+    azurerm_role_assignment.kv_administrator,
+    azurerm_role_assignment.kv_admin_sp
+  ]
+
+  tags = local.common_tags
+}
