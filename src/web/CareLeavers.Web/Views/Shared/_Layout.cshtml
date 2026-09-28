@@ -26,6 +26,13 @@
         ContentfulConfiguration = config,
         Language = language
     };
+
+    var feedbackViewModel = new FeedbackViewModel
+    {
+        Page = Model,        
+        FeedbackUrl = config.FeedbackUrl
+    };
+
 }
 
 <!DOCTYPE html>
@@ -94,7 +101,6 @@
 <div class="govuk-width-container @ViewBag.ContainerClasses" id="main-content-container">
     @await RenderSectionAsync("BeforeContent", required: false)
     <main class="govuk-main-wrapper @ViewBag.MainClasses" id="main-content" role="main" lang="@ViewBag.MainLang">
-        @await Html.PartialAsync("_FeedbackComponent", configViewModel)
         @RenderBody()
     </main>
 </div>
@@ -108,7 +114,8 @@
 }
 
 @{
-    await Html.RenderPartialAsync("_Footer", configViewModel);
+            await Html.RenderPartialAsync("_FeedbackComponent", feedbackViewModel);
+            await Html.RenderPartialAsync("_Footer", configViewModel);
 }
 
 @await RenderSectionAsync("Scripts", false)

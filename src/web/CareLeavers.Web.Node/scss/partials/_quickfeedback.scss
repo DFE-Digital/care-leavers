@@ -1,0 +1,254 @@
+
+.gem-c-layout-for-public {
+    font-family: "GDS Transport",arial,sans-serif;
+}
+
+.dfe-section {
+    padding-top: 20px;
+}
+
+.gem-c-feedback {
+    background-color: #f4f8fb;
+    margin-top: 30px;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    padding-left: calc(50vw - 50%);
+    padding-right: calc(50vw - 50%);
+    color: #0b0c0c;
+    border-top: 1px solid #8eb8dc;
+}
+
+.gem-c-feedback__prompt {
+    color: #0b0c0c;
+    outline: 0;
+}
+
+.gem-c-feedback__prompt-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0 15px;
+    justify-content: center;
+}
+
+@media (min-width: 40.0625em) {
+    .gem-c-feedback__prompt-content {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+}
+
+.gem-c-feedback__prompt-questions {
+    text-align: center;
+    padding: 20px 0;
+}
+
+@media (min-width: 40.0625em) {
+    .gem-c-feedback__prompt-questions {
+        margin: 0 15px;
+    }
+}
+
+.gem-c-feedback__prompt-question-answer {
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+@media (min-width: 40.0625em) {
+    .gem-c-feedback__prompt-question-answer {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.gem-c-feedback__prompt-question {
+    margin: 0;
+    padding-bottom: 10px;
+}
+
+@media (min-width: 40.0625em) {
+    .gem-c-feedback__prompt-question {
+        padding-bottom: 0;
+        margin-right: 10px;
+    }
+}
+
+.gem-c-feedback__option-list {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+}
+
+@media (min-width: 40.0625em) {
+    .gem-c-feedback__option-list {
+        display: flex;
+        list-style-type: none;
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    li {
+        padding-right: 20px;
+    }
+}
+
+ul {
+    padding-left: 0;
+}
+
+li {
+    padding-right: 10px;
+}
+
+.gem-c-feedback__option-list-item .gem-c-feedback__prompt-link {
+    min-width: 80px;
+}
+
+@media (min-width: 40.0625em) {
+    .gem-c-feedback__option-list-item .gem-c-feedback__prompt-link {
+        min-width: 100px;
+    }
+}
+
+.gem-c-feedback__prompt-link {
+    background: rgba(0, 0, 0, 0);
+    color: #0b0c0c;
+    box-shadow: 0 3px 0 #0b0c0c;
+    border: 1px #0b0c0c solid;    
+    margin-bottom: 0;
+    width: 100%;
+    font-family: "GDS Transport", arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    font-size: 1.1875rem;
+    line-height: 1.3157894737;
+    outline: none !important;
+    outline-width: 0 !important;
+    outline-offset: 0 !important;
+
+    &:focus {
+        outline: none !important;
+        outline-width: 0 !important;
+        outline-offset: 0 !important;
+        border: 1px #0b0c0c solid !important;
+        border-top: 1px #cecece solid !important;
+        box-shadow: 0 3px 0 #0b0c0c !important;
+    }
+
+    &:focus-visible {
+        outline: none !important;
+        outline-width: 0 !important;
+        outline-offset: 0 !important;
+        border: 1px #0b0c0c solid !important;
+        border-top: 1px #cecece solid !important;
+        box-shadow: 0 3px 0 #0b0c0c !important;
+    }
+
+    &:active {
+        outline: none !important;
+        outline-width: 0 !important;
+        outline-offset: 0 !important;
+        border: 1px #0b0c0c solid !important;
+        border-top: 1px #cecece solid !important;
+        box-shadow: 0 3px 0 #0b0c0c !important;
+    }
+}
+
+    .gem-c-feedback__prompt-link:hover {
+        background-color: #cecece;
+    }
+
+.gem-c-feedback__prompt-questions--something-is-wrong {
+    border: 0;
+}
+
+@media (min-width: 40.0625em) {
+    .gem-c-feedback__prompt-questions--something-is-wrong {
+        border-top: 1px solid var(--govuk-border-colour, #cecece);
+    }
+}
+
+.gem-c-feedback__prompt-question,
+.gem-c-feedback__prompt-success {
+    font-family: "GDS Transport", arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 700;
+    font-size: 1.1875rem;
+    line-height: 1.3157894737;
+}
+
+.gem-c-feedback__form-heading {
+    margin: 0 0 15px;
+    color: var(--govuk-text-colour, #0b0c0c);
+    font-family: "GDS Transport", arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 700;    
+    line-height: 1.1904761905;
+}
+
+@media (min-width: 40.0625em) {
+    .govuk-button.gem-c-feedback__prompt-link {
+        -moz-osx-font-smoothing: grayscale;
+        box-sizing: border-box;
+        display: inline-block;
+        position: relative;
+        margin-top: 0;
+        margin-right: 0;
+        margin-left: 0;
+        padding: 8px 10px 7px;
+        border-radius: 0;
+        text-align: center;
+        vertical-align: top;
+        cursor: pointer;
+        -webkit-appearance: none;
+        outline: none !important;
+        outline-width: 0 !important;
+        outline-offset: 0 !important;
+        border: 1px #0b0c0c solid !important;
+        box-shadow: 0 3px 0 #0b0c0c !important;
+
+        &:focus {
+            outline: none !important;
+            outline-width: 0 !important;
+            outline-offset: 0 !important;
+            border: 1px #0b0c0c solid !important;
+            box-shadow: 0 3px 0 #0b0c0c !important;
+        }
+
+        &:focus-visible {
+            outline: none !important;
+            outline-width: 0 !important;
+            outline-offset: 0 !important;
+            border: 1px #0b0c0c solid !important;
+            box-shadow: 0 3px 0 #0b0c0c !important;
+        }
+
+        &:active {
+            outline: none !important;
+            outline-width: 0 !important;
+            outline-offset: 0 !important;
+            border: 1px #0b0c0c solid !important;
+            box-shadow: 0 3px 0 #0b0c0c !important;
+        }
+    }
+}
+
+.gem-c-button--secondary-quiet {
+    padding: 8px 10px;
+    border-color: var(--govuk-secondary-text-colour, #484949);
+    color: var(--govuk-secondary-text-colour, #484949);
+    background-color: #fff;
+    box-shadow: none;
+}
+
+    .gem-c-button--secondary-quiet:hover {
+        border-color: #0b0c0c;
+        color: #0b0c0c;
+        background-color: #cecece;
+        text-decoration: none;
+    }
