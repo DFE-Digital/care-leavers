@@ -5,7 +5,7 @@
 @model CareLeavers.Web.Models.ViewModels.FeedbackViewModel
 @inject IContentService ContentService
 @{
-    if (!(Model.Page.ShowQuickFeedback ?? false))
+    if (Model.Page == null || !(Model.Page.ShowQuickFeedback ?? false))
     {
         return;
     }
