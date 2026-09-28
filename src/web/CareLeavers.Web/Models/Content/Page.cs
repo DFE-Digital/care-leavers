@@ -43,5 +43,5 @@ public class Page : ContentfulContent
     
     public Document? SecondaryContent { get; set; }
 
-    public bool ShowQuickFeedback { get; set; }
+    public bool? ShowQuickFeedback { get; set; }
 }

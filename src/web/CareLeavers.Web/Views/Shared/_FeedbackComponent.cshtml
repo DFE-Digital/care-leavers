@@ -3,17 +3,14 @@
 @using Microsoft.Extensions.Options
 
 @model CareLeavers.Web.Models.ViewModels.FeedbackViewModel
-@inject IOptions<ScriptOptions> ScriptOptions
 @inject IContentService ContentService
 @{
-    var scriptConfig = ScriptOptions.Value;
-
-    if (!Model.Page.ShowQuickFeedback)
+    if (!(Model.Page.ShowQuickFeedback ?? false))
     {
         return;
     }
 
-    var showFeedback = Model.Page.ShowQuickFeedback;
+    var showFeedback = Model.Page.ShowQuickFeedback ?? false;
 
 }
 @if (showFeedback)
