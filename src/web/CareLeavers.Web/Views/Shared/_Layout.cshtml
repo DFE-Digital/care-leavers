@@ -106,10 +106,12 @@
 </div>
 @if (IsSectionDefined("AfterGDSContent"))
 {
-    <section class="dfe-page-grey" id="main-content-footer">
-        <div class="govuk-width-container">
+    <section  id="main-content-footer">
+      <div class="govuk-width-container">
+                <div class="dfe-section dfe box-ext">
             @await RenderSectionAsync("AfterGDSContent")
-        </div>
+                </div>
+      </div>
     </section>
 }
 

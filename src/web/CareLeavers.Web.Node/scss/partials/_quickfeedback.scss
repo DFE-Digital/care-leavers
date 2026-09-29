@@ -9,11 +9,7 @@
 
 .gem-c-feedback {
     background-color: #f4f8fb;
-    margin-top: 30px;
-    margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
-    padding-left: calc(50vw - 50%);
-    padding-right: calc(50vw - 50%);
+    margin-top: 30px;    
     color: #0b0c0c;
     border-top: 1px solid #8eb8dc;
 }
@@ -82,6 +78,15 @@
     margin: 0;
 }
 
+.gem-c-feedback__option-list {
+    padding-left: 0;
+}
+
+.gem-c-feedback__option-list-item {
+    margin-bottom: 0 !important;
+    padding-right: 10px;
+}
+
 @media (min-width: 40.0625em) {
     .gem-c-feedback__option-list {
         display: flex;
@@ -90,17 +95,9 @@
         padding-left: 20px;
     }
 
-    li {
+    .gem-c-feedback__option-list-item {        
         padding-right: 20px;
     }
-}
-
-ul {
-    padding-left: 0;
-}
-
-li {
-    padding-right: 10px;
 }
 
 .gem-c-feedback__option-list-item .gem-c-feedback__prompt-link {
@@ -158,17 +155,17 @@ li {
     }
 }
 
-    .gem-c-feedback__prompt-link:hover {
-        background-color: #cecece;
-    }
+.gem-c-feedback__prompt-link:hover {
+    background-color: #cecece;
+}
 
 .gem-c-feedback__prompt-questions--something-is-wrong {
-    border: 0;
+    border-top: 1px solid var(--govuk-border-colour, #cecece);
 }
 
 @media (min-width: 40.0625em) {
     .gem-c-feedback__prompt-questions--something-is-wrong {
-        border-top: 1px solid var(--govuk-border-colour, #cecece);
+        border: 0;
     }
 }
 
@@ -182,74 +179,99 @@ li {
     line-height: 1.3157894737;
 }
 
+.gem-c-feedback__prompt-feedback {
+    padding: 30px 0;
+}
+
 .gem-c-feedback__form-heading {
     margin: 0 0 15px;
     color: var(--govuk-text-colour, #0b0c0c);
     font-family: "GDS Transport", arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-weight: 700;    
+    font-weight: 700;
+    font-size: 1.3125rem;
     line-height: 1.1904761905;
 }
 
 @media (min-width: 40.0625em) {
-    .govuk-button.gem-c-feedback__prompt-link {
-        -moz-osx-font-smoothing: grayscale;
-        box-sizing: border-box;
-        display: inline-block;
-        position: relative;
-        margin-top: 0;
-        margin-right: 0;
-        margin-left: 0;
-        padding: 8px 10px 7px;
-        border-radius: 0;
-        text-align: center;
-        vertical-align: top;
-        cursor: pointer;
-        -webkit-appearance: none;
-        outline: none !important;
-        outline-width: 0 !important;
-        outline-offset: 0 !important;
-        border: 1px #0b0c0c solid !important;
-        box-shadow: 0 3px 0 #0b0c0c !important;
-
-        &:focus {
-            outline: none !important;
-            outline-width: 0 !important;
-            outline-offset: 0 !important;
-            border: 1px #0b0c0c solid !important;
-            box-shadow: 0 3px 0 #0b0c0c !important;
-        }
-
-        &:focus-visible {
-            outline: none !important;
-            outline-width: 0 !important;
-            outline-offset: 0 !important;
-            border: 1px #0b0c0c solid !important;
-            box-shadow: 0 3px 0 #0b0c0c !important;
-        }
-
-        &:active {
-            outline: none !important;
-            outline-width: 0 !important;
-            outline-offset: 0 !important;
-            border: 1px #0b0c0c solid !important;
-            box-shadow: 0 3px 0 #0b0c0c !important;
-        }
+    .gem-c-feedback__form-heading {
+        font-size: 1.5rem;
+        line-height: 1.25;
     }
+}
+
+.govuk-button.gem-c-feedback__prompt-link {
+    font-size: 1rem;
+
+    &:hover, &:active {
+        color: #0b0c0c;
+    }
+
+}
+
+@media (min-width: 40.0625em) {
+.govuk-button.gem-c-feedback__prompt-link {
+-moz-osx-font-smoothing: grayscale;
+box-sizing: border-box;
+display: inline-block;
+position: relative;
+margin-top: 0;
+margin-right: 0;
+margin-left: 0;
+padding: 8px 10px 7px;
+border-radius: 0;
+text-align: center;
+vertical-align: top;
+cursor: pointer;
+-webkit-appearance: none;
+outline: none !important;
+outline-width: 0 !important;
+outline-offset: 0 !important;
+border: 1px #0b0c0c solid !important;
+box-shadow: 0 3px 0 #0b0c0c !important;
+
+&:focus {
+    outline: none !important;
+    outline-width: 0 !important;
+    outline-offset: 0 !important;
+    border: 1px #0b0c0c solid !important;
+    box-shadow: 0 3px 0 #0b0c0c !important;
+}
+
+&:focus-visible {
+    outline: none !important;
+    outline-width: 0 !important;
+    outline-offset: 0 !important;
+    border: 1px #0b0c0c solid !important;
+    box-shadow: 0 3px 0 #0b0c0c !important;
+}
+
+&:active {
+    outline: none !important;
+    outline-width: 0 !important;
+    outline-offset: 0 !important;
+    border: 1px #0b0c0c solid !important;
+    box-shadow: 0 3px 0 #0b0c0c !important;
+}
+}
 }
 
 .gem-c-button--secondary-quiet {
-    padding: 8px 10px;
-    border-color: var(--govuk-secondary-text-colour, #484949);
-    color: var(--govuk-secondary-text-colour, #484949);
-    background-color: #fff;
-    box-shadow: none;
+padding: 8px 10px;
+border-color: var(--govuk-secondary-text-colour, #484949);
+color: var(--govuk-secondary-text-colour, #484949);
+background-color: #fff;
+box-shadow: none;
 }
 
-    .gem-c-button--secondary-quiet:hover {
-        border-color: #0b0c0c;
-        color: #0b0c0c;
-        background-color: #cecece;
-        text-decoration: none;
-    }
+.gem-c-button--secondary-quiet:hover {
+    border-color: #0b0c0c;
+    color: #0b0c0c;
+    background-color: #cecece;
+    text-decoration: none;
+}
+
+.govuk-button {
+    margin-bottom: 0;
+}
