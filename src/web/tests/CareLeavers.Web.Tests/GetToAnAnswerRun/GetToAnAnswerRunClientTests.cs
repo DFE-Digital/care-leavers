@@ -139,7 +139,7 @@ public class GetToAnAnswerRunClientTests
         Assert.ThrowsAsync<Exception>((Func<Task>)GtaaTask);
         return;
         
-        async Task GtaaTask() => await _getToAnAnswerRunClient.GetInitialState("en", "/test");
+        async Task GtaaTask() => await _getToAnAnswerRunClient.GetInitialState("en", "/test-error");
     }
 
     [Test]
