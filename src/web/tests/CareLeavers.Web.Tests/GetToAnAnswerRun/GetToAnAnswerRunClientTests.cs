@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using CareLeavers.Web.GetToAnAnswerRun;
 using Joonasw.AspNetCore.SecurityHeaders.Csp;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -27,6 +28,7 @@ public class GetToAnAnswerRunClientTests
         ILogger<GetToAnAnswerRunClient> logger = Substitute.For<ILogger<GetToAnAnswerRunClient>>();
 
         ServiceCollection serviceCollection = [];
+        serviceCollection.AddMemoryCache();
         serviceCollection.AddTransient<IConfiguration>(_ =>
         {
             IConfiguration configuration = new ConfigurationBuilder().AddInMemoryCollection().Build();
@@ -37,19 +39,17 @@ public class GetToAnAnswerRunClientTests
 
         ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
-        _getToAnAnswerRunClient = new GetToAnAnswerRunClient(_httpClientMock, serviceProvider, logger);
+        var memoryCache = serviceProvider.GetRequiredService<IMemoryCache>();
+        _getToAnAnswerRunClient = new GetToAnAnswerRunClient(_httpClientMock, serviceProvider, logger, memoryCache);
     }
 
     [Test]
-    public void GetStartPageOrInitialState_Throws_Exception_IfStatusCodeIsNotOK()
+    public async Task GetStartPageOrInitialState_Throws_Exception_IfStatusCodeIsNotOK()
     {
         _httpMessageHandlerMock.StatusCode = HttpStatusCode.BadRequest;
         _httpMessageHandlerMock.Content = new StringContent("");
-        
-        Assert.ThrowsAsync<Exception>((Func<Task>)GtaaTask);
-        return;
-        
-        async Task GtaaTask() => await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
+
+        _ = Assert.ThrowsAsync<Exception>(async () => await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test"));
     }
 
     [Test]
@@ -131,7 +131,7 @@ public class GetToAnAnswerRunClientTests
     }
 
     [Test]
-    public void GetInitialState_Throws_Exception_IfStatusCodeIsNotOK()
+    public async Task GetInitialState_Throws_Exception_IfStatusCodeIsNotOK()
     {
         _httpMessageHandlerMock.StatusCode = HttpStatusCode.BadRequest;
         _httpMessageHandlerMock.Content = new StringContent("");
@@ -158,17 +158,14 @@ public class GetToAnAnswerRunClientTests
     }
 
     [Test]
-    public void GetNextState_Throws_Exception_IfStatusCodeIsNotOK()
+    public async Task GetNextState_Throws_Exception_IfStatusCodeIsNotOK()
     {
         _httpMessageHandlerMock.StatusCode = HttpStatusCode.BadRequest;
         _httpMessageHandlerMock.Content = new StringContent("");
 
-        Assert.ThrowsAsync<Exception>((Func<Task>)GtaaTask);
-        return;
-        
-        async Task GtaaTask() =>
+        _ = Assert.ThrowsAsync<Exception>(async () =>
             await _getToAnAnswerRunClient.GetNextState("localhost", "en", "/test",
-                new Dictionary<string, StringValues>());
+                new Dictionary<string, StringValues>()));
     }
 
     [Test]
@@ -190,15 +187,12 @@ public class GetToAnAnswerRunClientTests
     }
 
     [Test]
-    public void GetDecorativeImage_Throws_Exception_IfStatusCodeIsNotOK()
+    public async Task GetDecorativeImage_Throws_Exception_IfStatusCodeIsNotOK()
     {
         _httpMessageHandlerMock.StatusCode = HttpStatusCode.BadRequest;
         _httpMessageHandlerMock.Content = new StringContent("");
-        
-        Assert.ThrowsAsync<Exception>((Func<Task>)GtaaTask);
-        return;
 
-        async Task GtaaTask() => await _getToAnAnswerRunClient.GetDecorativeImage("/test");
+        _ = Assert.ThrowsAsync<Exception>(async () => await _getToAnAnswerRunClient.GetDecorativeImage("/test"));
     }
 
     [OneTimeTearDown]

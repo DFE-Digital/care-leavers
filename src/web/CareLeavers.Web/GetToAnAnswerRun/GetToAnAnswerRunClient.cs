@@ -1,24 +1,35 @@
 using System.Text;
 using System.Web;
-using HtmlAgilityPack;
 using Joonasw.AspNetCore.SecurityHeaders.Csp;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Primitives;
+using System.Text.RegularExpressions;
 
 namespace CareLeavers.Web.GetToAnAnswerRun;
 
 public class GetToAnAnswerRunClient(
     HttpClient httpClient, 
     IServiceProvider serviceProvider,
-    ILogger<GetToAnAnswerRunClient> logger
+    ILogger<GetToAnAnswerRunClient> logger,
+    IMemoryCache cache
 ) : IGetToAnAnswerRunClient {
     private readonly IConfiguration _configuration = serviceProvider.GetRequiredService<IConfiguration>();
     private readonly ICspNonceService _cspNonceService = serviceProvider.GetRequiredService<ICspNonceService>();
+    private readonly IMemoryCache _cache = cache;
 
     public async Task<string> GetStartPageOrInitialState(string languageCode, string questionnaireSlug)
     {
+        var cacheKey = $"gtaa:start:{languageCode}:{questionnaireSlug}";
+
+        if (_cache.TryGetValue(cacheKey, out string? cachedHtml))
+        {
+            logger.LogDebug("Cache hit for GetStartPageOrInitialState: {slug}", questionnaireSlug);
+            return cachedHtml;
+        }
+
         var responseMessage = await httpClient.GetAsync(
             $"/questionnaires/{HttpUtility.UrlEncode(questionnaireSlug)}/start?embed=true");
-        
+
         if (!responseMessage.IsSuccessStatusCode)
         {
             throw new Exception($"Failed to get start state for questionnaire {questionnaireSlug}");
@@ -33,19 +44,35 @@ public class GetToAnAnswerRunClient(
 
     public async Task<string> GetInitialState(string languageCode, string questionnaireSlug)
     {
+        var cacheKey = $"gtaa:next:{languageCode}:{questionnaireSlug}";
+
+        if (_cache.TryGetValue(cacheKey, out string? cachedHtml))
+        {
+            logger.LogDebug("Cache hit for GetInitialState: {slug}", questionnaireSlug);
+            return cachedHtml;
+        }
+
         var responseMessage = await httpClient.GetAsync(
             $"/questionnaires/{HttpUtility.UrlEncode(questionnaireSlug)}/next?embed=true");
-        
+
         if (!responseMessage.IsSuccessStatusCode)
         {
             throw new Exception($"Failed to get initial state for questionnaire {questionnaireSlug}");
         }
-        
+
         var bytes = await responseMessage.Content.ReadAsByteArrayAsync();
         var html = Encoding.UTF8.GetString(bytes);
-        
+
         // Replace the base url with the local url so that the embedded content redirects to the correct page
-        return SubstitutePageContent(languageCode, html);
+        var substituted = SubstitutePageContent(languageCode, html);
+
+        // Cache for 5 minutes - next pages are typically static per questionnaire
+        var cacheOptions = new MemoryCacheEntryOptions()
+            .SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
+
+        _cache.Set(cacheKey, substituted, cacheOptions);
+
+        return substituted;
     }
 
     public async Task<string> GetNextState(string thisOrigin, string languageCode, string questionnaireSlug, Dictionary<string, StringValues> formData)
@@ -88,130 +115,112 @@ public class GetToAnAnswerRunClient(
 
     private string SubstitutePageContent(string languageCode, string html, string? thisOrigin = null)
     {
-        var doc = new HtmlDocument();
-        
-        doc.OptionOutputAsXml = false;
-        doc.OptionWriteEmptyNodes = true;
-        doc.OptionDefaultStreamEncoding = Encoding.UTF8;
-        
-        doc.LoadHtml(html);
-        
-        // Inject nonce into script and style tags
-        InjectBaseUrlAndNonce(languageCode, doc, thisOrigin);
-        
-        using var writer = new StringWriter();
-        doc.Save(writer);
-        return writer.ToString();
-    }
-    
-    private void InjectBaseUrlAndNonce(string languageCode, HtmlDocument doc, string? thisOrigin = null)
-    {
         var baseUrl = _configuration["GetToAnAnswer:BaseUrl"];
         var nonce = _cspNonceService.GetNonce();
-        
-        // Add nonce to all script tags that don't already have one
-        var scriptTags = doc.DocumentNode.SelectNodes("//script");
-        if (scriptTags != null)
+
+        // Add nonce to script tags that don't have it
+        html = Regex.Replace(html, @"<script\b(?!\s+nonce)([^>]*)>", match =>
         {
-            foreach (var script in scriptTags)
+            var attrs = match.Groups[1].Value;
+            if (string.IsNullOrWhiteSpace(attrs))
             {
-                if (!script.Attributes.Contains("nonce") || string.IsNullOrWhiteSpace(script.Attributes["nonce"].Value))
-                {
-                    script.SetAttributeValue("nonce", nonce);
-                }
-                
-                if (script.Attributes.Contains("src") && script.Attributes["src"].Value.StartsWith("/"))
-                {
-                    script.SetAttributeValue("src", baseUrl + script.Attributes["src"].Value);
-                }
-                
-                script.Attributes.Remove("asp-add-nonce");
+                return $"<script nonce=\"{nonce}\">";
             }
+            return $"<script{attrs} nonce=\"{nonce}\">";
+        }, RegexOptions.IgnoreCase);
+
+        // Add nonce to style tags that don't have it
+        html = Regex.Replace(html, @"<style\b(?!\s+nonce)([^>]*)>", match =>
+        {
+            var attrs = match.Groups[1].Value;
+            if (string.IsNullOrWhiteSpace(attrs))
+            {
+                return $"<style nonce=\"{nonce}\">";
+            }
+            return $"<style{attrs} nonce=\"{nonce}\">";
+        }, RegexOptions.IgnoreCase);
+
+        // Replace src="/..." or src=/... with baseUrl prefix
+        html = Regex.Replace(html, @"src=[""']?(/[^""\s>]+)[""']?", match =>
+        {
+            var src = match.Groups[1].Value;
+            return $"src=\"{baseUrl}{src}\"";
+        }, RegexOptions.IgnoreCase);
+
+        // Replace href="/..." or href=/... in link tags with baseUrl prefix (but not for /questionnaires/)
+        html = Regex.Replace(html, @"<link\b([^>]*?)href=[""']?(/[^""\s>]+?)[""']?(\s|>)", match =>
+        {
+            var prefix = match.Groups[1].Value;
+            var href = match.Groups[2].Value;
+            var suffix = match.Groups[3].Value;
+
+            // Only add baseUrl if it doesn't start with /questionnaires/
+            if (!href.Contains("/questionnaires/"))
+            {
+                return $"<link{prefix}href=\"{baseUrl}{href}\"{suffix}";
+            }
+            return match.Value;
+        }, RegexOptions.IgnoreCase);
+
+        // Replace form action="/questionnaires/..." with local routes
+        html = Regex.Replace(html, @"action=[""']?(/questionnaires[^""\s>]*)[""']?", match =>
+        {
+            var action = match.Groups[1].Value;
+            var newAction = action.Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires");
+            return $"action=\"{newAction}\"";
+        }, RegexOptions.IgnoreCase);
+
+        // Replace href="/questionnaires/..." in anchor tags
+        html = Regex.Replace(html, @"<a\b([^>]*?)href=[""']?(/questionnaires[^""\s>]*)[""']?", match =>
+        {
+            var prefix = match.Groups[1].Value;
+            var href = match.Groups[2].Value;
+            var newHref = href.Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires");
+            return $"<a{prefix}href=\"{newHref}\"";
+        }, RegexOptions.IgnoreCase);
+
+        // Replace external-link-dest input value if it matches thisOrigin
+        if (!string.IsNullOrEmpty(thisOrigin))
+        {
+            html = Regex.Replace(html, 
+                @"<input\b([^>]*?)id=[""']?external-link-dest[""']?([^>]*?)value=[""']?([^""\s>]+)[""']?",
+                match =>
+                {
+                    var beforeId = match.Groups[1].Value;
+                    var afterId = match.Groups[2].Value;
+                    var value = match.Groups[3].Value;
+
+                    try
+                    {
+                        var url = new Uri(value);
+                        if (url.Host.Equals(thisOrigin, StringComparison.OrdinalIgnoreCase))
+                        {
+                            var pathParts = url.AbsolutePath.Split('/');
+                            if (pathParts.Length > 1)
+                            {
+                                pathParts[1] = languageCode;
+                            }
+                            var newPath = string.Join('/', pathParts);
+                            var newUrl = new UriBuilder(url) { Path = newPath }.Uri;
+                            return $"<input{beforeId}id=\"external-link-dest\"{afterId}value=\"{newUrl}\"";
+                        }
+                    }
+                    catch
+                    {
+                        // If URL parsing fails, leave it as is
+                    }
+
+                    return match.Value;
+                },
+                RegexOptions.IgnoreCase);
         }
 
-        // Add baseUrls to all link tags that don't already have one
-        var linkTags = doc.DocumentNode.SelectNodes("//link");
-        if (linkTags != null)
-        {
-            foreach (var link in linkTags)
-            {
-                if (link.Attributes.Contains("href") && link.Attributes["href"].Value.StartsWith("/"))
-                {
-                    link.SetAttributeValue("href", baseUrl + link.Attributes["href"].Value);
-                }
-                
-                link.Attributes.Remove("asp-add-nonce");
-            }
-        }
+        // Remove asp-add-nonce attributes
+        html = Regex.Replace(html, @"\s*asp-add-nonce(?:=[""']?[^""'\s>]*[""']?)?", string.Empty, RegexOptions.IgnoreCase);
 
-        // Add nonce to all style tags that don't already have one
-        var styleTags = doc.DocumentNode.SelectNodes("//style");
-        if (styleTags != null)
-        {
-            foreach (var style in styleTags)
-            {
-                if (!style.Attributes.Contains("nonce") || string.IsNullOrWhiteSpace(style.Attributes["nonce"].Value))
-                {
-                    style.SetAttributeValue("nonce", nonce);
-                }
-                
-                style.Attributes.Remove("asp-add-nonce");
-            }
-        }
-        
-        // Add nonce to all style tags that don't already have one
-        var formTags = doc.DocumentNode.SelectNodes("//form");
-        if (formTags != null)
-        {
-            foreach (var form in formTags)
-            {
-                if (form.Attributes.Contains("action") && form.Attributes["action"].Value.StartsWith("/questionnaires/"))
-                {
-                    form.SetAttributeValue("action", form.Attributes["action"].Value
-                        .Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires"));
-                }
-            }
-        }
-        
-        // Add nonce to all style tags that don't already have one
-        var anchorTags = doc.DocumentNode.SelectNodes("//a");
-        if (anchorTags != null)
-        {
-            foreach (var anchor in anchorTags)
-            {
-                if (anchor.Attributes.Contains("href") && anchor.Attributes["href"].Value.StartsWith("/questionnaires/"))
-                {
-                    anchor.SetAttributeValue("href", anchor.Attributes["href"].Value
-                        .Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires"));
-                }
-            }
-        }
-        
-        // if the external link is this site, change the language code 
-        var externalLinkInput = doc.DocumentNode.SelectSingleNode("//input[@id='external-link-dest']");
-        if (externalLinkInput != null && thisOrigin != null)
-        {
-            // if 'externalLinkInput.value' starts with 'thisOrigin' (https://*.support-for-care-leavers.education.gov.uk)
-            // then replace the language code in the url with the current translation language code
-            
-            var url = new Uri(externalLinkInput.Attributes["value"].Value);
-            
-            logger.LogInformation($"Replacing language code in external link: {url}");
-            logger.LogInformation($"Checking if this {thisOrigin} matches {url.Host}");
-            
-            if (url.Host.Equals(thisOrigin))
-            {
-                var pathParts = url.AbsolutePath.Split('/');
+        // Self-close any input tags that aren't already self-closed
+        html = Regex.Replace(html, @"<input\b([^>]+?)(?<!/)>", "<input$1 />", RegexOptions.IgnoreCase);
 
-                if (pathParts.Length > 1)
-                {
-                    pathParts[1] = languageCode;
-                }
-                
-                var newUrl = new UriBuilder(url) {Path = string.Join('/', pathParts)}.Uri;
-                
-                externalLinkInput.SetAttributeValue("value", newUrl.ToString());
-            }
-        }
+        return html;
     }
 }

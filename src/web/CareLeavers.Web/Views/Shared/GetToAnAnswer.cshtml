@@ -1,19 +1,79 @@
 @model CareLeavers.Web.Models.Content.GetToAnAnswer
 @inject IHttpContextAccessor HttpContextAccessor;
+@inject Joonasw.AspNetCore.SecurityHeaders.Csp.ICspNonceService CspNonceService;
 
 @{
     var languageCode = HttpContextAccessor.HttpContext?.Request.RouteValues["languageCode"]?.ToString();
+    var nonce = CspNonceService.GetNonce();
+}
+@section Head
+{
+    <link rel="preload" href="/@languageCode/get-to-an-answer-questionnaires/@Model.questionnaireSlug/start" as="document">
+    <link rel="dns-prefetch" href="@Model.BaseUrl">
+    <link rel="preconnect" href="@Model.BaseUrl">
+    <link rel="preload" href="@Model.BaseUrl/js/gtaa.external.js" as="script">
 }
 
-<div class="gtaa-wrapper"
-     data-auto-scroll="false"
-     data-is-fixed-height-enabled="false"
-     data-bg="#fff"
-     data-fg="#00205b"
-     style="margin:0 auto; max-width:100%; width:100%;">
+<div class="gtaa-wrapper" data-auto-scroll="false" data-is-fixed-height-enabled="false" data-bg="#fff" data-fg="#00205b" style="margin:0 auto; max-width:100%; width:100%;">
+    <div id="gtaaLoader" style="padding: 20px; text-align: center;">
+        <p>Loading questionnaire...</p>
+    </div>
     <iframe id="gtaaFrame" title="@Model.Title"
             src="/@languageCode/get-to-an-answer-questionnaires/@Model.questionnaireSlug/start"
-            allow="autoplay" referrerpolicy="strict-origin" 
-            sandbox="allow-scripts allow-top-navigation allow-forms"></iframe>
+            allow="autoplay" referrerpolicy="strict-origin"
+            sandbox="allow-scripts allow-top-navigation allow-forms"
+            crossorigin="anonymous" loading="eager" fetchpriority="high"
+            style="display: none;">
+    </iframe>
 </div>
-<script asp-add-nonce="true" src="@Model.BaseUrl/js/gtaa.external.js"></script>
+
+<script nonce="@nonce">
+    (function() {
+        const loader = document.getElementById('gtaaLoader');
+        const frame = document.getElementById('gtaaFrame');
+        const wrapper = document.querySelector('.gtaa-wrapper');
+
+        // Utilities
+        const showLoader = () => {
+            if (loader) loader.style.display = 'block';
+        };
+
+        const hideLoader = () => {
+            if (loader) loader.style.display = 'none';
+        };
+
+        const showError = (message) => {
+            if (loader) {
+                loader.innerHTML = '<p style="color: #d32f2f;">' + (message || 'Failed to load questionnaire. Please try again.') + '</p>';
+            }
+        };
+
+        // Initialize
+        showLoader();
+
+        if (frame) {
+            frame.style.display = 'block';
+
+            // Listen for frame load completion
+            frame.addEventListener('load', () => {
+                hideLoader();
+                // Remove loading class if present
+                if (wrapper) wrapper.classList.remove('loading');
+            }, { once: true });
+
+            // Handle frame load errors
+            frame.addEventListener('error', () => {
+                showError('Failed to load questionnaire. Please try again.');
+            }, { once: true });
+
+            // Timeout safety - hide loader after 30 seconds regardless
+            setTimeout(() => {
+                if (loader && loader.style.display !== 'none') {
+                    hideLoader();
+                    if (wrapper) wrapper.classList.remove('loading');
+                }
+            }, 30000);
+        }
+    })();
+</script>
+<script asp-add-nonce="true" src="@Model.BaseUrl/js/gtaa.external.js" defer async></script>
