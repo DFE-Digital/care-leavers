@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace CareLeavers.Web.GetToAnAnswerRun;
 
-public class GetToAnAnswerRunClient(
+public partial class GetToAnAnswerRunClient(
     HttpClient httpClient, 
     IServiceProvider serviceProvider,
     ILogger<GetToAnAnswerRunClient> logger,
@@ -20,59 +20,18 @@ public class GetToAnAnswerRunClient(
     public async Task<string> GetStartPageOrInitialState(string languageCode, string questionnaireSlug)
     {
         var cacheKey = $"gtaa:start:{languageCode}:{questionnaireSlug}";
+        var endpoint = $"/questionnaires/{HttpUtility.UrlEncode(questionnaireSlug)}/start?embed=true";
 
-        if (_cache.TryGetValue(cacheKey, out string? cachedHtml))
-        {
-            logger.LogDebug("Cache hit for GetStartPageOrInitialState: {slug}", questionnaireSlug);
-            return cachedHtml;
-        }
-
-        var responseMessage = await httpClient.GetAsync(
-            $"/questionnaires/{HttpUtility.UrlEncode(questionnaireSlug)}/start?embed=true");
-
-        if (!responseMessage.IsSuccessStatusCode)
-        {
-            throw new Exception($"Failed to get start state for questionnaire {questionnaireSlug}");
-        }
-        
-        var bytes = await responseMessage.Content.ReadAsByteArrayAsync();
-        var html = Encoding.UTF8.GetString(bytes);
-        
-        // Replace the base url with the local url so that the embedded content redirects to the correct page
-        return SubstitutePageContent(languageCode, html);
+        return await GetCachedQuestionnairePage(languageCode, questionnaireSlug, cacheKey, endpoint, cacheMinutes: null);
     }
 
     public async Task<string> GetInitialState(string languageCode, string questionnaireSlug)
     {
         var cacheKey = $"gtaa:next:{languageCode}:{questionnaireSlug}";
-
-        if (_cache.TryGetValue(cacheKey, out string? cachedHtml))
-        {
-            logger.LogDebug("Cache hit for GetInitialState: {slug}", questionnaireSlug);
-            return cachedHtml;
-        }
-
-        var responseMessage = await httpClient.GetAsync(
-            $"/questionnaires/{HttpUtility.UrlEncode(questionnaireSlug)}/next?embed=true");
-
-        if (!responseMessage.IsSuccessStatusCode)
-        {
-            throw new Exception($"Failed to get initial state for questionnaire {questionnaireSlug}");
-        }
-
-        var bytes = await responseMessage.Content.ReadAsByteArrayAsync();
-        var html = Encoding.UTF8.GetString(bytes);
-
-        // Replace the base url with the local url so that the embedded content redirects to the correct page
-        var substituted = SubstitutePageContent(languageCode, html);
+        var endpoint = $"/questionnaires/{HttpUtility.UrlEncode(questionnaireSlug)}/next?embed=true";
 
         // Cache for 5 minutes - next pages are typically static per questionnaire
-        var cacheOptions = new MemoryCacheEntryOptions()
-            .SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
-
-        _cache.Set(cacheKey, substituted, cacheOptions);
-
-        return substituted;
+        return await GetCachedQuestionnairePage(languageCode, questionnaireSlug, cacheKey, endpoint, cacheMinutes: 5);
     }
 
     public async Task<string> GetNextState(string thisOrigin, string languageCode, string questionnaireSlug, Dictionary<string, StringValues> formData)
@@ -101,126 +60,224 @@ public class GetToAnAnswerRunClient(
     {
         var response = await httpClient.GetAsync(
             $"/questionnaires/{HttpUtility.UrlEncode(questionnaireSlug)}/decorative-image");
-    
+
         if (!response.IsSuccessStatusCode)
         {
             throw new Exception($"Failed to get decorative image for questionnaire {questionnaireSlug}");
         }
-    
+
         var stream = await response.Content.ReadAsStreamAsync();
         var contentType = response.Content.Headers.ContentType?.MediaType ?? "image/png";
-    
+
         return (stream, contentType);
+    }
+
+    private async Task<string> GetCachedQuestionnairePage(
+        string languageCode, 
+        string questionnaireSlug, 
+        string cacheKey, 
+        string endpoint, 
+        int? cacheMinutes)
+    {
+        if (_cache.TryGetValue(cacheKey, out string? cachedHtml) && cachedHtml != null)
+        {
+            if (logger.IsEnabled(LogLevel.Debug))
+            {
+                logger.LogDebug("Cache hit for questionnaire: {Slug}", questionnaireSlug);
+            }
+            return cachedHtml;
+        }
+
+        var responseMessage = await httpClient.GetAsync(endpoint);
+
+        if (!responseMessage.IsSuccessStatusCode)
+        {
+            throw new Exception($"Failed to get questionnaire page for {questionnaireSlug}");
+        }
+
+        var html = await ReadResponseAsString(responseMessage);
+        var substituted = SubstitutePageContent(languageCode, html);
+
+        // Cache if cacheMinutes is specified
+        if (cacheMinutes.HasValue)
+        {
+            var cacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromMinutes(cacheMinutes.Value));
+            _cache.Set(cacheKey, substituted, cacheOptions);
+        }
+
+        return substituted;
+    }
+
+    private static async Task<string> ReadResponseAsString(HttpResponseMessage responseMessage)
+    {
+        var bytes = await responseMessage.Content.ReadAsByteArrayAsync();
+        return Encoding.UTF8.GetString(bytes);
     }
 
     private string SubstitutePageContent(string languageCode, string html, string? thisOrigin = null)
     {
-        var baseUrl = _configuration["GetToAnAnswer:BaseUrl"];
-        var nonce = _cspNonceService.GetNonce();
+        var substitutionContext = CreateSubstitutionContext(languageCode, thisOrigin);
 
-        // Add nonce to script tags that don't have it
-        html = Regex.Replace(html, @"<script\b(?!\s+nonce)([^>]*)>", match =>
-        {
-            var attrs = match.Groups[1].Value;
-            if (string.IsNullOrWhiteSpace(attrs))
-            {
-                return $"<script nonce=\"{nonce}\">";
-            }
-            return $"<script{attrs} nonce=\"{nonce}\">";
-        }, RegexOptions.IgnoreCase);
-
-        // Add nonce to style tags that don't have it
-        html = Regex.Replace(html, @"<style\b(?!\s+nonce)([^>]*)>", match =>
-        {
-            var attrs = match.Groups[1].Value;
-            if (string.IsNullOrWhiteSpace(attrs))
-            {
-                return $"<style nonce=\"{nonce}\">";
-            }
-            return $"<style{attrs} nonce=\"{nonce}\">";
-        }, RegexOptions.IgnoreCase);
-
-        // Replace src="/..." or src=/... with baseUrl prefix
-        html = Regex.Replace(html, @"src=[""']?(/[^""\s>]+)[""']?", match =>
-        {
-            var src = match.Groups[1].Value;
-            return $"src=\"{baseUrl}{src}\"";
-        }, RegexOptions.IgnoreCase);
-
-        // Replace href="/..." or href=/... in link tags with baseUrl prefix (but not for /questionnaires/)
-        html = Regex.Replace(html, @"<link\b([^>]*?)href=[""']?(/[^""\s>]+?)[""']?(\s|>)", match =>
-        {
-            var prefix = match.Groups[1].Value;
-            var href = match.Groups[2].Value;
-            var suffix = match.Groups[3].Value;
-
-            // Only add baseUrl if it doesn't start with /questionnaires/
-            if (!href.Contains("/questionnaires/"))
-            {
-                return $"<link{prefix}href=\"{baseUrl}{href}\"{suffix}";
-            }
-            return match.Value;
-        }, RegexOptions.IgnoreCase);
-
-        // Replace form action="/questionnaires/..." with local routes
-        html = Regex.Replace(html, @"action=[""']?(/questionnaires[^""\s>]*)[""']?", match =>
-        {
-            var action = match.Groups[1].Value;
-            var newAction = action.Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires");
-            return $"action=\"{newAction}\"";
-        }, RegexOptions.IgnoreCase);
-
-        // Replace href="/questionnaires/..." in anchor tags
-        html = Regex.Replace(html, @"<a\b([^>]*?)href=[""']?(/questionnaires[^""\s>]*)[""']?", match =>
-        {
-            var prefix = match.Groups[1].Value;
-            var href = match.Groups[2].Value;
-            var newHref = href.Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires");
-            return $"<a{prefix}href=\"{newHref}\"";
-        }, RegexOptions.IgnoreCase);
-
-        // Replace external-link-dest input value if it matches thisOrigin
-        if (!string.IsNullOrEmpty(thisOrigin))
-        {
-            html = Regex.Replace(html, 
-                @"<input\b([^>]*?)id=[""']?external-link-dest[""']?([^>]*?)value=[""']?([^""\s>]+)[""']?",
-                match =>
-                {
-                    var beforeId = match.Groups[1].Value;
-                    var afterId = match.Groups[2].Value;
-                    var value = match.Groups[3].Value;
-
-                    try
-                    {
-                        var url = new Uri(value);
-                        if (url.Host.Equals(thisOrigin, StringComparison.OrdinalIgnoreCase))
-                        {
-                            var pathParts = url.AbsolutePath.Split('/');
-                            if (pathParts.Length > 1)
-                            {
-                                pathParts[1] = languageCode;
-                            }
-                            var newPath = string.Join('/', pathParts);
-                            var newUrl = new UriBuilder(url) { Path = newPath }.Uri;
-                            return $"<input{beforeId}id=\"external-link-dest\"{afterId}value=\"{newUrl}\"";
-                        }
-                    }
-                    catch
-                    {
-                        // If URL parsing fails, leave it as is
-                    }
-
-                    return match.Value;
-                },
-                RegexOptions.IgnoreCase);
-        }
-
-        // Remove asp-add-nonce attributes
-        html = Regex.Replace(html, @"\s*asp-add-nonce(?:=[""']?[^""'\s>]*[""']?)?", string.Empty, RegexOptions.IgnoreCase);
-
-        // Self-close any input tags that aren't already self-closed
-        html = Regex.Replace(html, @"<input\b([^>]+?)(?<!/)>", "<input$1 />", RegexOptions.IgnoreCase);
+        html = ApplyNonceSubstitutions(html, substitutionContext);
+        html = ApplyUrlRewriting(html, substitutionContext);
+        html = ApplyAttributeCleanup(html, substitutionContext);
 
         return html;
     }
+
+    private SubstitutionContext CreateSubstitutionContext(string languageCode, string? thisOrigin) =>
+        new(
+            BaseUrl: _configuration["GetToAnAnswer:BaseUrl"],
+            Nonce: _cspNonceService.GetNonce(),
+            LanguageCode: languageCode,
+            ThisOrigin: thisOrigin,
+            RegexTimeout: TimeSpan.FromMilliseconds(500)
+        );
+
+    private static string ApplyNonceSubstitutions(string html, SubstitutionContext context)
+    {
+        html = AddNonceToTag(html, "script", context.Nonce);
+        html = AddNonceToTag(html, "style", context.Nonce);
+        return html;
+    }
+
+    private string ApplyUrlRewriting(string html, SubstitutionContext context)
+    {
+        html = SrcRegex().Replace(html, match =>
+        {
+            var src = match.Groups[1].Value;
+            return $"src=\"{context.BaseUrl}{src}\"";
+        });
+
+        html = LinkHrefRegex().Replace(html, match =>
+            ReplaceLinkHref(match, context));
+
+        html = ReplaceQuestionnairePath(html, "action", context.LanguageCode, context.RegexTimeout);
+        html = ReplaceQuestionnairePath(html, "href", context.LanguageCode, context.RegexTimeout, isAnchor: true);
+
+        if (!string.IsNullOrEmpty(context.ThisOrigin))
+        {
+            html = ReplaceExternalLinkDestination(html, context.ThisOrigin, context.LanguageCode, context.RegexTimeout);
+        }
+
+        return html;
+    }
+
+    private static string ApplyAttributeCleanup(string html, SubstitutionContext context)
+    {
+        html = AspAddNonceRegex().Replace(html, string.Empty);
+        html = InputTagRegex().Replace(html, "<input$1 />");
+        return html;
+    }
+
+    private string ReplaceLinkHref(Match match, SubstitutionContext context)
+    {
+        var prefix = match.Groups[1].Value;
+        var href = match.Groups[2].Value;
+        var suffix = match.Groups[3].Value;
+
+        if (!href.Contains("/questionnaires/"))
+        {
+            return $"<link{prefix}href=\"{context.BaseUrl}{href}\"{suffix}";
+        }
+        return match.Value;
+    }
+
+    private record SubstitutionContext(
+        string BaseUrl,
+        string Nonce,
+        string LanguageCode,
+        string? ThisOrigin,
+        TimeSpan RegexTimeout
+    );
+
+    private static string AddNonceToTag(string html, string tagName, string nonce)
+    {
+        var pattern = new Regex($@"<{tagName}\b(?!\s+nonce)([^>]*)>", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500));
+        return pattern.Replace(html, match =>
+        {
+            var attrs = match.Groups[1].Value;
+            if (string.IsNullOrWhiteSpace(attrs))
+            {
+                return $"<{tagName} nonce=\"{nonce}\">";
+            }
+            return $"<{tagName}{attrs} nonce=\"{nonce}\">";
+        });
+    }
+
+    private static string ReplaceQuestionnairePath(string html, string attribute, string languageCode, TimeSpan timeout, bool isAnchor = false)
+    {
+        if (isAnchor)
+        {
+            return AnchorHrefRegex().Replace(html, match =>
+            {
+                var prefix = match.Groups[1].Value;
+                var href = match.Groups[2].Value;
+                var newHref = href.Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires");
+                return $"<a{prefix}href=\"{newHref}\"";
+            });
+        }
+        else
+        {
+            var pattern = new Regex($@"{attribute}=[""']?(/questionnaires[^""\s>]*)[""']?", RegexOptions.IgnoreCase, timeout);
+            return pattern.Replace(html, match =>
+            {
+                var path = match.Groups[1].Value;
+                var newPath = path.Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires");
+                return $"{attribute}=\"{newPath}\"";
+            });
+        }
+    }
+
+    private static string ReplaceExternalLinkDestination(string html, string thisOrigin, string languageCode, TimeSpan timeout)
+    {
+        return ExternalLinkDestRegex().Replace(html,
+            match =>
+            {
+                var beforeId = match.Groups[1].Value;
+                var afterId = match.Groups[2].Value;
+                var value = match.Groups[3].Value;
+
+                try
+                {
+                    var url = new Uri(value);
+                    if (url.Host.Equals(thisOrigin, StringComparison.OrdinalIgnoreCase))
+                    {
+                        var pathParts = url.AbsolutePath.Split('/');
+                        if (pathParts.Length > 1)
+                        {
+                            pathParts[1] = languageCode;
+                        }
+                        var newPath = string.Join('/', pathParts);
+                        var newUrl = new UriBuilder(url) { Path = newPath }.Uri;
+                        return $"<input{beforeId}id=\"external-link-dest\"{afterId}value=\"{newUrl}\"";
+                    }
+                }
+                catch
+                {
+                    // If URL parsing fails, leave it as is
+                }
+
+                return match.Value;
+            });
+    }
+
+    [GeneratedRegex(@"src=[""']?(/[^""\s>]+)[""']?", RegexOptions.IgnoreCase)]
+    private static partial Regex SrcRegex();
+
+    [GeneratedRegex(@"<link\b([^>]*?)href=[""']?(/[^""\s>]+?)[""']?(\s|>)", RegexOptions.IgnoreCase)]
+    private static partial Regex LinkHrefRegex();
+
+    [GeneratedRegex(@"<a\b([^>]*?)href=[""']?(/questionnaires[^""\s>]*)[""']?", RegexOptions.IgnoreCase)]
+    private static partial Regex AnchorHrefRegex();
+
+    [GeneratedRegex(@"\s*asp-add-nonce(?:=[""']?[^""'\s>]*[""']?)?", RegexOptions.IgnoreCase)]
+    private static partial Regex AspAddNonceRegex();
+
+    [GeneratedRegex(@"<input\b([^>]+?)(?<!/)>", RegexOptions.IgnoreCase)]
+    private static partial Regex InputTagRegex();
+
+    [GeneratedRegex(@"<input\b([^>]*?)id=[""']?external-link-dest[""']?([^>]*?)value=[""']?([^""\s>]+)[""']?", RegexOptions.IgnoreCase)]
+    private static partial Regex ExternalLinkDestRegex();
 }
