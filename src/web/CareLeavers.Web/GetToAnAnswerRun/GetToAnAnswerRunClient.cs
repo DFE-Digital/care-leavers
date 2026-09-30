@@ -43,10 +43,10 @@ public partial class GetToAnAnswerRunClient(
         var responseMessage = await httpClient.PostAsync(
             $"/questionnaires/{HttpUtility.UrlEncode(questionnaireSlug)}/next?embed=true", 
             new FormUrlEncodedContent(formContent));
-        
+
         if (!responseMessage.IsSuccessStatusCode)
         {
-            throw new Exception($"Failed to get next state for questionnaire {questionnaireSlug}");
+            throw new HttpRequestException($"Failed to get next state for questionnaire {questionnaireSlug}");
         }
         
         var bytes = await responseMessage.Content.ReadAsByteArrayAsync();
@@ -63,7 +63,7 @@ public partial class GetToAnAnswerRunClient(
 
         if (!response.IsSuccessStatusCode)
         {
-            throw new Exception($"Failed to get decorative image for questionnaire {questionnaireSlug}");
+            throw new HttpRequestException($"Failed to get decorative image for questionnaire {questionnaireSlug}");
         }
 
         var stream = await response.Content.ReadAsStreamAsync();
@@ -92,7 +92,7 @@ public partial class GetToAnAnswerRunClient(
 
         if (!responseMessage.IsSuccessStatusCode)
         {
-            throw new Exception($"Failed to get questionnaire page for {questionnaireSlug}");
+            throw new HttpRequestException($"Failed to get questionnaire page for {questionnaireSlug}");
         }
 
         var html = await ReadResponseAsString(responseMessage);
@@ -121,14 +121,14 @@ public partial class GetToAnAnswerRunClient(
 
         html = ApplyNonceSubstitutions(html, substitutionContext);
         html = ApplyUrlRewriting(html, substitutionContext);
-        html = ApplyAttributeCleanup(html, substitutionContext);
+        html = ApplyAttributeCleanup(html);
 
         return html;
     }
 
     private SubstitutionContext CreateSubstitutionContext(string languageCode, string? thisOrigin) =>
         new(
-            BaseUrl: _configuration["GetToAnAnswer:BaseUrl"],
+            BaseUrl: _configuration["GetToAnAnswer:BaseUrl"] ?? string.Empty,
             Nonce: _cspNonceService.GetNonce(),
             LanguageCode: languageCode,
             ThisOrigin: thisOrigin,
@@ -158,20 +158,20 @@ public partial class GetToAnAnswerRunClient(
 
         if (!string.IsNullOrEmpty(context.ThisOrigin))
         {
-            html = ReplaceExternalLinkDestination(html, context.ThisOrigin, context.LanguageCode, context.RegexTimeout);
+            html = ReplaceExternalLinkDestination(html, context.ThisOrigin, context.LanguageCode);
         }
 
         return html;
     }
 
-    private static string ApplyAttributeCleanup(string html, SubstitutionContext context)
+    private static string ApplyAttributeCleanup(string html)
     {
         html = AspAddNonceRegex().Replace(html, string.Empty);
         html = InputTagRegex().Replace(html, "<input$1 />");
         return html;
     }
 
-    private string ReplaceLinkHref(Match match, SubstitutionContext context)
+    private static string ReplaceLinkHref(Match match, SubstitutionContext context)
     {
         var prefix = match.Groups[1].Value;
         var href = match.Groups[2].Value;
@@ -184,7 +184,7 @@ public partial class GetToAnAnswerRunClient(
         return match.Value;
     }
 
-    private record SubstitutionContext(
+    private sealed record SubstitutionContext(
         string BaseUrl,
         string Nonce,
         string LanguageCode,
@@ -230,7 +230,7 @@ public partial class GetToAnAnswerRunClient(
         }
     }
 
-    private static string ReplaceExternalLinkDestination(string html, string thisOrigin, string languageCode, TimeSpan timeout)
+    private static string ReplaceExternalLinkDestination(string html, string thisOrigin, string languageCode)
     {
         return ExternalLinkDestRegex().Replace(html,
             match =>
