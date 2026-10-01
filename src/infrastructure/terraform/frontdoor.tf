@@ -178,6 +178,10 @@ resource "azurerm_cdn_frontdoor_custom_domain" "fd-custom-domain" {
 
   tls {
     certificate_type = "ManagedCertificate"
+    minimum_version  = "TLS12"
+    cipher_suite {
+      type = "TLS12_2023"
+    }
   }
 }
 
