@@ -14,6 +14,7 @@ public class GetToAnAnswerRunClient(
     ILogger<GetToAnAnswerRunClient> logger,
     IMemoryCache cache
 ) : IGetToAnAnswerRunClient {
+    private const string NonceAttribute = "nonce";
     private readonly IConfiguration _configuration = serviceProvider.GetRequiredService<IConfiguration>();
     private readonly ICspNonceService _cspNonceService = serviceProvider.GetRequiredService<ICspNonceService>();
     private readonly IMemoryCache _cache = cache;
@@ -140,16 +141,16 @@ public class GetToAnAnswerRunClient(
         {
             foreach (var script in scriptTags)
             {
-                var nonceAttribute = script.Attributes["nonce"];
+                var nonceAttribute = script.Attributes[NonceAttribute];
                 if (nonceAttribute == null || string.IsNullOrWhiteSpace(nonceAttribute.Value))
                 {
-                    script.SetAttributeValue("nonce", nonce);
+                    script.SetAttributeValue(NonceAttribute, nonce);
                 }
 
                 if (script.Attributes.Contains("src"))
                 {
                     var srcValue = script.Attributes["src"]?.Value;
-                    if (!string.IsNullOrEmpty(srcValue) && srcValue.StartsWith("/"))
+                    if (!string.IsNullOrEmpty(srcValue) && srcValue.StartsWith('/'))
                     {
                         script.SetAttributeValue("src", baseUrl + srcValue);
                     }
@@ -167,7 +168,7 @@ public class GetToAnAnswerRunClient(
                 if (link.Attributes.Contains("href"))
                 {
                     var hrefValue = link.Attributes["href"]?.Value;
-                    if (!string.IsNullOrEmpty(hrefValue) && hrefValue.StartsWith("/"))
+                    if (!string.IsNullOrEmpty(hrefValue) && hrefValue.StartsWith('/'))
                     {
                         link.SetAttributeValue("href", baseUrl + hrefValue);
                     }
@@ -182,10 +183,10 @@ public class GetToAnAnswerRunClient(
         {
             foreach (var style in styleTags)
             {
-                var nonceAttribute = style.Attributes["nonce"];
+                var nonceAttribute = style.Attributes[NonceAttribute];
                 if (nonceAttribute == null || string.IsNullOrWhiteSpace(nonceAttribute.Value))
                 {
-                    style.SetAttributeValue("nonce", nonce);
+                    style.SetAttributeValue(NonceAttribute, nonce);
                 }
                 style.Attributes.Remove("asp-add-nonce");
             }
