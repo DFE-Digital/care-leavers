@@ -155,10 +155,10 @@ public class GetToAnAnswerRunClient(
                         script.SetAttributeValue("src", baseUrl + srcValue);
                     }
                 }
+
                 script.Attributes.Remove("asp-add-nonce");
             }
         }
-
         // Add baseUrls to all link tags that don't already have one
         var linkTags = doc.DocumentNode.SelectNodes("//link");
         if (linkTags != null)
@@ -176,7 +176,6 @@ public class GetToAnAnswerRunClient(
                 link.Attributes.Remove("asp-add-nonce");
             }
         }
-
         // Add nonce to all style tags that don't already have one
         var styleTags = doc.DocumentNode.SelectNodes("//style");
         if (styleTags != null)
@@ -191,7 +190,6 @@ public class GetToAnAnswerRunClient(
                 style.Attributes.Remove("asp-add-nonce");
             }
         }
-
         // Add nonce to all form tags that need questionnaire path replacement
         var formTags = doc.DocumentNode.SelectNodes("//form");
         if (formTags != null)
@@ -209,7 +207,6 @@ public class GetToAnAnswerRunClient(
                 }
             }
         }
-
         // Add nonce to all anchor tags that need questionnaire path replacement
         var anchorTags = doc.DocumentNode.SelectNodes("//a");
         if (anchorTags != null)
@@ -227,7 +224,6 @@ public class GetToAnAnswerRunClient(
                 }
             }
         }
-
         // if the external link is this site, change the language code 
         var externalLinkInput = doc.DocumentNode.SelectSingleNode("//input[@id='external-link-dest']");
         if (externalLinkInput != null && thisOrigin != null)
@@ -239,6 +235,8 @@ public class GetToAnAnswerRunClient(
             if (valueAttribute != null && !string.IsNullOrEmpty(valueAttribute.Value))
             {
                 var url = new Uri(valueAttribute.Value);
+                logger.LogInformation($"Replacing language code in external link: {url}");
+                logger.LogInformation($"Checking if this {thisOrigin} matches {url.Host}");
                 if (url.Host.Equals(thisOrigin))
                 {
                     var pathParts = url.AbsolutePath.Split('/');

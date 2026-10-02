@@ -27,53 +27,6 @@
     </iframe>
 </div>
 
-<script nonce="@nonce">
-    (function() {
-        const loader = document.getElementById('gtaaLoader');
-        const frame = document.getElementById('gtaaFrame');
-        const wrapper = document.querySelector('.gtaa-wrapper');
 
-        // Utilities
-        const showLoader = () => {
-            if (loader) loader.style.display = 'block';
-        };
-
-        const hideLoader = () => {
-            if (loader) loader.style.display = 'none';
-        };
-
-        const showError = (message) => {
-            if (loader) {
-                loader.innerHTML = '<p style="color: #d32f2f;">' + (message || 'Failed to load questionnaire. Please try again.') + '</p>';
-            }
-        };
-
-        // Initialize
-        showLoader();
-
-        if (frame) {
-            frame.style.display = 'block';
-
-            // Listen for frame load completion
-            frame.addEventListener('load', () => {
-                hideLoader();
-                // Remove loading class if present
-                if (wrapper) wrapper.classList.remove('loading');
-            }, { once: true });
-
-            // Handle frame load errors
-            frame.addEventListener('error', () => {
-                showError('Failed to load questionnaire. Please try again.');
-            }, { once: true });
-
-            // Timeout safety - hide loader after 30 seconds regardless
-            setTimeout(() => {
-                if (loader && loader.style.display !== 'none') {
-                    hideLoader();
-                    if (wrapper) wrapper.classList.remove('loading');
-                }
-            }, 30000);
-        }
-    })();
-</script>
+<script asp-add-nonce="true" src="/js/gtaa-loader.min.js" defer></script>
 <script asp-add-nonce="true" src="@Model.BaseUrl/js/gtaa.external.js" defer async></script>
