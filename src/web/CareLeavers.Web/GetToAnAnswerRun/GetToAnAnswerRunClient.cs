@@ -1,3 +1,4 @@
+using System.Net.Http;
 using System.Text;
 using System.Web;
 using HtmlAgilityPack;
@@ -43,15 +44,12 @@ public class GetToAnAnswerRunClient(
         var responseMessage = await httpClient.PostAsync(
             $"/questionnaires/{HttpUtility.UrlEncode(questionnaireSlug)}/next?embed=true", 
             new FormUrlEncodedContent(formContent));
-
         if (!responseMessage.IsSuccessStatusCode)
         {
-            throw new Exception($"Failed to get next state for questionnaire {questionnaireSlug}");
+            throw new HttpRequestException($"Failed to get next state for questionnaire {questionnaireSlug}");
         }
-
         var bytes = await responseMessage.Content.ReadAsByteArrayAsync();
         var html = Encoding.UTF8.GetString(bytes);
-
         // Replace the base url with the local url so that the embedded content redirects to the correct page
         return SubstitutePageContent(languageCode, html, thisOrigin);
     }
@@ -60,15 +58,12 @@ public class GetToAnAnswerRunClient(
     {
         var response = await httpClient.GetAsync(
             $"/questionnaires/{HttpUtility.UrlEncode(questionnaireSlug)}/decorative-image");
-
         if (!response.IsSuccessStatusCode)
         {
-            throw new Exception($"Failed to get decorative image for questionnaire {questionnaireSlug}");
+            throw new HttpRequestException($"Failed to get decorative image for questionnaire {questionnaireSlug}");
         }
-
         var stream = await response.Content.ReadAsStreamAsync();
         var contentType = response.Content.Headers.ContentType?.MediaType ?? "image/png";
-
         return (stream, contentType);
     }
 
@@ -92,7 +87,7 @@ public class GetToAnAnswerRunClient(
 
         if (!responseMessage.IsSuccessStatusCode)
         {
-            throw new Exception($"Failed to get questionnaire page for {questionnaireSlug}");
+            throw new HttpRequestException($"Failed to get questionnaire page for {questionnaireSlug}");
         }
 
         var html = await ReadResponseAsString(responseMessage);
@@ -118,16 +113,12 @@ public class GetToAnAnswerRunClient(
     private string SubstitutePageContent(string languageCode, string html, string? thisOrigin = null)
     {
         var doc = new HtmlDocument();
-
         doc.OptionOutputAsXml = false;
         doc.OptionWriteEmptyNodes = true;
         doc.OptionDefaultStreamEncoding = Encoding.UTF8;
-
         doc.LoadHtml(html);
-
         // Inject nonce into script and style tags
         InjectBaseUrlAndNonce(languageCode, doc, thisOrigin);
-
         using var writer = new StringWriter();
         doc.Save(writer);
         return writer.ToString();
@@ -138,22 +129,31 @@ public class GetToAnAnswerRunClient(
         var baseUrl = _configuration["GetToAnAnswer:BaseUrl"];
         var nonce = _cspNonceService.GetNonce();
 
+        if (string.IsNullOrEmpty(baseUrl))
+        {
+            return;
+        }
+
         // Add nonce to all script tags that don't already have one
         var scriptTags = doc.DocumentNode.SelectNodes("//script");
         if (scriptTags != null)
         {
             foreach (var script in scriptTags)
             {
-                if (!script.Attributes.Contains("nonce") || string.IsNullOrWhiteSpace(script.Attributes["nonce"].Value))
+                var nonceAttribute = script.Attributes["nonce"];
+                if (nonceAttribute == null || string.IsNullOrWhiteSpace(nonceAttribute.Value))
                 {
                     script.SetAttributeValue("nonce", nonce);
                 }
 
-                if (script.Attributes.Contains("src") && script.Attributes["src"].Value.StartsWith("/"))
+                if (script.Attributes.Contains("src"))
                 {
-                    script.SetAttributeValue("src", baseUrl + script.Attributes["src"].Value);
+                    var srcValue = script.Attributes["src"]?.Value;
+                    if (!string.IsNullOrEmpty(srcValue) && srcValue.StartsWith("/"))
+                    {
+                        script.SetAttributeValue("src", baseUrl + srcValue);
+                    }
                 }
-
                 script.Attributes.Remove("asp-add-nonce");
             }
         }
@@ -164,11 +164,14 @@ public class GetToAnAnswerRunClient(
         {
             foreach (var link in linkTags)
             {
-                if (link.Attributes.Contains("href") && link.Attributes["href"].Value.StartsWith("/"))
+                if (link.Attributes.Contains("href"))
                 {
-                    link.SetAttributeValue("href", baseUrl + link.Attributes["href"].Value);
+                    var hrefValue = link.Attributes["href"]?.Value;
+                    if (!string.IsNullOrEmpty(hrefValue) && hrefValue.StartsWith("/"))
+                    {
+                        link.SetAttributeValue("href", baseUrl + hrefValue);
+                    }
                 }
-
                 link.Attributes.Remove("asp-add-nonce");
             }
         }
@@ -179,11 +182,11 @@ public class GetToAnAnswerRunClient(
         {
             foreach (var style in styleTags)
             {
-                if (!style.Attributes.Contains("nonce") || string.IsNullOrWhiteSpace(style.Attributes["nonce"].Value))
+                var nonceAttribute = style.Attributes["nonce"];
+                if (nonceAttribute == null || string.IsNullOrWhiteSpace(nonceAttribute.Value))
                 {
                     style.SetAttributeValue("nonce", nonce);
                 }
-
                 style.Attributes.Remove("asp-add-nonce");
             }
         }
@@ -194,10 +197,14 @@ public class GetToAnAnswerRunClient(
         {
             foreach (var form in formTags)
             {
-                if (form.Attributes.Contains("action") && form.Attributes["action"].Value.StartsWith("/questionnaires/"))
+                if (form.Attributes.Contains("action"))
                 {
-                    form.SetAttributeValue("action", form.Attributes["action"].Value
-                        .Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires"));
+                    var actionValue = form.Attributes["action"]?.Value;
+                    if (!string.IsNullOrEmpty(actionValue) && actionValue.StartsWith("/questionnaires/"))
+                    {
+                        form.SetAttributeValue("action", actionValue
+                            .Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires"));
+                    }
                 }
             }
         }
@@ -208,10 +215,14 @@ public class GetToAnAnswerRunClient(
         {
             foreach (var anchor in anchorTags)
             {
-                if (anchor.Attributes.Contains("href") && anchor.Attributes["href"].Value.StartsWith("/questionnaires/"))
+                if (anchor.Attributes.Contains("href"))
                 {
-                    anchor.SetAttributeValue("href", anchor.Attributes["href"].Value
-                        .Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires"));
+                    var hrefValue = anchor.Attributes["href"]?.Value;
+                    if (!string.IsNullOrEmpty(hrefValue) && hrefValue.StartsWith("/questionnaires/"))
+                    {
+                        anchor.SetAttributeValue("href", hrefValue
+                            .Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires"));
+                    }
                 }
             }
         }
@@ -223,20 +234,21 @@ public class GetToAnAnswerRunClient(
             // if 'externalLinkInput.value' starts with 'thisOrigin' (https://*.support-for-care-leavers.education.gov.uk)
             // then replace the language code in the url with the current translation language code
 
-            var url = new Uri(externalLinkInput.Attributes["value"].Value);
-
-            if (url.Host.Equals(thisOrigin))
+            var valueAttribute = externalLinkInput.Attributes["value"];
+            if (valueAttribute != null && !string.IsNullOrEmpty(valueAttribute.Value))
             {
-                var pathParts = url.AbsolutePath.Split('/');
-
-                if (pathParts.Length > 1)
+                var url = new Uri(valueAttribute.Value);
+                if (url.Host.Equals(thisOrigin))
                 {
-                    pathParts[1] = languageCode;
+                    var pathParts = url.AbsolutePath.Split('/');
+
+                    if (pathParts.Length > 1)
+                    {
+                        pathParts[1] = languageCode;
+                    }
+                    var newUrl = new UriBuilder(url) { Path = string.Join('/', pathParts) }.Uri;
+                    externalLinkInput.SetAttributeValue("value", newUrl.ToString());
                 }
-
-                var newUrl = new UriBuilder(url) {Path = string.Join('/', pathParts)}.Uri;
-
-                externalLinkInput.SetAttributeValue("value", newUrl.ToString());
             }
         }
     }
