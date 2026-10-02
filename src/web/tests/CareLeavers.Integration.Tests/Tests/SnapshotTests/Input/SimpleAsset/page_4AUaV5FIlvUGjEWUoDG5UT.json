@@ -1,6 +1,16 @@
 {
   "title": "Image Test",
   "slug": "home",
+  "showBreadcrumb": false,
+  "showContentsBlock": false,
+  "contentsHeadings": {
+    "$type": "CareLeavers.Web.Models.Enums.HeadingType[], CareLeavers.Web",
+    "$values": []
+  },
+  "showLastUpdated": false,
+  "showShareLinks": false,
+  "showQuickFeedback": true,
+  "showFooter": true,
   "mainContent": {
     "nodeType": "document",
     "data": {

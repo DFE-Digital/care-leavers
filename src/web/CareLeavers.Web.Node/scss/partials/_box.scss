@@ -81,3 +81,15 @@ section {
     }
   }
 }
+
+.cl-helpline-box {
+    border-color: #1d70b8;
+    background-color: #f4f8fb;
+}
+
+@media (min-width: 40.0625em) {
+
+    .cl-helpline-box {
+        border-left: 10px solid #1d70b8;
+    }
+}

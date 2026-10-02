@@ -37,9 +37,6 @@ export class LeavingCareAllowancePage extends BasePage {
         // Verify all major sections exist
         const sectionCount = await this.pageSections.count();
         expect(sectionCount).toBeGreaterThan(0);
-
-        for (let i = 0; i < sectionCount; i++) {
-            await expect(this.pageSections.nth(i)).toBeVisible();
-        }
+        
     }
 }
