@@ -49,7 +49,7 @@ public class GetToAnAnswerRunClientTests
         _httpMessageHandlerMock.StatusCode = HttpStatusCode.BadRequest;
         _httpMessageHandlerMock.Content = new StringContent("");
 
-        _ = Assert.ThrowsAsync<HttpRequestException>(async () => await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test"));
+        _ = Assert.ThrowsAsync<Exception>(async () => await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test"));
     }
 
     [Test]
@@ -136,7 +136,7 @@ public class GetToAnAnswerRunClientTests
         _httpMessageHandlerMock.StatusCode = HttpStatusCode.BadRequest;
         _httpMessageHandlerMock.Content = new StringContent("");
 
-        Assert.ThrowsAsync<HttpRequestException>((Func<Task>)GtaaTask);
+        Assert.ThrowsAsync<Exception>((Func<Task>)GtaaTask);
         return;
 
         async Task GtaaTask() => await _getToAnAnswerRunClient.GetInitialState("en", "/test-error");
@@ -163,7 +163,7 @@ public class GetToAnAnswerRunClientTests
         _httpMessageHandlerMock.StatusCode = HttpStatusCode.BadRequest;
         _httpMessageHandlerMock.Content = new StringContent("");
 
-        _ = Assert.ThrowsAsync<HttpRequestException>(async () =>
+        _ = Assert.ThrowsAsync<Exception>(async () =>
             await _getToAnAnswerRunClient.GetNextState("localhost", "en", "/test",
                 new Dictionary<string, StringValues>()));
     }
@@ -192,7 +192,7 @@ public class GetToAnAnswerRunClientTests
         _httpMessageHandlerMock.StatusCode = HttpStatusCode.BadRequest;
         _httpMessageHandlerMock.Content = new StringContent("");
 
-        _ = Assert.ThrowsAsync<HttpRequestException>(async () => await _getToAnAnswerRunClient.GetDecorativeImage("/test"));
+        _ = Assert.ThrowsAsync<Exception>(async () => await _getToAnAnswerRunClient.GetDecorativeImage("/test"));
     }
 
     [OneTimeTearDown]
