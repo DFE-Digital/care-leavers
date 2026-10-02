@@ -42,4 +42,6 @@ public class Page : ContentfulContent
     public Document? MainContent { get; set; }
     
     public Document? SecondaryContent { get; set; }
+
+    public bool? ShowQuickFeedback { get; set; }
 }

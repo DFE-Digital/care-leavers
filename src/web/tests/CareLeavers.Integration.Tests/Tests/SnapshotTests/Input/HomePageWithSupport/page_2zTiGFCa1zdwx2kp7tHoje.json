@@ -16,6 +16,7 @@
   },
   "showLastUpdated": false,
   "showShareLinks": false,
+  "showQuickFeedback": true,
   "showFooter": true,
   "header": {
     "$type": "Contentful.Core.Models.Document, Contentful.Core",
