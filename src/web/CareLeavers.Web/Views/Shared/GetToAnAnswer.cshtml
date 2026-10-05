@@ -1,10 +1,8 @@
 @model CareLeavers.Web.Models.Content.GetToAnAnswer
 @inject IHttpContextAccessor HttpContextAccessor;
-@inject Joonasw.AspNetCore.SecurityHeaders.Csp.ICspNonceService CspNonceService;
 
 @{
     var languageCode = HttpContextAccessor.HttpContext?.Request.RouteValues["languageCode"]?.ToString();
-    var nonce = CspNonceService.GetNonce();
 }
 @section Head
 {
@@ -15,8 +13,18 @@
 }
 
 <div class="gtaa-wrapper" data-auto-scroll="false" data-is-fixed-height-enabled="false" data-bg="#fff" data-fg="#00205b" style="margin:0 auto; max-width:100%; width:100%;">
-    <div id="gtaaLoader" style="padding: 20px; text-align: center;">
-        <p>Loading questionnaire...</p>
+    <div id="gtaaLoader">
+        <div class="govuk-grid-row">
+            <div class="govuk-!-padding-bottom-9"></div>
+            <div class="govuk-!-padding-bottom-9"></div>
+            <div class="loading" style="margin-left:auto; margin-right: auto" aria-live="polite" role="status"></div>
+        </div>
+        <div class="govuk-!-padding-bottom-7"></div>
+        <div class="govuk-grid-row">
+            <h1 class="govuk-heading-m" style="text-align: center">Loading questionnaire...</h1>
+            <div class="govuk-!-padding-bottom-9"></div>
+            <div class="govuk-!-padding-bottom-9"></div>
+        </div>        
     </div>
     <iframe id="gtaaFrame" title="@Model.Title"
             src="/@languageCode/get-to-an-answer-questionnaires/@Model.questionnaireSlug/start"

@@ -53,4 +53,8 @@
       <AdditionalFiles Include="Views\Shared\_IFrameLayout.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="wwwroot\js\gtaa-loader.js" CopyToPublishDirectory="PreserveNewest" />
+    </ItemGroup>
+
 </Project>

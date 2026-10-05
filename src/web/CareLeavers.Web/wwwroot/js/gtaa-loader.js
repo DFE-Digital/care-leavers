@@ -30,9 +30,10 @@
     }
     function showUnloadMessage(message) {
         if (loaderElements.loader) {
-            loaderElements.loader.innerHTML = '<p style="text-align: center;">' +
-                (message || 'Results are getting ready...') +
-                '</p>';
+            const heading = loaderElements.loader.querySelector('.govuk-heading-m');
+            if (heading) {
+                heading.innerHTML = message || 'Results are getting ready...';
+            }
             loaderElements.loader.style.display = 'block';
         }
     }
@@ -62,6 +63,16 @@
             });
         }
     }
+    function handlePageShow(event) {
+        // Reset navigation state and hide loader when page is shown from back/forward cache
+        isNavigating = false;
+        if (loaderElements.loader) {            
+            hideLoader();
+        }
+        if (loaderElements.wrapper) {
+            loaderElements.wrapper.classList.remove('loading');
+        }
+    }
     function setupTimeoutSafety(timeoutMs) {
         setTimeout(() => {
             if (loaderElements.loader && loaderElements.loader.style.display !== 'none') {
@@ -71,7 +82,7 @@
                 }
             }
         }, timeoutMs);
-    }
+    }    
     function init() {
         initializeElements();
         showLoader();
@@ -79,8 +90,10 @@
             loaderElements.frame.style.display = 'block';
             loaderElements.frame.addEventListener('load', handleFrameLoad, { once: true });
             loaderElements.frame.addEventListener('error', handleFrameError, { once: true });
+            loaderElements.frame.addEventListener('pageshow', handlePageShow, { once: true });
             window.addEventListener('message', handlePostMessage);
             window.addEventListener('beforeunload', handleBeforeUnload);
+            window.addEventListener('pageshow', handlePageShow);
             setupTimeoutSafety(30000);
         }
     }
