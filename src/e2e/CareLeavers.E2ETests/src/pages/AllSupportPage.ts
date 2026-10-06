@@ -5,8 +5,9 @@ export class AllSupportPage extends BasePage {
     public readonly mainContent: Locator;
     public readonly supportCards: Locator;
     public readonly knowWhatSupportSection: Locator;
-    public readonly knowWhatSupportLink: Locator;
-
+    public readonly knowWhatSupportLink: Locator;     
+    public readonly contentFulBannerHeading: Locator;
+    
     constructor(page: Page) {
         super(page);
         this.mainContent = page.locator('#main-content');
@@ -14,7 +15,8 @@ export class AllSupportPage extends BasePage {
 
         // "Know what support you can get" Section
         this.knowWhatSupportSection = page.locator('.govuk-grid-column-one-half.text-column');
-        this.knowWhatSupportLink = this.knowWhatSupportSection.locator('a.govuk-link');
+        this.knowWhatSupportLink = this.knowWhatSupportSection.locator('a.govuk-link');   
+        this.contentFulBannerHeading =  page.locator('h2, .govuk-heading-l');  
     }
 
     async openAllSupportPage() {
@@ -55,5 +57,9 @@ export class AllSupportPage extends BasePage {
         await expect(this.knowWhatSupportSection).toBeVisible();
         await expect(this.knowWhatSupportLink).toBeVisible();
         await expect(this.knowWhatSupportLink).toHaveAttribute('href', expect.stringContaining('/en/your-rights'));
+    }
+
+    async assertContentFulBannerContentTypeExists() {        
+        await expect(this.contentFulBannerHeading).toBeDefined();       
     }
 }

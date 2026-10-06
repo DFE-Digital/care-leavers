@@ -48,6 +48,10 @@ export class MoneyAndBenefitsPage extends BasePage {
         
         await this.verifyCardsCanHaveExternalLinks();
     }
+
+    async verifyContentfulDefinitionContentTypeExists() {
+        await expect(this.definitionLink).toBeDefined();
+    }
     
     private async verifyCardsCanHaveExternalLinks() {
         const href = await this.cardExternalLink.getAttribute('href')
