@@ -298,6 +298,23 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web_firewall_policy" {
   }
 
   custom_rule {
+    name                           = "BypassGeoForContentfulWebhook"
+    enabled                        = true
+    priority                       = 140
+    type                           = "MatchRule"
+    action                         = "Allow"
+    rate_limit_duration_in_minutes = 1
+
+    match_condition {
+      match_variable     = "RequestHeader"
+      selector           = "X-Contentful-Webhook-Secret"
+      operator           = "Equal"
+      negation_condition = false
+      match_values       = [var.contentful_webhook_secret]
+    }
+  }
+
+  custom_rule {
     name     = "blocknonuk"
     enabled  = true
     action   = "Redirect"
