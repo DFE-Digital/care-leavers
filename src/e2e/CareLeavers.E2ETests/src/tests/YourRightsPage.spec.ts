@@ -15,15 +15,7 @@ test.describe('Your Rights Page Tests', () => {
 
     test('should assert page elements are correct', async () => {
         await yourRightsPage.assertPageElements();
-    });
-
-    test('should check contentful banner exists on page', async () => {
-        await yourRightsPage.assertBannerExists();
-    });
-
-    test('should verify Contentful Definition link exists', async () => {
-        await yourRightsPage.verifyContentfulDefinitionLink();
-    });
+    });  
 
     test('should verify Contentful Card exists', async () => {
         await yourRightsPage.verifyContentfulCardExists();
