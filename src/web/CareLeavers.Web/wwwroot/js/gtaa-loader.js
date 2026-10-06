@@ -32,7 +32,7 @@
         if (loaderElements.loader) {
             const heading = loaderElements.loader.querySelector('.govuk-heading-m');
             if (heading) {
-                heading.innerHTML = message || 'Results are getting ready...';
+                heading.innerHTML = message || 'Loading...';
             }
             loaderElements.loader.style.display = 'block';
         }
@@ -50,14 +50,14 @@
         if (event.data && event.data.type === 'gtaa-navigation-start') {
             if (!isNavigating) {
                 isNavigating = true;
-                showUnloadMessage(event.data.message || 'Results are being generated...');
+                showUnloadMessage(event.data.message || 'Loading...');
             }
         }
     }
     function handleBeforeUnload() {
         if (!isNavigating) {
             isNavigating = true;
-            showUnloadMessage('Redirecting to results...');
+            showUnloadMessage('Loading...');
             return new Promise((resolve) => {
                 setTimeout(resolve, 100);
             });
