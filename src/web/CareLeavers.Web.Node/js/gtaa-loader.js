@@ -23,16 +23,18 @@
     }
     function showError(message) {
         if (loaderElements.loader) {
-            loaderElements.loader.innerHTML = '<p style="color: #d32f2f;">' +
-                (message || 'Failed to load questionnaire. Please try again.') +
-                '</p>';
+            const errorParagraph = document.createElement('p');
+            errorParagraph.style.color = '#d32f2f';
+            errorParagraph.textContent = message || 'Failed to load questionnaire. Please try again.';
+            loaderElements.loader.innerHTML = '';
+            loaderElements.loader.appendChild(errorParagraph);
         }
     }
     function showUnloadMessage(message) {
         if (loaderElements.loader) {
             const heading = loaderElements.loader.querySelector('.govuk-heading-m');
             if (heading) {
-                heading.innerHTML = message || 'Loading...';
+                heading.textContent = message || 'Loading...';
             }
             loaderElements.loader.style.display = 'block';
         }
@@ -47,7 +49,13 @@
         showError('Failed to load questionnaire. Please try again.');
     }
     function handlePostMessage(event) {
-        if (event.data && event.data.type === 'gtaa-navigation-start') {
+        // Verify origin to prevent unauthorized cross-origin messages
+        const allowedOrigin = window.location.origin;
+        if (event.origin !== allowedOrigin) {
+            return;
+        }
+
+        if (event.data?.type === 'gtaa-navigation-start') {
             if (!isNavigating) {
                 isNavigating = true;
                 showUnloadMessage(event.data.message || 'Loading...');
@@ -75,14 +83,14 @@
     }
     function setupTimeoutSafety(timeoutMs) {
         setTimeout(() => {
-            if (loaderElements.loader && loaderElements.loader.style.display !== 'none') {
+            if (loaderElements.loader?.style?.display !== 'none') {
                 hideLoader();
                 if (loaderElements.wrapper) {
                     loaderElements.wrapper.classList.remove('loading');
                 }
             }
         }, timeoutMs);
-    }    
+    }
     function init() {
         initializeElements();
         showLoader();
