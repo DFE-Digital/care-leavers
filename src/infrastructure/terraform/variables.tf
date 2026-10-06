@@ -187,3 +187,9 @@ variable "splunk_access_token" {
   type        = string
   sensitive   = true
 }
+
+variable "contentful_webhook_secret" {
+  type        = string
+  description = "Custom Contentful secret token"
+  sensitive   = true
+}

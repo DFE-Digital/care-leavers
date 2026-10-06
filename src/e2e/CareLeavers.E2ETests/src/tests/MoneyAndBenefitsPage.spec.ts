@@ -37,6 +37,10 @@ test.describe('Money and Benefits Page Tests', () => {
         await moneyAndBenefitsPage.checkSpacerContentTypeExists();        
     });
 
+    test('should verify Contentful Definition link exists', async () => {
+        await moneyAndBenefitsPage.verifyContentfulDefinitionContentTypeExists();
+    });
+
 });
 
 // Cleanup after tests
