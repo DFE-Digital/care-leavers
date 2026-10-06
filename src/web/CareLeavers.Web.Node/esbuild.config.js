@@ -20,6 +20,16 @@ for (const scssFile of scssFiles) {
 }
 // -- Build CSS -- //
 
+// -- Build JavaScript -- //
+await esbuild.build({
+    entryPoints: ["js/gtaa-loader.js"],
+    minify: true,
+    sourcemap: false,
+    outfile: "out/js/gtaa-loader.min.js",
+});
+cpSync("./js/gtaa-loader.js", "./out/js/gtaa-loader.js", {force: true});
+// -- Build JavaScript -- //
+
 // -- Copy JavaScript -- //
 cpSync("./node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js", "./out/js/govuk-frontend.min.js", {force: true});
 cpSync('./node_modules/dfe-frontend/dist/dfefrontend.min.js', './out/js/dfefrontend.min.js', {force: true});
