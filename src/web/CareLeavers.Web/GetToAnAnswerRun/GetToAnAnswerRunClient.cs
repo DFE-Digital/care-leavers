@@ -135,7 +135,16 @@ public class GetToAnAnswerRunClient(
             return;
         }
 
-        // Add nonce to all script tags that don't already have one
+        ProcessScriptTags(doc, baseUrl, nonce);
+        ProcessLinkTags(doc, baseUrl);
+        ProcessStyleTags(doc, nonce);
+        ProcessFormTags(doc, languageCode);
+        ProcessAnchorTags(doc, languageCode);
+        ProcessExternalLink(doc, languageCode, thisOrigin);
+    }
+
+    private void ProcessScriptTags(HtmlDocument doc, string baseUrl, string nonce)
+    {
         var scriptTags = doc.DocumentNode.SelectNodes("//script");
         if (scriptTags != null)
         {
@@ -159,7 +168,10 @@ public class GetToAnAnswerRunClient(
                 script.Attributes.Remove("asp-add-nonce");
             }
         }
-        // Add baseUrls to all link tags that don't already have one
+    }
+
+    private void ProcessLinkTags(HtmlDocument doc, string baseUrl)
+    {
         var linkTags = doc.DocumentNode.SelectNodes("//link");
         if (linkTags != null)
         {
@@ -176,7 +188,10 @@ public class GetToAnAnswerRunClient(
                 link.Attributes.Remove("asp-add-nonce");
             }
         }
-        // Add nonce to all style tags that don't already have one
+    }
+
+    private void ProcessStyleTags(HtmlDocument doc, string nonce)
+    {
         var styleTags = doc.DocumentNode.SelectNodes("//style");
         if (styleTags != null)
         {
@@ -190,65 +205,78 @@ public class GetToAnAnswerRunClient(
                 style.Attributes.Remove("asp-add-nonce");
             }
         }
-        // Add nonce to all form tags that need questionnaire path replacement
+    }
+
+    private void ProcessFormTags(HtmlDocument doc, string languageCode)
+    {
         var formTags = doc.DocumentNode.SelectNodes("//form");
         if (formTags != null)
         {
-            foreach (var form in formTags)
+            foreach (var form in formTags.Where(f => f.Attributes.Contains("action")))
             {
-                if (form.Attributes.Contains("action"))
+                var actionValue = form.Attributes["action"]?.Value;
+                if (!string.IsNullOrEmpty(actionValue) && actionValue.StartsWith("/questionnaires/"))
                 {
-                    var actionValue = form.Attributes["action"]?.Value;
-                    if (!string.IsNullOrEmpty(actionValue) && actionValue.StartsWith("/questionnaires/"))
-                    {
-                        form.SetAttributeValue("action", actionValue
-                            .Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires"));
-                    }
+                    form.SetAttributeValue("action", actionValue
+                        .Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires"));
                 }
             }
         }
-        // Add nonce to all anchor tags that need questionnaire path replacement
+    }
+
+    private void ProcessAnchorTags(HtmlDocument doc, string languageCode)
+    {
         var anchorTags = doc.DocumentNode.SelectNodes("//a");
         if (anchorTags != null)
         {
-            foreach (var anchor in anchorTags)
+            foreach (var anchor in anchorTags.Where(a => a.Attributes.Contains("href")))
             {
-                if (anchor.Attributes.Contains("href"))
+                var hrefValue = anchor.Attributes["href"]?.Value;
+                if (!string.IsNullOrEmpty(hrefValue) && hrefValue.StartsWith("/questionnaires/"))
                 {
-                    var hrefValue = anchor.Attributes["href"]?.Value;
-                    if (!string.IsNullOrEmpty(hrefValue) && hrefValue.StartsWith("/questionnaires/"))
-                    {
-                        anchor.SetAttributeValue("href", hrefValue
-                            .Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires"));
-                    }
+                    anchor.SetAttributeValue("href", hrefValue
+                        .Replace("/questionnaires", $"/{languageCode}/get-to-an-answer-questionnaires"));
                 }
             }
         }
-        // if the external link is this site, change the language code 
-        var externalLinkInput = doc.DocumentNode.SelectSingleNode("//input[@id='external-link-dest']");
-        if (externalLinkInput != null && thisOrigin != null)
+    }
+
+    private void ProcessExternalLink(HtmlDocument doc, string languageCode, string? thisOrigin)
+    {
+        if (thisOrigin == null)
         {
-            // if 'externalLinkInput.value' starts with 'thisOrigin' (https://*.support-for-care-leavers.education.gov.uk)
-            // then replace the language code in the url with the current translation language code
-
-            var valueAttribute = externalLinkInput.Attributes["value"];
-            if (valueAttribute != null && !string.IsNullOrEmpty(valueAttribute.Value))
-            {
-                var url = new Uri(valueAttribute.Value);
-                logger.LogInformation($"Replacing language code in external link: {url}");
-                logger.LogInformation($"Checking if this {thisOrigin} matches {url.Host}");
-                if (url.Host.Equals(thisOrigin))
-                {
-                    var pathParts = url.AbsolutePath.Split('/');
-
-                    if (pathParts.Length > 1)
-                    {
-                        pathParts[1] = languageCode;
-                    }
-                    var newUrl = new UriBuilder(url) { Path = string.Join('/', pathParts) }.Uri;
-                    externalLinkInput.SetAttributeValue("value", newUrl.ToString());
-                }
-            }
+            return;
         }
+
+        var externalLinkInput = doc.DocumentNode.SelectSingleNode("//input[@id='external-link-dest']");
+        if (externalLinkInput == null)
+        {
+            return;
+        }
+
+        var valueAttribute = externalLinkInput.Attributes["value"];
+        if (valueAttribute == null || string.IsNullOrEmpty(valueAttribute.Value))
+        {
+            return;
+        }
+
+        var url = new Uri(valueAttribute.Value);
+        logger.LogInformation($"Replacing language code in external link: {url}");
+        logger.LogInformation($"Checking if this {thisOrigin} matches {url.Host}");
+
+        if (!url.Host.Equals(thisOrigin))
+        {
+            return;
+        }
+
+        var pathParts = url.AbsolutePath.Split('/');
+        if (pathParts.Length <= 1)
+        {
+            return;
+        }
+
+        pathParts[1] = languageCode;
+        var newUrl = new UriBuilder(url) { Path = string.Join('/', pathParts) }.Uri;
+        externalLinkInput.SetAttributeValue("value", newUrl.ToString());
     }
 }
