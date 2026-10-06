@@ -38,6 +38,11 @@ test.describe('All Support Page Tests', () => {
     test('should verify "Know what support you can get" section', async () => {
         await allSupportPage.verifyKnowWhatSupportSection();
     });
+
+    test('should check contentful banner exists on page', async () => {
+        await allSupportPage.assertContentFulBannerContentTypeExists();
+    });
+
 });
 
 //Cleanup after tests

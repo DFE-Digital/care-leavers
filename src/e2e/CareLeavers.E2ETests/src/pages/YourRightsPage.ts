@@ -4,8 +4,6 @@ import { BasePage } from './BasePage';
 export class YourRightsPage extends BasePage {
     // locators for key sections
     public readonly mainContent: Locator;
-    public readonly tableOfContents: Locator; 
-
     //locator for banner on the Your Rights page
     public readonly contentFulBannerSection: Locator;    
     public readonly contentFulBannerHeading: Locator;
@@ -25,11 +23,7 @@ export class YourRightsPage extends BasePage {
 
     constructor(page: Page) {
         super(page);
-        this.mainContent = page.locator('#main-content'); // Main content wrapper
-        this.tableOfContents = page.locator('#main-content-contents ol');  
-        this.contentFulBannerSection = page.locator('.banner-content').first() 
-        this.contentFulBannerHeading = this.contentFulBannerSection.locator('h2, .govuk-heading-l');  
-        this.contentfulDefinitionLink = page.locator('a[href*="#definition"]'); 
+        this.mainContent = page.locator('#main-content'); // Main content wrapper        
         this.contentfulCardLink = page.locator('.govuk-link govuk-link--no-visited-state dfe-card-link--header dfe-card-link--no-url-after').first();         
         this.contentfulDefinition = page.locator('.dfe-section dfe box-ext');
         this.contentfulGrid = page.locator('.dfe-grid-container');
@@ -42,18 +36,13 @@ export class YourRightsPage extends BasePage {
     }
 
     async verifySectionsVisibility() {
-        await expect(this.mainContent).toBeVisible();
-        await expect(this.tableOfContents).toBeVisible();       
+        await expect(this.mainContent).toBeVisible();               
     }
 
     async assertPageElements() {
         await this.validateURLContains('/your-rights');
         await this.verifyLogoAndHeadingExists();
-    }
-
-    async verifyContentfulDefinitionLink() {
-        await expect(this.contentfulDefinitionLink).toBeVisible();
-    }
+    }    
 
     async verifyContentfulCardExists() {
         await expect(this.contentfulCardLink).toBeDefined();
@@ -65,12 +54,7 @@ export class YourRightsPage extends BasePage {
 
     async verifyContentfulDefinitionExists() {
         await expect(this.contentfulDefinition).toBeDefined();
-    }
-
-    async assertBannerExists() {
-        await expect(this.contentFulBannerSection).toBeVisible();
-        await expect(this.contentFulBannerHeading).toBeVisible();       
-    }
+    }   
 
     async verifyContentfulNavigationLinkExists(){
         await expect(this.contentfulNavigationLink);
