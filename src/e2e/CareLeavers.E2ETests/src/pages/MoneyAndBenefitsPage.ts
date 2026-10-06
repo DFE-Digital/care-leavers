@@ -7,6 +7,7 @@ export class MoneyAndBenefitsPage extends BasePage {
     public readonly checkStatusLink: Locator;
     public readonly cardExternalLink: Locator;
     public readonly printableCollectionLink: Locator;
+    public readonly definitionLink: Locator;
 
     constructor(page: Page) {
         super(page);
@@ -15,6 +16,7 @@ export class MoneyAndBenefitsPage extends BasePage {
         this.checkStatusLink = page.locator('a[href="/en/your-rights"]').nth(1); // "Check your care leaver status" link
         this.cardExternalLink = page.locator('.dfe-card a.dfe-card-link--header[href^="http"]').first();    
         this.printableCollectionLink = page.locator('.print-collection-summary'); // Link to the printable collection page
+        this.definitionLink= page.locator('.govuk-link'); //Class used for definition link content type
     }
 
     async openPrintableCollectionPage() {
@@ -46,7 +48,11 @@ export class MoneyAndBenefitsPage extends BasePage {
         await expect(this.checkStatusLink).toBeVisible();
         await expect(this.checkStatusLink).toHaveAttribute('href', '/en/your-rights');
         
-        await this.verifyCardsCanHaveExternalLinks();
+        await this.verifyCardsCanHaveExternalLinks();       
+    }
+
+    async verifyContentfulDefinitionContentTypeExists() {
+        await expect(this.definitionLink).toBeDefined();
     }
     
     private async verifyCardsCanHaveExternalLinks() {
