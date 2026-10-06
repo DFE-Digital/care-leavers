@@ -19,6 +19,7 @@ COPY ["web/CareLeavers.Web/packages.lock.json", "."]
 RUN dotnet restore CareLeavers.Web.csproj --use-lock-file
 
 COPY ["web/CareLeavers.Web", "."]
+COPY --from=build-node ["../CareLeavers.Web/wwwroot", "./wwwroot/"]
 RUN dotnet publish CareLeavers.Web.csproj --no-restore --configuration Release --output ./publish
 # -- Build .NET -- #
 
