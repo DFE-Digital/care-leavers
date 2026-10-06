@@ -143,7 +143,7 @@ public class GetToAnAnswerRunClient(
         ProcessExternalLink(doc, languageCode, thisOrigin);
     }
 
-    private void ProcessScriptTags(HtmlDocument doc, string baseUrl, string nonce)
+    private static void ProcessScriptTags(HtmlDocument doc, string baseUrl, string nonce)
     {
         var scriptTags = doc.DocumentNode.SelectNodes("//script");
         if (scriptTags != null)
@@ -170,7 +170,7 @@ public class GetToAnAnswerRunClient(
         }
     }
 
-    private void ProcessLinkTags(HtmlDocument doc, string baseUrl)
+    private static void ProcessLinkTags(HtmlDocument doc, string baseUrl)
     {
         var linkTags = doc.DocumentNode.SelectNodes("//link");
         if (linkTags != null)
@@ -190,7 +190,7 @@ public class GetToAnAnswerRunClient(
         }
     }
 
-    private void ProcessStyleTags(HtmlDocument doc, string nonce)
+    private static void ProcessStyleTags(HtmlDocument doc, string nonce)
     {
         var styleTags = doc.DocumentNode.SelectNodes("//style");
         if (styleTags != null)
@@ -207,7 +207,7 @@ public class GetToAnAnswerRunClient(
         }
     }
 
-    private void ProcessFormTags(HtmlDocument doc, string languageCode)
+    private static void ProcessFormTags(HtmlDocument doc, string languageCode)
     {
         var formTags = doc.DocumentNode.SelectNodes("//form");
         if (formTags != null)
@@ -224,7 +224,7 @@ public class GetToAnAnswerRunClient(
         }
     }
 
-    private void ProcessAnchorTags(HtmlDocument doc, string languageCode)
+    private static void ProcessAnchorTags(HtmlDocument doc, string languageCode)
     {
         var anchorTags = doc.DocumentNode.SelectNodes("//a");
         if (anchorTags != null)
