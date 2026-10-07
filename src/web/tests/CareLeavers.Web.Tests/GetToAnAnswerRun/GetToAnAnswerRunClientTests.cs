@@ -326,6 +326,250 @@ public class GetToAnAnswerRunClientTests
         Assert.That(result, Does.Contain("external-link-dest"));
     }
 
+    [Test]
+    public async Task InjectBaseUrlAndNonce_Returns_Early_When_BaseUrlIsNull()
+    {
+        // Create a new client with null baseUrl
+        var httpMessageHandlerMock = new MockHttpMessageHandler();
+        var httpClientMock = new HttpClient(httpMessageHandlerMock)
+        {
+            BaseAddress = new Uri("https://localhost:1234")
+        };
+        ILogger<GetToAnAnswerRunClient> logger = Substitute.For<ILogger<GetToAnAnswerRunClient>>();
+
+        ServiceCollection serviceCollection = [];
+        serviceCollection.AddMemoryCache();
+        serviceCollection.AddTransient<IConfiguration>(_ =>
+        {
+            IConfiguration configuration = new ConfigurationBuilder().AddInMemoryCollection().Build();
+            // BaseUrl is not set, so it will be null
+            return configuration;
+        });
+        serviceCollection.AddTransient<ICspNonceService>(_ => new CspNonceService());
+
+        ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
+        var memoryCache = serviceProvider.GetRequiredService<IMemoryCache>();
+        var clientWithoutBaseUrl = new GetToAnAnswerRunClient(httpClientMock, serviceProvider, logger, memoryCache);
+
+        httpMessageHandlerMock.StatusCode = HttpStatusCode.OK;
+        httpMessageHandlerMock.Content = new StringContent("""
+            <script src="/test">Test</script>
+            <link href="/test" />
+            <style>Test</style>
+            """);
+
+        string result = await clientWithoutBaseUrl.GetStartPageOrInitialState("en", "test");
+
+        // When baseUrl is null, no URL substitution should happen
+        Assert.That(result, Does.Contain("<script src=\"/test\""));
+        Assert.That(result, Does.Not.Contain("https://localhost:5678"));
+
+        httpMessageHandlerMock.Dispose();
+        httpClientMock.Dispose();
+    }
+
+    [Test]
+    public async Task ProcessScriptTags_Adds_Nonce_When_NonceAttributeIsNull()
+    {
+        _httpMessageHandlerMock.StatusCode = HttpStatusCode.OK;
+        _httpMessageHandlerMock.Content = new StringContent("<script>console.log('test');</script>");
+
+        string result = await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
+
+        // Script should have nonce added
+        Assert.That(result, Does.Contain("<script nonce="));
+    }
+
+    [Test]
+    public async Task ProcessScriptTags_Replaces_Nonce_When_NonceAttributeIsWhitespace()
+    {
+        _httpMessageHandlerMock.StatusCode = HttpStatusCode.OK;
+        _httpMessageHandlerMock.Content = new StringContent("<script nonce=\"   \">console.log('test');</script>");
+
+        string result = await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
+
+        // Whitespace nonce should be replaced with actual nonce
+        Assert.That(result, Does.Contain("<script nonce="));
+        Assert.That(result, Does.Not.Contain("nonce=\"   \""));
+    }
+
+    [Test]
+    public async Task ProcessScriptTags_Ignores_Script_Without_SrcAttribute()
+    {
+        _httpMessageHandlerMock.StatusCode = HttpStatusCode.OK;
+        _httpMessageHandlerMock.Content = new StringContent("""
+            <script>console.log('inline script');</script>
+            <script>document.write('test');</script>
+            """);
+
+        string result = await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
+
+        // Inline scripts should still be there and nonce should be added, but no src modification
+        Assert.That(result, Does.Contain("inline script"));
+        Assert.That(result, Does.Contain("<script nonce="));
+    }
+
+    [Test]
+    public async Task ProcessScriptTags_Ignores_Src_When_ValueIsNull()
+    {
+        _httpMessageHandlerMock.StatusCode = HttpStatusCode.OK;
+        // Script with empty src attribute
+        _httpMessageHandlerMock.Content = new StringContent("<script src=\"\">Test</script>");
+
+        string result = await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
+
+        // Empty src should not be modified
+        Assert.That(result, Does.Contain("<script src=\"\""));
+    }
+
+    [Test]
+    public async Task ProcessScriptTags_Ignores_Src_When_NotStartingWithSlash()
+    {
+        _httpMessageHandlerMock.StatusCode = HttpStatusCode.OK;
+        _httpMessageHandlerMock.Content = new StringContent("<script src=\"https://cdn.example.com/script.js\">Test</script>");
+
+        string result = await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
+
+        // Absolute URLs should not be modified
+        Assert.That(result, Does.Contain("https://cdn.example.com/script.js"));
+        Assert.That(result, Does.Not.Contain("https://localhost:5678https://cdn.example.com"));
+    }
+
+    [Test]
+    public async Task ProcessLinkTags_Ignores_Href_When_ValueIsNull()
+    {
+        _httpMessageHandlerMock.StatusCode = HttpStatusCode.OK;
+        _httpMessageHandlerMock.Content = new StringContent("<link href=\"\" rel=\"stylesheet\" />");
+
+        string result = await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
+
+        // Empty href should not be modified
+        Assert.That(result, Does.Contain("href=\"\""));
+    }
+
+    [Test]
+    public async Task ProcessLinkTags_Ignores_Href_When_NotStartingWithSlash()
+    {
+        _httpMessageHandlerMock.StatusCode = HttpStatusCode.OK;
+        _httpMessageHandlerMock.Content = new StringContent("<link href=\"https://cdn.example.com/style.css\" rel=\"stylesheet\" />");
+
+        string result = await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
+
+        // Absolute URLs should not be modified
+        Assert.That(result, Does.Contain("https://cdn.example.com/style.css"));
+    }
+
+    [Test]
+    public async Task ProcessStyleTags_Adds_Nonce_When_NonceAttributeIsNull()
+    {
+        _httpMessageHandlerMock.StatusCode = HttpStatusCode.OK;
+        _httpMessageHandlerMock.Content = new StringContent("<style>body { color: red; }</style>");
+
+        string result = await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
+
+        // Style should have nonce added
+        Assert.That(result, Does.Contain("<style nonce="));
+    }
+
+    [Test]
+    public async Task ProcessStyleTags_Replaces_Nonce_When_NonceAttributeIsWhitespace()
+    {
+        _httpMessageHandlerMock.StatusCode = HttpStatusCode.OK;
+        _httpMessageHandlerMock.Content = new StringContent("<style nonce=\"  \">body { color: red; }</style>");
+
+        string result = await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
+
+        // Whitespace nonce should be replaced with actual nonce
+        Assert.That(result, Does.Contain("<style nonce="));
+        Assert.That(result, Does.Not.Contain("nonce=\"  \""));
+    }
+
+    [Test]
+    public async Task ProcessFormTags_Ignores_ActionAttribute_When_Null()
+    {
+        _httpMessageHandlerMock.StatusCode = HttpStatusCode.OK;
+        _httpMessageHandlerMock.Content = new StringContent("<form method=\"post\" novalidate></form>");
+
+        string result = await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
+
+        // Form without action should remain unchanged
+        Assert.That(result, Does.Contain("<form method=\"post\""));
+    }
+
+    [Test]
+    public async Task ProcessFormTags_Ignores_ActionAttribute_When_Empty()
+    {
+        _httpMessageHandlerMock.StatusCode = HttpStatusCode.OK;
+        _httpMessageHandlerMock.Content = new StringContent("<form action=\"\" method=\"post\" novalidate></form>");
+
+        string result = await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
+
+        // Empty action should not be modified
+        Assert.That(result, Does.Contain("action=\"\""));
+    }
+
+    [Test]
+    public async Task ProcessFormTags_Ignores_ActionAttribute_When_NotStartingWithQuestionnaires()
+    {
+        _httpMessageHandlerMock.StatusCode = HttpStatusCode.OK;
+        _httpMessageHandlerMock.Content = new StringContent("<form action=\"/other-endpoint\" method=\"post\"></form>");
+
+        string result = await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
+
+        // Action not starting with /questionnaires should not be modified
+        Assert.That(result, Does.Contain("/other-endpoint"));
+    }
+
+    [Test]
+    public async Task ProcessAnchorTags_Ignores_HrefAttribute_When_Null()
+    {
+        _httpMessageHandlerMock.StatusCode = HttpStatusCode.OK;
+        _httpMessageHandlerMock.Content = new StringContent("<a>Click me</a>");
+
+        string result = await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
+
+        // Anchor without href should remain unchanged
+        Assert.That(result, Does.Contain("<a>Click me</a>"));
+    }
+
+    [Test]
+    public async Task ProcessAnchorTags_Ignores_HrefAttribute_When_Empty()
+    {
+        _httpMessageHandlerMock.StatusCode = HttpStatusCode.OK;
+        _httpMessageHandlerMock.Content = new StringContent("<a href=\"\">Click me</a>");
+
+        string result = await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
+
+        // Empty href should not be modified
+        Assert.That(result, Does.Contain("href=\"\""));
+    }
+
+    [Test]
+    public async Task ProcessAnchorTags_Ignores_HrefAttribute_When_NotStartingWithQuestionnaires()
+    {
+        _httpMessageHandlerMock.StatusCode = HttpStatusCode.OK;
+        _httpMessageHandlerMock.Content = new StringContent("<a href=\"/other-path\">Click me</a>");
+
+        string result = await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
+
+        // Href not starting with /questionnaires should not be modified
+        Assert.That(result, Does.Contain("/other-path"));
+    }
+
+    [Test]
+    public async Task ProcessExternalLink_Does_Not_Process_When_PathPartsLengthIsOne()
+    {
+        _httpMessageHandlerMock.StatusCode = HttpStatusCode.OK;
+        _httpMessageHandlerMock.Content = new StringContent(
+            "<input type=\"hidden\" id=\"external-link-dest\" value=\"https://localhost:1234/\">");
+
+        var formData = new Dictionary<string, StringValues>();
+        string result = await _getToAnAnswerRunClient.GetNextState("localhost:1234", "sv", "test", formData);
+
+        // Should not modify when path is just root
+        Assert.That(result, Does.Contain("https://localhost:1234/"));
+    }
+
     [OneTimeTearDown]
     public void Teardown()
     {
