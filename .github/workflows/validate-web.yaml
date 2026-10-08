@@ -24,7 +24,7 @@ jobs:
       - name: Validate Frontend Build System
         working-directory: ./src/web/CareLeavers.Web.Node
         run: |
-          npm ci --ignore-scripts --omit=dev
+          npm ci --ignore-scripts
           npm run build
 
       - name: Run JavaScript Tests with Coverage
