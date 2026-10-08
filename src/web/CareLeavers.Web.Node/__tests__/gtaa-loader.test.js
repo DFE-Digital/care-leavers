@@ -16,7 +16,7 @@ const {
     setLoaderElements,
     getIsNavigating,
     setIsNavigating
-} = require('../CareLeavers.Web/wwwroot/js/gtaa-loader.js');
+} = require('../js/gtaa-loader.js');
 
 describe('GTAA Loader', () => {
     let mockLoader, mockFrame, mockWrapper;

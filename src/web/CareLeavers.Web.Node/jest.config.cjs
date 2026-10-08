@@ -3,9 +3,10 @@ module.exports = {
   rootDir: '../',
   testMatch: ['**/__tests__/**/*.test.js', '**/js/tests/**/*.test.js'],
   collectCoverageFrom: [
-    'CareLeavers.Web/wwwroot/js/**/*.js',
-    '!CareLeavers.Web/wwwroot/js/**/*.min.js',
-    '!CareLeavers.Web/wwwroot/js/tests/**/*.test.js',
+    'CareLeavers.Web.Node/js/**/*.js',
+    '!CareLeavers.Web.Node/js/**/*.min.js',
+    '!CareLeavers.Web.Node/js/tests/**/*.test.js',
+    '!CareLeavers.Web.Node/__tests__/**/*.test.js',
   ],
   coveragePathIgnorePatterns: [
     '/node_modules/',

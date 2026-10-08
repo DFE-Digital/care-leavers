@@ -10,4 +10,6 @@
 	<Property Name="sonar.coverage.exclusions">**/Program.cs,**/*Options.cs,**/*Constants.cs,**/*.cshtml,**/*.js,**/Fake**</Property>
 	<Property Name="sonar.cpd.exclusions">**/Program.cs,**/Configuration/**,**/Swagger/**</Property>
 	<Property Name="sonar.cs.vstest.reportsPaths">**/*.trx</Property>
+	<!-- JavaScript coverage reporting -->
+	<Property Name="sonar.javascript.lcov.reportPaths">src/web/CareLeavers.Web.Node/coverage/lcov.info</Property>
 </SonarQubeAnalysisProperties>

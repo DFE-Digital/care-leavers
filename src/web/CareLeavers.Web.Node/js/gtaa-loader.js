@@ -118,4 +118,26 @@
     } else {
         init();
     }
+
+    // Export for Node.js/Jest testing
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = {
+            init,
+            showLoader,
+            hideLoader,
+            showError,
+            showUnloadMessage,
+            handleFrameLoad,
+            handleFrameError,
+            handlePostMessage,
+            handleBeforeUnload,
+            handlePageShow,
+            setupTimeoutSafety,
+            initializeElements,
+            getLoaderElements: () => loaderElements,
+            setLoaderElements: (elements) => { loaderElements = elements; },
+            getIsNavigating: () => isNavigating,
+            setIsNavigating: (value) => { isNavigating = value; }
+        };
+    }
 })();
