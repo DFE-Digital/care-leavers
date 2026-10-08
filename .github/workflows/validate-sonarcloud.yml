@@ -48,6 +48,11 @@ jobs:
         run: |
           npm ci --ignore-scripts --omit=dev
           npm run build
+          
+      - name: Run JavaScript Tests with Coverage
+        working-directory: './src/web/CareLeavers.Web.Node'
+        run: npm run test:coverage -- --passWithNoTests
+
 
       - name: Setup .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68

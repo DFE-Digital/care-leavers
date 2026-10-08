@@ -207,10 +207,12 @@ public class GetToAnAnswerRunClientTests
         // Second call - cache hit
         _httpMessageHandlerMock.Content = new StringContent("<p>Different Content</p>");
         var secondResult = await _getToAnAnswerRunClient.GetInitialState("en", "test");
-
-        Assert.That(firstResult, Is.EqualTo(secondResult));
-        Assert.That(secondResult, Does.Contain("Initial Content"));
-        Assert.That(secondResult, Does.Not.Contain("Different Content"));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(firstResult, Is.EqualTo(secondResult));
+            Assert.That(secondResult, Does.Contain("Initial Content"));
+            Assert.That(secondResult, Does.Not.Contain("Different Content"));
+        }
     }
 
     [Test]
@@ -226,9 +228,12 @@ public class GetToAnAnswerRunClientTests
         _httpMessageHandlerMock.Content = new StringContent("<p>Second Response</p>");
         var secondResult = await _getToAnAnswerRunClient.GetStartPageOrInitialState("en", "test");
 
-        Assert.That(firstResult, Does.Contain("First Response"));
-        Assert.That(secondResult, Does.Contain("Second Response"));
-        Assert.That(firstResult, Is.Not.EqualTo(secondResult));
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(firstResult, Does.Contain("First Response"));
+            Assert.That(secondResult, Does.Contain("Second Response"));
+            Assert.That(firstResult, Is.Not.EqualTo(secondResult));
+        }
     }
 
     [Test]
@@ -267,7 +272,7 @@ public class GetToAnAnswerRunClientTests
             "<input type=\"hidden\" id=\"external-link-dest\" value=\"https://localhost:1234/en/test\">");
 
         var formData = new Dictionary<string, StringValues> { { "test", new StringValues("value") } };
-        string result = await _getToAnAnswerRunClient.GetNextState(null, "en", "test", formData);
+        string result = await _getToAnAnswerRunClient.GetNextState(null ?? "", "en", "test", formData);
 
         // Should not modify the value since thisOrigin is null
         Assert.That(result, Does.Contain("/en/test"));

@@ -10,13 +10,13 @@ module.exports = {
   ],
   coveragePathIgnorePatterns: [
     '/node_modules/',
-    '.*\\.test\\.js$',
+    String.raw`.*\.test\.js$`,
   ],
   coverageReporters: ['text', 'text-summary', 'html', 'json', 'lcov'],
   moduleNameMapper: {
-    '\\.(css|scss)$': '<rootDir>/jest.mock.js',
+    [String.raw`\.(css|scss)$`]: '<rootDir>/jest.mock.js',
   },
   transform: {
-    '^.+\\.js$': 'babel-jest',
+    [String.raw`^.+\.js$`]: 'babel-jest',
   },
 };
