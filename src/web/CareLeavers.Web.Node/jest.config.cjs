@@ -2,11 +2,14 @@ module.exports = {
   testEnvironment: 'jsdom',
   rootDir: '../',
   testMatch: ['**/__tests__/**/*.test.js', '**/js/tests/**/*.test.js'],
+  coverageDirectory: 'CareLeavers.Web.Node/coverage',
   collectCoverageFrom: [
-    'CareLeavers.Web.Node/js/**/*.js',
-    '!CareLeavers.Web.Node/js/**/*.min.js',
-    '!CareLeavers.Web.Node/js/tests/**/*.test.js',
-    '!CareLeavers.Web.Node/__tests__/**/*.test.js',
+    '**/*.js',
+    '!**/node_modules/**',
+    '!**/dist/**',
+    '!**/*.min.js',
+    '!**/js/tests/**/*.test.js',
+    '!**/__tests__/**',
   ],
   coveragePathIgnorePatterns: [
     '/node_modules/',

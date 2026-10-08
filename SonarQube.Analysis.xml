@@ -11,5 +11,5 @@
 	<Property Name="sonar.cpd.exclusions">**/Program.cs,**/Configuration/**,**/Swagger/**</Property>
 	<Property Name="sonar.cs.vstest.reportsPaths">**/*.trx</Property>
 	<!-- JavaScript coverage reporting -->
-	<Property Name="sonar.javascript.lcov.reportPaths">src/web/CareLeavers.Web.Node/coverage/lcov.info</Property>
+	<Property Name="sonar.javascript.lcov.reportPaths">web/CareLeavers.Web.Node/coverage/lcov.info</Property>
 </SonarQubeAnalysisProperties>
