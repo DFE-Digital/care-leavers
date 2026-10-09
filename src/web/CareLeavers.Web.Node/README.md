@@ -15,3 +15,4 @@ The Dockerfile executes this automatically. This means that no additional input 
 
 1. Run `npm install` to install the dependencies.
 2. Run `npm run build` to execute the build script and populate `wwwroot`
+3. Run 'npm run test' to execute the javascript unit tests.

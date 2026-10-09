@@ -38,6 +38,22 @@ jobs:
           ref: ${{ github.ref }}
           persist-credentials: false
 
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '26'
+
+      - name: Build frontend assets
+        working-directory: './src/web/CareLeavers.Web.Node'
+        run: |
+          npm ci --ignore-scripts
+          npm run build
+          
+      - name: Run JavaScript Tests with Coverage
+        working-directory: './src/web/CareLeavers.Web.Node'
+        run: npm run test:coverage -- --passWithNoTests
+
+
       - name: Setup .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68
         with:

@@ -59,7 +59,7 @@
     <meta name="apple-mobile-web-app-title" content="@config.ServiceName" />
     
     <link rel="stylesheet" href="~/css/application.css" asp-append-version="@scriptConfig.AddCssVersion"/>
-    <link rel="stylesheet" href="~/css/print.css" asp-append-version="@scriptConfig.AddCssVersion"/>
+    <link rel="stylesheet" href="~/css/print.css" asp-append-version="@scriptConfig.AddCssVersion" media="print" />
     @if (SiteConfiguration.Rebrand)
     {
         <link rel="stylesheet" href="~/css/rebrand.css" asp-append-version="@scriptConfig.AddCssVersion"/>

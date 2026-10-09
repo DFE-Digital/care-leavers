@@ -1,0 +1,143 @@
+(function() {
+    'use strict';
+    let loaderElements = {
+        loader: null,
+        frame: null,
+        wrapper: null
+    };
+    let isNavigating = false;
+    function initializeElements() {
+        loaderElements.loader = document.getElementById('gtaaLoader');
+        loaderElements.frame = document.getElementById('gtaaFrame');
+        loaderElements.wrapper = document.querySelector('.gtaa-wrapper');
+    }
+    function showLoader() {
+        if (loaderElements.loader) {
+            loaderElements.loader.style.display = 'block';
+        }
+    }
+    function hideLoader() {
+        if (loaderElements.loader) {
+            loaderElements.loader.style.display = 'none';
+        }
+    }
+    function showError(message) {
+        if (loaderElements.loader) {
+            const errorParagraph = document.createElement('p');
+            errorParagraph.style.color = '#d32f2f';
+            errorParagraph.textContent = message || 'Failed to load questionnaire. Please try again.';
+            loaderElements.loader.innerHTML = '';
+            loaderElements.loader.appendChild(errorParagraph);
+        }
+    }
+    function showUnloadMessage(message) {
+        if (loaderElements.loader) {
+            const heading = loaderElements.loader.querySelector('.govuk-heading-m');
+            if (heading) {
+                heading.textContent = message || 'Loading...';
+            }
+            loaderElements.loader.style.display = 'block';
+        }
+    }
+    function handleFrameLoad() {
+        hideLoader();
+        if (loaderElements.wrapper) {
+            loaderElements.wrapper.classList.remove('loading');
+        }
+    }
+    function handleFrameError() {
+        showError('Failed to load questionnaire. Please try again.');
+    }
+    function handlePostMessage(event) {
+        // Verify origin to prevent unauthorized cross-origin messages
+        const allowedOrigin = window.location.origin;
+        if (event.origin !== allowedOrigin) {
+            return;
+        }
+
+        if (event.data?.type === 'gtaa-navigation-start') {
+            if (!isNavigating) {
+                isNavigating = true;
+                showUnloadMessage(event.data.message || 'Loading...');
+            }
+        }
+    }
+    function handleBeforeUnload() {
+        if (!isNavigating) {
+            isNavigating = true;
+            showUnloadMessage('Loading...');
+            return new Promise((resolve) => {
+                setTimeout(resolve, 100);
+            });
+        }
+    }
+    function handlePageShow(event) {
+        // Reset navigation state and hide loader when page is shown from back/forward cache
+        isNavigating = false;
+        if (loaderElements.loader) {            
+            hideLoader();
+        }
+        if (loaderElements.wrapper) {
+            loaderElements.wrapper.classList.remove('loading');
+        }
+    }
+    function setupTimeoutSafety(timeoutMs) {
+        setTimeout(() => {
+            if (loaderElements.loader?.style?.display !== 'none') {
+                hideLoader();
+                if (loaderElements.wrapper) {
+                    loaderElements.wrapper.classList.remove('loading');
+                }
+            }
+        }, timeoutMs);
+    }
+    function init() {
+        initializeElements();
+        showLoader();
+        if (loaderElements.frame) {
+            loaderElements.frame.style.display = 'block';
+            loaderElements.frame.addEventListener('load', handleFrameLoad, { once: true });
+            loaderElements.frame.addEventListener('error', handleFrameError, { once: true });
+            loaderElements.frame.addEventListener('pageshow', handlePageShow, { once: true });
+            window.addEventListener('message', handlePostMessage);
+            window.addEventListener('beforeunload', handleBeforeUnload);
+            window.addEventListener('pageshow', handlePageShow);
+            setupTimeoutSafety(30000);
+        }
+    }
+    window.GTAALoader = {
+        init: init,
+        showLoader: showLoader,
+        hideLoader: hideLoader,
+        showError: showError,
+        showUnloadMessage: showUnloadMessage,
+        isNavigating: function() { return isNavigating; }
+    };
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+    // Export for Node.js/Jest testing
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = {
+            init,
+            showLoader,
+            hideLoader,
+            showError,
+            showUnloadMessage,
+            handleFrameLoad,
+            handleFrameError,
+            handlePostMessage,
+            handleBeforeUnload,
+            handlePageShow,
+            setupTimeoutSafety,
+            initializeElements,
+            getLoaderElements: () => loaderElements,
+            setLoaderElements: (elements) => { loaderElements = elements; },
+            getIsNavigating: () => isNavigating,
+            setIsNavigating: (value) => { isNavigating = value; }
+        };
+    }
+})();
