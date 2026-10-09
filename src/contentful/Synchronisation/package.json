@@ -9,9 +9,9 @@
     "type": "commonjs",
     "dependencies": {
         "contentful-export": "^8.5.0",
-        "contentful-import": "^10.5.2",
-        "contentful-management": "^12.18.2",
-        "dotenv": "^18.0.3"
+        "contentful-import": "^10.5.3",
+        "contentful-management": "^12.19.0",
+        "dotenv": "^18.0.5"
     },
     "resolutions": {
         "lodash": "4.18.1"
