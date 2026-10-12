@@ -11,6 +11,15 @@
      data-bg="#fff"
      data-fg="#00205b"
      style="margin:0 auto; max-width:100%; width:100%;">
+
+    <!-- CSS-Only Loading Overlay -->
+    <div class="gtaa-loader-css-only">
+        <div class="gtaa-loader-css-only__content">
+            <div class="gtaa-loader-css-only__spinner" aria-hidden="true"></div>
+            <p class="gtaa-loader-css-only__message">Loading questionnaire...</p>
+        </div>
+    </div>
+
     <iframe id="gtaaFrame" title="@Model.Title"
             src="/@languageCode/get-to-an-answer-questionnaires/@Model.questionnaireSlug/start"
             allow="autoplay" referrerpolicy="strict-origin" 
