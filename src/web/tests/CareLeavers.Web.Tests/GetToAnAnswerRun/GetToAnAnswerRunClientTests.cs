@@ -136,10 +136,7 @@ public class GetToAnAnswerRunClientTests
         _httpMessageHandlerMock.StatusCode = HttpStatusCode.BadRequest;
         _httpMessageHandlerMock.Content = new StringContent("");
 
-        Assert.ThrowsAsync<HttpRequestException>((Func<Task>)GtaaTask);
-        return;
-
-        async Task GtaaTask() => await _getToAnAnswerRunClient.GetInitialState("en", "/test-error");
+        _ = Assert.ThrowsAsync<HttpRequestException>(async () => await _getToAnAnswerRunClient.GetInitialState("en", "/test-error"));
     }
 
     [Test]
