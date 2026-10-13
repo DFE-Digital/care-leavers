@@ -15,7 +15,7 @@ permissions: {}
 jobs:
   generate:
     name: CI Generate Docs
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     permissions:
       contents: write
       pull-requests: write

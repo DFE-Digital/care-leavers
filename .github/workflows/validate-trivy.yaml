@@ -18,7 +18,7 @@ concurrency:
 jobs:
   build:
     name: Trivy File Scan
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
       actions: write
