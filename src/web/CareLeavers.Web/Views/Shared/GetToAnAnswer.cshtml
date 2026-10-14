@@ -30,12 +30,15 @@
             src="/@languageCode/get-to-an-answer-questionnaires/@Model.questionnaireSlug/start"
             allow="autoplay" referrerpolicy="strict-origin"
             sandbox="allow-scripts allow-top-navigation allow-forms"
-            crossorigin="anonymous" loading="eager" fetchpriority="high">
+            loading="eager" fetchpriority="high">
     </iframe>
 </div>
 <script asp-add-nonce="true">
-    document.getElementById('gtaaFrame').addEventListener('load', function() {
-        this.parentElement.classList.remove('gtaa-loading');
-    });
+    const gtaaFrame = document.getElementById('gtaaFrame');
+    if (gtaaFrame) {
+        gtaaFrame.addEventListener('load', function() {
+            this.parentElement.classList.remove('gtaa-loading');
+        });
+    }    
 </script>
 <script asp-add-nonce="true" src="@Model.BaseUrl/js/gtaa.external.js" defer async></script>
