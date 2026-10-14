@@ -30,7 +30,7 @@ env:
 jobs:
   validate_using_branch:
     name: Validating the workflow is using a branch for deployment
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     steps:
@@ -47,7 +47,7 @@ jobs:
 
   package:
     name: Package Web in Docker
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: [validate_using_branch]
     permissions:
       contents: read
@@ -68,7 +68,7 @@ jobs:
   deploy:
     name: Deploying to ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
     needs: [package]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     environment: ${{ github.event_name == 'push' && 'elz-test' || github.event.inputs.environment }}
     permissions:
       contents: read

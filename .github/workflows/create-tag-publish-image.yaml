@@ -10,7 +10,7 @@ permissions: {}
 jobs:
   tag_release:
     name: Create New Tag
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     outputs:
       tag_version: ${{ steps.tag_version.outputs.new_tag }}
     permissions:
@@ -30,7 +30,7 @@ jobs:
 
   package:
     name: Package Web in Docker
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: [tag_release]
     env:
       TAG_NAME: "${{ needs.tag_release.outputs.tag_version }}"
