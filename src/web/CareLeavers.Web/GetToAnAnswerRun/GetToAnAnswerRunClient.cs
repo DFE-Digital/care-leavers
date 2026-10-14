@@ -261,8 +261,8 @@ public class GetToAnAnswerRunClient(
         }
 
         var url = new Uri(valueAttribute.Value);
-        logger.LogInformation($"Replacing language code in external link: {url}");
-        logger.LogInformation($"Checking if this {thisOrigin} matches {url.Host}");
+        logger.LogInformation("Replacing language code in external link: {Url}", url);
+        logger.LogInformation("Checking if this {ThisOrigin} matches {UrlHost}", thisOrigin, url.Host);
 
         if (!url.Host.Equals(thisOrigin))
         {
