@@ -138,7 +138,7 @@ try
     {
         options.ForwardedHeaders = ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedFor;
         options.KnownProxies.Clear();
-        options.KnownNetworks.Clear();
+        options.KnownIPNetworks.Clear();
         options.AllowedHosts = new List<string>
         {
             "*.azurewebsites.net",
@@ -436,6 +436,19 @@ try
 
     #endregion
 
+    #region Static files, routing, health checks, and default route
+
+    app.UseStaticFiles(new StaticFileOptions()
+    {
+        OnPrepareResponse = ctx =>
+        {
+            ctx.Context.Response.Headers.Append(
+                "Cache-Control", $"public, max-age={FromDays(31).TotalSeconds}");
+        }
+    });
+
+    #endregion
+
     #region Setup basic authentication
 
     var requiredCreds = builder.Configuration["BasicAuth:EncodedCreds"];
@@ -597,24 +610,12 @@ try
 
     #endregion
 
-    #region Static files, routing, health checks, and default route
-
-    app.UseStaticFiles(new StaticFileOptions()
-    {
-        OnPrepareResponse = ctx =>
-        {
-            ctx.Context.Response.Headers.Append(
-                "Cache-Control", $"public, max-age={FromDays(31).TotalSeconds}");
-        }
-    });
     app.UseRouting();
     app.UseSession();
     app.MapHealthChecks("/health");
     app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Contentful}/{action=Homepage}");
-
-    #endregion
 
     await app.RunAsync();
 }
