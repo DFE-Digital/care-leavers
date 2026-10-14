@@ -12,8 +12,8 @@
     <link rel="preload" href="@Model.BaseUrl/js/gtaa.external.js" as="script">
 }
 
-<div class="gtaa-wrapper" data-auto-scroll="false" data-is-fixed-height-enabled="false" data-bg="#fff" data-fg="#00205b" style="margin:0 auto; max-width:100%; width:100%;">
-     <div id="gtaaLoader" class="gtaa-loader">
+<div class="gtaa-wrapper gtaa-loading" data-auto-scroll="false" data-is-fixed-height-enabled="false" data-bg="#fff" data-fg="#00205b" style="margin:0 auto; max-width:100%; width:100%;">
+    <div id="gtaaLoader" class="gtaa-loader">
         <div class="govuk-grid-row">
             <div class="govuk-!-padding-bottom-9"></div>
             <div class="govuk-!-padding-bottom-9"></div>
@@ -30,11 +30,12 @@
             src="/@languageCode/get-to-an-answer-questionnaires/@Model.questionnaireSlug/start"
             allow="autoplay" referrerpolicy="strict-origin"
             sandbox="allow-scripts allow-top-navigation allow-forms"
-            crossorigin="anonymous" loading="eager" fetchpriority="high"
-            style="display: none;">
+            crossorigin="anonymous" loading="eager" fetchpriority="high">
     </iframe>
 </div>
-
-
-<script asp-add-nonce="true" src="/js/gtaa-loader.min.js" defer></script>
+<script asp-add-nonce="true">
+    document.getElementById('gtaaFrame').addEventListener('load', function() {
+        this.parentElement.classList.remove('gtaa-loading');
+    });
+</script>
 <script asp-add-nonce="true" src="@Model.BaseUrl/js/gtaa.external.js" defer async></script>
