@@ -4,9 +4,9 @@
     "net10.0": {
       "AngleSharp": {
         "type": "Direct",
-        "requested": "[1.8.3, )",
-        "resolved": "1.8.3",
-        "contentHash": "IiXdbBHzeKRUDayOFT/5nAqkY7Tqbtzr9dqoWrsfseLRs2r1j94qP8MmKnfs9aX+WHucmlmX8xq9QosIUJ/sbA=="
+        "requested": "[1.8.4, )",
+        "resolved": "1.8.4",
+        "contentHash": "lbwt3oqjyxI6x01NT0kRqnudE+gxLqRAs/X49/iVWyguj6OtRfYCanV1mL+jYZgeeAqnGqWzqi7+s5gdtBF1Ag=="
       },
       "coverlet.collector": {
         "type": "Direct",
@@ -122,18 +122,18 @@
       },
       "Azure.Monitor.OpenTelemetry.Exporter": {
         "type": "Transitive",
-        "resolved": "1.9.0",
-        "contentHash": "gXe64QuF30HQkuo1B+FqsekN9coca1vcFKDWCgioo39Hb5Yc0lMS6g8OAa7rGBIssQBoaQQAxIM6Dn4pJbXz+g==",
+        "resolved": "1.10.0",
+        "contentHash": "39Vc71fy1KYqU70j3sbGOqUU6wT5/eKskEuoW8R+H+J+srIyCewN6ooMTj+6lU4yFpJ0x5da2jx1GK9h48g6iw==",
         "dependencies": {
-          "Azure.Core": "1.62.0",
+          "Azure.Core": "1.63.0",
           "OpenTelemetry.Extensions.Hosting": "1.18.0",
           "OpenTelemetry.PersistentStorage.FileSystem": "1.1.1"
         }
       },
       "Azure.Storage.Blobs": {
         "type": "Transitive",
-        "resolved": "12.30.0",
-        "contentHash": "pf6tqkzNANU5Fvfibse3fVRNWJol4jb9iA/wjHu1EHEpWpFHasHaiVNc11fncvOwnphzm4xaZwXzrg34yAI2hw==",
+        "resolved": "12.30.1",
+        "contentHash": "ywPqtDHLH5MY0Cp/wfLQgqhHOuJmD+bYVJawjXudtaQr9aJB+9orhk8oE6hHPy5s8H5bzq2q/mDkESf8w1rzBg==",
         "dependencies": {
           "Apache.Arrow": "22.1.0",
           "Azure.Core": "1.60.0",
@@ -1378,8 +1378,8 @@
           "Azure.AI.Translation.Text": "[1.0.0, )",
           "Azure.Core": "[1.63.0, )",
           "Azure.Monitor.OpenTelemetry.AspNetCore": "[1.6.0, )",
-          "Azure.Monitor.OpenTelemetry.Exporter": "[1.9.0, )",
-          "Azure.Storage.Blobs": "[12.30.0, )",
+          "Azure.Monitor.OpenTelemetry.Exporter": "[1.10.0, )",
+          "Azure.Storage.Blobs": "[12.30.1, )",
           "HtmlAgilityPack": "[1.13.0, )",
           "Joonasw.AspNetCore.SecurityHeaders": "[6.0.0, )",
           "Microsoft.ApplicationInsights": "[2.23.0, )",
