@@ -181,6 +181,15 @@ runs:
         slot-name: "${{inputs.webapp_slot}}"
         images: "ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ inputs.tag_name }}"
 
+    - name: Deploy to Azure Web App QA
+      if: inputs.environment == 'elz-test'
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@02a81bead70021f5284939794bcec79c271ab383
+      with:
+        app-name: "${{ inputs.environment_prefix }}-uks-cl-web-app-service-qa"
+        slot-name: "${{inputs.webapp_slot}}"
+        images: "ghcr.io/${{ steps.lowercase.outputs.lowercased_value }}:${{ inputs.tag_name }}"
+
     - name: Swap Slot to Production
       if: inputs.environment == 'elz-production'
       shell: bash
