@@ -61,12 +61,12 @@ resource "azurerm_cdn_frontdoor_origin" "frontdoor-web-origin" {
 resource "azurerm_cdn_frontdoor_origin" "frontdoor-web-origin-qa" {
   count = var.elz_environment == "Dev" ? 1 : 0
 
-  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group-qa.id
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group-qa[0].id
   certificate_name_check_enabled = false
-  host_name                      = azurerm_linux_web_app.web-app-service-qa.default_hostname
+  host_name                      = azurerm_linux_web_app.web-app-service-qa[0].default_hostname
   http_port                      = 80
   https_port                     = 443
-  origin_host_header             = azurerm_linux_web_app.web-app-service-qa.default_hostname
+  origin_host_header             = azurerm_linux_web_app.web-app-service-qa[0].default_hostname
   priority                       = 1
   weight                         = 1
   name                           = "${local.service_prefix}-web-fd-origin-qa"
