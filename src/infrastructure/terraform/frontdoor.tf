@@ -100,8 +100,8 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
 resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route-qa" {
   name                          = "${local.service_prefix}-web-fd-route-qa"
   cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.id
-  cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group-qa.id
-  cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.frontdoor-web-origin-qa.id]
+  cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group-qa[0].id
+  cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.frontdoor-web-origin-qa[0].id]
   cdn_frontdoor_rule_set_ids    = [azurerm_cdn_frontdoor_rule_set.security_redirects.id, azurerm_cdn_frontdoor_rule_set.security_headers.id]
   enabled                       = true
 
