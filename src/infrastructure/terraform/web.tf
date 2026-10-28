@@ -2,7 +2,7 @@ locals {
   environment_character_limits = {
     d01 = 1000000
     t01 = 1000000
-    p01 = 15000000
+    p01 = 0
   }
 
   web_app_settings = {
