@@ -98,6 +98,8 @@ resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route" {
 
 # Temp for test site on Dev
 resource "azurerm_cdn_frontdoor_route" "frontdoor-web-route-qa" {
+  count = var.elz_environment == "Dev" ? 1 : 0
+
   name                          = "${local.service_prefix}-web-fd-route-qa"
   cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.frontdoor-web-endpoint.id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.frontdoor-origin-group-qa[0].id
