@@ -341,6 +341,85 @@ public class PagesControllerTests
         Assert.That(pageResult.Title, Is.Not.EqualTo("Test"));
     }
 
+    [Test]
+    public async Task TranslationServiceUnavailable_With_LanguageCode_Returns_View()
+    {
+        Page page = new Page { Title = "Test", MainContent = new Document
+        {
+            Content = [ new Paragraph() ]
+        }};
+        _contentService.GetPage("translation-service-unavailable").Returns(page);
+
+        IActionResult result = await _pagesController.TranslationServiceUnavailable("en");
+
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+        Assert.That(viewResult.Model, Is.EqualTo(page));
+    }
+
+    [Test]
+    public async Task TranslationServiceUnavailable_Without_LanguageCode_Returns_View()
+    {
+        Page page = new Page { Title = "Test", MainContent = new Document
+        {
+            Content = [ new Paragraph() ]
+        }};
+        _contentService.GetPage("translation-service-unavailable").Returns(page);
+
+        IActionResult result = await _pagesController.TranslationServiceUnavailable(null);
+
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+        Assert.That(viewResult.Model, Is.EqualTo(page));
+    }
+
+    [Test]
+    public async Task TranslationServiceUnavailable_WhenPageIsNull_Returns_Fallback_View()
+    {
+        Page? page = null;
+        _contentService.GetPage("translation-service-unavailable").Returns(page);
+
+        IActionResult result = await _pagesController.TranslationServiceUnavailable(null);
+
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+    }
+
+    [Test]
+    public async Task TranslationServiceUnavailable_WhenMainContentIsNull_Returns_Fallback_View()
+    {
+        Page page = new Page { Title = "Test", MainContent = null };
+        _contentService.GetPage("translation-service-unavailable").Returns(page);
+
+        IActionResult result = await _pagesController.TranslationServiceUnavailable(null);
+
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+        Page? pageResult = viewResult.Model as Page;
+        Assert.That(pageResult, Is.Not.Null);
+        Assert.That(pageResult.Title, Is.Not.EqualTo("Test"));
+    }
+
+    [Test]
+    public async Task TranslationServiceUnavailable_WhenMainContentIsEmpty_Returns_Fallback_View()
+    {
+        Page page = new Page { Title = "Test", MainContent = new Document { Content = [] } };
+        _contentService.GetPage("translation-service-unavailable").Returns(page);
+
+        IActionResult result = await _pagesController.TranslationServiceUnavailable(null);
+
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+        Page? pageResult = viewResult.Model as Page;
+        Assert.That(pageResult, Is.Not.Null);
+        Assert.That(pageResult.Title, Is.Not.EqualTo("Test"));
+    }
+
     [TearDown]
     public void Teardown()
     {
