@@ -51,7 +51,7 @@
             CookiePolicyModel = cookiePolicyModel,
             FeedbackViewModel = new FeedbackViewModel
             {
-                Page = Model.Page,
+                Page = Model?.Page,
                 FeedbackUrl = config.FeedbackUrl
             }
         };
