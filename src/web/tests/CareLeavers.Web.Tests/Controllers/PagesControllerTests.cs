@@ -207,7 +207,7 @@ public class PagesControllerTests
     }
 
     [Test]
-    public void PostCookiePolicy_AppendsCookies_And_Returns_View()
+    public async Task PostCookiePolicy_AppendsCookies_And_Returns_View()
     {
         SharedViewModel model = new SharedViewModel { CookiePolicyModel = new CookiePolicyModel { AcceptCookies = true } };
         CookiePolicyOptions cookiePolicyOptions = new CookiePolicyOptions
@@ -221,7 +221,7 @@ public class PagesControllerTests
 
         _httpContext.Response.Cookies.Returns(Substitute.For<IResponseCookies>());
 
-        IActionResult result = _pagesController.PostCookiePolicy(model, cookiePolicyOptionsService);
+        IActionResult result = await _pagesController.PostCookiePolicy(model, cookiePolicyOptionsService);
 
         Assert.That(result, Is.TypeOf<ViewResult>());
         ViewResult? viewResult = result as ViewResult;
@@ -235,7 +235,7 @@ public class PagesControllerTests
     }
 
     [Test]
-    public void PostCookiePolicy_WhenCookiesAreDeclined_AppendsCookies_And_Returns_View()
+    public async Task PostCookiePolicy_WhenCookiesAreDeclined_AppendsCookies_And_Returns_View()
     {
         SharedViewModel model = new SharedViewModel { CookiePolicyModel = new CookiePolicyModel { AcceptCookies = false } };
         CookiePolicyOptions cookiePolicyOptions = new CookiePolicyOptions
@@ -249,7 +249,7 @@ public class PagesControllerTests
 
         _httpContext.Response.Cookies.Returns(Substitute.For<IResponseCookies>());
 
-        IActionResult result = _pagesController.PostCookiePolicy(model, cookiePolicyOptionsService);
+        IActionResult result = await _pagesController.PostCookiePolicy(model, cookiePolicyOptionsService);
 
         Assert.That(result, Is.TypeOf<ViewResult>());
         ViewResult? viewResult = result as ViewResult;

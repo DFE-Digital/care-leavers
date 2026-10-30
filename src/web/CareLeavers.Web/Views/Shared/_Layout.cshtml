@@ -29,7 +29,8 @@
     };
 
     var cookiePolicyProperty = Model?.GetType().GetProperty("CookiePolicyModel");
-    bool IsCookiePage = cookiePolicyProperty?.GetValue(Model) != null;
+    var cookiePolicyModel = cookiePolicyProperty?.GetValue(Model) as CookiePolicyModel;
+    bool IsCookiePage = cookiePolicyModel != null;
 
     SharedViewModel? sharedViewModel = null;
     if (!IsCookiePage)
@@ -47,7 +48,7 @@
     {
         sharedViewModel = new SharedViewModel
         {
-            CookiePolicyModel = Model.CookiePolicyModel,
+            CookiePolicyModel = cookiePolicyModel,
             FeedbackViewModel = new FeedbackViewModel
             {
                 Page = Model.Page,

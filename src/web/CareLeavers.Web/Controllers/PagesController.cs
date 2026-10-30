@@ -89,11 +89,12 @@ public class PagesController(IContentService contentService) : Controller
     
     [HttpPost("/{languageCode}/cookie-policy")]
     [Translation]
-    public IActionResult PostCookiePolicy(
+    public async Task<IActionResult> PostCookiePolicy(
         [FromForm] SharedViewModel model,
         [FromServices] IOptions<CookiePolicyOptions> cookiePolicyOptions)
     {
         var cookiePolicyModel = model.CookiePolicyModel ?? new CookiePolicyModel();
+        var page = await contentService.GetPage("cookie-policy") ?? new();
 
         var cookieOptions = cookiePolicyOptions.Value.ConsentCookie.Build(HttpContext);
         var cookieValue = cookiePolicyModel.AcceptCookies ? cookiePolicyOptions.Value.ConsentCookieValue : "no";
@@ -104,11 +105,12 @@ public class PagesController(IContentService contentService) : Controller
             cookieOptions);
 
         cookiePolicyModel.ShowSuccessBanner = true;
+        cookiePolicyModel.Page = page;
         model.CookiePolicyModel = cookiePolicyModel;
-        model.Page ??= cookiePolicyModel.Page;
-        model.FeedbackViewModel ??= new FeedbackViewModel
+        model.Page = page;
+        model.FeedbackViewModel = new FeedbackViewModel
         {
-            Page = model.Page ?? new()
+            Page = page
         };
 
         return View("CookiePolicy", model);
