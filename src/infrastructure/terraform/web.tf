@@ -43,7 +43,7 @@ locals {
     "ContentfulOptions__PreviewApiKey"      = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-preview-api-key.versionless_id})"
     "ContentfulOptions__ManagementApiKey"   = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-management-api-key.versionless_id})"
     "ContentfulOptions__SpaceId"            = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.contentful-space-id.versionless_id})"
-    "ContentfulOptions__Environment"        = var.contentful_environment
+    "ContentfulOptions__Environment"        = "production_v2"
     "ContentfulOptions__UsePreviewApi"      = var.contentful_use_preview_api
     "ApplicationInsights__ConnectionString" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.application-insights-connection-string.versionless_id})"
     "Caching__Type"                         = var.caching_type
