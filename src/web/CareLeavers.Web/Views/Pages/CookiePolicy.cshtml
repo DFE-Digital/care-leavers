@@ -1,5 +1,5 @@
 @using CareLeavers.Web.Configuration
-@model CareLeavers.Web.Models.ViewModels.CookiePolicyModel
+@model CareLeavers.Web.Models.ViewModels.SharedViewModel
 
 @inject IContentfulConfiguration ContentfulConfiguration
 
@@ -44,7 +44,7 @@
     </div>
 }
 
-@if (Model.ShowSuccessBanner)
+@if (Model.CookiePolicyModel.ShowSuccessBanner)
 {
     <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-cookie-confirmation="" style="display: block;">
         <div class="govuk-notification-banner__header">
@@ -220,13 +220,13 @@ else
             </legend>
             <div class="govuk-radios" data-module="govuk-radios">
                 <div class="govuk-radios__item">
-                    @Html.RadioButtonFor(x => x.AcceptCookies, true, new { @class = "govuk-radios__input", id = "analytics-cookies-on" })
-                    @Html.LabelFor(x => x.AcceptCookies, "Yes", new { @class = "govuk-label govuk-radios__label", @for="analytics-cookies-on"})
+                    @Html.RadioButtonFor(x => x.CookiePolicyModel.AcceptCookies, true, new { @class = "govuk-radios__input", id = "analytics-cookies-on" })
+                    @Html.LabelFor(x => x.CookiePolicyModel.AcceptCookies, "Yes", new { @class = "govuk-label govuk-radios__label", @for = "analytics-cookies-on" })
                 </div>
 
                 <div class="govuk-radios__item">
-                    @Html.RadioButtonFor(x => x.AcceptCookies, false, new { @class = "govuk-radios__input", id = "analytics-cookies-off" })
-                    @Html.LabelFor(x => x.AcceptCookies, "No", new { @class = "govuk-label govuk-radios__label", @for="analytics-cookies-off"})
+                    @Html.RadioButtonFor(x => x.CookiePolicyModel.AcceptCookies, false, new { @class = "govuk-radios__input", id = "analytics-cookies-off" })
+                    @Html.LabelFor(x => x.CookiePolicyModel.AcceptCookies, "No", new { @class = "govuk-label govuk-radios__label", @for="analytics-cookies-off"})
                 </div>
             </div>
         </fieldset>

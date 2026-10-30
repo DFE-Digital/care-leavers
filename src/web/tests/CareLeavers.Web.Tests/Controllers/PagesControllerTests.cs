@@ -75,12 +75,12 @@ public class PagesControllerTests
         Assert.That(result, Is.TypeOf<ViewResult>());
         ViewResult? viewResult = result as ViewResult;
         Assert.That(viewResult, Is.Not.Null);
-        CookiePolicyModel? model = viewResult.Model as CookiePolicyModel;
+        SharedViewModel? model = viewResult.Model as SharedViewModel;
         Assert.That(model, Is.Not.Null);
         using (Assert.EnterMultipleScope())
         {
-            Assert.That(model.Page, Is.EqualTo(page));
-            Assert.That(model.AcceptCookies, Is.True);
+            Assert.That(model.CookiePolicyModel?.Page, Is.EqualTo(page));
+            Assert.That(model.CookiePolicyModel?.AcceptCookies, Is.True);
         }
     }
 
@@ -180,7 +180,7 @@ public class PagesControllerTests
     [Test]
     public void PostCookiePolicy_AppendsCookies_And_Returns_View()
     {
-        CookiePolicyModel cookiePolicyModel = new CookiePolicyModel { AcceptCookies = true };
+        SharedViewModel model = new SharedViewModel { CookiePolicyModel = new CookiePolicyModel { AcceptCookies = true } };
         CookiePolicyOptions cookiePolicyOptions = new CookiePolicyOptions
         {
             ConsentCookie = new CookieBuilder { Name = "consent-cookie"},
@@ -191,16 +191,16 @@ public class PagesControllerTests
         cookiePolicyOptionsService.Value.Returns(cookiePolicyOptions);
 
         _httpContext.Response.Cookies.Returns(Substitute.For<IResponseCookies>());
-        
-        IActionResult result = _pagesController.PostCookiePolicy(cookiePolicyModel, cookiePolicyOptionsService);
-        
+
+        IActionResult result = _pagesController.PostCookiePolicy(model, cookiePolicyOptionsService);
+
         Assert.That(result, Is.TypeOf<ViewResult>());
         ViewResult? viewResult = result as ViewResult;
         Assert.That(viewResult, Is.Not.Null);
         using (Assert.EnterMultipleScope())
         {
             Assert.That(viewResult.ViewName, Is.EqualTo("CookiePolicy"));
-            Assert.That(cookiePolicyModel.ShowSuccessBanner, Is.True);
+            Assert.That(model.CookiePolicyModel!.ShowSuccessBanner, Is.True);
         }
         _httpContext.Response.Cookies.Received(1).Append("consent-cookie", "yes", Arg.Any<CookieOptions>());
     }
@@ -208,27 +208,27 @@ public class PagesControllerTests
     [Test]
     public void PostCookiePolicy_WhenCookiesAreDeclined_AppendsCookies_And_Returns_View()
     {
-        CookiePolicyModel cookiePolicyModel = new CookiePolicyModel { AcceptCookies = false };
+        SharedViewModel model = new SharedViewModel { CookiePolicyModel = new CookiePolicyModel { AcceptCookies = false } };
         CookiePolicyOptions cookiePolicyOptions = new CookiePolicyOptions
         {
             ConsentCookie = new CookieBuilder { Name = "consent-cookie"},
             ConsentCookieValue = "no"
         };
-        
+
         IOptions<CookiePolicyOptions> cookiePolicyOptionsService = Substitute.For<IOptions<CookiePolicyOptions>>();
         cookiePolicyOptionsService.Value.Returns(cookiePolicyOptions);
 
         _httpContext.Response.Cookies.Returns(Substitute.For<IResponseCookies>());
-        
-        IActionResult result = _pagesController.PostCookiePolicy(cookiePolicyModel, cookiePolicyOptionsService);
-        
+
+        IActionResult result = _pagesController.PostCookiePolicy(model, cookiePolicyOptionsService);
+
         Assert.That(result, Is.TypeOf<ViewResult>());
         ViewResult? viewResult = result as ViewResult;
         Assert.That(viewResult, Is.Not.Null);
         using (Assert.EnterMultipleScope())
         {
             Assert.That(viewResult.ViewName, Is.EqualTo("CookiePolicy"));
-            Assert.That(cookiePolicyModel.ShowSuccessBanner, Is.True);
+            Assert.That(model.CookiePolicyModel!.ShowSuccessBanner, Is.True);
         }
         _httpContext.Response.Cookies.Received(1).Append("consent-cookie", "no", Arg.Any<CookieOptions>());
     }

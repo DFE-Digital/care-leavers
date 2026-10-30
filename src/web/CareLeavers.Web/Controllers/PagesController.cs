@@ -29,12 +29,20 @@ public class PagesController(IContentService contentService) : Controller
         
         var page = await contentService.GetPage("cookie-policy");
 
-        var vm = new CookiePolicyModel
+
+        var vm = new SharedViewModel
         {
-            AcceptCookies = consent.CanTrack,
             Page = page ?? new(),
+            CookiePolicyModel = new CookiePolicyModel {
+                AcceptCookies = consent.CanTrack,
+                Page = page ?? new(),
+            },
+            FeedbackViewModel= new FeedbackViewModel
+            {
+                Page = page ?? new()
+            }
         };
-        
+
         return View(vm);
     }
     
@@ -82,9 +90,11 @@ public class PagesController(IContentService contentService) : Controller
     [HttpPost("/{languageCode}/cookie-policy")]
     [Translation]
     public IActionResult PostCookiePolicy(
-        [FromForm] CookiePolicyModel cookiePolicyModel,
+        [FromForm] SharedViewModel model,
         [FromServices] IOptions<CookiePolicyOptions> cookiePolicyOptions)
     {
+        var cookiePolicyModel = model.CookiePolicyModel ?? new CookiePolicyModel();
+
         var cookieOptions = cookiePolicyOptions.Value.ConsentCookie.Build(HttpContext);
         var cookieValue = cookiePolicyModel.AcceptCookies ? cookiePolicyOptions.Value.ConsentCookieValue : "no";
 
@@ -94,8 +104,14 @@ public class PagesController(IContentService contentService) : Controller
             cookieOptions);
 
         cookiePolicyModel.ShowSuccessBanner = true;
-        
-        return View("CookiePolicy", cookiePolicyModel);
+        model.CookiePolicyModel = cookiePolicyModel;
+        model.Page ??= cookiePolicyModel.Page;
+        model.FeedbackViewModel ??= new FeedbackViewModel
+        {
+            Page = model.Page ?? new()
+        };
+
+        return View("CookiePolicy", model);
     }
 
     [Route("/error/{languageCode}/translation-unavailable")]
