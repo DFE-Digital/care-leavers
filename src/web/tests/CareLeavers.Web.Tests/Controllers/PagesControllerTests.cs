@@ -75,12 +75,41 @@ public class PagesControllerTests
         Assert.That(result, Is.TypeOf<ViewResult>());
         ViewResult? viewResult = result as ViewResult;
         Assert.That(viewResult, Is.Not.Null);
-        CookiePolicyModel? model = viewResult.Model as CookiePolicyModel;
+        SharedViewModel? model = viewResult.Model as SharedViewModel;
         Assert.That(model, Is.Not.Null);
         using (Assert.EnterMultipleScope())
         {
-            Assert.That(model.Page, Is.EqualTo(page));
-            Assert.That(model.AcceptCookies, Is.True);
+            Assert.That(model.CookiePolicyModel?.Page, Is.EqualTo(page));
+            Assert.That(model.CookiePolicyModel?.AcceptCookies, Is.True);
+        }
+    }
+
+    [Test]
+    public async Task CookiePolicy_Includes_FeedbackViewModel_For_FeedbackComponent()
+    {
+        const string slug = "cookie-policy";
+        Page page = new Page { Title = "Cookies", Slug = slug };
+        _contentService.GetPage(slug).Returns(page);
+
+        ITrackingConsentFeature trackingConsentFeature = Substitute.For<ITrackingConsentFeature>();
+        trackingConsentFeature.CanTrack.Returns(true);
+
+        FeatureCollection collection = new FeatureCollection();
+        collection.Set(trackingConsentFeature);
+
+        _httpContext.Features.Returns(collection);
+
+        IActionResult result = await _pagesController.CookiePolicy();
+
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+        SharedViewModel? model = viewResult.Model as SharedViewModel;
+        Assert.That(model, Is.Not.Null);
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(model.FeedbackViewModel, Is.Not.Null);
+            Assert.That(model.FeedbackViewModel?.Page, Is.EqualTo(page));
         }
     }
 
@@ -178,9 +207,9 @@ public class PagesControllerTests
     }
 
     [Test]
-    public void PostCookiePolicy_AppendsCookies_And_Returns_View()
+    public async Task PostCookiePolicy_AppendsCookies_And_Returns_View()
     {
-        CookiePolicyModel cookiePolicyModel = new CookiePolicyModel { AcceptCookies = true };
+        SharedViewModel model = new SharedViewModel { CookiePolicyModel = new CookiePolicyModel { AcceptCookies = true } };
         CookiePolicyOptions cookiePolicyOptions = new CookiePolicyOptions
         {
             ConsentCookie = new CookieBuilder { Name = "consent-cookie"},
@@ -191,44 +220,44 @@ public class PagesControllerTests
         cookiePolicyOptionsService.Value.Returns(cookiePolicyOptions);
 
         _httpContext.Response.Cookies.Returns(Substitute.For<IResponseCookies>());
-        
-        IActionResult result = _pagesController.PostCookiePolicy(cookiePolicyModel, cookiePolicyOptionsService);
-        
+
+        IActionResult result = await _pagesController.PostCookiePolicy(model, cookiePolicyOptionsService);
+
         Assert.That(result, Is.TypeOf<ViewResult>());
         ViewResult? viewResult = result as ViewResult;
         Assert.That(viewResult, Is.Not.Null);
         using (Assert.EnterMultipleScope())
         {
             Assert.That(viewResult.ViewName, Is.EqualTo("CookiePolicy"));
-            Assert.That(cookiePolicyModel.ShowSuccessBanner, Is.True);
+            Assert.That(model.CookiePolicyModel!.ShowSuccessBanner, Is.True);
         }
         _httpContext.Response.Cookies.Received(1).Append("consent-cookie", "yes", Arg.Any<CookieOptions>());
     }
 
     [Test]
-    public void PostCookiePolicy_WhenCookiesAreDeclined_AppendsCookies_And_Returns_View()
+    public async Task PostCookiePolicy_WhenCookiesAreDeclined_AppendsCookies_And_Returns_View()
     {
-        CookiePolicyModel cookiePolicyModel = new CookiePolicyModel { AcceptCookies = false };
+        SharedViewModel model = new SharedViewModel { CookiePolicyModel = new CookiePolicyModel { AcceptCookies = false } };
         CookiePolicyOptions cookiePolicyOptions = new CookiePolicyOptions
         {
             ConsentCookie = new CookieBuilder { Name = "consent-cookie"},
             ConsentCookieValue = "no"
         };
-        
+
         IOptions<CookiePolicyOptions> cookiePolicyOptionsService = Substitute.For<IOptions<CookiePolicyOptions>>();
         cookiePolicyOptionsService.Value.Returns(cookiePolicyOptions);
 
         _httpContext.Response.Cookies.Returns(Substitute.For<IResponseCookies>());
-        
-        IActionResult result = _pagesController.PostCookiePolicy(cookiePolicyModel, cookiePolicyOptionsService);
-        
+
+        IActionResult result = await _pagesController.PostCookiePolicy(model, cookiePolicyOptionsService);
+
         Assert.That(result, Is.TypeOf<ViewResult>());
         ViewResult? viewResult = result as ViewResult;
         Assert.That(viewResult, Is.Not.Null);
         using (Assert.EnterMultipleScope())
         {
             Assert.That(viewResult.ViewName, Is.EqualTo("CookiePolicy"));
-            Assert.That(cookiePolicyModel.ShowSuccessBanner, Is.True);
+            Assert.That(model.CookiePolicyModel!.ShowSuccessBanner, Is.True);
         }
         _httpContext.Response.Cookies.Received(1).Append("consent-cookie", "no", Arg.Any<CookieOptions>());
     }
@@ -304,6 +333,85 @@ public class PagesControllerTests
 
         IActionResult result = await _pagesController.TranslationUnavailable(null);
         
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+        Page? pageResult = viewResult.Model as Page;
+        Assert.That(pageResult, Is.Not.Null);
+        Assert.That(pageResult.Title, Is.Not.EqualTo("Test"));
+    }
+
+    [Test]
+    public async Task TranslationServiceUnavailable_With_LanguageCode_Returns_View()
+    {
+        Page page = new Page { Title = "Test", MainContent = new Document
+        {
+            Content = [ new Paragraph() ]
+        }};
+        _contentService.GetPage("translation-service-unavailable").Returns(page);
+
+        IActionResult result = await _pagesController.TranslationServiceUnavailable("en");
+
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+        Assert.That(viewResult.Model, Is.EqualTo(page));
+    }
+
+    [Test]
+    public async Task TranslationServiceUnavailable_Without_LanguageCode_Returns_View()
+    {
+        Page page = new Page { Title = "Test", MainContent = new Document
+        {
+            Content = [ new Paragraph() ]
+        }};
+        _contentService.GetPage("translation-service-unavailable").Returns(page);
+
+        IActionResult result = await _pagesController.TranslationServiceUnavailable(null);
+
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+        Assert.That(viewResult.Model, Is.EqualTo(page));
+    }
+
+    [Test]
+    public async Task TranslationServiceUnavailable_WhenPageIsNull_Returns_Fallback_View()
+    {
+        Page? page = null;
+        _contentService.GetPage("translation-service-unavailable").Returns(page);
+
+        IActionResult result = await _pagesController.TranslationServiceUnavailable(null);
+
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+    }
+
+    [Test]
+    public async Task TranslationServiceUnavailable_WhenMainContentIsNull_Returns_Fallback_View()
+    {
+        Page page = new Page { Title = "Test", MainContent = null };
+        _contentService.GetPage("translation-service-unavailable").Returns(page);
+
+        IActionResult result = await _pagesController.TranslationServiceUnavailable(null);
+
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+        Page? pageResult = viewResult.Model as Page;
+        Assert.That(pageResult, Is.Not.Null);
+        Assert.That(pageResult.Title, Is.Not.EqualTo("Test"));
+    }
+
+    [Test]
+    public async Task TranslationServiceUnavailable_WhenMainContentIsEmpty_Returns_Fallback_View()
+    {
+        Page page = new Page { Title = "Test", MainContent = new Document { Content = [] } };
+        _contentService.GetPage("translation-service-unavailable").Returns(page);
+
+        IActionResult result = await _pagesController.TranslationServiceUnavailable(null);
+
         Assert.That(result, Is.TypeOf<ViewResult>());
         ViewResult? viewResult = result as ViewResult;
         Assert.That(viewResult, Is.Not.Null);
