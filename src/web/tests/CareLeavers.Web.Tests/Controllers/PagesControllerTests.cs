@@ -85,6 +85,35 @@ public class PagesControllerTests
     }
 
     [Test]
+    public async Task CookiePolicy_Includes_FeedbackViewModel_For_FeedbackComponent()
+    {
+        const string slug = "cookie-policy";
+        Page page = new Page { Title = "Cookies", Slug = slug };
+        _contentService.GetPage(slug).Returns(page);
+
+        ITrackingConsentFeature trackingConsentFeature = Substitute.For<ITrackingConsentFeature>();
+        trackingConsentFeature.CanTrack.Returns(true);
+
+        FeatureCollection collection = new FeatureCollection();
+        collection.Set(trackingConsentFeature);
+
+        _httpContext.Features.Returns(collection);
+
+        IActionResult result = await _pagesController.CookiePolicy();
+
+        Assert.That(result, Is.TypeOf<ViewResult>());
+        ViewResult? viewResult = result as ViewResult;
+        Assert.That(viewResult, Is.Not.Null);
+        SharedViewModel? model = viewResult.Model as SharedViewModel;
+        Assert.That(model, Is.Not.Null);
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(model.FeedbackViewModel, Is.Not.Null);
+            Assert.That(model.FeedbackViewModel?.Page, Is.EqualTo(page));
+        }
+    }
+
+    [Test]
     public async Task CookiePolicy_WhenTrackingConsentFeatureIsUnavailable_Throws_InvalidOperationException()
     {
         _httpContext.Features.Returns(new FeatureCollection());
