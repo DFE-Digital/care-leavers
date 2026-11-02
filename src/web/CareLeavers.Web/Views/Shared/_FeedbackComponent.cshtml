@@ -2,15 +2,15 @@
 @using CareLeavers.Web.Configuration
 @using Microsoft.Extensions.Options
 
-@model CareLeavers.Web.Models.ViewModels.FeedbackViewModel
+@model CareLeavers.Web.Models.ViewModels.SharedViewModel
 @inject IContentService ContentService
 @{
-    if (Model.Page == null || !(Model.Page.ShowQuickFeedback ?? false))
+    if (Model.FeedbackViewModel?.Page == null || !(Model.FeedbackViewModel.Page.ShowQuickFeedback ?? false))
     {
         return;
     }
 
-    var showFeedback = Model.Page.ShowQuickFeedback ?? false;
+    var showFeedback = Model.FeedbackViewModel.Page.ShowQuickFeedback ?? false;
 
 }
 @if (showFeedback)
@@ -45,7 +45,7 @@
                             <h2 class="gem-c-feedback__form-heading">Help us improve this website</h2>
                             <p class="gem-c-feedback__form-paragraph">
                             To help us improve this website, we’d like to know more about your visit today.
-                            <a href='@Model.FeedbackUrl' class="govuk-link" target="_blank" rel="noopener noreferrer external">Please fill in this survey (opens in a new tab<noscript> and requires JavaScript</noscript>)</a>.
+                            <a href='@Model.FeedbackViewModel?.FeedbackUrl' class="govuk-link" target="_blank" rel="noopener noreferrer external">Please fill in this survey (opens in a new tab<noscript> and requires JavaScript</noscript>)</a>.
                             </p> 
                             <button class="govuk-button gem-c-button--secondary-quiet" aria-controls="page-is-not-useful" id="cancelButton">Cancel</button>
                         </div>
@@ -89,7 +89,7 @@
 
             var problemButton = document.querySelector("#problemButton");
             problemButton.addEventListener("click", function(event) {
-                window.location.href = '@Model.FeedbackUrl';
+                window.location.href = '@Model.FeedbackViewModel?.FeedbackUrl';
             }, false);
 
             var cancelButton = document.querySelector("#cancelButton");
