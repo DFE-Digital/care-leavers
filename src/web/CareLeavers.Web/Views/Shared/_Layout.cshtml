@@ -3,6 +3,7 @@
 @using CareLeavers.Web.Models.ViewModels
 @using CareLeavers.Web.Translation
 @using Microsoft.Extensions.Options
+@using System.Reflection;
 
 @inject IContentfulConfiguration ContentfulConfiguration
 @inject IOptions<ScriptOptions> ScriptOptions
@@ -12,27 +13,49 @@
     string currentPage = ViewContext.RouteData.Values["slug"]?.ToString() ?? string.Empty;
     var config = await ContentfulConfiguration.GetConfiguration();
     var scriptConfig = ScriptOptions.Value;
-    
+
     var languageCode = Context.Request.RouteValues["languageCode"]?.ToString();
     if (string.IsNullOrEmpty(languageCode))
     {
         languageCode = "en";
     }
-    
+
     var language = await TranslationService.GetLanguage(languageCode);
-    
+
     var configViewModel = new ConfigViewModel
     {
         ContentfulConfiguration = config,
         Language = language
     };
 
-    var feedbackViewModel = new FeedbackViewModel
-    {
-        Page = Model,        
-        FeedbackUrl = config.FeedbackUrl
-    };
+    var cookiePolicyProperty = Model?.GetType().GetProperty("CookiePolicyModel");
+    var cookiePolicyModel = cookiePolicyProperty?.GetValue(Model) as CookiePolicyModel;
+    bool IsCookiePage = cookiePolicyModel != null;
 
+    SharedViewModel? sharedViewModel = null;
+    if (!IsCookiePage)
+    {
+        sharedViewModel = new SharedViewModel
+        {
+            FeedbackViewModel = new FeedbackViewModel
+            {
+                Page = Model,
+                FeedbackUrl = config.FeedbackUrl
+            }
+        };      
+    }
+    else //Cookie policy page
+    {
+        sharedViewModel = new SharedViewModel
+        {
+            CookiePolicyModel = cookiePolicyModel,
+            FeedbackViewModel = new FeedbackViewModel
+            {
+                Page = Model?.Page,
+                FeedbackUrl = config.FeedbackUrl
+            }
+        };
+    }
 }
 
 <!DOCTYPE html>
@@ -116,8 +139,8 @@
 }
 
 @{
-            await Html.RenderPartialAsync("_FeedbackComponent", feedbackViewModel);
-            await Html.RenderPartialAsync("_Footer", configViewModel);
+        await Html.RenderPartialAsync("_FeedbackComponent", sharedViewModel);
+        await Html.RenderPartialAsync("_Footer", configViewModel);
 }
 
 @await RenderSectionAsync("Scripts", false)
