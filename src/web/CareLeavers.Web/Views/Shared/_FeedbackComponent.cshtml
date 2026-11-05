@@ -5,15 +5,15 @@
 @model CareLeavers.Web.Models.ViewModels.SharedViewModel
 @inject IContentService ContentService
 @{
-    if (Model.FeedbackViewModel?.Page == null || !(Model.FeedbackViewModel.Page.ShowQuickFeedback ?? false))
+    if (Model.FeedbackViewModel?.Page == null || Model.FeedbackViewModel.Page.ShowQuickFeedback == false)
     {
         return;
     }
 
-    var showFeedback = Model.FeedbackViewModel.Page.ShowQuickFeedback ?? false;
+    bool? showFeedback = Model.FeedbackViewModel.Page.ShowQuickFeedback;
 
 }
-@if (showFeedback)
+@if (showFeedback is null or true)
 {
     <section class="dfe-section">
         <div class="govuk-width-container">           
