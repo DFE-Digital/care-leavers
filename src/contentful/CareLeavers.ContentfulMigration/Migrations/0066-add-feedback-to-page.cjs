@@ -18,7 +18,6 @@ module.exports = function (migration) {
             return {
                 showQuickfeedback: true
             };
-        },
-        shouldPublish: true
+        }
     });
 };
