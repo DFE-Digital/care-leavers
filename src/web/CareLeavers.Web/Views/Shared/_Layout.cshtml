@@ -96,7 +96,7 @@
     <meta name="msvalidate.01" content="@config.BingSiteVerification"/>
 </head>
 
-<body class="govuk-template__body">
+<body class="govuk-template__body page-@(currentPage)">
 <script asp-add-nonce="true">
     document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
 </script>
