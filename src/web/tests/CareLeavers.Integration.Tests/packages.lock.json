@@ -4,9 +4,9 @@
     "net10.0": {
       "AngleSharp": {
         "type": "Direct",
-        "requested": "[1.8.5, )",
-        "resolved": "1.8.5",
-        "contentHash": "BUgFIpmkjwMPi6QneHUHaprjUOGSXoWEF/xi/2seHCpnI8XMHACNiC09rn9qL8jbxrP8jWyJ3DnOjsGvXWNGmw=="
+        "requested": "[1.8.6, )",
+        "resolved": "1.8.6",
+        "contentHash": "tdvrWSsHz8iRcb8U2cbFtYF6/1Mvhbe5ZxN/VdhVeIfp5vOvbwz3Bn7OZknnm2QSyGvM9ZaZLNLvfanPzNa61Q=="
       },
       "coverlet.collector": {
         "type": "Direct",
@@ -16,11 +16,11 @@
       },
       "Microsoft.AspNetCore.Mvc.Testing": {
         "type": "Direct",
-        "requested": "[8.0.32, )",
-        "resolved": "8.0.32",
-        "contentHash": "BdLXgeVsgbkHlD7Ewk2v0GwV6ClCF7chiNuAPsTAI4dZ+6WXDAU8b0BUrhujFYtZXeANn25a5WQHIBsCo9MNrw==",
+        "requested": "[8.0.33, )",
+        "resolved": "8.0.33",
+        "contentHash": "Q/PYBb25L9hpgglyjZkY85rMJqx461hBha+1oWAnL8zbnza1e+dec9vUZv9/8M1l/FpliXj5o8aPmE32eyNEbg==",
         "dependencies": {
-          "Microsoft.AspNetCore.TestHost": "8.0.32",
+          "Microsoft.AspNetCore.TestHost": "8.0.33",
           "Microsoft.Extensions.DependencyModel": "8.0.2",
           "Microsoft.Extensions.Hosting": "8.0.1"
         }
@@ -97,8 +97,8 @@
       },
       "Azure.Core": {
         "type": "Transitive",
-        "resolved": "1.63.0",
-        "contentHash": "5egODg5yWcRV0kkAv22jQL7YmsfupX7intDYbxZMu8giASSQVfG5+mwC+BdJOWvhFT1Y+9KzuvbUGqAVEBzsfw==",
+        "resolved": "1.64.0",
+        "contentHash": "SMmFWcTyRMdwdoLk+3yN9PrnxznDis1T8PpOeDFuB3/56ipMDYkPl7P8z5qNRzWWd9LL0lFJ5qhkhmomYamWUQ==",
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "10.0.10",
           "Microsoft.Extensions.Configuration.Abstractions": "10.0.10",
@@ -515,8 +515,8 @@
       },
       "Microsoft.AspNetCore.TestHost": {
         "type": "Transitive",
-        "resolved": "8.0.32",
-        "contentHash": "6MYbgxxio/RF2svX5LrK4bwqOo5QOFgu4TZ95i/mOgDW7owHHsi6zsEy/rFvunGF83mSkbJ6pK9zoujh2W23bw=="
+        "resolved": "8.0.33",
+        "contentHash": "kDD+zd5Xh6QpHgoHHNZU1nXBvboVxq6bqkf9ptNKDLAlu3j6snYomDzDKsUIC/yO2PwYahWfI8cpybHwPxA1aw=="
       },
       "Microsoft.AspNetCore.WebUtilities": {
         "type": "Transitive",
@@ -1382,7 +1382,7 @@
         "dependencies": {
           "Azure.AI.Translation.Document": "[2.0.0, )",
           "Azure.AI.Translation.Text": "[1.0.0, )",
-          "Azure.Core": "[1.63.0, )",
+          "Azure.Core": "[1.64.0, )",
           "Azure.Monitor.OpenTelemetry.AspNetCore": "[1.6.0, )",
           "Azure.Monitor.OpenTelemetry.Exporter": "[1.10.0, )",
           "Azure.Storage.Blobs": "[12.30.1, )",
