@@ -23,9 +23,9 @@
       },
       "Azure.Core": {
         "type": "Direct",
-        "requested": "[1.64.0, )",
-        "resolved": "1.64.0",
-        "contentHash": "SMmFWcTyRMdwdoLk+3yN9PrnxznDis1T8PpOeDFuB3/56ipMDYkPl7P8z5qNRzWWd9LL0lFJ5qhkhmomYamWUQ==",
+        "requested": "[1.63.0, )",
+        "resolved": "1.63.0",
+        "contentHash": "5egODg5yWcRV0kkAv22jQL7YmsfupX7intDYbxZMu8giASSQVfG5+mwC+BdJOWvhFT1Y+9KzuvbUGqAVEBzsfw==",
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "10.0.10",
           "Microsoft.Identity.Client": "4.90.0",
@@ -107,9 +107,9 @@
       },
       "Microsoft.Extensions.Caching.StackExchangeRedis": {
         "type": "Direct",
-        "requested": "[9.0.22, )",
-        "resolved": "9.0.22",
-        "contentHash": "eLq4fTwbsz5ikJr8PbCebrEBTJbNnb7DVbpAQTfurFEtLYDpc0GfHJXGLhixws8UOFJPhgk1IdYpC2AfXwodqw==",
+        "requested": "[9.0.21, )",
+        "resolved": "9.0.21",
+        "contentHash": "blkutrWFmd8QIc5OspeS4vltZLDGzXtlwRKcyrH5tqy9TIwTqZNETl0tjbKfklcusz3IjIA7JY7qmcE4Y0wEKw==",
         "dependencies": {
           "StackExchange.Redis": "2.7.27"
         }
@@ -200,20 +200,20 @@
       },
       "WebMarkupMin.AspNet.Brotli": {
         "type": "Direct",
-        "requested": "[2.23.0, )",
-        "resolved": "2.23.0",
-        "contentHash": "SeyNlDoZRRlr9u9alB1RAvOEJpTD4tZcuuJKlFqhIzohba+7RC8vzR0wdo0DcgZ5ET95x5thrGFqwwUjOsB8Zg==",
+        "requested": "[2.20.2, )",
+        "resolved": "2.20.2",
+        "contentHash": "30nLTv6gled0I9JuL8W9uv0JOSq4WTBjlvdUnhGMzQUQz9Wp3RTeP5Z8Oc3Y+7GGv2frDGpjJgbrJ7fpNubk2g==",
         "dependencies": {
-          "WebMarkupMin.AspNet.Common": "2.23.0"
+          "WebMarkupMin.AspNet.Common": "2.20.2"
         }
       },
       "WebMarkupMin.AspNetCoreLatest": {
         "type": "Direct",
-        "requested": "[2.23.0, )",
-        "resolved": "2.23.0",
-        "contentHash": "EZFdg6C3kcHhiUMHcOOctmEwLhKDCehDUhEsknxawIvekiBtVah0xnHCJGw43wx8D8k5+cAnpRDoxlgdc03FZw==",
+        "requested": "[2.22.5, )",
+        "resolved": "2.22.5",
+        "contentHash": "bB5FIWOQXdJcxO7Yo9XL3yUH08gLmdJa/ivPMT4fWfyXcTtMK9+onOnGhihwuJymW8crhjbCaf3hRSG8sPaKPg==",
         "dependencies": {
-          "WebMarkupMin.AspNet.Common": "2.23.0"
+          "WebMarkupMin.AspNet.Common": "2.22.5"
         }
       },
       "ZiggyCreatures.FusionCache.Backplane.Memory": {
@@ -471,16 +471,16 @@
       },
       "WebMarkupMin.AspNet.Common": {
         "type": "Transitive",
-        "resolved": "2.23.0",
-        "contentHash": "L2rWLhYPciHlWCXgfgqRTtjwOcGzHMTKywEKNYpoBlBDbr0NixLCCizDcMiQm741Mj7wPfZn6eXe15ymE+Io4A==",
+        "resolved": "2.22.5",
+        "contentHash": "90UIs3rWGopgedCFMXu+trxWyLYmMzCu1s0mYSjF0bspHFjJLS++o6uVZXnIpfrqcDThjUMuXZwAMRNPwSatjg==",
         "dependencies": {
-          "WebMarkupMin.Core": "2.23.0"
+          "WebMarkupMin.Core": "2.22.5"
         }
       },
       "WebMarkupMin.Core": {
         "type": "Transitive",
-        "resolved": "2.23.0",
-        "contentHash": "h+Sy/aov7PqbRCd+EhXPDxpr44hhlOfS0VtrbpzCovO6fm0sxVUHh5QttlfNMPGzRG/JI/kW0+BolqYbvc/XxA==",
+        "resolved": "2.22.5",
+        "contentHash": "NMf0jFJeDY3jG4dudYW8qfQkL22Zexnzw03ZNQwv5jrQzJI1LYHA2yo1rhKswBOfHt7Klx5CeGKtSZ+LWMIc/A==",
         "dependencies": {
           "AdvancedStringBuilder": "0.2.0"
         }

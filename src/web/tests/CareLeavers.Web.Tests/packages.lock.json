@@ -80,8 +80,8 @@
       },
       "Azure.Core": {
         "type": "Transitive",
-        "resolved": "1.64.0",
-        "contentHash": "SMmFWcTyRMdwdoLk+3yN9PrnxznDis1T8PpOeDFuB3/56ipMDYkPl7P8z5qNRzWWd9LL0lFJ5qhkhmomYamWUQ==",
+        "resolved": "1.63.0",
+        "contentHash": "5egODg5yWcRV0kkAv22jQL7YmsfupX7intDYbxZMu8giASSQVfG5+mwC+BdJOWvhFT1Y+9KzuvbUGqAVEBzsfw==",
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "10.0.10",
           "Microsoft.Extensions.Configuration.Abstractions": "10.0.10",
@@ -577,12 +577,12 @@
       },
       "Microsoft.Extensions.Caching.StackExchangeRedis": {
         "type": "Transitive",
-        "resolved": "9.0.22",
-        "contentHash": "eLq4fTwbsz5ikJr8PbCebrEBTJbNnb7DVbpAQTfurFEtLYDpc0GfHJXGLhixws8UOFJPhgk1IdYpC2AfXwodqw==",
+        "resolved": "9.0.21",
+        "contentHash": "blkutrWFmd8QIc5OspeS4vltZLDGzXtlwRKcyrH5tqy9TIwTqZNETl0tjbKfklcusz3IjIA7JY7qmcE4Y0wEKw==",
         "dependencies": {
-          "Microsoft.Extensions.Caching.Abstractions": "9.0.22",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.22",
-          "Microsoft.Extensions.Options": "9.0.22",
+          "Microsoft.Extensions.Caching.Abstractions": "9.0.21",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.21",
+          "Microsoft.Extensions.Options": "9.0.21",
           "StackExchange.Redis": "2.7.27"
         }
       },
@@ -1139,32 +1139,32 @@
       },
       "WebMarkupMin.AspNet.Brotli": {
         "type": "Transitive",
-        "resolved": "2.23.0",
-        "contentHash": "SeyNlDoZRRlr9u9alB1RAvOEJpTD4tZcuuJKlFqhIzohba+7RC8vzR0wdo0DcgZ5ET95x5thrGFqwwUjOsB8Zg==",
+        "resolved": "2.20.2",
+        "contentHash": "30nLTv6gled0I9JuL8W9uv0JOSq4WTBjlvdUnhGMzQUQz9Wp3RTeP5Z8Oc3Y+7GGv2frDGpjJgbrJ7fpNubk2g==",
         "dependencies": {
-          "WebMarkupMin.AspNet.Common": "2.23.0"
+          "WebMarkupMin.AspNet.Common": "2.20.2"
         }
       },
       "WebMarkupMin.AspNet.Common": {
         "type": "Transitive",
-        "resolved": "2.23.0",
-        "contentHash": "L2rWLhYPciHlWCXgfgqRTtjwOcGzHMTKywEKNYpoBlBDbr0NixLCCizDcMiQm741Mj7wPfZn6eXe15ymE+Io4A==",
+        "resolved": "2.22.5",
+        "contentHash": "90UIs3rWGopgedCFMXu+trxWyLYmMzCu1s0mYSjF0bspHFjJLS++o6uVZXnIpfrqcDThjUMuXZwAMRNPwSatjg==",
         "dependencies": {
-          "WebMarkupMin.Core": "2.23.0"
+          "WebMarkupMin.Core": "2.22.5"
         }
       },
       "WebMarkupMin.AspNetCoreLatest": {
         "type": "Transitive",
-        "resolved": "2.23.0",
-        "contentHash": "EZFdg6C3kcHhiUMHcOOctmEwLhKDCehDUhEsknxawIvekiBtVah0xnHCJGw43wx8D8k5+cAnpRDoxlgdc03FZw==",
+        "resolved": "2.22.5",
+        "contentHash": "bB5FIWOQXdJcxO7Yo9XL3yUH08gLmdJa/ivPMT4fWfyXcTtMK9+onOnGhihwuJymW8crhjbCaf3hRSG8sPaKPg==",
         "dependencies": {
-          "WebMarkupMin.AspNet.Common": "2.23.0"
+          "WebMarkupMin.AspNet.Common": "2.22.5"
         }
       },
       "WebMarkupMin.Core": {
         "type": "Transitive",
-        "resolved": "2.23.0",
-        "contentHash": "h+Sy/aov7PqbRCd+EhXPDxpr44hhlOfS0VtrbpzCovO6fm0sxVUHh5QttlfNMPGzRG/JI/kW0+BolqYbvc/XxA==",
+        "resolved": "2.22.5",
+        "contentHash": "NMf0jFJeDY3jG4dudYW8qfQkL22Zexnzw03ZNQwv5jrQzJI1LYHA2yo1rhKswBOfHt7Klx5CeGKtSZ+LWMIc/A==",
         "dependencies": {
           "AdvancedStringBuilder": "0.2.0"
         }
@@ -1217,7 +1217,7 @@
         "dependencies": {
           "Azure.AI.Translation.Document": "[2.0.0, )",
           "Azure.AI.Translation.Text": "[1.0.0, )",
-          "Azure.Core": "[1.64.0, )",
+          "Azure.Core": "[1.63.0, )",
           "Azure.Monitor.OpenTelemetry.AspNetCore": "[1.6.0, )",
           "Azure.Monitor.OpenTelemetry.Exporter": "[1.10.0, )",
           "Azure.Storage.Blobs": "[12.30.1, )",
@@ -1225,7 +1225,7 @@
           "Joonasw.AspNetCore.SecurityHeaders": "[6.0.0, )",
           "Microsoft.ApplicationInsights": "[2.23.0, )",
           "Microsoft.Extensions.Azure": "[1.14.1, )",
-          "Microsoft.Extensions.Caching.StackExchangeRedis": "[9.0.22, )",
+          "Microsoft.Extensions.Caching.StackExchangeRedis": "[9.0.21, )",
           "OpenTelemetry.Api": "[1.20.1, )",
           "OpenTelemetry.Exporter.OpenTelemetryProtocol": "[1.20.1, )",
           "OpenTelemetry.Extensions.Hosting": "[1.20.1, )",
@@ -1235,8 +1235,8 @@
           "Serilog.AspNetCore": "[9.0.0, )",
           "Serilog.Sinks.ApplicationInsights": "[5.0.1, )",
           "Serilog.Sinks.OpenTelemetry": "[4.2.0, )",
-          "WebMarkupMin.AspNet.Brotli": "[2.23.0, )",
-          "WebMarkupMin.AspNetCoreLatest": "[2.23.0, )",
+          "WebMarkupMin.AspNet.Brotli": "[2.20.2, )",
+          "WebMarkupMin.AspNetCoreLatest": "[2.22.5, )",
           "ZiggyCreatures.FusionCache.Backplane.Memory": "[2.9.0, )",
           "ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis": "[2.9.0, )",
           "ZiggyCreatures.FusionCache.OpenTelemetry": "[2.9.0, )",
