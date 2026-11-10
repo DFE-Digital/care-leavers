@@ -19,6 +19,6 @@ module.exports = function (migration) {
                 showQuickfeedback: true
             };
         },
-        shouldPublish: true
+        shouldPublish: 'preserve'
     });
 };
