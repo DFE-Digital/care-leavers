@@ -1,8 +1,21 @@
+.page-question-1 {
+    .govuk-main-wrapper {
+        padding-top: 0;
+    }
+}
+
+@media (min-width: 40.0625em) {
+    .page-question-1 {
+        .govuk-main-wrapper {
+            padding-top: 0;
+        }
+    }
+}
 .gtaa-wrapper {
     position: relative;
     min-height: 400px;
 
-    &.gtaa-loading {    
+    &.gtaa-loading {
 
         .gtaa-loader {
             display: block;
