@@ -10,9 +10,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AngleSharp" Version="1.9.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.33" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+        <PackageReference Include="AngleSharp" Version="1.10.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.34" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.2" />
         <PackageReference Include="NSubstitute" Version="6.2.0" />
         <PackageReference Include="NUnit" Version="5.0.0" />
         <PackageReference Include="NUnit3TestAdapter" Version="6.3.1" />
