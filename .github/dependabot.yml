@@ -32,7 +32,9 @@ updates:
           - "*"
 
   - package-ecosystem: "docker"
-    directory: "/src/web/CareLeavers.Web"
+    directories:
+      - "/src/web/CareLeavers.Web"
+      - "/src/e2e/CareLeavers.E2ETests"
     cooldown:
       default-days: 7
     schedule:
