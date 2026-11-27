@@ -10,7 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AngleSharp" Version="1.10.2" />
+        <PackageReference Include="AngleSharp" Version="1.10.5" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.34" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.2" />
         <PackageReference Include="NSubstitute" Version="6.2.0" />
@@ -20,7 +20,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="coverlet.collector" Version="10.1.0">
+        <PackageReference Include="coverlet.collector" Version="10.1.1">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
